@@ -121,7 +121,7 @@ while (!stop && world.pop.generation < gens) {
   await tick();
   fs.appendFileSync(telemetry, JSON.stringify({ ...r, t: Math.round((Date.now() - t0) / 1000) }) + "\n");
   if (r.gen % 10 === 0) {
-    console.log(`gen ${r.gen} ${r.traffic ? "traffic" : "ghosts"} trips/car ${(r.trips / 120).toFixed(2)} crashes/km ${r.crashesPerKm.toFixed(1)} side ${r.side.toFixed(2)}${r.control === "lights" ? ` red ${r.redRuns}` : ""}`);
+    console.log(`gen ${r.gen} ${r.traffic ? "traffic" : "ghosts"} trips/car ${(r.trips / 120).toFixed(2)} crashes/km ${r.crashesPerKm.toFixed(1)} side ${r.side.toFixed(2)}${r.yielded != null ? ` resolved ${(r.yielded * 100).toFixed(0)}%` : ""}${r.control === "lights" ? ` red ${r.redRuns}` : ""}`);
   }
   if (world.pop.generation % every === 0) checkpoint();
 }
