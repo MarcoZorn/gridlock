@@ -99,13 +99,13 @@ import { CityWorld } from "./src/cityworld.js";
 
 // the spatial hash finds exactly what a brute-force scan finds
 {
-  const items = Array.from({ length: 300 }, (_, i) => ({ x: (i * 97) % 1000, y: (i * 61) % 700, alive: i % 7 !== 0 }));
+  const items = Array.from({ length: 300 }, (_, i) => ({ x: (i * 97) % 1000, y: (i * 61) % 700, solid: i % 7 !== 0 }));
   const h = new SpatialHash(1000, 700, 48);
   h.rebuild(items);
   for (const [qx, qy, r] of [[500, 350, 60], [10, 10, 100], [990, 690, 30]]) {
     const got = new Set();
     h.near(qx, qy, r, (o) => { if (Math.hypot(o.x - qx, o.y - qy) <= r) got.add(o); });
-    const want = items.filter((o) => o.alive && Math.hypot(o.x - qx, o.y - qy) <= r);
+    const want = items.filter((o) => o.solid && Math.hypot(o.x - qx, o.y - qy) <= r);
     assert(got.size === want.length && want.every((o) => got.has(o)), "spatial hash must match brute force");
   }
   console.log("ok  spatial hash matches brute force");
@@ -117,12 +117,14 @@ import { CityWorld } from "./src/cityworld.js";
   const early = [], late = [];
   for (let i = 0; i < 60; i++) {
     const r = w.runGeneration();
-    (i < 6 ? early : i >= 48 ? late : []).push(r.mean);
+    // trips delivered, not fitness: fitness is repriced as crash damage is
+    // phased in, so the same driving scores less later on
+    (i < 6 ? early : i >= 48 ? late : []).push(r.trips);
   }
   const a = early.reduce((x, y) => x + y, 0) / early.length;
   const b = late.reduce((x, y) => x + y, 0) / late.length;
-  console.log(`    gen 0-5 mean ${a.toFixed(0)}   gen 48-59 mean ${b.toFixed(0)}`);
-  assert(b > a * 2, `city drivers must improve (${a.toFixed(0)} -> ${b.toFixed(0)})`);
+  console.log(`    gen 0-5 trips ${a.toFixed(1)}   gen 48-59 trips ${b.toFixed(1)}`);
+  assert(b > a * 3 + 5, `city drivers must improve (${a.toFixed(1)} -> ${b.toFixed(1)} trips)`);
   console.log("ok  drivers learn routes");
 }
 
