@@ -41,6 +41,11 @@ export const ECON = {
 // One city day is 24 minutes of simulation, a minute per hour. Demand has a
 // morning and an evening peak and a quiet night.
 export const DAY = 24 * 60;
+
+// City sizes, in blocks. Demand and the population ceiling scale with the
+// number of roads, so a bigger city supports a bigger population.
+export const SIZES = { small: { cols: 9, rows: 6 }, medium: { cols: 13, rows: 9 }, large: { cols: 18, rows: 12 } };
+const BASE_ROADS = 79;   // roads in a small city, the size the economy was tuned on
 // Passenger demand follows commuting; freight moves in business hours, flat from 7 to 19, and barely at night.
 export function freightAt(t) {
   const h = ((t / 60) % 24 + 24) % 24;
@@ -65,13 +70,14 @@ export class EcoWorld {
   // roads (see pedestrians.js); 0 leaves the city to the cars.
   //
   // `graph` is a real street map (see tools/osm.mjs) instead of a generated city.
-  constructor({ seed = 1, citySeed = seed, control = "none", startCars = 50, founders = null, pedestrians = 0, graph = null } = {}) {
+  constructor({ seed = 1, citySeed = seed, control = "none", startCars = 50, founders = null, pedestrians = 0, graph = null, size = "small" } = {}) {
     this.seed = seed;
     this.rng = new Rng(seed * 104729 + 7);
-    this.city = new City(citySeed, { graph });
+    this.size = SIZES[size] ? size : "small";
+    this.city = new City(citySeed, { graph, ...(graph ? {} : SIZES[this.size]) });
     this.graph = graph;
+    this.edits = [];   // expansions and built roads, in order, so a save can replay them
     this.city.control = control;
-    this.baseEdges = this.city.edges.length;   // anything past this was built in the editor
     this.cfg = { ...DEFAULTS, pWeight: 0.5, weightStep: 0.15 };
     this.innov = founders ? founders.innov : new Innovations(N_INPUTS + 1 + N_OUTPUTS);
     this.founders = founders ? founders.genomes : null;
@@ -202,8 +208,9 @@ export class EcoWorld {
   step() {
     const c = this.city;
     c.time = this.tick * DT;
-    this.passengers = Math.min(ECON.fareQueue, this.passengers + ECON.demand * demandAt(c.time) * DT);
-    this.freight = Math.min(ECON.fareQueue, this.freight + ECON.freightDemand * freightAt(c.time) * DT);
+    const scale = this.scale;
+    this.passengers = Math.min(ECON.fareQueue * scale, this.passengers + ECON.demand * scale * demandAt(c.time) * DT);
+    this.freight = Math.min(ECON.fareQueue * scale, this.freight + ECON.freightDemand * scale * freightAt(c.time) * DT);
     // everything a car can see or hit: other cars, and anyone crossing
     const onRoad = this.crowd ? this.cars.concat(this.crowd.people) : this.cars;
     this.hash.rebuild(onRoad);
@@ -236,7 +243,7 @@ export class EcoWorld {
     // births and deaths, after everyone has moved
     const born = [];
     for (const d of this.cars) {
-      if (d.cash >= ECON.birthCash && this.cars.length + born.length < ECON.maxCars) {
+      if (d.cash >= ECON.birthCash && this.cars.length + born.length < ECON.maxCars * this.scale) {
         d.cash -= ECON.childCost;
         d.children++;
         born.push(this.birth(d));
@@ -316,6 +323,25 @@ export class EcoWorld {
     this.events = { births: 0, deaths: 0, immigrants: 0, trips: 0, crashes: 0, carCrashes: 0, earned: 0, deadheads: 0, freight: 0, tripTicks: 0, pedHits: 0 };
   }
 
+  // How much bigger than the city the economy was tuned on.
+  get scale() { return this.city.edges.length / BASE_ROADS; }
+
+  // The editor's two building moves, logged so a save can replay them.
+  build(a, b) {
+    const e = this.city.addRoad(a, b);
+    if (e) { this.edits.push(["road", a, b, e.lanes]); this.cityEdited(); }
+    return e;
+  }
+
+  // A new row of blocks on the east or south edge. Demand grows with the
+  // road count, so a bigger city means a boom until the population catches up.
+  grow(side) {
+    if (!this.city.expand(side)) return false;
+    this.edits.push(["grow", side]);
+    this.hash = new SpatialHash(this.city.w, this.city.h);
+    return true;
+  }
+
   // After the editor changes the map: anyone whose remaining route uses a
   // closed road is re-routed from the next junction, keeping their fare.
   cityEdited() {
@@ -344,7 +370,7 @@ export class EcoWorld {
       v: 1, seed: this.seed, citySeed: this.city.seed, graph: this.graph, control: this.control, tick: this.tick, rng: this.rng.s,
       innov: this.innov.toJSON(), cfg: this.cfg, nextId: this.nextId, nextSpecies: this.nextSpecies, threshold: this.threshold,
       passengers: this.passengers, freight: this.freight,
-      closed: [...this.city.closed], added: this.city.edges.slice(this.baseEdges).map((e) => [e.a, e.b, e.lanes]),
+      closed: [...this.city.closed], edits: this.edits, size: this.size,
       founders: this.founders ? this.founders.map((g) => g.toJSON()) : null,
       cars: this.cars.map((d) => ({
         brain: d.genome.toJSON(), body: d.body.toJSON(), cash: d.cash, id: d.id, born: d.born, parent: d.parent,
@@ -357,8 +383,13 @@ export class EcoWorld {
   }
 
   static fromJSON(j) {
-    const w = new EcoWorld({ seed: j.seed, citySeed: j.citySeed, control: j.control, startCars: 0, graph: j.graph || null });
-    for (const [a, b, lanes] of j.added || []) w.city.addRoad(a, b, lanes);
+    const w = new EcoWorld({ seed: j.seed, citySeed: j.citySeed, control: j.control, startCars: 0, graph: j.graph || null, size: j.size });
+    for (const [a, b, lanes] of j.added || []) w.city.addRoad(a, b, lanes);   // saves from before the edit log
+    for (const [kind, x, y, lanes] of j.edits || []) {
+      if (kind === "grow") w.grow(x);
+      else w.city.addRoad(x, y, lanes);
+    }
+    w.edits = [...(j.edits || [])];
     for (const id of j.closed || []) w.city.closed.add(id);
     w.tick = j.tick; w.rng.s = j.rng; w.cfg = j.cfg;
     w.innov = Innovations.fromJSON(j.innov);
