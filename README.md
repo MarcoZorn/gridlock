@@ -237,6 +237,13 @@ cars are cheaper to run.
   one junction to another to build one. Junctions grow aprons, lights and
   islands to match, and anyone whose route ran through a closure is re-routed
   from their next junction.
+- **Bigger cities, and growing ones.** Small (9 x 6 junctions), medium
+  (13 x 9) or large (18 x 12), with an arterial for roughly every five streets.
+  On the ecosystem page the city can also grow mid-run, a row of blocks at a
+  time to the east or south: the old edge becomes the inside of town, the
+  arterials carry on, and because fare demand scales with the number of roads,
+  every expansion is a boom until the population catches up. Growth is part of
+  the save, replayed in order with any roads built by hand.
 - **Fast-forward.** A Web Worker runs a full city day (86,400 ticks) in about
   twelve seconds while the page keeps drawing, then hands the world back.
 - **Save, load, share.** Generation runs and ecosystems save to JSON; the
