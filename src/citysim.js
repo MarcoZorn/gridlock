@@ -376,6 +376,39 @@ for (const b of document.querySelectorAll("[data-control]")) {
     world.newGeneration();
   };
 }
+// Save and load whole runs: the population, its history and the settings.
+// The cities are rebuilt from the seed, so a save is a few hundred KB.
+function adopt(w) {
+  world = w;
+  traffic = w.traffic; density = w.density; control = w.control;
+  $("traffic").dataset.on = traffic;
+  document.querySelectorAll("[data-density]").forEach((x) => (x.dataset.on = +x.dataset.density === density));
+  document.querySelectorAll("[data-control]").forEach((x) => (x.dataset.on = x.dataset.control === control));
+  $("seed").textContent = w.seed;
+  selected = null; pending = 0; cam.fitted = false;
+}
+$("save").onclick = () => {
+  const blob = new Blob([JSON.stringify(world)], { type: "application/json" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = `gridlock-seed${world.seed}-gen${world.pop.generation}.json`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+};
+$("load").onclick = () => $("loadFile").click();
+$("loadFile").onchange = async (e) => {
+  const f = e.target.files[0];
+  if (!f) return;
+  try { adopt(CityWorld.fromJSON(JSON.parse(await f.text()))); }
+  catch (err) { alert(`Not a gridlock save: ${err.message}`); }
+  e.target.value = "";
+};
+$("trained").onclick = async () => {
+  try {
+    const r = await fetch("docs/trained.json");
+    adopt(CityWorld.fromJSON(await r.json()));
+  } catch (err) { alert(`Could not load the trained drivers: ${err.message}`); }
+};
 $("heat").onclick = (e) => {
   heatMode = (heatMode + 1) % HEAT_MODES.length;
   e.target.dataset.on = heatMode > 0;
