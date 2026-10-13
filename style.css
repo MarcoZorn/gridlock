@@ -60,3 +60,10 @@ details.key { margin-top: 10px; max-width: 72ch; font-size: 12.5px; color: var(-
 details.key summary { cursor: pointer; color: var(--blue); }
 details.key ul { margin: 8px 0 0; padding-left: 18px; line-height: 1.6; }
 details.key b { color: var(--ink); font-weight: 600; }
+
+/* the view's hint, in the words of the device in hand */
+.hint .touch { display: none; }
+@media (pointer: coarse) {
+  .hint .mouse { display: none; }
+  .hint .touch { display: inline; }
+}
