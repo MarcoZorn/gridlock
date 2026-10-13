@@ -252,6 +252,13 @@ cars are cheaper to run.
 - **Long runs.** `headless.mjs` runs either world for thousands of
   generations or dozens of city days, checkpointing atomically, and
   `report.mjs` turns the telemetry into `LIVE.md`.
+- **Family tree.** The ecosystem keeps the ancestry of everyone alive (and
+  forgets lineages as they die out), and draws it: every birth a line from
+  parent to child, across by time, up by generation. Within a city day or two
+  it usually shows the same thing: everyone alive descends from one founder.
+- **Drawing big cities.** The roads are rendered once into an offscreen
+  canvas and only redrawn when the view or the map changes; a large city went
+  from 40 frames a second to the display's full rate.
 - **Speed.** Evaluating a network through a `Map` was 38% of a traffic run.
   Compiling each genome to typed arrays, same arithmetic in the same order,
   made runs 37% faster with bit-identical results. Sphere-tracing rays
@@ -259,6 +266,16 @@ cars are cheaper to run.
   roads are narrow, so a ray's clearance is set by the kerb beside it, not
   the wall ahead, and it ends up taking smaller steps than a plain march.
   Reverted.
+
+**Stagnation in a rotating world.** Working on the Python
+[cars](https://github.com/MarcoZorn/cars) project in parallel turned up a
+general point: when every generation races a different map, a species' best
+score is compared across maps, and a run of hard maps looks exactly like
+stagnation. Here NEAT's default (cull a species after 18 generations without
+a new best) was doing just that. Over five seeds and 300 generations, mean
+fitness at full crash price was 182 with the default, 212 with stagnation
+counted over 60 generations (ten trips round the six cities), and 219 with no
+culling at all. It is 60 now.
 
 ### Extensions
 
