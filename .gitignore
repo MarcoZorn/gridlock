@@ -4,3 +4,4 @@ tmp/
 runs/*/state.json
 runs/*/state.json.tmp
 runs/*/out.log
+runs/*/telemetry.jsonl
