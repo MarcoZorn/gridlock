@@ -51,6 +51,7 @@ function reset(seed) {
   selected = null;
   $("peds-on").dataset.on = false;
   $("charge").dataset.on = false;
+  $("camera").dataset.on = false;
   cam.fitted = false;
 }
 
@@ -374,6 +375,7 @@ function adoptEco(w) {
   document.querySelectorAll("[data-size]").forEach((x) => (x.dataset.on = x.dataset.size === size));
   $("peds-on").dataset.on = !!world.crowd;
   $("charge").dataset.on = world.congestion > 0;
+  $("camera").dataset.on = world.speedLimit > 0;
   selected = null; cam.fitted = false;
 }
 
@@ -407,6 +409,10 @@ $("loadFile").onchange = async (e) => {
 $("peds-on").onclick = (e) => {
   world.crowd = world.crowd ? null : new Crowd(world.city, new Rng(world.seed * 7 + 1), 40);
   e.target.dataset.on = !!world.crowd;
+};
+$("camera").onclick = (e) => {
+  world.speedLimit = world.speedLimit ? 0 : 35;
+  e.target.dataset.on = world.speedLimit > 0;
 };
 $("charge").onclick = (e) => {
   world.congestion = world.congestion ? 0 : 0.1;
