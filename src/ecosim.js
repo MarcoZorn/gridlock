@@ -296,6 +296,15 @@ for (const b of document.querySelectorAll("[data-size]")) {
 // Growing keeps the camera where it was, so you can watch the new blocks fill.
 $("grow-east").onclick = () => world.grow("east");
 $("grow-south").onclick = () => world.grow("south");
+function adoptEco(w) {
+  world = w;
+  control = world.control; size = world.size || "small"; graph = world.graph || null;
+  document.querySelectorAll("[data-control]").forEach((x) => (x.dataset.on = x.dataset.control === control));
+  document.querySelectorAll("[data-size]").forEach((x) => (x.dataset.on = x.dataset.size === size));
+  $("peds-on").dataset.on = !!world.crowd;
+  selected = null; cam.fitted = false;
+}
+
 // The whole ecosystem, wallets, families, edits and all, as one file.
 $("save").onclick = () => {
   const blob = new Blob([JSON.stringify(world)], { type: "application/json" });
@@ -306,16 +315,20 @@ $("save").onclick = () => {
   URL.revokeObjectURL(a.href);
 };
 $("load").onclick = () => $("loadFile").click();
+
+// A city that has already run for forty days: lineages ninety generations
+// deep, and the small, cheap cars forty days of the economy bred.
+$("mature").onclick = async () => {
+  try {
+    const r = await fetch("docs/eco-day40.json");
+    adoptEco(EcoWorld.fromJSON(await r.json()));
+  } catch (err) { alert(`Could not load it: ${err.message}`); }
+};
 $("loadFile").onchange = async (e) => {
   const f = e.target.files[0];
   if (!f) return;
   try {
-    world = EcoWorld.fromJSON(JSON.parse(await f.text()));
-    control = world.control; size = world.size || "small"; graph = world.graph || null;
-    document.querySelectorAll("[data-control]").forEach((x) => (x.dataset.on = x.dataset.control === control));
-    document.querySelectorAll("[data-size]").forEach((x) => (x.dataset.on = x.dataset.size === size));
-    $("peds-on").dataset.on = !!world.crowd;
-    selected = null; cam.fitted = false;
+    adoptEco(EcoWorld.fromJSON(JSON.parse(await f.text())));
   } catch (err) { alert(`Not a gridlock ecosystem: ${err.message}`); }
   e.target.value = "";
 };
