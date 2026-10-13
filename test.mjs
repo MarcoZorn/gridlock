@@ -136,7 +136,6 @@ import { Body } from "./src/body.js";
   const a = new CityWorld({ seed: 5, popSize: 40, ticks: 600 });
   for (let i = 0; i < 4; i++) a.runGeneration();
   const b = CityWorld.fromJSON(JSON.parse(JSON.stringify(a)));
-  a.newGeneration(); // b restarted its generation, so restart a's too
   for (let i = 0; i < 3; i++) {
     const ra = a.runGeneration(), rb = b.runGeneration();
     assert(Math.abs(ra.best - rb.best) < 1e-6 * Math.max(1, ra.best) && ra.trips === rb.trips, "resumed world must match the original");
@@ -204,11 +203,27 @@ import { Body } from "./src/body.js";
   const a = new CityWorld({ seed: 2, popSize: 30, ticks: 600, traffic: true, density: 30, graph });
   a.runGeneration();
   const b = CityWorld.fromJSON(JSON.parse(JSON.stringify(a)));
-  a.newGeneration();
   const ra = a.runGeneration(), rb = b.runGeneration();
   assert(ra.trips === rb.trips && Math.abs(ra.best - rb.best) < 1e-9, "a fixed-map world resumes exactly");
   assert(a.city.nodes.length === 13, "the crossroads map is used");
   console.log("ok  fixed maps save and resume");
+}
+
+// waves run apart and merged give exactly the generation run in one go
+{
+  const seq = new CityWorld({ seed: 6, popSize: 60, ticks: 600, traffic: true, density: 20 });
+  seq.runGeneration();
+  const j = JSON.stringify(seq);
+  const par = CityWorld.fromJSON(JSON.parse(j));
+  const results = [];
+  for (let k = 0; k < par.waves; k++) results.push(CityWorld.fromJSON(JSON.parse(j)).runWave(k));
+  par.mergeWaves(results);
+  const rs = seq.runGeneration(), rp = par.history.at(-1);
+  assert(par.waves === 3, "three waves of twenty");
+  for (const k of ["best", "mean", "trips", "crashes", "carCrashes", "conflicts", "side"]) {
+    assert(Math.abs(rs[k] - rp[k]) < 1e-9, `parallel waves must match sequential (${k}: ${rs[k]} vs ${rp[k]})`);
+  }
+  console.log("ok  waves run apart match a generation run in one go");
 }
 
 console.log("\nall checks passed");
