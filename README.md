@@ -60,6 +60,9 @@ node tools/osm.mjs extract.json maps/name.json "Place"   # an OpenStreetMap extr
   junctions about twice as much and start out resolving more conflicts, but
   longer runs and more memory channels do not climb past the same plateau,
   and in the full city it makes no difference at all.
+- **Right of way does not pay here.** A hand-written yield rule bolted onto
+  the evolved drivers costs them 7% of their trips and saves no crashes at
+  all; junction collisions are too rare to be worth stopping for.
 - **Right of way did not evolve beyond that.** Not in a whole city, not in an arena that
   is nothing but one crossroads, not with crashes priced three or six times
   higher, not with better eyesight, and not when both cars pay for a
@@ -241,6 +244,23 @@ runs into it, at that car's speed. Same three seeds: waiting 4.1%, 4.2%, 5.3%
 same as with wrecks alone. Paying for the jam you cause does not teach
 waiting either. Whatever holds right of way back, it is not who gets the
 bill.
+
+Then does waiting pay at all? A rule written by hand and bolted onto the
+shipped drivers: near a junction, if a ray to either side sees a car closing
+in, brake hard. Three unseen cities, 40 cars at once:
+
+| | fitness | trips per car | crashes per car | rule in force |
+|---|---|---|---|---|
+| drivers as evolved | 150 | 1.49 | 5.96 | |
+| with the yield rule | 143 | 1.38 | 5.96 | 1.9% of the time |
+| with it from further out | 142 | 1.35 | 5.90 | 2.6% of the time |
+
+Yielding costs trips and saves no crashes, so fitness falls. Evolution never
+found right of way because, in this city, there is nothing in it to find:
+junction collisions are a few percent of all crashes, and a driver that
+stops for one of them loses more time than the crash would have cost. Every
+experiment above that tried to make drivers wait was pushing against a
+behaviour that does not pay.
 (The conflict and
 car-on-car counters are no use here: a wreck in a junction counts as an
 unresolved conflict, and touching one counts as a collision every tick.)
