@@ -401,7 +401,8 @@ going), after four to six days from the same founders:
 | generated grid, 40 days, four runs (thin traffic) | 23-62% |
 
 Turin seed 7 is a left-hand city, 98% of its cars on the left, and its twin
-a right-hand one. What decides it is how often cars meet head-on: a crowded
+a right-hand one. My reading is that it comes down to how often cars meet
+head-on, though I have not tested that directly: a crowded
 real map, where the traffic is funnelled into a few long two-way streets,
 settles in days; a grid with seventy cars on it leans but never settles, like
 the generation city. And the code can not impose it. With `BODY.lane` the
