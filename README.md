@@ -83,9 +83,9 @@ node tools/osm.mjs extract.json maps/name.json "Place"   # an OpenStreetMap extr
   Manhattan with their real arrows carry a sixth to a fifth fewer fares than
   the same streets two-way, and are no safer: a fare across the block has to
   go round it.
-- **A congestion charge prices cars out, it does not teach detours.** Half
-  the fleet goes, the rest drive faster and safer, and the city moves a
-  quarter fewer people; the gene for avoiding busy roads never moves.
+- **A congestion charge prices cars out, it does not teach detours.** After
+  two weeks the city moves nearly as many people (7% fewer) with 40% fewer
+  cars, faster and safer; the gene for avoiding busy roads never moves.
 - **Cars and pedestrians cycle.** Once both populations can replace
   themselves they oscillate like predator and prey.
 - **Fitness sharing costs here.** Without it drivers were half as fit
@@ -820,6 +820,12 @@ the ones left make their trips a quarter faster, crash a quarter less, and
 each earns half as many fares again (16 a day against 11). The city as a
 whole moved a quarter fewer people, because a fare still waiting when the
 queue is full goes to another firm.
+
+Four days is not long for a gene to move, so I ran all four on to day 15.
+The `jam` gene still sat at 0.04-0.08 in every run, charged or not. But the
+charged cities caught up: on day 15 they moved 2691 and 2398 fares with 176
+and 158 cars, against 2781 and 2726 with 287 and 285 uncharged. Nearly the
+same service from 40% fewer cars.
 
 **Where they crash.** The ecosystem page has the same heatmaps as the
 generation page (H): crashes, or cars crawling at walking pace. On a real map
