@@ -356,3 +356,16 @@ export function shortcuts(map) {
     if (b) b.title = `${b.title ? b.title + " " : ""}(${key === "space" ? "space" : key.toUpperCase()})`;
   }
 }
+
+// The director: every few seconds, the car with the most traffic within 70
+// units of it. Both pages follow whatever this returns.
+export function busiestCar(cars) {
+  let best = null, bn = -1;
+  for (const d of cars) {
+    if (d.alive === false || d.towing) continue;
+    let n = 0;
+    for (const o of cars) if (o !== d && o.alive !== false && Math.abs(o.x - d.x) < 70 && Math.abs(o.y - d.y) < 70) n++;
+    if (n > bn) { bn = n; best = d; }
+  }
+  return best;
+}

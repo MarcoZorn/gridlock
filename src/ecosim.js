@@ -2,7 +2,7 @@
 import { EcoWorld, ECON } from "./ecoworld.js";
 import { Population, Rng } from "./neat.js";
 import { Crowd } from "./pedestrians.js";
-import { fitCanvas, panZoom, announceToggles, shortcuts, cityLayer, drawClosures, drawLights, drawRoute, drawRays, drawCar, speciesColour } from "./render.js";
+import { fitCanvas, panZoom, announceToggles, shortcuts, busiestCar, cityLayer, drawClosures, drawLights, drawRoute, drawRays, drawCar, speciesColour } from "./render.js";
 import { drawNetwork } from "./netview.js";
 
 const $ = (id) => document.getElementById(id);
@@ -178,13 +178,7 @@ function clock(t) {
 function directorCut(now) {
   if (!director || now < nextCut) return;
   nextCut = now + 6000;
-  let best = null, bn = -1;
-  for (const d of world.cars) {
-    if (d.towing) continue;
-    let n = 0;
-    for (const o of world.cars) if (o !== d && Math.abs(o.x - d.x) < 70 && Math.abs(o.y - d.y) < 70) n++;
-    if (n > bn) { bn = n; best = d; }
-  }
+  const best = busiestCar(world.cars);
   if (best) { selected = best; follow = true; cam.k = Math.max(cam.k, 3); }
 }
 
