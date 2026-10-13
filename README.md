@@ -333,6 +333,24 @@ because the km fell faster; I suspected cars that stop being rear-ended by cars
 that do not, and the collision mix says otherwise (rear-ending a stopped car is
 16% of collisions at the low fine and 19% at the high one).
 
+**A green wave.** If the lights matter, their timing should too. Three
+schemes for the same lights-raised drivers in three unseen cities: each
+light's own random offset (the default), every light switching at once, and
+a green wave, east-west roads turning green just as a car at 40 units a
+second arrives from the junction before:
+
+| lights | trips per car | crashes per 1000 units | reds run per car | waiting |
+|---|---|---|---|---|
+| random offsets | 0.66 | 5.75 | 2.69 | 9.7% |
+| all together | 0.67 | 5.63 | 2.61 | 9.6% |
+| green wave | 0.67 | 5.63 | 2.66 | 9.5% |
+
+Nothing. Drivers who run two or three reds a generation and wait less than a
+tenth of the time are not really governed by the lights, so it hardly
+matters when they change. A wave would need drivers who stop, and those, at
+a fine high enough to teach it, move a third as many people anyway. (Not
+tested: the high-fine population was never saved.)
+
 **The crossroads.** Junction conflicts are diluted in a whole city, so I
 built an arena that is nothing but the question: one junction, four arms, a
 ring road joining their ends so there are no dead ends, and every fare
