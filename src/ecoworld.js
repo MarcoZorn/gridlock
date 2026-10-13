@@ -22,14 +22,16 @@ export const ECON = {
   childCash: 13,        // ...and the child starts with this
   passengerRate: 0.012, // per unit of route, for the passenger
   speedBonus: 0.6,      // passengers tip for a quick trip, up to this share extra
-  freightRate: 0.006,   // per unit of route, per unit of freight carried
-  freightMax: 4,        // the most freight a single job ever has
+  freightRate: 0.004,   // per unit of route, per unit of freight carried
+  freightMin: 2,        // a vehicle needs this much room to take freight at all
+  freightMax: 10,       // the biggest load a single job ever has
   crashCost: 9,         // per (impact share)^2 per unit of mass
   towFee: 3,            // for a car that got lost and had to be fetched
   redFine: 2,
   minCars: 24,          // below this, immigrants arrive
   maxCars: 120,         // a hard ceiling for the sake of the frame rate
-  demand: 1.2,          // paid fares per second at a demand factor of 1 (a day averages 0.69)
+  demand: 1.0,          // passenger fares per second at a demand factor of 1 (a day averages 0.69)
+  freightDemand: 0.25,  // freight jobs per second during business hours
   fareQueue: 20,        // fares waiting beyond this go to another firm
   wearDist: 40000,      // upkeep doubles every this many units on the odometer
 };
@@ -37,6 +39,12 @@ export const ECON = {
 // One city day is 24 minutes of simulation, a minute per hour. Demand has a
 // morning and an evening peak and a quiet night.
 export const DAY = 24 * 60;
+// Passenger demand follows commuting; freight moves in business hours, flat from 7 to 19, and barely at night.
+export function freightAt(t) {
+  const h = ((t / 60) % 24 + 24) % 24;
+  return h >= 7 && h < 19 ? 1 : 0.15;
+}
+
 export function demandAt(t) {
   const h = ((t / 60) % 24 + 24) % 24;
   const peak = (c, w) => Math.exp(-(((h - c) / w) ** 2));
@@ -65,9 +73,11 @@ export class EcoWorld {
     this.nextId = 0;
     this.species = [];          // { id, brain, body, size, born }
     this.nextSpecies = 0;
+    this.threshold = 0.8;       // nudged so the number of species stays readable
     this.log = [];              // telemetry rows
-    this.events = { births: 0, deaths: 0, immigrants: 0, trips: 0, crashes: 0, carCrashes: 0, earned: 0, deadheads: 0 };
-    this.queue = ECON.fareQueue / 2;   // paid fares waiting for a car
+    this.events = { births: 0, deaths: 0, immigrants: 0, trips: 0, crashes: 0, carCrashes: 0, earned: 0, deadheads: 0, freight: 0 };
+    this.passengers = ECON.fareQueue / 2;  // fares waiting for a car
+    this.freight = ECON.fareQueue / 2;     // loads waiting for a vehicle with room
     for (let i = 0; i < startCars; i++) this.immigrate();
   }
 
@@ -93,7 +103,7 @@ export class EcoWorld {
     } else {
       const base = this.founders ? this.rng.pick(this.founders).clone() : Genome.initial(N_INPUTS, N_OUTPUTS, this.innov, this.rng);
       brain = mutate(base, this.innov, this.rng, this.cfg);
-      body = Body.stock(this.rng);
+      body = this.rng.next() < 0.5 ? Body.stock(this.rng) : Body.random(this.rng);
     }
     this.events.immigrants++;
     return this.spawn(brain, body, ECON.startCash, null);
@@ -134,23 +144,27 @@ export class EcoWorld {
     return d;
   }
 
-  // Every trip is a passenger plus whatever freight fits. The passenger pays
-  // by distance and tips for speed; the freight pays by distance and load and
-  // does not care how long it takes. Small and fast and big and slow are both
-  // ways to make a living, and neither is coded as a job.
-  //
-  // Only if there is a fare waiting, though. Otherwise the car drives to
-  // wherever it was sent for nothing, burning fuel: more cars than the city
-  // has work for means everyone earns less.
+  // Two markets, each with its own limited demand. Passengers pay by
+  // distance and tip for a quick ride. Freight pays by distance and load,
+  // does not care how long it takes, and only goes in a vehicle with room for
+  // it. A car takes freight when it has the room and a load is waiting, a
+  // passenger otherwise, and if neither is waiting it drives where it was
+  // sent for nothing. Because each market is finite, the more cars chase one
+  // of them the less each earns there: taxis and trucks can both make a
+  // living, and neither is written down anywhere as a job.
   newJob(d, first = false) {
-    const want = this.rng.range(0, ECON.freightMax);
-    // a new car's first drive is to its first pickup and uses no fare
-    const paid = !first && this.queue >= 1;
-    if (paid) this.queue--;
-    else if (!first) this.events.deadheads++;
+    let kind = null, load = 0;
+    if (!first) {
+      // take whichever waiting job pays this vehicle more per unit of route
+      const fLoad = Math.min(d.body.capacity, ECON.freightMax);
+      const fPay = d.body.capacity >= ECON.freightMin && this.freight >= 1 ? ECON.freightRate * fLoad : 0;
+      const pPay = this.passengers >= 1 ? ECON.passengerRate * (1 + ECON.speedBonus / 2) : 0;
+      if (fPay > pPay) { kind = "freight"; load = fLoad; this.freight--; }
+      else if (pPay > 0) { kind = "passenger"; this.passengers--; }
+      else this.events.deadheads++;
+    }
     d.job = {
-      paid,
-      load: Math.min(want, d.body.capacity),
+      kind, load,
       start: this.tick,
       // how long a trip of this length takes at a sensible pace
       expect: d.routeLen / 45 / DT,
@@ -159,10 +173,16 @@ export class EcoWorld {
 
   pay(d) {
     const j = d.job, dist = d.routeLen;
-    if (!j.paid) return;
-    const took = Math.max(1, this.tick - j.start);
-    const quick = Math.max(0, Math.min(1, j.expect / took - 0.5));
-    const fare = dist * ECON.passengerRate * (1 + ECON.speedBonus * quick) + dist * ECON.freightRate * j.load;
+    if (!j.kind) return;
+    let fare;
+    if (j.kind === "freight") {
+      fare = dist * ECON.freightRate * j.load;
+      this.events.freight++;
+    } else {
+      const took = Math.max(1, this.tick - j.start);
+      const quick = Math.max(0, Math.min(1, j.expect / took - 0.5));
+      fare = dist * ECON.passengerRate * (1 + ECON.speedBonus * quick);
+    }
     d.cash += fare;
     d.earned += fare;
     this.events.trips++;
@@ -172,7 +192,8 @@ export class EcoWorld {
   step() {
     const c = this.city;
     c.time = this.tick * DT;
-    this.queue = Math.min(ECON.fareQueue, this.queue + ECON.demand * demandAt(c.time) * DT);
+    this.passengers = Math.min(ECON.fareQueue, this.passengers + ECON.demand * demandAt(c.time) * DT);
+    this.freight = Math.min(ECON.fareQueue, this.freight + ECON.freightDemand * freightAt(c.time) * DT);
     this.hash.rebuild(this.cars);
     for (const d of this.cars) {
       const reds = d.redRuns;
@@ -240,10 +261,10 @@ export class EcoWorld {
     for (const d of this.cars) {
       let home = null, best = Infinity;
       for (const s of this.species) {
-        const dd = distance(d.genome, s.brain, this.cfg) + 6 * d.body.distance(s.body);
+        const dd = distance(d.genome, s.brain, this.cfg) + 8 * d.body.distance(s.body);
         if (dd < best) { best = dd; home = s; }
       }
-      if (!home || best > 3.0) {
+      if (!home || best > this.threshold) {
         home = { id: this.nextSpecies++, brain: d.genome.clone(), body: d.body, born: this.tick };
         this.species.push(home);
       }
@@ -252,6 +273,8 @@ export class EcoWorld {
     }
     this.species = this.species.filter((s) => counts.has(s.id));
     for (const s of this.species) s.size = counts.get(s.id);
+    if (this.species.length < 4) this.threshold = Math.max(0.1, this.threshold * 0.95);
+    else if (this.species.length > 9) this.threshold *= 1.05;
   }
 
   record() {
@@ -268,7 +291,7 @@ export class EcoWorld {
       traits,
       species: this.species.map((s) => [s.id, s.size]),
     });
-    this.events = { births: 0, deaths: 0, immigrants: 0, trips: 0, crashes: 0, carCrashes: 0, earned: 0, deadheads: 0 };
+    this.events = { births: 0, deaths: 0, immigrants: 0, trips: 0, crashes: 0, carCrashes: 0, earned: 0, deadheads: 0, freight: 0 };
   }
 
   richest() {
