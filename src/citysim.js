@@ -20,7 +20,7 @@ const spark = $("spark"), sctx = spark.getContext("2d");
 const senses = $("senses");
 
 let world, running = true, speed = 1, showRays = true, showAll = true, follow = false;
-let pending = 0, selected = null;
+let pending = 0, selected = null, director = false, nextCut = 0;
 let traffic = false, density = 40, heatMode = 0, control = "none", size = "small", graph = null;
 const HEAT_MODES = ["off", "crashes", "congestion"];
 const cam = { x: 0, y: 0, k: 1, fitted: false };
@@ -53,7 +53,24 @@ function reset(seed) {
 
 
 
+// The director picks whichever car has the most traffic around it, follows
+// it for a few seconds, then cuts to the next. It is the easiest way to see
+// what the drivers actually do when they meet.
+function directorCut(now) {
+  if (!director || now < nextCut) return;
+  nextCut = now + 6000;
+  let best = null, bn = -1;
+  for (const d of world.cars) {
+    if (!d.alive || d.towing) continue;
+    let n = 0;
+    for (const o of world.cars) if (o !== d && o.alive && Math.abs(o.x - d.x) < 70 && Math.abs(o.y - d.y) < 70) n++;
+    if (n > bn) { bn = n; best = d; }
+  }
+  if (best) { selected = best; follow = true; cam.k = Math.max(cam.k, 3); }
+}
+
 function draw() {
+  directorCut(performance.now());
   if (!cam.fitted) fitCam();
   const focus = selected && selected.alive ? selected : world.leader();
   if (follow && focus) { cam.x += (focus.x - cam.x) * 0.15; cam.y += (focus.y - cam.y) * 0.15; }
@@ -153,6 +170,12 @@ $("replay").onclick = () => {
   world = CityWorld.fromJSON(JSON.parse(JSON.stringify(world)));
   selected = keep >= 0 ? world.cars[keep] : null;
   pending = 0;
+};
+$("director").onclick = (e) => {
+  director = !director;
+  e.target.dataset.on = director;
+  nextCut = 0;
+  if (!director) { follow = false; $("follow").dataset.on = false; selected = null; }
 };
 $("play").onclick = (e) => { running = !running; e.target.textContent = running ? "Pause" : "Play"; };
 $("skip").onclick = () => { pending += 1; };
