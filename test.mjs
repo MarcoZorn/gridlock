@@ -128,4 +128,17 @@ import { CityWorld } from "./src/cityworld.js";
   console.log("ok  drivers learn routes");
 }
 
+// a saved world resumes into exactly the same future
+{
+  const a = new CityWorld({ seed: 5, popSize: 40, ticks: 600 });
+  for (let i = 0; i < 4; i++) a.runGeneration();
+  const b = CityWorld.fromJSON(JSON.parse(JSON.stringify(a)));
+  a.newGeneration(); // b restarted its generation, so restart a's too
+  for (let i = 0; i < 3; i++) {
+    const ra = a.runGeneration(), rb = b.runGeneration();
+    assert(Math.abs(ra.best - rb.best) < 1e-6 * Math.max(1, ra.best) && ra.trips === rb.trips, "resumed world must match the original");
+  }
+  console.log("ok  save and resume is exact");
+}
+
 console.log("\nall checks passed");
