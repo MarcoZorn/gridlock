@@ -238,6 +238,9 @@ function draw() {
   $("cars").textContent = world.cars.length;
   $("queues").textContent = `${Math.floor(world.passengers)} / ${Math.floor(world.freight)}`;
   $("bd").textContent = last.length ? `${sum("births")} / ${sum("deaths")}` : "-";
+  // per car on the road, so a growing city does not look like a careless one
+  const carHours = last.reduce((a, r) => a + r.cars, 0) / 6;
+  $("crashRate").textContent = carHours ? `${(sum("crashes") / carHours).toFixed(1)} / ${(sum("trips") / carHours).toFixed(1)}` : "-";
   $("cash").textContent = (world.cars.reduce((a, d) => a + d.cash, 0) / Math.max(1, world.cars.length)).toFixed(1);
   $("maxgen").textContent = Math.max(0, ...world.cars.map((d) => d.generation));
   $("nspecies").textContent = world.species.length;
