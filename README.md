@@ -157,6 +157,24 @@ the code decides which way traffic should flow.
    delivers signals on the event loop, and a simulation loop never yields to
    it. It now yields once a generation.
 
+**The price of a red light.** With the four-second bug fixed, drivers under
+lights still ran about 2.4 reds each per generation. That turned out to be
+rational: the fine was cheaper than the wait. Starting from the same
+lights-trained checkpoint, 100 generations at three fine levels:
+
+| fine (damage-equivalent) | reds run / car | waiting in junctions | trips / car | car-on-car crashes, 10 gens |
+|---|---|---|---|---|
+| 0.2 | 2.44 | 6.4% | 0.68 | 1858 |
+| 0.6 | 0.97 | 12.1% | 0.36 | |
+| 1.5 | 0.73 | 12.4% | 0.27 | 681 |
+
+Fines work on behaviour within a hundred generations, and collisions between
+cars fall by almost two thirds. The price is throughput: a city that waits at
+its lights moves a third as many people. Crashes per km actually rose, but only
+because the km fell faster; I suspected cars that stop being rear-ended by cars
+that do not, and the collision mix says otherwise (rear-ending a stopped car is
+16% of collisions at the low fine and 19% at the high one).
+
 ### Week 3: no fitness function
 
 `EcoWorld` takes the score away. Every car has a wallet. Passengers pay by
