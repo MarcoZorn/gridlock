@@ -7,7 +7,6 @@ import { SpatialHash } from "./spatial.js";
 export const DT = 1 / 60;
 // One world unit is 0.4 m: a car is 4 m long and a lane 3.6 m wide.
 export const M_PER_UNIT = 0.4;
-const HEAT_CELL = 12;
 const DAMAGE_RAMP = 100;
 
 export class CityWorld {
@@ -81,26 +80,11 @@ export class CityWorld {
     return c.route(from, to, cameFrom);
   }
 
-  // Heatmaps live on the city, not the generation, so they build up over
-  // every generation that drives there and show where trouble keeps happening.
-  heatOf(city) {
-    if (!city.heat) {
-      const w = Math.ceil(city.w / HEAT_CELL), h = Math.ceil(city.h / HEAT_CELL);
-      city.heat = { w, h, cell: HEAT_CELL, crash: new Float32Array(w * h), slow: new Float32Array(w * h) };
-    }
-    return city.heat;
-  }
-
-  heatAdd(grid, x, y, v) {
-    const h = this.heat, gx = (x / h.cell) | 0, gy = (y / h.cell) | 0;
-    if (gx >= 0 && gy >= 0 && gx < h.w && gy < h.h) grid[gy * h.w + gx] += v;
-  }
-
   newGeneration() {
     this.genRng = this.rng.s;   // a save restarts this generation exactly
     this.city = this.cities[this.pop.generation % this.cities.length];
     this.city.control = this.control;
-    this.heat = this.heatOf(this.city);
+    this.heat = this.city.heatGrid();   // heatmaps build up over every generation in a city
     this.hash = new SpatialHash(this.city.w, this.city.h);
     this.finished = [];
     this.wave = 0;
@@ -153,7 +137,7 @@ export class CityWorld {
   }
 
   wireCars() {
-    for (const d of this.cars) d.onCrash = (c) => this.heatAdd(this.heat.crash, c.x, c.y, 1);
+    for (const d of this.cars) d.onCrash = (c) => this.city.addHeat("crash", c.x, c.y);
   }
 
   collide() {
@@ -211,7 +195,7 @@ export class CityWorld {
       c.step(DT, hash);
       if (c.alive) {
         alive++;
-        if (c.solid && Math.abs(c.v) < 15) this.heatAdd(this.heat.slow, c.x, c.y, 1);
+        if (c.solid && Math.abs(c.v) < 15) this.city.addHeat("slow", c.x, c.y);
         if (sample && c.solid && c.v > 20 && this.city.junctionAt(c.x, c.y) < 0) this.sampleSide(c);
       }
     }

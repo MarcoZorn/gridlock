@@ -241,6 +241,7 @@ export class City {
   // (a segment with round ends), so junctions fill themselves in for free.
   bake() {
     this.version = (this.version || 0) + 1;   // anything cached from the old layout is stale
+    this.heat = null;
     this.gw = Math.ceil(this.w / CELL);
     this.gh = Math.ceil(this.h / CELL);
     this.mask = new Uint8Array(this.gw * this.gh);
@@ -321,6 +322,22 @@ export class City {
       if (e) this.load[e.id] += 1;
     }
     for (const e of this.edges) this.load[e.id] /= Math.max(1, (e.len / 30) * e.lanes);
+  }
+
+  // Where things happen, accumulated over everything that drives here: a
+  // coarse grid per kind ("crash", "slow"). Rebuilt with the layout, so a
+  // grown or edited city starts a fresh map.
+  heatGrid() {
+    if (!this.heat) {
+      const cell = 12, w = Math.ceil(this.w / cell), h = Math.ceil(this.h / cell);
+      this.heat = { w, h, cell, crash: new Float32Array(w * h), slow: new Float32Array(w * h) };
+    }
+    return this.heat;
+  }
+
+  addHeat(kind, x, y, v = 1) {
+    const h = this.heatGrid(), gx = (x / h.cell) | 0, gy = (y / h.cell) | 0;
+    if (gx >= 0 && gy >= 0 && gx < h.w && gy < h.h) h[kind][gy * h.w + gx] += v;
   }
 
   // Which junction apron a point is in, or -1.
