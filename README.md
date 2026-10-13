@@ -227,8 +227,8 @@ learn to wait. The shipped drivers, 300 more generations with `wrecks=1`
 
 They do wait more, a quarter more, where the control does not move at all.
 It is small, one run each, and both runs drift down in trips (the shipped
-drivers were raised under older settings), but it is the first time anything
-other than a traffic-light fine has moved waiting. (The conflict and
+drivers were raised under older settings), so it is a hint, not a result.
+(The conflict and
 car-on-car counters are no use here: a wreck in a junction counts as an
 unresolved conflict, and touching one counts as a collision every tick.)
 (`node tools/fundamental.mjs 480` for any row.)
