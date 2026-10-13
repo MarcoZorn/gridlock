@@ -83,6 +83,9 @@ node tools/osm.mjs extract.json maps/name.json "Place"   # an OpenStreetMap extr
   Manhattan with their real arrows carry a sixth to a fifth fewer fares than
   the same streets two-way, and are no safer: a fare across the block has to
   go round it.
+- **A congestion charge prices cars out, it does not teach detours.** Half
+  the fleet goes, the rest drive faster and safer, and the city moves a
+  quarter fewer people; the gene for avoiding busy roads never moves.
 - **Cars and pedestrians cycle.** Once both populations can replace
   themselves they oscillate like predator and prey.
 - **Fitness sharing costs here.** Without it drivers were half as fit
