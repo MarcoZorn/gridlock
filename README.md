@@ -189,6 +189,8 @@ upkeep.
    earns nothing extra. Half the founders now get random bodies, so the
    options exist and the economy picks.
 
+![Morning rush in the ecosystem, cars coloured by species, the richest car's route in blue](docs/eco.gif)
+
 **What came out:** a city whose population follows the clock, from about 24
 cars at night to 60-70 in the evening rush. In the runs with vans, they rise
 to about twenty during business hours and collapse to one or two at night,
