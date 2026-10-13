@@ -36,6 +36,7 @@ export const ECON = {
   freightDemand: 0.25,  // freight jobs per second during business hours
   fareQueue: 20,        // fares waiting beyond this go to another firm
   wearDist: 40000,      // upkeep doubles every this many units on the odometer
+  congestion: 0,        // a charge per second, times how full the road you are on is (an experiment, off)
 };
 
 // One city day is 24 minutes of simulation, a minute per hour. Demand has a
@@ -233,6 +234,10 @@ export class EcoWorld {
       // grows with the odometer, so every car wears out in the end
       const wear = 1 + d.dist / ECON.wearDist;
       d.cash -= d.body.upkeep * wear * DT + d.body.fuel * Math.abs(d.v) * DT;
+      if (ECON.congestion && c.load) {
+        const e = c.edgeBetween(d.route[d.seg], d.route[d.seg + 1]);
+        if (e) d.cash -= ECON.congestion * c.load[e.id] * DT;
+      }
       if (d.solid && Math.abs(d.v) < 15) c.addHeat("slow", d.x, d.y);
       if (!d.alive && d.lost) {
         // fetched and dropped somewhere new, at a price
