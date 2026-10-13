@@ -120,6 +120,21 @@ export class City {
         }
       }
     }
+    // Junctions get a wider apron than the roads that meet there, the way real
+    // corners are rounded off. Without it a turn has to fit inside the overlap
+    // of two road ends, which means crawling, and evolution almost never finds
+    // a brain that brakes that hard before it has learned to turn at all.
+    for (const n of this.nodes) {
+      const r = Math.max(...n.edges.map((e) => e.hw)) * 1.9;
+      const x0 = Math.max(0, Math.floor((n.x - r) / CELL)), x1 = Math.min(this.gw - 1, Math.ceil((n.x + r) / CELL));
+      const y0 = Math.max(0, Math.floor((n.y - r) / CELL)), y1 = Math.min(this.gh - 1, Math.ceil((n.y + r) / CELL));
+      for (let gy = y0; gy <= y1; gy++) {
+        for (let gx = x0; gx <= x1; gx++) {
+          if (Math.hypot((gx + 0.5) * CELL - n.x, (gy + 0.5) * CELL - n.y) <= r) this.mask[gy * this.gw + gx] = 1;
+        }
+      }
+      n.r = r;
+    }
   }
 
   contains(x, y) {
@@ -137,8 +152,20 @@ export class City {
   // goal comes off the open set the path is optimal. A binary heap would win
   // past a few thousand nodes; at fifty, a linear scan is faster to read.
   // ponytail: O(n) open-set scan, swap for a heap if cities grow past ~2k nodes.
-  route(from, to) {
+  //
+  // `cameFrom` is the junction the car just drove in from. Leaving by the same
+  // road is a U-turn, which no car can make inside a junction, so the first
+  // step may not go back there unless there is no other way out.
+  route(from, to, cameFrom = -1) {
     if (from === to) return [from];
+    if (cameFrom >= 0 && this.nodes[from].edges.length > 1) {
+      const p = this.routeAvoiding(from, to, cameFrom);
+      if (p) return p;
+    }
+    return this.routeAvoiding(from, to, -1);
+  }
+
+  routeAvoiding(from, to, ban) {
     const n = this.nodes.length, goal = this.nodes[to];
     const g = new Float64Array(n).fill(Infinity);
     const f = new Float64Array(n).fill(Infinity);
@@ -157,6 +184,7 @@ export class City {
       open.delete(cur);
       for (const e of this.nodes[cur].edges) {
         const m = this.other(e, cur);
+        if (cur === from && m === ban) continue;
         const t = g[cur] + e.len;
         if (t < g[m]) {
           g[m] = t;
