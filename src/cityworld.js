@@ -105,6 +105,8 @@ export class CityWorld {
     this.cars.forEach((d, i) => (d.id = i));
     this.carCrashes = 0;
     this.side = { sum: 0, abs: 0, n: 0 };
+    this.conflicts = new Set();     // crossing pairs met inside a junction
+    this.conflictCrashes = 0;       // ...of which ended in a collision
     this.wireCars();
     this.tick = 0;
     this.done = false;
@@ -133,7 +135,34 @@ export class CityWorld {
   }
 
   collide() {
-    this.carCrashes += collideCars(this.cars, this.hash, this.onCarCrash);
+    this.carCrashes += collideCars(this.cars, this.hash, (a, b) => {
+      if (this.onCarCrash) this.onCarCrash(a, b);
+      if (crossing(a, b) && this.city.junctionAt(a.x, a.y) >= 0) this.conflictCrashes++;
+    });
+  }
+
+  // Right of way, measured: two cars in the same junction at the same time on
+  // crossing paths is a conflict. Each pair counts once per junction per
+  // generation, however long they share it. The share of conflicts that end
+  // without a collision is how well the population has worked out who goes.
+  junctionConflicts() {
+    const by = new Map();
+    for (const c of this.cars) {
+      if (!c.solid) continue;
+      const j = this.city.junctionAt(c.x, c.y);
+      if (j < 0) continue;
+      if (!by.has(j)) by.set(j, []);
+      by.get(j).push(c);
+    }
+    for (const [j, cs] of by) {
+      for (let i = 0; i < cs.length; i++) {
+        for (let k = i + 1; k < cs.length; k++) {
+          if (!crossing(cs[i], cs[k])) continue;
+          const a = Math.min(cs[i].id, cs[k].id), b = Math.max(cs[i].id, cs[k].id);
+          this.conflicts.add(`${this.wave}:${a}:${b}:${j}`);
+        }
+      }
+    }
   }
 
   step() {
@@ -151,7 +180,10 @@ export class CityWorld {
         if (sample && c.solid && c.v > 20 && this.city.junctionAt(c.x, c.y) < 0) this.sampleSide(c);
       }
     }
-    if (this.traffic) this.collide();
+    if (this.traffic) {
+      this.collide();
+      if (this.tick % 3 === 0) this.junctionConflicts();
+    }
     this.tick++;
     if (alive === 0 || this.tick >= this.ticksPerGen) {
       if (this.traffic && this.wave + 1 < this.waves) {
@@ -222,6 +254,9 @@ export class CityWorld {
       crashesPerKm: km ? crashes / km : 0,
       waitShare: ticks ? wait / ticks : 0,                // share of time stopped in junctions
       side: this.side.n ? this.side.sum / this.side.n : 0, // mean lateral offset, + is right
+      conflicts: this.conflicts.size,
+      conflictCrashes: this.conflictCrashes,
+      yielded: this.conflicts.size ? 1 - Math.min(1, this.conflictCrashes / this.conflicts.size) : null,
       offCentre: this.side.n ? this.side.abs / this.side.n : 0,
     };
   }
@@ -263,6 +298,12 @@ export class CityWorld {
 // Cars are two discs each, front and back, of the car's width. One disc of
 // the car's length would make two cars side by side in neighbouring lanes
 // touch, which is exactly the situation that must be survivable.
+// Two cars on crossing paths: headings between 40 and 140 degrees apart.
+function crossing(a, b) {
+  const d = Math.abs(Math.atan2(Math.sin(a.a - b.a), Math.cos(a.a - b.a)));
+  return d > 0.7 && d < 2.44;
+}
+
 // Returns how many collisions there were. Cars need distinct `id`s.
 export function collideCars(cars, h, onCarCrash) {
   let n = 0;

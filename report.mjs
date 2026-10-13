@@ -31,6 +31,7 @@ const METRICS = [
   ["mean trip time (s)", (r) => r.tripTime],
   ["waiting in junctions (%)", (r) => r.waitShare * 100],
   ["keeps to (right +)", (r) => r.side],
+  ["junction conflicts resolved (%)", (r) => (r.yielded === undefined || r.yielded === null ? null : r.yielded * 100)],
   ["red lights run / car", (r) => (r.control === "lights" ? r.redRuns / POP : null)],
 ];
 
