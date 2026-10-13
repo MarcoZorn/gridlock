@@ -266,4 +266,19 @@ import { Crowd, PED } from "./src/pedestrians.js";
   console.log("ok  pedestrians wait at the kerb, cross, and save");
 }
 
+{
+  // a square block with one side one-way: going back against the arrow
+  // means going round the other three sides
+  const graph = { name: "block", nodes: [[40, 40], [240, 40], [240, 240], [40, 240]], edges: [[0, 1, 1, 1], [1, 2, 1], [2, 3, 1], [3, 0, 1]] };
+  const c = new City(1, { graph });
+  assert(c.route(0, 1).join() === "0,1", "with the arrow, straight there");
+  assert(c.route(1, 0).join() === "1,2,3,0", "against the arrow, round the block");
+  const turin = new City(1, { graph: JSON.parse(fs.readFileSync("maps/turin.json", "utf8")) });
+  for (let i = 0; i < 200; i++) {
+    const a = (i * 37) % turin.nodes.length, b = (i * 101 + 7) % turin.nodes.length;
+    assert(turin.route(a, b), "every Turin junction reaches every other, obeying the arrows");
+  }
+  console.log("ok  one-way streets are only driven one way, and trap no one");
+}
+
 console.log("\nall checks passed");
