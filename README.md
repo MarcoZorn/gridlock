@@ -638,6 +638,28 @@ them into a few long corridors, they mostly crash into the one in front. Nothing
 the economy pays a car to keep its distance except the repair bill, and the
 repair bill is not enough.
 
+So I made it bigger. Six days on Turin from the same founders, two seeds,
+with the crash bill at its default and at three times that
+(`node headless.mjs --eco --map turin --econ crashCost=27`):
+
+| repair bill | cars, days 3-6 | trips a day | crashes per car per day | `brakes` gene |
+|---|---|---|---|---|
+| default | 222 / 232 | 2770 / 2954 | 197 / 201 | 0.56 / 0.45 |
+| tripled | 112 / 164 | 1901 / 2492 | 161 / 144 | 0.63 / 0.50 |
+
+Fewer crashes per car, a little more brake in the genes, but the city also
+lost a third to a half of its cars, and fewer cars on the same streets crash
+less whatever their brains are like. Comparing only stretches with the same
+number of cars on the road, the difference goes away: one seed crashes less
+than the default economy, the other more. A dearer repair bill buys a
+smaller city, not a more careful one.
+
+What does make them more careful is time. In the default economy, at the same
+number of cars, a car crashes about a quarter less often in days four to six
+than in the first two (1.36 and 1.26 crashes per car per ten minutes with
+100-150 cars on the road, down to 1.01 and 0.99). Every crash is paid for in
+cash, and the ones who pay least are the ones who get to have children.
+
 ## Files
 
 | file | what is in it |
