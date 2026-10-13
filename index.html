@@ -81,6 +81,8 @@
       <div class="row"><span>crashes per km</span><span id="sCpk">-</span></div>
       <div class="row"><span>car-on-car crashes</span><span id="sCar">-</span></div>
       <div class="row"><span>time waiting in junctions</span><span id="sWait">-</span></div>
+      <div class="row"><span>red lights run</span><span id="sRed">-</span></div>
+      <div class="row"><span>keeps to (right +)</span><span id="sSide">-</span></div>
       <div class="legend" id="sNote">last finished generation</div>
     </div>
 
@@ -121,6 +123,10 @@
         <button data-density="20">20</button>
         <button data-density="40" data-on="true">40</button>
         <button data-density="120">120</button>
+      </div>
+      <div class="controls">
+        <button data-control="none" data-on="true">No signals</button>
+        <button data-control="lights">Traffic lights</button>
       </div>
       <div class="controls">
         <button id="heat" data-on="false">Heatmap: off</button>

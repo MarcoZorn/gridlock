@@ -14,7 +14,7 @@ const senses = $("senses"), nctx = senses.getContext("2d");
 
 let world, running = true, speed = 1, showRays = true, showAll = true, follow = false;
 let pending = 0, selected = null;
-let traffic = false, density = 40, heatMode = 0;
+let traffic = false, density = 40, heatMode = 0, control = "none";
 const HEAT_MODES = ["off", "crashes", "congestion"];
 const cam = { x: 0, y: 0, k: 1, fitted: false };
 
@@ -43,7 +43,7 @@ function fitCam() {
 }
 
 function reset(seed) {
-  world = new CityWorld({ seed, popSize: 120, traffic, density });
+  world = new CityWorld({ seed, popSize: 120, traffic, density, control });
   selected = null;
   cam.fitted = false;
   $("seed").textContent = seed;
@@ -140,19 +140,41 @@ function drawSenses(d) {
     nctx.fillStyle = "#8b93a7";
     nctx.fillText(label, x0 + 4, top + barH + 6);
   });
-  const route = ["spd", "hdg", "lat", "jct", "trn"];
-  for (let i = 0; i < 5; i++) {
+  const route = ["spd", "hdg", "lat", "jct", "trn", "sig"];
+  for (let i = 0; i < 6; i++) {
     const v = d.inputs[15 + i];
-    const bw = colW / 6, x = 3 * colW + 4 + i * (bw + 1);
+    const bw = colW / 7, x = 3 * colW + 4 + i * (bw + 1);
     nctx.fillStyle = "#232733";
     nctx.fillRect(x, top, bw, barH);
     nctx.fillStyle = "#e8c46a";
     const mid = top + barH / 2, hgt = Math.max(-1, Math.min(1, v)) * barH / 2;
-    if (i === 0 || i >= 3) nctx.fillRect(x, top + barH - Math.abs(v) * barH, bw, Math.abs(v) * barH);
+    if (i === 5) { nctx.fillStyle = v > 0 ? "#5ac8a0" : "#e86e64"; nctx.fillRect(x, top + barH / 2 - 4, bw, v ? 8 : 0); }
+    else if (i === 0 || i >= 3) nctx.fillRect(x, top + barH - Math.abs(v) * barH, bw, Math.abs(v) * barH);
     else nctx.fillRect(x, hgt > 0 ? mid - hgt : mid, bw, Math.abs(hgt));
   }
   nctx.fillStyle = "#8b93a7";
   nctx.fillText("route", 3 * colW + 4, top + barH + 6);
+}
+
+// A light is a short bar across each road where it meets the junction apron.
+function drawLights(c, k) {
+  if (c.control !== "lights") return;
+  vctx.lineWidth = 3 / k;
+  vctx.lineCap = "butt";
+  for (const n of c.nodes) {
+    if (!n.light) continue;
+    for (const e of n.edges) {
+      const m = c.other(e, n.id), o = c.nodes[m];
+      const len = Math.hypot(o.x - n.x, o.y - n.y);
+      const ux = (o.x - n.x) / len, uy = (o.y - n.y) / len;
+      const cx = n.x + ux * n.r, cy = n.y + uy * n.r;
+      vctx.strokeStyle = c.green(n.id, m) ? "#5ac8a0" : "#e86e64";
+      vctx.beginPath();
+      vctx.moveTo(cx - uy * e.hw, cy + ux * e.hw);
+      vctx.lineTo(cx + uy * e.hw, cy - ux * e.hw);
+      vctx.stroke();
+    }
+  }
 }
 
 function drawRoute(d, k) {
@@ -213,6 +235,7 @@ function draw() {
 
   drawCity(world.city, k);
   if (heatMode) drawHeat();
+  drawLights(world.city, k);
   if (focus) drawRoute(focus, k);
   if (showAll) {
     for (const d of world.cars) {
@@ -249,7 +272,9 @@ function draw() {
     $("sCpk").textContent = last.crashesPerKm.toFixed(1);
     $("sCar").textContent = last.carCrashes;
     $("sWait").textContent = `${(last.waitShare * 100).toFixed(1)}%`;
-    $("sNote").textContent = `generation ${last.gen}, ${last.traffic ? `traffic, ${last.density} at once` : "ghosts, no traffic"}`;
+    $("sRed").textContent = last.control === "lights" ? last.redRuns : "-";
+    $("sSide").textContent = last.side.toFixed(2);
+    $("sNote").textContent = `generation ${last.gen}, ${last.traffic ? `traffic, ${last.density} at once` : "ghosts, no traffic"}${last.control === "lights" ? ", lights" : ""}`;
   }
   $("brainTitle").textContent = selected ? "Selected car's brain" : "Leader's brain";
   const cx = focus ? focus.genome.complexity() : null;
@@ -330,6 +355,15 @@ for (const b of document.querySelectorAll("[data-density]")) {
     document.querySelectorAll("[data-density]").forEach((x) => (x.dataset.on = x === b));
     world.density = density;
     if (world.traffic) { selected = null; world.newGeneration(); }
+  };
+}
+for (const b of document.querySelectorAll("[data-control]")) {
+  b.onclick = () => {
+    control = b.dataset.control;
+    document.querySelectorAll("[data-control]").forEach((x) => (x.dataset.on = x === b));
+    world.control = control;
+    selected = null;
+    world.newGeneration();
   };
 }
 $("heat").onclick = (e) => {
