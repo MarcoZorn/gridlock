@@ -60,6 +60,10 @@ export function demandAt(t) {
 
 const SPECIES_EVERY = 600;   // ticks between speciation passes
 
+// What happened since the last telemetry row. `sideAll` / `sideRight`:
+// sampled cars on two-way roads, and how many of them right of the middle.
+const freshEvents = () => ({ births: 0, deaths: 0, immigrants: 0, trips: 0, crashes: 0, carCrashes: 0, earned: 0, deadheads: 0, freight: 0, tripTicks: 0, pedHits: 0, sideAll: 0, sideRight: 0 });
+
 export class EcoWorld {
   // `founders` is a Population from the generation-based city: a no-fitness
   // world cannot start from random brains, because a car that cannot finish
@@ -90,7 +94,7 @@ export class EcoWorld {
     this.threshold = 0.8;       // nudged so the number of species stays readable
     this.ancestry = new Map();  // id -> { parent, born, died, generation, species, children }
     this.log = [];              // telemetry rows
-    this.events = { births: 0, deaths: 0, immigrants: 0, trips: 0, crashes: 0, carCrashes: 0, earned: 0, deadheads: 0, freight: 0, tripTicks: 0, pedHits: 0 };
+    this.events = freshEvents();
     this.crowd = pedestrians ? new Crowd(this.city, new Rng(seed * 7 + 1), pedestrians) : null;
     this.passengers = ECON.fareQueue / 2;  // fares waiting for a car
     this.freight = ECON.fareQueue / 2;     // loads waiting for a vehicle with room
@@ -212,6 +216,7 @@ export class EcoWorld {
   step() {
     const c = this.city;
     c.time = this.tick * DT;
+    if (this.tick % 30 === 0) this.sampleSide();
     const scale = this.scale;
     this.passengers = Math.min(ECON.fareQueue * scale, this.passengers + ECON.demand * scale * demandAt(c.time) * DT);
     this.freight = Math.min(ECON.fareQueue * scale, this.freight + ECON.freightDemand * scale * freightAt(c.time) * DT);
@@ -312,6 +317,19 @@ export class EcoWorld {
     else if (this.species.length > 9) this.threshold *= 1.05;
   }
 
+  // Which side of the road the city keeps to, if any. Nothing in the code
+  // prefers one; with enough traffic one wins within days.
+  sampleSide() {
+    const c = this.city;
+    for (const d of this.cars) {
+      if (!d.solid || d.seg + 1 >= d.route.length) continue;
+      const e = c.edgeBetween(d.route[d.seg], d.route[d.seg + 1]);
+      if (!e || e.oneway || c.junctionAt(d.x, d.y) >= 0) continue;
+      this.events.sideAll++;
+      if (d.frame().lateral > 0) this.events.sideRight++;
+    }
+  }
+
   record() {
     const n = this.cars.length || 1;
     const traits = {};
@@ -328,7 +346,7 @@ export class EcoWorld {
       ...(this.crowd ? { people: this.crowd.people.length, ped: { ...this.crowd.events } } : {}),
     });
     if (this.crowd) this.crowd.events = { crossings: 0, hit: 0, starved: 0, born: 0 };
-    this.events = { births: 0, deaths: 0, immigrants: 0, trips: 0, crashes: 0, carCrashes: 0, earned: 0, deadheads: 0, freight: 0, tripTicks: 0, pedHits: 0 };
+    this.events = freshEvents();
   }
 
   // Ancestry is only kept for cars someone alive descends from; everything
@@ -429,7 +447,7 @@ export class EcoWorld {
     w.passengers = j.passengers; w.freight = j.freight;
     w.founders = j.founders ? j.founders.map((g) => Genome.fromJSON(g)) : null;
     w.cars = [];
-    w.events = { births: 0, deaths: 0, immigrants: 0, trips: 0, crashes: 0, carCrashes: 0, earned: 0, deadheads: 0, freight: 0, tripTicks: 0, pedHits: 0 };
+    w.events = freshEvents();
     for (const c of j.cars) {
       const d = w.spawn(Genome.fromJSON(c.brain), Body.fromJSON(c.body), c.cash, null);
       Object.assign(d, { id: c.id, born: c.born, parent: c.parent, generation: c.generation, children: c.children, earned: c.earned, species: c.species, dist: c.dist });
