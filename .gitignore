@@ -1,3 +1,6 @@
 node_modules/
 .DS_Store
 tmp/
+runs/*/state.json
+runs/*/state.json.tmp
+runs/*/out.log
