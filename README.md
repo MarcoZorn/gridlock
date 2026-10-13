@@ -476,6 +476,13 @@ The ecosystem page can load the first of these cities as it was on day 40
 - **Night.** The ecosystem's 24-minute day now gets dark: a wash from
   evening to dawn and soft headlights, so the quiet small hours, when demand
   and the population drop, are visible at a glance.
+- **Brake lights.** Cars show red at the back while their brain is braking,
+  which turned up a small fact worth measuring: over a minute of traffic
+  the trained drivers brake 10% of the time they are moving, coast 32% and
+  accelerate 58%, and they brake no more when approaching a junction (9.6%)
+  than anywhere else. Their speed control is mostly easing off, and it does
+  not know about junctions, which is the right-of-way story above seen from
+  the driver's seat.
 - **Director.** A toggle on both pages that, every few seconds, cuts to
   whichever car has the most traffic around it and follows it, brain and
   senses on screen. Left alone, it is the quickest way to see what drivers
