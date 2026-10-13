@@ -97,6 +97,7 @@ function draw() {
     $("sCpk").textContent = last.crashesPerKm.toFixed(1);
     $("sCar").textContent = last.carCrashes;
     $("sWait").textContent = `${(last.waitShare * 100).toFixed(1)}%`;
+    $("sYield").textContent = last.yielded != null ? `${(last.yielded * 100).toFixed(0)}% of ${last.conflicts}` : "-";
     $("sRed").textContent = last.control === "lights" ? last.redRuns : "-";
     $("sSide").textContent = last.side.toFixed(2);
     $("sNote").textContent = `generation ${last.gen}, ${last.traffic ? `traffic, ${last.density} at once` : "ghosts, no traffic"}${last.control !== "none" ? `, ${last.control}` : ""}`;
