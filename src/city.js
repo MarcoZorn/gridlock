@@ -13,7 +13,7 @@ const CELL = 4;
 // junction a little gives streets that meet at slightly wrong angles, which is
 // both more like a real city and harder to drive, since no turn is exactly 90.
 export class City {
-  // Pass `graph` ({ nodes: [[x, y]], edges: [[a, b, lanes]] }, as written by
+  // Pass `graph` ({ nodes: [[x, y]], edges: [[a, b, lanes, oneway?]] }, as written by
   // tools/osm.mjs) to build a real place instead of a generated one.
   constructor(seed = 1, { cols = 9, rows = 6, spacing = 150, jitter = 0.22, prune = 0.18, graph = null } = {}) {
     const rng = new Rng(seed * 2246822519 + 3);
@@ -204,14 +204,15 @@ export class City {
     this.smoothBends = true;
     this.nodes = graph.nodes.map(([x, y], id) => ({ id, x, y, edges: [] }));
     this.edges = [];
-    for (const [a, b, lanes] of graph.edges) if (a !== b && !this.edgeBetween(a, b)) this.addEdge(a, b, lanes);
+    for (const [a, b, lanes, oneway] of graph.edges) if (a !== b && !this.edgeBetween(a, b)) this.addEdge(a, b, lanes, !!oneway);
     this.w = Math.max(...this.nodes.map((n) => n.x)) + 40;
     this.h = Math.max(...this.nodes.map((n) => n.y)) + 40;
   }
 
-  addEdge(a, b, lanes) {
+  // A one-way road runs from a to b only.
+  addEdge(a, b, lanes, oneway = false) {
     const na = this.nodes[a], nb = this.nodes[b];
-    const e = { id: this.edges.length, a, b, lanes, hw: lanes * LANE_W, len: Math.hypot(nb.x - na.x, nb.y - na.y) };
+    const e = { id: this.edges.length, a, b, lanes, hw: lanes * LANE_W, len: Math.hypot(nb.x - na.x, nb.y - na.y), oneway };
     this.edges.push(e);
     na.edges.push(e); nb.edges.push(e);
     return e;
@@ -401,6 +402,7 @@ export class City {
       for (const e of this.nodes[cur].edges) {
         const m = this.other(e, cur);
         if (cur === from && m === ban) continue;
+        if (e.oneway && e.a !== cur) continue;
         if (this.closed && this.closed.has(e.id)) continue;
         // the heuristic stays admissible: a road never costs less than its length
         const t = g[cur] + (jam && this.load ? e.len * (1 + jam * this.load[e.id]) : e.len);
