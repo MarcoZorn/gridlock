@@ -267,7 +267,7 @@ the code decides which way traffic should flow.
    alone and 100 in traffic, 1.67 trips per car against 1.58 over three
    seeds, and the same crash rate. Whatever made the first generations pure
    noise was fixed along the way, probably the shared crash damage below.
-   The switch stays, because a generation without traffic is three times
+   The switch stays, because a generation without traffic is much
    cheaper to run.)
 2. *Shared crash damage.* Two cars in a collision both paid in full, so a car
    rear-ended at a standstill paid as much as the one that hit it. Selection
