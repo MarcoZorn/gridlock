@@ -64,6 +64,7 @@ export class EcoWorld {
     this.rng = new Rng(seed * 104729 + 7);
     this.city = new City(citySeed);
     this.city.control = control;
+    this.baseEdges = this.city.edges.length;   // anything past this was built in the editor
     this.cfg = { ...DEFAULTS, pWeight: 0.5, weightStep: 0.15 };
     this.innov = founders ? founders.innov : new Innovations(N_INPUTS + 1 + N_OUTPUTS);
     this.founders = founders ? founders.genomes : null;
@@ -294,6 +295,25 @@ export class EcoWorld {
     this.events = { births: 0, deaths: 0, immigrants: 0, trips: 0, crashes: 0, carCrashes: 0, earned: 0, deadheads: 0, freight: 0 };
   }
 
+  // After the editor changes the map: anyone whose remaining route uses a
+  // closed road is re-routed from the next junction, keeping their fare.
+  cityEdited() {
+    const c = this.city;
+    for (const d of this.cars) {
+      const r = d.route;
+      let blocked = false;
+      for (let i = d.seg + 1; i + 1 < r.length; i++) {
+        const e = c.edgeBetween(r[i], r[i + 1]);
+        if (!e || c.closed.has(e.id)) { blocked = true; break; }
+      }
+      if (!blocked) continue;
+      const tail = c.route(r[d.seg + 1], r[r.length - 1], r[d.seg]);
+      if (!tail) continue;
+      d.route = r.slice(0, d.seg + 2).concat(tail.slice(1));
+      d.routeLen = c.pathLength(d.route);
+    }
+  }
+
   // A checkpoint keeps every car's brain, body, wallet and lineage, and the
   // species labels. Where each car was on the road is not kept: on resume
   // they start new fares from random places, which costs the city a minute
@@ -303,6 +323,7 @@ export class EcoWorld {
       v: 1, seed: this.seed, citySeed: this.city.seed, control: this.control, tick: this.tick, rng: this.rng.s,
       innov: this.innov.toJSON(), cfg: this.cfg, nextId: this.nextId, nextSpecies: this.nextSpecies, threshold: this.threshold,
       passengers: this.passengers, freight: this.freight,
+      closed: [...this.city.closed], added: this.city.edges.slice(this.baseEdges).map((e) => [e.a, e.b, e.lanes]),
       founders: this.founders ? this.founders.map((g) => g.toJSON()) : null,
       cars: this.cars.map((d) => ({
         brain: d.genome.toJSON(), body: d.body.toJSON(), cash: d.cash, id: d.id, born: d.born, parent: d.parent,
@@ -315,6 +336,8 @@ export class EcoWorld {
 
   static fromJSON(j) {
     const w = new EcoWorld({ seed: j.seed, citySeed: j.citySeed, control: j.control, startCars: 0 });
+    for (const [a, b, lanes] of j.added || []) w.city.addRoad(a, b, lanes);
+    for (const id of j.closed || []) w.city.closed.add(id);
     w.tick = j.tick; w.rng.s = j.rng; w.cfg = j.cfg;
     w.innov = Innovations.fromJSON(j.innov);
     w.nextSpecies = j.nextSpecies; w.threshold = j.threshold;
