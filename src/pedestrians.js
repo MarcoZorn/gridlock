@@ -136,6 +136,22 @@ export class Crowd {
     return p;
   }
 
+  toJSON() {
+    return { innov: this.innov.toJSON(), rng: this.rng.s, people: this.people.map((p) => ({ brain: p.brain.toJSON(), energy: p.energy, crossings: p.crossings, children: p.children })) };
+  }
+
+  // People come back at fresh crossing spots, with their brains and energy.
+  static fromJSON(j, city, rng) {
+    const c = new Crowd(city, rng, 0);
+    c.innov = Innovations.fromJSON(j.innov);
+    for (const q of j.people) {
+      const p = new Pedestrian(Genome.fromJSON(q.brain), city, rng, q.energy);
+      p.crossings = q.crossings; p.children = q.children; p.id = c.nextId--;
+      c.people.push(p);
+    }
+    return c;
+  }
+
   step(dt, cars) {
     for (const p of this.people) {
       const before = p.crossings;

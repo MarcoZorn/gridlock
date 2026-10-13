@@ -349,6 +349,7 @@ export class EcoWorld {
       })),
       species: this.species.map((s) => ({ id: s.id, brain: s.brain.toJSON(), body: s.body.toJSON(), born: s.born, size: s.size })),
       log: this.log,
+      crowd: this.crowd ? this.crowd.toJSON() : null,
     };
   }
 
@@ -370,6 +371,7 @@ export class EcoWorld {
     w.nextId = j.nextId;
     w.species = j.species.map((s) => ({ id: s.id, brain: Genome.fromJSON(s.brain), body: Body.fromJSON(s.body), born: s.born, size: s.size }));
     w.log = j.log || [];
+    if (j.crowd) w.crowd = Crowd.fromJSON(j.crowd, w.city, new Rng(j.seed * 7 + 1));
     w.city.time = w.tick * DT;
     return w;
   }
