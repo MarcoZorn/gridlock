@@ -46,7 +46,24 @@ export function drawCity(ctx, c, k) {
       ctx.lineTo(a.x + ux * s1 + nx * off, a.y + uy * s1 + ny * off);
       ctx.stroke();
     };
-    if (e.lanes > 1) line(0, [], "rgba(232,196,106,0.35)");
+    if (e.oneway) {
+      // no centre line on a one-way street, an arrow every so often instead
+      ctx.setLineDash([]);
+      ctx.strokeStyle = "rgba(255,255,255,0.35)";
+      ctx.lineWidth = Math.max(1, 1.6 / k);
+      const w = Math.min(e.hw * 0.5, 5), l = w * 1.4;
+      // at least one in the middle of every stretch with room for it
+      const n = Math.max(1, Math.floor((s1 - s0) / 60));
+      for (let i = 0; i < n && s1 - s0 > l * 2; i++) {
+        const t = s0 + (s1 - s0) * (i + 0.5) / n + l / 2;
+        const x = a.x + ux * t, y = a.y + uy * t;
+        ctx.beginPath();
+        ctx.moveTo(x - ux * l + nx * w, y - uy * l + ny * w);
+        ctx.lineTo(x, y);
+        ctx.lineTo(x - ux * l - nx * w, y - uy * l - ny * w);
+        ctx.stroke();
+      }
+    } else if (e.lanes > 1) line(0, [], "rgba(232,196,106,0.35)");
     else line(0, [6, 8], "rgba(255,255,255,0.18)");
     for (let l = 1; l < e.lanes; l++) {
       line(l * LANE_W, [5, 9], "rgba(255,255,255,0.14)");
