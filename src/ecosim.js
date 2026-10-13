@@ -2,7 +2,7 @@
 import { EcoWorld, ECON } from "./ecoworld.js";
 import { Population, Rng } from "./neat.js";
 import { Crowd } from "./pedestrians.js";
-import { fitCanvas, panZoom, announceToggles, cityLayer, drawClosures, drawLights, drawRoute, drawRays, drawCar, speciesColour } from "./render.js";
+import { fitCanvas, panZoom, announceToggles, shortcuts, cityLayer, drawClosures, drawLights, drawRoute, drawRays, drawCar, speciesColour } from "./render.js";
 import { drawNetwork } from "./netview.js";
 
 const $ = (id) => document.getElementById(id);
@@ -386,6 +386,7 @@ window.gridlock = { get world() { return world; }, cam };
 // Founders come from the trained drivers if they are there, from scratch if
 // not (which works, it just takes a long time to get anywhere).
 announceToggles();
+shortcuts({ space: "#play", 1: '[data-speed="1"]', 2: '[data-speed="4"]', 3: '[data-speed="16"]', 4: '[data-speed="64"]', f: "#follow", d: "#director", s: "#rays", c: "#colour", e: "#edit" });
 layout();
 // Founders: the drivers raised without signals, and if they were shipped,
 // the ones raised under lights and on roundabouts, for a city run that way.

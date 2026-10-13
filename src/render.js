@@ -329,3 +329,20 @@ export function announceToggles(root = document) {
     new MutationObserver(() => sync(b)).observe(b, { attributes: true, attributeFilter: ["data-on"] });
   }
 }
+
+// Keyboard shortcuts: each key clicks a button, so a shortcut can never do
+// something the button would not. Typing in a field is left alone.
+export function shortcuts(map) {
+  window.addEventListener("keydown", (e) => {
+    if (e.target.closest?.("input, textarea, select") || e.ctrlKey || e.metaKey || e.altKey) return;
+    const sel = map[e.key === " " ? "space" : e.key.toLowerCase()];
+    const b = sel && document.querySelector(sel);
+    if (!b) return;
+    e.preventDefault();
+    b.click();
+  });
+  for (const [key, sel] of Object.entries(map)) {
+    const b = document.querySelector(sel);
+    if (b) b.title = `${b.title ? b.title + " " : ""}(${key === "space" ? "space" : key.toUpperCase()})`;
+  }
+}

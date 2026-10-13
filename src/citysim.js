@@ -2,7 +2,7 @@
 import { CityWorld } from "./cityworld.js";
 import { SIZES } from "./ecoworld.js";
 import { BODY } from "./driver.js";
-import { fitCanvas, panZoom, announceToggles, cityLayer, drawHeat, drawSenses, drawLights, drawRoute, drawRays, drawCar } from "./render.js";
+import { fitCanvas, panZoom, announceToggles, shortcuts, cityLayer, drawHeat, drawSenses, drawLights, drawRoute, drawRays, drawCar } from "./render.js";
 import { drawNetwork } from "./netview.js";
 import { drawSparkline } from "./sparkline.js";
 
@@ -306,6 +306,7 @@ if (/^[a-z0-9-]+$/.test(params.get("map") || "")) {
 // Visitors start on drivers that already know how to drive; a seed in the
 // URL, or New seed, starts from scratch instead.
 announceToggles();
+shortcuts({ space: "#play", 1: '[data-speed="1"]', 2: '[data-speed="4"]', 3: '[data-speed="16"]', f: "#follow", d: "#director", s: "#rays", r: "#replay", h: "#heat" });
 layout();
 reset(+params.get("seed") || 3);
 if (!params.get("seed")) {
