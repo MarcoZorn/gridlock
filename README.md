@@ -419,6 +419,12 @@ seventy cars leans but does not settle, and neither do the 40-day runs on it
 either, the large one settles like the real maps. A convention needs enough
 traffic to meet often, and not very much more than that.
 
+Hour by hour, three seeds on Turin (`node tools/sidechart.mjs`, from the
+`sideAll` / `sideRight` counts every telemetry row now carries; the eco page
+shows the same number live):
+
+![Share of cars right of the middle on Turin's two-way roads, three seeds over six days: one settles left by day two, one right by day three, one is still undecided](docs/side-of-road.svg)
+
 Why the economy settles it in fifteen generations when the generation city,
 with 120 cars on the road, has not in thousands, I do not know yet. One
 difference is that a child here is born into the same traffic its parent
