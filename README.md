@@ -4,7 +4,8 @@ A city where traffic evolves. There are no traffic laws anywhere in this code.
 
 **[Run it in your browser](https://marcozorn.github.io/gridlock/)** ·
 [the city with no fitness function](https://marcozorn.github.io/gridlock/eco.html) ·
-[on Turin's streets](https://marcozorn.github.io/gridlock/eco.html?map=turin)
+[on Turin's streets](https://marcozorn.github.io/gridlock/eco.html?map=turin) ·
+[on Barcelona's](https://marcozorn.github.io/gridlock/eco.html?map=barcelona)
 
 ![Generation 250: evolved drivers spread across a procedural city](docs/city.png)
 
@@ -360,8 +361,13 @@ JSON) into a road graph: every way node becomes a junction, points closer than
 and only the largest connected piece is kept. On an imported map a node that
 is only a bend in the road gets an apron as big as the bend is sharp, so a
 curving street is not strung with beads. `eco.html?map=turin` runs the
-ecosystem on the main streets of central Turin. One-way streets are still
-treated as two-way.
+ecosystem on the main streets of central Turin, and `eco.html?map=barcelona`
+on Barcelona's Eixample, chamfered corners and all. One-way streets are still
+treated as two-way, and a map past four times the size of a small city keeps
+the economy of a city four times the size, so a real map never asks a
+browser to draw a thousand cars.
+
+![The Eixample, Barcelona](docs/barcelona.png)
 
 ![The ecosystem on central Turin's streets](docs/turin.png)
 
