@@ -80,6 +80,8 @@ node tools/osm.mjs extract.json maps/name.json "Place"   # an OpenStreetMap extr
   no safer: a fare across the block has to go round it.
 - **Cars and pedestrians cycle.** Once both populations can replace
   themselves they oscillate like predator and prey.
+- **Late in a run, fitness sharing costs.** Switching it off at generation
+  2500 or 3000 gave 12-19% better drivers, best and mean, in both runs tried.
 - **Two bugs mattered more than any tuning.** A four-second "lost" rule that
   killed every car waiting at a red light, and a stagnation rule that culled
   species for drawing hard cities.
@@ -628,6 +630,26 @@ The steering target's distance down the route is a coded choice worth
 checking too: at 25 units ahead the drivers did worse (mean 184 over three
 seeds), at 35, the value everything here was raised on, 213, and at 55, 225,
 which is inside the noise. It stays at 35.
+
+**Fitness sharing costs here.** NEAT shares a species' fitness among its
+members so that a new structure gets a few generations to pay off before a
+bigger species crowds it out. Two long runs, each branched at its last
+checkpoint with sharing on and off (`--no-sharing`), same cities:
+
+| | best fitness | mean fitness | trips per car | crashes per km |
+|---|---|---|---|---|
+| 40 cars, 800 gens, sharing on | 368 | 122 | 1.13 | 12.4 |
+| 40 cars, 800 gens, sharing off | 419 | 148 | 1.34 | 10.2 |
+| 120 cars, 1000 gens, sharing on | 273 | 79 | 0.72 | 22.7 |
+| 120 cars, 1000 gens, sharing off | 305 | 86 | 0.85 | 21.5 |
+
+Better on every count, and not only on average: the best driver of each
+generation is 12-14% fitter too. By generation 2500 these populations are
+not inventing new structure, they are polishing weights, and protecting
+minorities only spends offspring on the lineages that are behind. Sharing is
+for the start of a run, which these branches never see; I have not tested a
+run from scratch without it. In neat-from-scratch, on tracks easy enough to
+solve in a few generations, it made no difference either way.
 
 ### Extensions
 
