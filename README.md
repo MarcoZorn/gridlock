@@ -47,10 +47,10 @@ node tools/osm.mjs extract.json maps/name.json "Place"   # an OpenStreetMap extr
 - **Drivers learn to drive a city they have never seen.** After 300
   generations the evolved champion out-drove my hand-written controller on
   twelve unseen cities.
-- **They drive by the route, not the traffic.** Silencing their sense of
-  other cars costs them almost nothing; silencing their position on the road
-  or the route's direction cripples them. The inputs meant for waiting and
-  braking for a stopped car are not used at all.
+- **They drive by the route, but learn by the traffic.** Blindfolded to
+  other cars, grown drivers barely notice; raised blind, they come out a
+  quarter worse. Their position on the road and the route's direction are
+  what they steer by; the inputs meant for waiting at a junction go unused.
 - **Junction manners plateau early.** Drivers raised on a crossroads learn
   to avoid about ten more points of crossing conflicts than at first contact
   (roughly 52% to 63%), then stop improving. Junction crashes are under 5%
