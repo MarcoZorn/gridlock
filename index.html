@@ -43,21 +43,21 @@
       <div class="row"><span>generation done</span><span id="tick">0%</span></div>
       <div class="row"><span>trips this gen</span><span id="trips">0</span></div>
       <div class="row"><span>crashes this gen</span><span id="crashes">0</span></div>
-      <div class="row"><span>species</span><span id="species">-</span></div>
+      <div class="row" title="NEAT species: groups of similar brains that compete mostly among themselves."><span>species</span><span id="species">-</span></div>
       <div class="row"><span>best fitness</span><span id="best">-</span></div>
       <div class="row"><span>seed</span><span id="seed">-</span></div>
     </div>
 
     <div class="card">
       <h2>The city</h2>
-      <div class="row"><span>trips / car-minute</span><span id="sThru">-</span></div>
-      <div class="row"><span>mean trip time</span><span id="sTrip">-</span></div>
-      <div class="row"><span>crashes per km</span><span id="sCpk">-</span></div>
-      <div class="row"><span>car-on-car crashes</span><span id="sCar">-</span></div>
-      <div class="row"><span>time waiting in junctions</span><span id="sWait">-</span></div>
-      <div class="row"><span>junction conflicts resolved</span><span id="sYield">-</span></div>
-      <div class="row"><span>red lights run</span><span id="sRed">-</span></div>
-      <div class="row"><span>keeps to (right +)</span><span id="sSide">-</span></div>
+      <div class="row" title="Finished trips per car per minute of driving, across the whole last generation."><span>trips / car-minute</span><span id="sThru">-</span></div>
+      <div class="row" title="Average time from pickup to drop-off, in seconds of city time."><span>mean trip time</span><span id="sTrip">-</span></div>
+      <div class="row" title="Crashes of any kind (walls and cars) per kilometre driven. A car is 4 m long."><span>crashes per km</span><span id="sCpk">-</span></div>
+      <div class="row" title="Collisions between two cars in the last generation."><span>car-on-car crashes</span><span id="sCar">-</span></div>
+      <div class="row" title="Share of all driving time spent stopped inside a junction."><span>time waiting in junctions</span><span id="sWait">-</span></div>
+      <div class="row" title="Two cars in the same junction on crossing paths is a conflict; this is the share that ended without them colliding."><span>junction conflicts resolved</span><span id="sYield">-</span></div>
+      <div class="row" title="Junctions entered against a red light in the last generation (lights mode only)."><span>red lights run</span><span id="sRed">-</span></div>
+      <div class="row" title="Average sideways position of moving cars, relative to the road centre and their own direction: positive is the right-hand side. Near zero means no shared side."><span>keeps to (right +)</span><span id="sSide">-</span></div>
       <div class="legend" id="sNote">last finished generation</div>
     </div>
 
