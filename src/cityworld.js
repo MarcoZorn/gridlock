@@ -14,15 +14,16 @@ export class CityWorld {
   // `density` is how many cars share the streets at once. The population is
   // driven in waves of that size, so the same brains can be tested in a quiet
   // city or a packed one without changing anything about evolution.
-  constructor({ seed = 1, popSize = 120, ticks = 3600, traffic = false, cities = 6, density = 40 } = {}) {
+  constructor({ seed = 1, popSize = 120, ticks = 3600, traffic = false, cities = 6, density = 40, pop = null } = {}) {
     this.seed = seed;
+    this.opts = { seed, popSize, ticks, cities };
     this.density = density;
     this.ticksPerGen = ticks;
     this.traffic = traffic;
     // Gentler weight mutation than the track demo. In a shared city a broken
     // mutant is not just a bad score, it is an obstacle for everyone else, and
     // the default (80% of weights nudged by 0.4 every generation) breaks a lot.
-    this.pop = new Population(N_INPUTS, N_OUTPUTS, { popSize, pWeight: 0.5, weightStep: 0.15 }, seed);
+    this.pop = pop || new Population(N_INPUTS, N_OUTPUTS, { popSize, pWeight: 0.5, weightStep: 0.15 }, seed);
     this.rng = new Rng(seed * 7919 + 5);
     // A handful of cities, rotated per generation, for the same reason the
     // track demo rotates tracks: evolve in one city and you get drivers who
@@ -243,6 +244,24 @@ export class CityWorld {
       side: this.side.n ? this.side.sum / this.side.n : 0, // mean lateral offset, + is right
       offCentre: this.side.n ? this.side.abs / this.side.n : 0,
     };
+  }
+
+  // A saved world is its population plus the few settings that rebuild the
+  // rest: the cities come back from their seeds, and the generation in
+  // progress restarts.
+  toJSON() {
+    return {
+      v: 1, opts: this.opts, traffic: this.traffic, density: this.density,
+      rng: this.rng.s, pop: this.pop.toJSON(), history: this.history,
+    };
+  }
+
+  static fromJSON(j) {
+    const w = new CityWorld({ ...j.opts, traffic: j.traffic, density: j.density, pop: Population.fromJSON(j.pop) });
+    w.rng.s = j.rng;
+    w.history = j.history || [];
+    w.newGeneration();
+    return w;
   }
 
   runGeneration() {
