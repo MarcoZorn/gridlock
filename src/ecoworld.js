@@ -87,6 +87,7 @@ export class EcoWorld {
     this.edits = [];   // expansions, built roads and road directions, in order, so a save can replay them
     this.congestion = ECON.congestion;   // this city's congestion charge, saved with it
     this.speedLimit = ECON.speedLimit;   // and its speed camera, 0 for none
+    this.freightBoom = 1;                // freight pay and demand times this: at 3 trucks can evolve
     this.city.control = control;
     this.cfg = { ...DEFAULTS, pWeight: 0.5, weightStep: 0.15 };
     this.innov = founders ? founders.innov : new Innovations(N_INPUTS + 1 + N_OUTPUTS);
@@ -187,7 +188,7 @@ export class EcoWorld {
     if (!first) {
       // take whichever waiting job pays this vehicle more per unit of route
       const fLoad = Math.min(d.body.capacity, ECON.freightMax);
-      const fPay = d.body.capacity >= ECON.freightMin && this.freight >= 1 ? ECON.freightRate * fLoad : 0;
+      const fPay = d.body.capacity >= ECON.freightMin && this.freight >= 1 ? ECON.freightRate * this.freightBoom * fLoad : 0;
       const pPay = this.passengers >= 1 ? ECON.passengerRate * (1 + ECON.speedBonus / 2) : 0;
       if (fPay > pPay) { kind = "freight"; load = fLoad; this.freight--; }
       else if (pPay > 0) { kind = "passenger"; this.passengers--; }
@@ -206,7 +207,7 @@ export class EcoWorld {
     if (!j.kind) return;
     let fare;
     if (j.kind === "freight") {
-      fare = dist * ECON.freightRate * j.load;
+      fare = dist * ECON.freightRate * this.freightBoom * j.load;
       this.events.freight++;
     } else {
       const took = Math.max(1, this.tick - j.start);
@@ -227,7 +228,7 @@ export class EcoWorld {
     if (ECON.replan && c.load) this.replanAll();
     const scale = this.scale;
     this.passengers = Math.min(ECON.fareQueue * scale, this.passengers + ECON.demand * scale * demandAt(c.time) * DT);
-    this.freight = Math.min(ECON.fareQueue * scale, this.freight + ECON.freightDemand * scale * freightAt(c.time) * DT);
+    this.freight = Math.min(ECON.fareQueue * scale, this.freight + ECON.freightDemand * this.freightBoom * scale * freightAt(c.time) * DT);
     // everything a car can see or hit: other cars, and anyone crossing
     const onRoad = this.crowd ? this.cars.concat(this.crowd.people) : this.cars;
     this.hash.rebuild(onRoad);
@@ -458,7 +459,7 @@ export class EcoWorld {
       v: 1, seed: this.seed, citySeed: this.city.seed, graph: this.graph, control: this.control, tick: this.tick, rng: this.rng.s,
       innov: this.innov.toJSON(), cfg: this.cfg, nextId: this.nextId, nextSpecies: this.nextSpecies, threshold: this.threshold,
       passengers: this.passengers, freight: this.freight,
-      closed: [...this.city.closed], edits: this.edits, size: this.size, congestion: this.congestion, speedLimit: this.speedLimit,
+      closed: [...this.city.closed], edits: this.edits, size: this.size, congestion: this.congestion, speedLimit: this.speedLimit, freightBoom: this.freightBoom,
       founders: this.founders ? this.founders.map((g) => g.toJSON()) : null,
       cars: this.cars.map((d) => ({
         brain: d.genome.toJSON(), body: d.body.toJSON(), cash: d.cash, id: d.id, born: d.born, parent: d.parent,
@@ -482,6 +483,7 @@ export class EcoWorld {
     w.edits = [...(j.edits || [])];
     w.congestion = j.congestion ?? ECON.congestion;
     w.speedLimit = j.speedLimit ?? ECON.speedLimit;
+    w.freightBoom = j.freightBoom ?? 1;
     for (const id of j.closed || []) w.city.closed.add(id);
     w.tick = j.tick; w.rng.s = j.rng; w.cfg = j.cfg;
     w.innov = Innovations.fromJSON(j.innov);
