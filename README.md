@@ -142,9 +142,9 @@ generations, the last 100 with traffic, then the same unseen cities):
 | raised | trips per car, six seeds | crashes per 1000 units |
 |---|---|---|
 | seeing other cars | 1.39 / 1.71 / 1.64 / 1.47 / 2.00 / 1.80 | 3.35 on average |
-| blind to them | 1.25 / 1.24 / 1.12 / 1.43 / 1.14 / 1.16 | 4.38 on average |
+| blind to them | 1.25 / 1.24 / 1.12 / 1.43 / 1.14 / 1.16 | 4.52 on average |
 
-A quarter fewer trips and nearly a third more crashes, every seed. Blindfolding a grown
+A quarter fewer trips and a third more crashes, every seed. Blindfolding a grown
 driver costs it almost nothing, but growing one blind costs a lot: the sense
 matters while a population learns to drive in traffic, and what it learns
 then (a speed, a line, a way of taking corners that leaves room) keeps
