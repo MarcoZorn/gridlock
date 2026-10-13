@@ -23,6 +23,9 @@ const density = +arg("density", 40);
 const seed = +arg("seed", 3);
 const every = +arg("checkpoint", 25);
 const control = arg("control", "none");
+const mapName = arg("map", null);
+const graph = mapName ? JSON.parse(fs.readFileSync(`maps/${mapName}.json`, "utf8")) : null;
+const from = arg("from", null);   // start from another run's checkpoint
 
 fs.mkdirSync(dir, { recursive: true });
 const statePath = path.join(dir, "state.json");
@@ -87,8 +90,15 @@ let world;
 if (fs.existsSync(statePath)) {
   world = CityWorld.fromJSON(JSON.parse(fs.readFileSync(statePath, "utf8")));
   console.log(`resumed ${dir} at generation ${world.pop.generation}`);
+} else if (from) {
+  // a population raised elsewhere, moved to this run's map and settings
+  const j = JSON.parse(fs.readFileSync(from, "utf8"));
+  j.opts = { ...j.opts, graph };
+  world = CityWorld.fromJSON(j);
+  world.history = [];
+  console.log(`new run ${dir} from ${from}, generation ${world.pop.generation}`);
 } else {
-  world = new CityWorld({ seed, popSize: 120, density, control });
+  world = new CityWorld({ seed, popSize: 120, density, control, graph });
   console.log(`new run ${dir}, seed ${seed}`);
 }
 
