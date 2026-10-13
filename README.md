@@ -62,8 +62,10 @@ node tools/osm.mjs extract.json maps/name.json "Place"   # an OpenStreetMap extr
   and in the full city it makes no difference at all.
 - **Right of way does not pay here, until a junction crash costs thirty.**
   A hand-written yield rule costs evolved drivers 7% of their trips and
-  saves no crashes. Priced at thirty times an ordinary crash, junction
-  crashes become worth avoiding, and drivers learn to, without waiting more.
+  saves no crashes. Priced at thirty times an ordinary crash, trained
+  drivers learn to avoid junction conflicts (87% resolved against 79%,
+  one run); a fresh population priced that way from the start mostly
+  learns to drive worse.
 - **Right of way did not evolve beyond that.** Not in a whole city, not in an arena that
   is nothing but one crossroads, not with crashes priced three or six times
   higher, not with better eyesight, and not when both cars pay for a
@@ -291,8 +293,16 @@ It works, and not the way I predicted. Eight more points of crossing
 conflicts end without a collision, crashes per km fall by a quarter and
 trips hold. But waiting does not rise: it jumped to 10% in the first fifty
 generations and then fell below the control's. They learned to get out of
-each other's way at junctions without stopping for each other. One run, so
-a hint, but the strongest one yet that the plateau was about price.
+each other's way at junctions without stopping for each other.
+
+From scratch it is a different story (400 generations, three seeds each,
+last 50): conflicts resolved 87.4% at thirty times against 85.0% at normal
+prices, waiting 5.5% against 4.3%, but a third fewer trips (1.21 against
+1.81) and more crashes per km (10.2 against 7.9). A price that harsh from
+the first generation gets in the way of learning to drive at all. On drivers
+that already can, it buys some junction manners; on a fresh population it
+mostly buys caution everywhere. So: a price can move the plateau, applied
+late, and the right time to apply it is part of the answer.
 (The conflict and
 car-on-car counters are no use here: a wreck in a junction counts as an
 unresolved conflict, and touching one counts as a collision every tick.)
