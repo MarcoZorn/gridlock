@@ -631,6 +631,8 @@ where three or more roads meet count as junctions):
 | Turin | 15% | 85% | 13% |
 | Barcelona | 17% | 83% | 21% |
 
+![A day of crashes on central Turin: whole streets light up, the long diagonal brightest](docs/turin-heat.png)
+
 In the generation city with traffic on, the same trained drivers crash into
 a kerb a little more often than into each other (57% walls over three
 generations). On the real maps, with 150 to 160 cars on streets that funnel
