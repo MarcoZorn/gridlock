@@ -19,7 +19,7 @@ const spc = $("species"), sctx = spc.getContext("2d");
 const bod = $("bodies"), octx = bod.getContext("2d");
 const tree = $("tree"), tctx = tree.getContext("2d");
 
-let world, founders = null, graph = null, size = "small", running = true, speed = 1, showRays = true, follow = false;
+let world, founders = {}, graph = null, size = "small", running = true, speed = 1, showRays = true, follow = false;
 let selected = null, colourBy = "species", control = "none", editing = false, draft = null;
 const cam = { x: 0, y: 0, k: 1, fitted: false };
 const roads = cityLayer();
@@ -43,7 +43,8 @@ function fitCam() {
 }
 
 function reset(seed) {
-  world = new EcoWorld({ seed, control, founders, graph, size });
+  // founded by drivers raised under this junction control, if there are any
+  world = new EcoWorld({ seed, control, founders: founders[control] || founders.none || null, graph, size });
   selected = null;
   $("peds-on").dataset.on = false;
   cam.fitted = false;
@@ -351,10 +352,15 @@ window.gridlock = { get world() { return world; }, cam };
 // not (which works, it just takes a long time to get anywhere).
 announceToggles();
 layout();
-try {
-  const r = await fetch("docs/trained.json");
-  if (r.ok) founders = Population.fromJSON((await r.json()).pop);
-} catch { /* no founders: start from minimal brains */ }
+// Founders: the drivers raised without signals, and if they were shipped,
+// the ones raised under lights and on roundabouts, for a city run that way.
+// Only the sets this page needs right now are waited for; the rest load in
+// the background, ready for when the junction control is changed.
+const FOUNDER_FILES = { none: "trained", lights: "trained-lights", roundabouts: "trained-roundabouts" };
+const loadFounders = (c) => fetch(`docs/${FOUNDER_FILES[c]}.json`)
+  .then((r) => (r.ok ? r.json() : null))
+  .then((j) => { if (j) founders[c] = Population.fromJSON(j.pop); })
+  .catch(() => { /* that set is missing: fall back to the others */ });
 const params = new URLSearchParams(location.search);
 if (["small", "medium", "large"].includes(params.get("size"))) {
   size = params.get("size");
@@ -371,5 +377,7 @@ if (["none", "lights", "roundabouts"].includes(params.get("control"))) {
   control = params.get("control");
   document.querySelectorAll("[data-control]").forEach((x) => (x.dataset.on = x.dataset.control === control));
 }
+await Promise.all([loadFounders("none"), control !== "none" ? loadFounders(control) : null]);
+for (const c of Object.keys(FOUNDER_FILES)) if (!founders[c]) loadFounders(c);
 reset(+params.get("seed") || 3);
 frame();
