@@ -6,7 +6,7 @@ JavaScript you can read in one sitting.
 
 **[Run it in your browser](https://marcozorn.github.io/neat-from-scratch/)**
 
-![Cars evolved with NEAT driving a procedurally generated track](docs/preview.png)
+![Cars evolved with NEAT driving a procedurally generated track](preview.png)
 
 You can also draw your own track with the mouse and watch a population learn
 that specific corner, or turn on hard tracks, which are narrower, sharper, and
@@ -154,7 +154,7 @@ Press Hard tracks for narrower tarmac, higher-frequency harmonics on the
 centreline, and three to five obstacles dropped onto the track, pushed off the
 centreline so there is always a way past.
 
-![A hard track with obstacles](docs/hard-track.png)
+![A hard track with obstacles](hard-track.png)
 
 Obstacles are the interesting part. A car's sensors report distance to the
 nearest wall and nothing else, so an obstacle and the outside wall feel
@@ -167,7 +167,7 @@ piles up in front of them for quite a few generations first.
 Press Draw a track and drag a loop. Release and the population starts on it
 immediately, and keeps that track every generation instead of cycling.
 
-![A hand-drawn track](docs/drawn-track.png)
+![A hand-drawn track](drawn-track.png)
 
 A hand-drawn polyline has no `r(theta)` to invert, so containment cannot use
 the trick above. Instead the shape is baked once into a grid: every cell stores
