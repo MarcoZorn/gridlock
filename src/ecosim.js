@@ -1,7 +1,7 @@
 // Browser front end for the ecosystem: no generations, one long-running city.
 import { EcoWorld, ECON } from "./ecoworld.js";
 import { Population } from "./neat.js";
-import { fitCanvas, panZoom, drawCity, drawLights, drawRoute, drawRays, drawCar, speciesColour } from "./render.js";
+import { fitCanvas, panZoom, drawCity, drawClosures, drawLights, drawRoute, drawRays, drawCar, speciesColour } from "./render.js";
 import { drawNetwork } from "./netview.js";
 
 const $ = (id) => document.getElementById(id);
@@ -11,7 +11,7 @@ const spc = $("species"), sctx = spc.getContext("2d");
 const bod = $("bodies"), octx = bod.getContext("2d");
 
 let world, founders = null, running = true, speed = 1, showRays = true, follow = false;
-let selected = null, colourBy = "species", control = "none";
+let selected = null, colourBy = "species", control = "none", editing = false, draft = null;
 const cam = { x: 0, y: 0, k: 1, fitted: false };
 
 function layout() {
@@ -99,6 +99,14 @@ function draw() {
   vctx.translate(-cam.x, -cam.y);
   drawCity(vctx, world.city, k);
   drawLights(vctx, world.city, k);
+  drawClosures(vctx, world.city, k);
+  if (draft) {
+    vctx.strokeStyle = "rgba(232,196,106,0.8)";
+    vctx.lineWidth = 3 / k;
+    vctx.setLineDash([6 / k, 4 / k]);
+    vctx.beginPath(); vctx.moveTo(draft.from.x, draft.from.y); vctx.lineTo(draft.x, draft.y); vctx.stroke();
+    vctx.setLineDash([]);
+  }
   if (focus) drawRoute(vctx, world.city, focus, k);
   for (const d of world.cars) if (d !== focus) drawCar(vctx, d, colourOf(d), 0.9);
   if (focus) {
@@ -141,12 +149,31 @@ function frame() {
 }
 
 panZoom(view, cam, (wx, wy) => {
+  if (editing) {
+    const { edge, dist } = world.city.nearestEdge(wx, wy);
+    if (edge && dist < edge.hw + 6) { world.city.toggleClosed(edge); world.cityEdited(); }
+    return;
+  }
   let best = null, bd = 20 / cam.k + 10;
   for (const d of world.cars) {
     const dd = Math.hypot(d.x - wx, d.y - wy);
     if (dd < bd) { bd = dd; best = d; }
   }
   selected = best;
+}, (wx, wy) => {
+  // in edit mode a drag that starts on a junction builds a road
+  if (!editing) return null;
+  const { node, dist } = world.city.nearestNode(wx, wy);
+  if (!node || dist > node.r + 8) return null;
+  draft = { from: node, x: wx, y: wy };
+  return {
+    move(x, y) { draft.x = x; draft.y = y; },
+    end(x, y) {
+      const { node: to, dist: d } = world.city.nearestNode(x, y);
+      if (to && d < to.r + 12 && world.city.addRoad(node.id, to.id)) world.cityEdited();
+      draft = null;
+    },
+  };
 });
 view.addEventListener("dblclick", () => { cam.fitted = false; follow = false; $("follow").dataset.on = false; });
 
@@ -174,6 +201,12 @@ for (const b of document.querySelectorAll("[data-control]")) {
     world.control = control;
   };
 }
+$("edit").onclick = (e) => {
+  editing = !editing;
+  e.target.dataset.on = editing;
+  $("editHint").hidden = !editing;
+  view.style.cursor = editing ? "crosshair" : "";
+};
 $("again").onclick = () => reset(Math.floor(Math.random() * 9999) + 1);
 window.addEventListener("resize", layout);
 
