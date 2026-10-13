@@ -273,6 +273,29 @@ for (const b of document.querySelectorAll("[data-size]")) {
 // Growing keeps the camera where it was, so you can watch the new blocks fill.
 $("grow-east").onclick = () => world.grow("east");
 $("grow-south").onclick = () => world.grow("south");
+// The whole ecosystem, wallets, families, edits and all, as one file.
+$("save").onclick = () => {
+  const blob = new Blob([JSON.stringify(world)], { type: "application/json" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = `gridlock-eco-seed${world.seed}-day${(world.tick / 86400).toFixed(1)}.json`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+};
+$("load").onclick = () => $("loadFile").click();
+$("loadFile").onchange = async (e) => {
+  const f = e.target.files[0];
+  if (!f) return;
+  try {
+    world = EcoWorld.fromJSON(JSON.parse(await f.text()));
+    control = world.control; size = world.size || "small"; graph = world.graph || null;
+    document.querySelectorAll("[data-control]").forEach((x) => (x.dataset.on = x.dataset.control === control));
+    document.querySelectorAll("[data-size]").forEach((x) => (x.dataset.on = x.dataset.size === size));
+    $("peds-on").dataset.on = !!world.crowd;
+    selected = null; cam.fitted = false;
+  } catch (err) { alert(`Not a gridlock ecosystem: ${err.message}`); }
+  e.target.value = "";
+};
 $("peds-on").onclick = (e) => {
   world.crowd = world.crowd ? null : new Crowd(world.city, new Rng(world.seed * 7 + 1), 40);
   e.target.dataset.on = !!world.crowd;
