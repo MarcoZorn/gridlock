@@ -1,7 +1,7 @@
 // Browser front end for the city: run it, draw it, pan and zoom, inspect a car.
 import { CityWorld } from "./cityworld.js";
 import { SIZES } from "./ecoworld.js";
-import { BODY } from "./driver.js";
+import { BODY, SENSES } from "./driver.js";
 import { fitCanvas, panZoom, announceToggles, shortcuts, busiestCar, cityLayer, drawHeat, drawSenses, drawLights, drawRoute, drawRays, drawCar } from "./render.js";
 import { drawNetwork } from "./netview.js";
 import { drawSparkline } from "./sparkline.js";
@@ -253,6 +253,8 @@ for (const b of document.querySelectorAll("[data-size]")) {
     selected = null; cam.fitted = false;
   };
 }
+$("blindCars").onclick = (e) => { SENSES.cars = !SENSES.cars; e.target.dataset.on = !SENSES.cars; };
+$("blindWalls").onclick = (e) => { SENSES.walls = !SENSES.walls; e.target.dataset.on = !SENSES.walls; };
 $("heat").onclick = (e) => {
   heatMode = (heatMode + 1) % HEAT_MODES.length;
   e.target.dataset.on = heatMode > 0;
