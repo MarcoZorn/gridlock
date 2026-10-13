@@ -48,9 +48,9 @@ node tools/osm.mjs extract.json maps/name.json "Place"   # an OpenStreetMap extr
   (roughly 52% to 63%), then stop improving. Junction crashes are under 5%
   of the damage a driver takes, but making every other kind of damage free
   did not help either: drivers learned to dodge, not to wait.
-- **A memory helps, a little.** Brains with one number of memory wait in
-  junctions about twice as much and resolve more conflicts in two seeds of
-  three; the most promising lead so far.
+- **A memory helps, a little, and only early.** Brains with a memory wait in
+  junctions about twice as much and start out resolving more conflicts, but
+  longer runs and more memory channels do not climb past the same plateau.
 - **Right of way did not evolve beyond that.** Not in a whole city, not in an arena that
   is nothing but one crossroads, not with crashes priced three or six times
   higher, not with better eyesight, and not when both cars pay for a
@@ -348,7 +348,18 @@ two of three (67% against 63% on average). Part of that is there from the
 first contact with traffic (63 to 69% against 51 to 54%), so some of what
 the memory buys is inertia, smoother and more cautious driving, rather than
 learned turn-taking. It is the first change that moved waiting in the right
-direction on every seed, which makes it the thread to pull next.
+direction on every seed, so I pulled on it: the same three seeds run twice as
+long, and three more with three memory channels instead of one.
+
+| conflicts resolved | traffic gens 400-550 | last 150 of 1050 |
+|---|---|---|
+| no memory | 63% | (ran to 550) |
+| one channel | 67% | 63% |
+| three channels | 65% | 64% |
+
+Longer training did not build on it, and more memory did not add to it. The
+memory buys a small early edge and a habit of waiting, and the plateau is
+still there. Whatever taking turns needs, it is more than a scratchpad.
 
 **Which side of the road?** Nothing in the code prefers a side, and over
 thousands of generations no permanent convention appears: the average lateral
