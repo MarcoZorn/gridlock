@@ -129,7 +129,11 @@ the distance to the next junction, inputs added for the very behaviours the
 project hoped for (braking for a stopped car, waiting at a junction), are
 not used at all, which is the right-of-way plateau seen from the inside. And
 the turn input does harm: without it they make 10% more trips at the same
-crash rate. (`node tools/ablate.mjs turn`, and so on for each group.)
+crash rate. Raised without it from the start, though (300 generations, three
+seeds, tested in the same unseen cities), drivers come out the same as with
+it: 1.63 trips per car against 1.58, 3.41 crashes per 1000 units against
+3.62, split both ways by seed. It is not needed, and the harm is a habit of
+this one population, not something the input does to everyone. (`node tools/ablate.mjs turn`, and so on for each group.)
 
 ## What is coded and what is evolved
 
