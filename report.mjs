@@ -17,8 +17,11 @@ const runs = fs.readdirSync("runs", { withFileTypes: true })
   })
   .filter((r) => r.rows.length)
   .sort((a, b) => a.name.localeCompare(b.name));
+// Ecosystem runs log by the clock, not by generation; they get their own section.
+const ecoRuns = runs.filter((r) => r.rows[0].tick !== undefined);
+runs.splice(0, runs.length, ...runs.filter((r) => r.rows[0].gen !== undefined));
 
-if (!runs.length) { console.log("no runs with telemetry"); process.exit(0); }
+if (!runs.length && !ecoRuns.length) { console.log("no runs with telemetry"); process.exit(0); }
 
 const POP = 120;
 const METRICS = [
@@ -52,17 +55,16 @@ for (const [label, f] of METRICS) {
 }
 md += `\n`;
 
-// Charts: one per metric, every run as one line, rolling mean.
+// One small SVG line chart, every run as one line, rolling mean.
 const COLORS = ["#ff8a5c", "#6ea8ff", "#5ac8a0", "#e8c46a", "#8b7cf6", "#e86e64"];
-fs.mkdirSync("docs", { recursive: true });
-METRICS.forEach(([label, f], mi) => {
-  const W = 200 + 110 * runs.length + 60, H = 200, P = 34;
-  const series = runs.map((r) => {
-    const raw = r.rows.map((x) => [x.gen, f(x)]).filter(([, y]) => y !== null && Number.isFinite(y));
+function chart(file, label, set, xKey, xLabel, f) {
+  const W = 200 + 110 * set.length + 60, H = 200, P = 34;
+  const series = set.map((r) => {
+    const raw = r.rows.map((x) => [x[xKey], f(x)]).filter(([, y]) => y !== null && Number.isFinite(y));
     return raw.map(([g], i) => [g, mean(raw.slice(Math.max(0, i - SMOOTH + 1), i + 1).map(([, y]) => y))]);
   });
   const all = series.flat();
-  if (!all.length) return;
+  if (!all.length) return "";
   const gx = Math.max(...all.map(([g]) => g)) || 1;
   let y0 = Math.min(0, ...all.map(([, y]) => y)), y1 = Math.max(...all.map(([, y]) => y));
   if (y1 === y0) y1 = y0 + 1;
@@ -71,18 +73,46 @@ METRICS.forEach(([label, f], mi) => {
   svg += `<rect width="${W}" height="${H}" fill="#14161c"/>`;
   svg += `<text x="${P}" y="14" fill="#e6e8ee">${label}</text>`;
   svg += `<text x="4" y="${Y(y1) + 4}" fill="#8b93a7">${fmt(y1)}</text><text x="4" y="${Y(y0) + 4}" fill="#8b93a7">${fmt(y0)}</text>`;
-  svg += `<text x="${W - 60}" y="${H - 6}" fill="#8b93a7">gen ${gx}</text>`;
+  svg += `<text x="${W - 90}" y="${H - 6}" fill="#8b93a7">${xLabel(gx)}</text>`;
   if (y0 < 0) svg += `<line x1="${P}" x2="${W - 10}" y1="${Y(0)}" y2="${Y(0)}" stroke="#232733"/>`;
-  series.forEach((s, i) => {
-    if (s.length < 2) return;
-    svg += `<polyline fill="none" stroke="${COLORS[i % COLORS.length]}" stroke-width="1.5" points="${s.map(([g, y]) => `${X(g).toFixed(1)},${Y(y).toFixed(1)}`).join(" ")}"/>`;
-    svg += `<text x="${P + 200 + i * 110}" y="14" fill="${COLORS[i % COLORS.length]}">${runs[i].name}</text>`;
+  series.forEach((sr, i) => {
+    if (sr.length < 2) return;
+    svg += `<polyline fill="none" stroke="${COLORS[i % COLORS.length]}" stroke-width="1.5" points="${sr.map(([g, y]) => `${X(g).toFixed(1)},${Y(y).toFixed(1)}`).join(" ")}"/>`;
+    svg += `<text x="${P + 200 + i * 110}" y="14" fill="${COLORS[i % COLORS.length]}">${set[i].name}</text>`;
   });
   svg += `</svg>\n`;
-  const file = `docs/live-${mi}.svg`;
   fs.writeFileSync(file, svg);
-  md += `![${label}](${file})\n\n`;
+  return `![${label}](${file})\n\n`;
+}
+
+fs.mkdirSync("docs", { recursive: true });
+METRICS.forEach(([label, f], mi) => {
+  if (runs.length) md += chart(`docs/live-${mi}.svg`, label, runs, "gen", (g) => `gen ${g}`, f);
 });
+
+// The ecosystem: no generations, so the table is the latest city day and
+// the charts run against days.
+if (ecoRuns.length) {
+  const DAY = 24 * 60 * 60;
+  const ECO = [
+    ["cars", (r) => r.cars],
+    ["species", (r) => r.species.length],
+    ["paid trips / hour", (r) => r.trips * 6],
+    ["deaths / hour", (r) => r.deaths * 6],
+    ["deepest lineage (generations)", (r) => r.maxGen],
+    ["mean cargo gene", (r) => r.traits.cargo],
+    ["mean engine gene", (r) => r.traits.engine],
+    ["mean length gene", (r) => r.traits.length],
+    ["mean sensor range gene", (r) => r.traits.range],
+  ];
+  md += `## Ecosystems\n\nNo fitness function. Each column is the mean over a run's latest city day (144 rows, one per ten city minutes).\n\n`;
+  md += `| | ${ecoRuns.map((r) => r.name).join(" | ")} |\n|---|${ecoRuns.map(() => "---").join("|")}|\n`;
+  md += `| day | ${ecoRuns.map((r) => (r.rows.at(-1).tick / DAY).toFixed(1)).join(" | ")} |\n`;
+  for (const [label, f] of ECO) md += `| ${label} | ${ecoRuns.map((r) => fmt(mean(r.rows.slice(-144).map(f)))).join(" | ")} |\n`;
+  md += `\n`;
+  const days = ecoRuns.map((r) => ({ name: r.name, rows: r.rows.map((x) => ({ ...x, day: x.tick / DAY })) }));
+  ECO.forEach(([label, f], i) => (md += chart(`docs/eco-${i}.svg`, label, days, "day", (d) => `day ${d.toFixed(1)}`, f)));
+}
 
 fs.writeFileSync("LIVE.md", md);
 console.log(`LIVE.md: ${runs.length} runs`);
