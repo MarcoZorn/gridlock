@@ -43,7 +43,10 @@ function fitCam() {
   cam.fitted = true;
 }
 
+let sideShare = null;   // the side-of-road share, smoothed: a single frame is noisy
+
 function reset(seed) {
+  sideShare = null;
   // founded by drivers raised under this junction control, if there are any
   world = new EcoWorld({ seed, control, founders: founders[control] || founders.none || null, graph, size });
   selected = null;
@@ -169,6 +172,25 @@ function drawNight(W, H, k) {
   vctx.restore();
 }
 
+// Which side of the road the city drives on, if any: the share of cars on
+// two-way roads (outside junctions) that are right of the middle, relative to
+// where they are going. Nothing in the code prefers a side; in a crowded city
+// one usually wins within a few days.
+function sideOfRoad() {
+  let all = 0, right = 0;
+  for (const d of world.cars) {
+    if (!d.solid || d.seg + 1 >= d.route.length) continue;
+    const e = world.city.edgeBetween(d.route[d.seg], d.route[d.seg + 1]);
+    if (!e || e.oneway || world.city.junctionAt(d.x, d.y) >= 0) continue;
+    all++;
+    if (d.frame().lateral > 0) right++;
+  }
+  if (all < 10) return "-";
+  sideShare = sideShare === null ? right / all : sideShare * 0.98 + (right / all) * 0.02;
+  const r = Math.round(100 * sideShare);
+  return r >= 50 ? `${r}% right` : `${100 - r}% left`;
+}
+
 function clock(t) {
   const m = Math.floor(t) % (24 * 60);
   return `${String(Math.floor(m / 60)).padStart(2, "0")}:${String(m % 60).padStart(2, "0")}`;
@@ -241,6 +263,7 @@ function draw() {
   // per car on the road, so a growing city does not look like a careless one
   const carHours = last.reduce((a, r) => a + r.cars, 0) / 6;
   $("crashRate").textContent = carHours ? `${(sum("crashes") / carHours).toFixed(1)} / ${(sum("trips") / carHours).toFixed(1)}` : "-";
+  $("side").textContent = sideOfRoad();
   $("cash").textContent = (world.cars.reduce((a, d) => a + d.cash, 0) / Math.max(1, world.cars.length)).toFixed(1);
   $("maxgen").textContent = Math.max(0, ...world.cars.map((d) => d.generation));
   $("nspecies").textContent = world.species.length;
@@ -341,6 +364,7 @@ $("grow-east").onclick = () => world.grow("east");
 $("grow-south").onclick = () => world.grow("south");
 function adoptEco(w) {
   world = w;
+  sideShare = null;
   control = world.control; size = world.size || "small"; graph = world.graph || null;
   document.querySelectorAll("[data-control]").forEach((x) => (x.dataset.on = x.dataset.control === control));
   document.querySelectorAll("[data-size]").forEach((x) => (x.dataset.on = x.dataset.size === size));
@@ -398,6 +422,7 @@ $("ffDay").onclick = (e) => {
     if (m.data.done) {
       world = EcoWorld.fromJSON(m.data.world);
       world.city.heat = m.data.heat;   // the skipped day stays on the heatmap
+      sideShare = null;
       selected = null;
       worker.terminate(); worker = null;
       btn.textContent = "Fast-forward a day";
