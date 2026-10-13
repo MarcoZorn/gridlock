@@ -290,6 +290,13 @@ third as often.
   arterials carry on, and because fare demand scales with the number of roads,
   every expansion is a boom until the population catches up. Growth is part of
   the save, replayed in order with any roads built by hand.
+- **Closing a main road.** From one five-day-old ecosystem, five more days
+  twice: untouched, and with the east-west arterial (eight roads) closed.
+  Paid trips per hour stayed at 37 either way, because what limits a city
+  like this is demand, not road space; trips just took about a fifth longer
+  (30 to 32 seconds against 24 to 29). The gene for minding traffic did not
+  move in five days. The city routed round the closure the way A* does, and
+  the population had no reason to change.
 - **Fast-forward.** A Web Worker runs a full city day (86,400 ticks) in about
   twelve seconds while the page keeps drawing, then hands the world back.
 - **Save, load, share.** Generation runs and ecosystems save to JSON; the
