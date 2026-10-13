@@ -109,6 +109,9 @@ if (fs.existsSync(statePath)) {
   j.opts = { ...j.opts, graph };
   world = CityWorld.fromJSON(j);
   world.history = [];
+  // without fitness sharing a species' offspring follow its total fitness,
+  // not its mean, so a big species grows bigger
+  if (process.argv.includes("--no-sharing")) world.pop.cfg.sharing = false;
   console.log(`new run ${dir} from ${from}, generation ${world.pop.generation}`);
 } else {
   world = new CityWorld({ seed, popSize: 120, density, control, graph, sharedCrossing: process.argv.includes("--shared-crossing"), memory: process.argv.includes("--memory") ? +(arg("memory", "1")) || 1 : 0 });

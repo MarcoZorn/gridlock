@@ -432,6 +432,22 @@ difference is that a child here is born into the same traffic its parent
 just survived, and one city of cars evolves continuously; in the generation
 city every car is scored against a fresh shuffle of everyone else.
 
+Another is fitness sharing. NEAT divides each species' fitness by its size so
+that new ideas get time to pay off, which also means a minority lineage
+driving on the other side is protected. The economy has nothing like it. So I
+took the dense generation run (120 cars on the road, generation 2500) on for
+400 more generations with sharing (`--no-sharing`) off and on:
+
+| from generation 2500 | mean lateral offset, per 50 generations | trips per car |
+|---|---|---|
+| sharing on | -0.06 0.05 -0.07 0.11 0.14 -0.06 -0.10 -0.00 | 0.75 |
+| sharing off | -0.12 0.16 0.19 0.11 0.22 0.12 0.04 0.09 | 0.89 |
+
+With sharing the lean keeps flipping; without it, it held to the right for
+350 generations, though at half the strength the economies reach (±0.35 to
+0.43). One run each, so a hint, not an answer. The surprise is the other
+column: without sharing the city moved 19% more trips per car.
+
 And the code can not impose it. With `BODY.lane` the
 steering target sits in the middle of the right half of every two-way road,
 and one of the two Barcelona runs evolved to drive on the left anyway, 88% of

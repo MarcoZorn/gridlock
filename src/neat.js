@@ -173,7 +173,7 @@ export class Population {
     // structural experiment before any of them has time to pay off.
     let total = 0;
     for (const s of this.species) {
-      s.adjusted = s.members.reduce((t, g) => t + Math.max(g.fitness, 0), 0) / s.members.length;
+      s.adjusted = s.members.reduce((t, g) => t + Math.max(g.fitness, 0), 0) / (cfg.sharing === false ? 1 : s.members.length);
       total += s.adjusted;
     }
 
