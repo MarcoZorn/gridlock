@@ -180,6 +180,25 @@ because the km fell faster; I suspected cars that stop being rear-ended by cars
 that do not, and the collision mix says otherwise (rear-ending a stopped car is
 16% of collisions at the low fine and 19% at the high one).
 
+**The crossroads.** Junction conflicts are diluted in a whole city, so I
+built an arena that is nothing but the question: one junction, four arms, a
+ring road joining their ends so there are no dead ends, and every fare
+routed through the middle. The no-signals population from generation 2800
+was moved in, once with lights and once without, and ran a thousand
+generations each:
+
+| | first 100 generations | last 100 |
+|---|---|---|
+| no signals: conflicts resolved | 60% | 59% |
+| no signals: car-on-car crashes / car | 3.1 | 3.5 |
+| lights: conflicts resolved | 58% | 52% |
+| lights: car-on-car crashes / car | 2.9 | 3.6 |
+
+Nothing. Trips went up a little and the waiting went down: the drivers got
+pushier, not more polite. Making crashes three or six times as expensive
+from the same start only made everyone slower. Right of way did not evolve
+here, under any price I tried.
+
 **Which side of the road?** Nothing in the code prefers a side, and over
 thousands of generations no permanent convention appears: the average lateral
 offset of moving cars hovers near zero. But it is not noise. In a run with all
