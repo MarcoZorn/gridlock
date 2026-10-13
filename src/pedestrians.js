@@ -15,14 +15,16 @@ export const PED = {
   speed: 3.5,          // 1.4 m/s at 0.4 m per unit
   size: 2,
   start: 12,           // energy at birth
-  meal: 4.5,           // energy per crossing
+  meal: 5,             // energy per crossing
   hunger: 0.3,         // energy per second spent alive
-  birth: 30,           // a pedestrian this well fed has a child...
-  birthCost: 12,       // ...for this much
+  birth: 18,           // a pedestrian this well fed has a child...
+  birthCost: 7,        // ...for this much. Dearer, and a crowd losing
+                       // one in eight to traffic never replaces itself, so
+                       // nothing gets selected and it lives on immigrants.
   sight: 160,          // how far along the road it looks
   count: 40,           // population the city starts with
   min: 20,
-  max: 80,
+  max: 100,
 };
 
 const N_IN = 6, N_OUT = 1;   // [left dist, left closing, right dist, right closing, waited, bias-ish]
