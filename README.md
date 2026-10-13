@@ -273,6 +273,19 @@ the city within a day, and the hit rate halves, from about 12 to about 6 per
 hundred crossings, in that same first day. Caution was always easy to evolve;
 it just needed a population that survives long enough to evolve it.
 
+**Real streets.** `tools/osm.mjs` turns an OpenStreetMap extract (Overpass
+JSON) into a road graph: every way node becomes a junction, points closer than
+5 m are welded together, lanes come from the `lanes` tag or the road class,
+and only the largest connected piece is kept. On an imported map a node that
+is only a bend in the road gets an apron as big as the bend is sharp, so a
+curving street is not strung with beads. `eco.html?map=turin` runs the
+ecosystem on the main streets of central Turin. One-way streets are still
+treated as two-way.
+
+![The ecosystem on central Turin's streets](docs/turin.png)
+
+Map data © [OpenStreetMap](https://www.openstreetmap.org/copyright) contributors, ODbL.
+
 ## Files
 
 | file | what is in it |
@@ -288,6 +301,7 @@ it just needed a population that survives long enough to evolve it.
 | `src/ecosim.js`, `src/ffworker.js` | the ecosystem page and its fast-forward worker |
 | `src/render.js` | drawing shared by both pages, pan/zoom, picking |
 | `headless.mjs`, `report.mjs` | long runs and `LIVE.md` |
+| `tools/osm.mjs`, `maps/` | OpenStreetMap import, and imported maps |
 | `src/genome.js`, `src/neat.js` | NEAT, unchanged from neat-from-scratch |
 | `track.html`, `src/track.js`, `src/car.js`, ... | the original single-track demo |
 
