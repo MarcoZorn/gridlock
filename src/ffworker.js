@@ -4,12 +4,13 @@
 import { EcoWorld } from "./ecoworld.js";
 
 self.onmessage = (e) => {
-  const { world, ticks } = e.data;
+  const { world, heat, ticks } = e.data;
   const w = EcoWorld.fromJSON(world);
+  w.city.heat = heat;
   const every = Math.max(1, Math.floor(ticks / 50));
   for (let i = 0; i < ticks; i++) {
     w.step();
     if (i % every === 0) self.postMessage({ progress: i / ticks, tick: w.tick, cars: w.cars.length });
   }
-  self.postMessage({ done: true, world: JSON.parse(JSON.stringify(w)) });
+  self.postMessage({ done: true, world: JSON.parse(JSON.stringify(w)), heat: w.city.heatGrid() });
 };

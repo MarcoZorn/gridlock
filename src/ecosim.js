@@ -394,6 +394,7 @@ $("ffDay").onclick = (e) => {
   worker.onmessage = (m) => {
     if (m.data.done) {
       world = EcoWorld.fromJSON(m.data.world);
+      world.city.heat = m.data.heat;   // the skipped day stays on the heatmap
       selected = null;
       worker.terminate(); worker = null;
       btn.textContent = "Fast-forward a day";
@@ -401,7 +402,7 @@ $("ffDay").onclick = (e) => {
     }
     btn.textContent = `Fast-forwarding ${Math.round(m.data.progress * 100)}%`;
   };
-  worker.postMessage({ world: JSON.parse(JSON.stringify(world)), ticks: 24 * 60 * 60 });
+  worker.postMessage({ world: JSON.parse(JSON.stringify(world)), heat: world.city.heatGrid(), ticks: 24 * 60 * 60 });
 };
 
 // The city is its seed and its junction control; a link is enough to share it.
@@ -423,11 +424,8 @@ window.addEventListener("resize", layout);
 
 window.gridlock = { get world() { return world; }, cam };
 
-// Founders come from the trained drivers if they are there, from scratch if
-// not (which works, it just takes a long time to get anywhere).
 // Where the cars crash and where they crawl, since this city was built or
-// last changed shape (the fast-forward worker keeps its own, so a skipped day
-// is not on the map).
+// last changed shape.
 const HEAT_MODES = ["off", "crashes", "congestion"];
 let heatMode = 0;
 $("heat").onclick = (e) => {
@@ -438,6 +436,8 @@ $("heat").onclick = (e) => {
 announceToggles();
 shortcuts({ space: "#play", 1: '[data-speed="1"]', 2: '[data-speed="4"]', 3: '[data-speed="16"]', 4: '[data-speed="64"]', f: "#follow", d: "#director", s: "#rays", c: "#colour", e: "#edit", h: "#heat" });
 layout();
+// Founders come from the trained drivers if they are there, from scratch if
+// not (which works, it just takes a long time to get anywhere).
 // Founders: the drivers raised without signals, and if they were shipped,
 // the ones raised under lights and on roundabouts, for a city run that way.
 // Only the sets this page needs right now are waited for; the rest load in
