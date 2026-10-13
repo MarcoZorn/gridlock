@@ -2,7 +2,7 @@
 import { EcoWorld, ECON } from "./ecoworld.js";
 import { Population, Rng } from "./neat.js";
 import { Crowd } from "./pedestrians.js";
-import { fitCanvas, panZoom, cityLayer, drawCity, drawClosures, drawLights, drawRoute, drawRays, drawCar, speciesColour } from "./render.js";
+import { fitCanvas, panZoom, cityLayer, drawClosures, drawLights, drawRoute, drawRays, drawCar, speciesColour } from "./render.js";
 import { drawNetwork } from "./netview.js";
 
 const $ = (id) => document.getElementById(id);

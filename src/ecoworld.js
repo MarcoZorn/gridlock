@@ -9,7 +9,7 @@
 import { Rng, mutate, crossover, distance, DEFAULTS } from "./neat.js";
 import { Genome, Innovations } from "./genome.js";
 import { City } from "./city.js";
-import { Driver, BODY, N_INPUTS, N_OUTPUTS } from "./driver.js";
+import { Driver, N_INPUTS, N_OUTPUTS } from "./driver.js";
 import { Body, TRAITS } from "./body.js";
 import { SpatialHash } from "./spatial.js";
 import { collideCars, DT } from "./cityworld.js";

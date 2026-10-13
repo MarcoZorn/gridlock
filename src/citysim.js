@@ -2,7 +2,7 @@
 import { CityWorld } from "./cityworld.js";
 import { SIZES } from "./ecoworld.js";
 import { BODY } from "./driver.js";
-import { fitCanvas, panZoom, cityLayer, drawCity, drawHeat, drawSenses, drawLights, drawRoute, drawRays, drawCar } from "./render.js";
+import { fitCanvas, panZoom, cityLayer, drawHeat, drawSenses, drawLights, drawRoute, drawRays, drawCar } from "./render.js";
 import { drawNetwork } from "./netview.js";
 import { drawSparkline } from "./sparkline.js";
 
