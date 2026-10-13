@@ -173,12 +173,30 @@ export class City {
       }
       n.r = r;
     }
+    // Roundabout islands, used only when the junctions are run as
+    // roundabouts: a solid disc in the middle of every 3+ way junction.
+    this.island = new Uint8Array(this.gw * this.gh);
+    for (const n of this.nodes) {
+      if (n.edges.length < 3) continue;
+      n.island = n.r * 0.38;
+      const r = n.island;
+      const x0 = Math.max(0, Math.floor((n.x - r) / CELL)), x1 = Math.min(this.gw - 1, Math.ceil((n.x + r) / CELL));
+      const y0 = Math.max(0, Math.floor((n.y - r) / CELL)), y1 = Math.min(this.gh - 1, Math.ceil((n.y + r) / CELL));
+      for (let gy = y0; gy <= y1; gy++) {
+        for (let gx = x0; gx <= x1; gx++) {
+          if (Math.hypot((gx + 0.5) * CELL - n.x, (gy + 0.5) * CELL - n.y) <= r) this.island[gy * this.gw + gx] = 1;
+        }
+      }
+    }
   }
 
   contains(x, y) {
     if (x < 0 || y < 0 || x >= this.w || y >= this.h) return false;
-    return this.mask[((y / CELL) | 0) * this.gw + ((x / CELL) | 0)] === 1;
+    const c = ((y / CELL) | 0) * this.gw + ((x / CELL) | 0);
+    return this.mask[c] === 1 && !(this.roundabouts && this.island[c] === 1);
   }
+
+  get roundabouts() { return this.control === "roundabouts"; }
 
   // Which junction apron a point is in, or -1.
   junctionAt(x, y) {
