@@ -383,9 +383,12 @@ third as often.
   the population had no reason to change.
 - **Fast-forward.** A Web Worker runs a full city day (86,400 ticks) in about
   twelve seconds while the page keeps drawing, then hands the world back.
-- **Save, load, share.** Generation runs and ecosystems save to JSON; the
-  city is rebuilt from its seed, so a population of 120 is well under a
-  megabyte. The ecosystem's seed and junction control live in the URL.
+- **Save, load, share, replay.** Generation runs and ecosystems save to
+  JSON; the city is rebuilt from its seed, so a population of 120 is about a
+  megabyte. Seed, size, map and junction control live in the URL. A save
+  stores the random state from the start of its generation, so loading one
+  replays that generation exactly, and "Replay generation" is just that: the
+  same fares, the same drivers, the same crash, as many times as you like.
 - **Long runs.** `headless.mjs` runs either world for thousands of
   generations or dozens of city days, checkpointing atomically, and
   `report.mjs` turns the telemetry into `LIVE.md`.
