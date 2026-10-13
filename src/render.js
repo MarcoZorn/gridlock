@@ -119,6 +119,25 @@ export function drawSenses(canvas, d) {
   nctx.fillText("route", 3 * colW + 4, top + barH + 6);
 }
 
+// Roads closed by the editor: a red dashed line down the middle and a bar
+// across each end.
+export function drawClosures(ctx, c, k) {
+  if (!c.closed || !c.closed.size) return;
+  ctx.strokeStyle = "#e86e64";
+  ctx.lineWidth = 2.5 / k;
+  for (const id of c.closed) {
+    const e = c.edges[id], a = c.nodes[e.a], b = c.nodes[e.b];
+    const ux = (b.x - a.x) / e.len, uy = (b.y - a.y) / e.len;
+    ctx.setLineDash([4, 4]);
+    ctx.beginPath(); ctx.moveTo(a.x + ux * a.r, a.y + uy * a.r); ctx.lineTo(b.x - ux * b.r, b.y - uy * b.r); ctx.stroke();
+    ctx.setLineDash([]);
+    for (const [n, s] of [[a, 1], [b, -1]]) {
+      const cx = n.x + ux * n.r * s, cy = n.y + uy * n.r * s;
+      ctx.beginPath(); ctx.moveTo(cx - uy * e.hw, cy + ux * e.hw); ctx.lineTo(cx + uy * e.hw, cy - ux * e.hw); ctx.stroke();
+    }
+  }
+}
+
 // A light is a short bar across each road where it meets the junction apron.
 export function drawLights(ctx, c, k) {
   if (c.roundabouts) {
@@ -198,29 +217,48 @@ export function drawCar(ctx, d, colour, alpha) {
 // Pan by dragging, zoom about the cursor, and a click that did not drag is a
 // pick at that world position. `cam` is { x, y, k }: the world point at the
 // centre of the canvas, and the scale.
-export function panZoom(view, cam, onPick) {
+//
+// `grab(wx, wy)` may claim a drag before it pans: return { move(wx, wy),
+// end(wx, wy) } to take it over, or nothing to pan as usual.
+export function panZoom(view, cam, onPick, grab = null) {
   const toWorld = (sx, sy) => [(sx - view.clientWidth / 2) / cam.k + cam.x, (sy - view.clientHeight / 2) / cam.k + cam.y];
+  // canvas-relative position from client coordinates: offsetX is not
+  // reliable across browsers and for synthetic events
+  const at = (e) => { const r = view.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; };
   let drag = null;
+  let held = null;
   view.addEventListener("pointerdown", (e) => {
-    view.setPointerCapture(e.pointerId);
-    drag = { x: e.offsetX, y: e.offsetY, cx: cam.x, cy: cam.y, moved: false };
+    try { view.setPointerCapture(e.pointerId); } catch { /* synthetic or stale pointer */ }
+    const [px, py] = at(e);
+    drag = { x: px, y: py, cx: cam.x, cy: cam.y, moved: false };
+    held = grab ? grab(...toWorld(px, py)) : null;
   });
   view.addEventListener("pointermove", (e) => {
     if (!drag) return;
-    const dx = e.offsetX - drag.x, dy = e.offsetY - drag.y;
+    const [px, py] = at(e);
+    if (held) {
+      if (Math.abs(px - drag.x) + Math.abs(py - drag.y) > 4) drag.moved = true;
+      held.move(...toWorld(px, py));
+      return;
+    }
+    const dx = px - drag.x, dy = py - drag.y;
     if (Math.abs(dx) + Math.abs(dy) > 4) { drag.moved = true; view.classList.add("dragging"); }
     if (drag.moved) { cam.x = drag.cx - dx / cam.k; cam.y = drag.cy - dy / cam.k; }
   });
   view.addEventListener("pointerup", (e) => {
     view.classList.remove("dragging");
-    if (drag && !drag.moved) onPick(...toWorld(e.offsetX, e.offsetY));
+    const [px, py] = at(e);
+    if (held && drag && drag.moved) held.end(...toWorld(px, py));
+    else if (drag && !drag.moved) onPick(...toWorld(px, py));
     drag = null;
+    held = null;
   });
   view.addEventListener("wheel", (e) => {
     e.preventDefault();
-    const [wx, wy] = toWorld(e.offsetX, e.offsetY);
+    const [px, py] = at(e);
+    const [wx, wy] = toWorld(px, py);
     cam.k = Math.max(0.2, Math.min(12, cam.k * Math.exp(-e.deltaY * 0.0015)));
-    const [nx, ny] = toWorld(e.offsetX, e.offsetY);
+    const [nx, ny] = toWorld(px, py);
     cam.x += wx - nx; cam.y += wy - ny;
   }, { passive: false });
 }
