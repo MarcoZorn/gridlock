@@ -418,6 +418,10 @@ third as often.
   forgets lineages as they die out), and draws it: every birth a line from
   parent to child, across by time, up by generation. Within a city day or two
   it usually shows the same thing: everyone alive descends from one founder.
+- **Director.** A toggle on both pages that, every few seconds, cuts to
+  whichever car has the most traffic around it and follows it, brain and
+  senses on screen. Left alone, it is the quickest way to see what drivers
+  actually do when they meet.
 - **Drawing big cities.** The roads are rendered once into an offscreen
   canvas and only redrawn when the view or the map changes; a large city went
   from 40 frames a second to the display's full rate.
