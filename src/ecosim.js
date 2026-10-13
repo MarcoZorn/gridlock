@@ -245,7 +245,7 @@ $("share").onclick = async (e) => {
 };
 window.addEventListener("resize", layout);
 
-window.gridlock = { get world() { return world; } };
+window.gridlock = { get world() { return world; }, cam };
 
 // Founders come from the trained drivers if they are there, from scratch if
 // not (which works, it just takes a long time to get anywhere).
