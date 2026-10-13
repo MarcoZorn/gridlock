@@ -45,8 +45,9 @@ node tools/osm.mjs extract.json maps/name.json "Place"   # an OpenStreetMap extr
   twelve unseen cities.
 - **Junction manners plateau early.** Drivers raised on a crossroads learn
   to avoid about ten more points of crossing conflicts than at first contact
-  (roughly 52% to 63%), then stop improving, because junction crashes are
-  under 5% of the damage a driver takes.
+  (roughly 52% to 63%), then stop improving. Junction crashes are under 5%
+  of the damage a driver takes, but making every other kind of damage free
+  did not help either: drivers learned to dodge, not to wait.
 - **Right of way did not evolve beyond that.** Not in a whole city, not in an arena that
   is nothing but one crossroads, not with crashes priced three or six times
   higher, not with better eyesight, and not when both cars pay for a
@@ -308,6 +309,26 @@ simply because there is room to miss, and cut crashes per km from about 26 to
 16, but junction crashes stay at 3 to 4.5% of all the damage, so the pressure
 to do better there stays small. Even with two lanes each way, no side of the
 road was chosen.
+
+That explanation made a prediction I could test: make kerb strikes free (a
+crash into a wall still costs the tow, but no damage) and collisions with
+other cars become the only damage there is, so junction manners should
+improve. Same three seeds, narrow crossroads, last 150 generations:
+
+| seed | conflicts resolved, normal / free kerbs | car-on-car crashes per car | trips per car-minute |
+|---|---|---|---|
+| 3 | 61% / 69% | 3.16 / 2.02 | 0.96 / 1.52 |
+| 7 | 59% / 61% | 3.24 / 1.46 | 1.00 / 1.49 |
+| 11 | 70% / 63% | 2.86 / 1.88 | 1.04 / 1.56 |
+
+The prediction failed. Junction manners stayed where they were, 64% against
+63%. What changed was how drivers avoid each other: with the kerb free, they
+swerve into it, collisions between cars fall by 40% and throughput rises by
+half. So the share of the damage is not the whole story either. When a
+collision is the only thing that hurts, these drivers learn to dodge, not to
+wait. A feed-forward brain with no memory, seeing five slices of the world,
+finds dodging easy and taking turns hard, and I think that is the honest
+place to leave it until the brains can remember.
 
 **Which side of the road?** Nothing in the code prefers a side, and over
 thousands of generations no permanent convention appears: the average lateral
