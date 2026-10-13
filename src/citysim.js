@@ -158,6 +158,16 @@ function drawSenses(d) {
 
 // A light is a short bar across each road where it meets the junction apron.
 function drawLights(c, k) {
+  if (c.roundabouts) {
+    for (const n of c.nodes) {
+      if (!n.island) continue;
+      vctx.fillStyle = "#2a3a30";
+      vctx.strokeStyle = "rgba(255,255,255,0.25)";
+      vctx.lineWidth = 1.2 / k;
+      vctx.beginPath(); vctx.arc(n.x, n.y, n.island, 0, Math.PI * 2); vctx.fill(); vctx.stroke();
+    }
+    return;
+  }
   if (c.control !== "lights") return;
   vctx.lineWidth = 3 / k;
   vctx.lineCap = "butt";
@@ -274,7 +284,7 @@ function draw() {
     $("sWait").textContent = `${(last.waitShare * 100).toFixed(1)}%`;
     $("sRed").textContent = last.control === "lights" ? last.redRuns : "-";
     $("sSide").textContent = last.side.toFixed(2);
-    $("sNote").textContent = `generation ${last.gen}, ${last.traffic ? `traffic, ${last.density} at once` : "ghosts, no traffic"}${last.control === "lights" ? ", lights" : ""}`;
+    $("sNote").textContent = `generation ${last.gen}, ${last.traffic ? `traffic, ${last.density} at once` : "ghosts, no traffic"}${last.control !== "none" ? `, ${last.control}` : ""}`;
   }
   $("brainTitle").textContent = selected ? "Selected car's brain" : "Leader's brain";
   const cx = focus ? focus.genome.complexity() : null;
