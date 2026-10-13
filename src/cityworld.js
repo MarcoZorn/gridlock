@@ -18,11 +18,11 @@ export class CityWorld {
   // on the same population, so the same brains can be compared under both.
   // `graph` replaces the rotating generated cities with one fixed map (see
   // tools/osm.mjs, or maps/crossroads.json).
-  constructor({ seed = 1, popSize = 120, ticks = 3600, traffic = false, cities = 6, density = 40, pop = null, control = "none", size = null, graph = null, sharedCrossing = false } = {}) {
+  constructor({ seed = 1, popSize = 120, ticks = 3600, traffic = false, cities = 6, density = 40, pop = null, control = "none", size = null, graph = null, sharedCrossing = false, memory = false } = {}) {
     this.sharedCrossing = sharedCrossing;
     this.seed = seed;
     this.control = control;
-    this.opts = { seed, popSize, ticks, cities, size, graph, sharedCrossing };
+    this.opts = { seed, popSize, ticks, cities, size, graph, sharedCrossing, memory };
     this.density = density;
     this.ticksPerGen = ticks;
     this.traffic = traffic;
@@ -35,7 +35,10 @@ export class CityWorld {
     // so a run of hard cities looks like stagnation and the default (18
     // generations) culled species for the luck of the draw. Over five seeds,
     // 300 generations: 182 at 18, 212 at 60, 219 with no culling at all.
-    this.pop = pop || new Population(N_INPUTS, N_OUTPUTS, { popSize, pWeight: 0.5, weightStep: 0.15, stagnation: 60 }, seed);
+    // `memory` gives every brain a one-number memory channel: an extra output
+    // fed back as an extra input on the next tick.
+    const m = memory ? 1 : 0;
+    this.pop = pop || new Population(N_INPUTS + m, N_OUTPUTS + m, { popSize, pWeight: 0.5, weightStep: 0.15, stagnation: 60 }, seed);
     this.rng = new Rng(seed * 7919 + 5);
     // A handful of cities, rotated per generation, for the same reason the
     // track demo rotates tracks: evolve in one city and you get drivers who

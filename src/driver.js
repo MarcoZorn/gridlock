@@ -66,8 +66,11 @@ export class Driver {
     this.closing = new Float64Array(N_RAYS);
     this.dx = new Float64Array(N_RAYS);   // ray directions, worked out once per tick
     this.dy = new Float64Array(N_RAYS);
-    this.inputs = new Float64Array(N_INPUTS);
-    this.out = new Float64Array(N_OUTPUTS);
+    // Sized by the brain, not the constants: a brain with one more input and
+    // one more output than standard has a memory channel (see step).
+    this.inputs = new Float64Array(genome.nIn || N_INPUTS);
+    this.out = new Float64Array(genome.nOut || N_OUTPUTS);
+    this.memory = 0;
     this.place(route, t0);
   }
 
@@ -199,8 +202,13 @@ export class Driver {
     // The light at the next junction: +1 green, -1 red, 0 if there is none.
     const B = this.route[this.seg + 1], light = this.city.nodes[B].light && this.city.control === "lights";
     this.inputs[k++] = light ? (this.city.green(B, this.route[this.seg]) ? 1 : -1) : 0;
+    // Memory: whatever the brain wrote to its extra output last tick comes
+    // back as an extra input this tick. One number of state, carried from
+    // moment to moment, is the difference between reacting and waiting.
+    if (this.inputs.length > N_INPUTS) this.inputs[k++] = this.memory;
 
     this.genome.activate(this.inputs, this.out);
+    if (this.out.length > N_OUTPUTS) this.memory = this.out[N_OUTPUTS];
     const steer = this.out[0], throttle = this.out[1];
 
     const p = this.p;
