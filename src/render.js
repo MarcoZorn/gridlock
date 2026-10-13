@@ -236,6 +236,16 @@ export function drawCar(ctx, d, colour, alpha) {
   ctx.fillRect(-len / 2, -wid / 2, len, wid);
   ctx.fillStyle = "rgba(0,0,0,0.35)";
   ctx.fillRect(len * 0.1, -wid / 2 + 0.8, len * 0.22, wid - 1.6);
+  // brake lights: the brain's throttle output is braking, and the car is
+  // still moving forward. Watching who lights up at a junction is the
+  // quickest way to see who is giving way to whom.
+  if (d.out && d.out[1] < -0.15 && d.v > 3 && !d.towing) {
+    ctx.globalAlpha = 1;
+    ctx.fillStyle = "#ff3b30";
+    const w = Math.min(1.6, wid * 0.3);
+    ctx.fillRect(-len / 2 - 0.6, -wid / 2 + 0.3, 1.2, w);
+    ctx.fillRect(-len / 2 - 0.6, wid / 2 - 0.3 - w, 1.2, w);
+  }
   ctx.restore();
 }
 
