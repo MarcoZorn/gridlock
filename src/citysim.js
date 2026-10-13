@@ -202,10 +202,16 @@ $("loadFile").onchange = async (e) => {
   catch (err) { alert(`Not a gridlock save: ${err.message}`); }
   e.target.value = "";
 };
+// Drivers raised under the junction control that is on now, if a set was
+// shipped for it (docs/trained-lights.json, ...), the no-signals set if not.
 $("trained").onclick = async () => {
   try {
-    const r = await fetch("docs/trained.json");
-    adopt(CityWorld.fromJSON(await r.json()));
+    let r = control !== "none" ? await fetch(`docs/trained-${control}.json`) : null;
+    if (!r || !r.ok) r = await fetch("docs/trained.json");
+    const j = await r.json();
+    j.control = control;
+    if (graph) j.opts = { ...j.opts, graph };
+    adopt(CityWorld.fromJSON(j));
   } catch (err) { alert(`Could not load the trained drivers: ${err.message}`); }
 };
 // A new size is a new set of cities, but the same drivers: the population is
