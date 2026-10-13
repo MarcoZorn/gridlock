@@ -226,4 +226,21 @@ import { Body } from "./src/body.js";
   console.log("ok  waves run apart match a generation run in one go");
 }
 
+// the memory channel: the extra output comes back as the extra input
+{
+  const w = new CityWorld({ seed: 3, popSize: 20, ticks: 300, memory: true });
+  const d = w.cars[0];
+  assert(d.inputs.length === 22 && d.out.length === 3, "memory brains have one more input and output");
+  let seen = 0;
+  for (let t = 0; t < 120 && d.alive; t++) {
+    const before = d.out[2];
+    w.step();
+    if (d.alive && d.towing === 0 && Math.abs(d.inputs[21] - before) < 1e-12) seen++;
+  }
+  assert(seen > 10, "last tick's memory output is this tick's memory input");
+  const std = new CityWorld({ seed: 3, popSize: 20, ticks: 300 });
+  assert(std.cars[0].inputs.length === 21, "standard brains are unchanged");
+  console.log("ok  memory channel feeds back");
+}
+
 console.log("\nall checks passed");
