@@ -107,11 +107,15 @@ export class City {
     this.h = (rows - 1) * spacing + margin * 2;
 
     this.nodes = [];
+    // which node sits at grid position (i, j); expansion grows this
+    this.grid = { cols, rows, spacing, margin, jitter, at: [] };
     for (let j = 0; j < rows; j++) {
+      this.grid.at.push([]);
       for (let i = 0; i < cols; i++) {
         const edge = i === 0 || j === 0 || i === cols - 1 || j === rows - 1;
         const jx = edge ? 0 : rng.range(-jitter, jitter) * spacing;
         const jy = edge ? 0 : rng.range(-jitter, jitter) * spacing;
+        this.grid.at[j].push(this.nodes.length);
         this.nodes.push({ id: this.nodes.length, x: margin + i * spacing + jx, y: margin + j * spacing + jy, edges: [] });
       }
     }
@@ -121,6 +125,9 @@ export class City {
     const artRows = new Set([1 + rng.int(rows - 2)]);
     const artCols = new Set([1 + rng.int(cols - 2)]);
     if (cols > 6) artCols.add(1 + rng.int(cols - 2));
+    // big cities get an arterial for roughly every five streets
+    for (let k = 2; k < Math.round(cols / 5); k++) artCols.add(1 + rng.int(cols - 2));
+    for (let k = 1; k < Math.round(rows / 5); k++) artRows.add(1 + rng.int(rows - 2));
 
     const id = (i, j) => j * cols + i;
     const cand = [];
@@ -155,6 +162,41 @@ export class City {
     this.edges.forEach((e, i) => (e.id = i));
     for (const n of this.nodes) n.edges = [];
     for (const e of this.edges) { this.nodes[e.a].edges.push(e); this.nodes[e.b].edges.push(e); }
+  }
+
+  // Grow the city by one row of blocks to the "east" or "south". The old edge
+  // becomes the inside of town; the new edge is straight, like the old one
+  // was. Arterials carry on into the new blocks, and a few of the new
+  // connecting streets are left out so the new district has its own dead
+  // ends. Deterministic from the seed and the number of expansions so far,
+  // so a saved city can be grown again identically.
+  expand(side) {
+    const g = this.grid;
+    if (!g) return false;
+    const rng = new Rng(this.seed * 977 + (this.expansions || []).length * 7919 + 1);
+    const along = side === "east" ? g.rows : g.cols;
+    const fresh = [];
+    for (let k = 0; k < along; k++) {
+      const [i, j] = side === "east" ? [g.cols, k] : [k, g.rows];
+      fresh.push(this.nodes.length);
+      this.nodes.push({ id: this.nodes.length, x: g.margin + i * g.spacing, y: g.margin + j * g.spacing, edges: [] });
+    }
+    const old = (k) => (side === "east" ? g.at[k][g.cols - 1] : g.at[g.rows - 1][k]);
+    const before = (k) => (side === "east" ? g.at[k][g.cols - 2] : g.at[g.rows - 2][k]);
+    for (let k = 0; k < along; k++) {
+      const prev = this.edgeBetween(before(k), old(k));
+      // keep at least every other connector, and always the ends
+      if (k === 0 || k === along - 1 || rng.next() > 0.2) this.addEdge(old(k), fresh[k], prev ? prev.lanes : 1);
+      if (k + 1 < along) this.addEdge(fresh[k], fresh[k + 1], 1);
+    }
+    if (side === "east") { fresh.forEach((id, j) => g.at[j].push(id)); g.cols++; this.w += g.spacing; }
+    else { g.at.push(fresh); g.rows++; this.h += g.spacing; }
+    this.bake();
+    for (const n of this.nodes) {
+      if (n.edges.length >= 3) this.setupLight(n, n.light ? n.light.offset : (n.id * 7.3) % LIGHT.cycle);
+    }
+    (this.expansions || (this.expansions = [])).push(side);
+    return true;
   }
 
   fromGraph(graph) {
