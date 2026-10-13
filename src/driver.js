@@ -59,7 +59,10 @@ export class Driver {
     this.inputs = new Float64Array(N_INPUTS);
     this.out = new Float64Array(N_OUTPUTS);
     const n0 = city.nodes[route[0]], n1 = city.nodes[route[1]];
-    this.x = n0.x + (n1.x - n0.x) * t0; this.y = n0.y + (n1.y - n0.y) * t0;
+    // never on a roundabout island
+    const len0 = Math.hypot(n1.x - n0.x, n1.y - n0.y);
+    const s0 = Math.max(t0, n0.island ? n0.r / len0 : 0);
+    this.x = n0.x + (n1.x - n0.x) * s0; this.y = n0.y + (n1.y - n0.y) * s0;
     this.a = Math.atan2(n1.y - n0.y, n1.x - n0.x);
     this.setRoute(route);
   }
@@ -225,7 +228,32 @@ export class Driver {
     // offset as an input and can hold a side or not.
     const ux = (B.x - A.x) / len, uy = (B.y - A.y) / len;
     const lat = Math.max(-0.7, Math.min(0.7, f.lateral / this.edgeHW(f))) * this.edgeHW(f) * BODY.keepLine;
-    return [A.x + (B.x - A.x) * t - uy * lat, A.y + (B.y - A.y) * t + ux * lat];
+    let tx = A.x + (B.x - A.x) * t - uy * lat, ty = A.y + (B.y - A.y) * t + ux * lat;
+    if (this.city.roundabouts) [tx, ty] = this.aroundIsland(tx, ty);
+    return [tx, ty];
+  }
+
+  // On a roundabout the route still runs through the middle of the junction,
+  // which is now a solid island. A target that falls on or near the island is
+  // moved onto the ring, a short step round from where the car is, in
+  // whichever direction is shorter to the exit. Which way round traffic goes
+  // is not decided here: two cars with different exits can be sent opposite
+  // ways, and what they do about meeting each other is up to them.
+  aroundIsland(tx, ty) {
+    for (const id of [this.route[this.seg], this.route[this.seg + 1]]) {
+      const n = this.city.nodes[id];
+      if (!n.island) continue;
+      const ring = n.island + (n.r - n.island) * 0.5;
+      if (Math.hypot(tx - n.x, ty - n.y) > ring) continue;
+      const k = this.route.indexOf(id, this.seg);
+      const exit = this.city.nodes[this.route[Math.min(k + 1, this.route.length - 1)]];
+      const ac = Math.atan2(this.y - n.y, this.x - n.x);
+      const ae = Math.atan2(exit.y - n.y, exit.x - n.x);
+      const d = wrap(ae - ac);
+      const a = ac + Math.sign(d || 1) * Math.min(Math.abs(d), 0.9);
+      return [n.x + Math.cos(a) * ring, n.y + Math.sin(a) * ring];
+    }
+    return [tx, ty];
   }
 
   edgeHW(f) {
@@ -291,7 +319,9 @@ export class Driver {
     if (this.onCrash) this.onCrash(this);
     this.crashed = true;
     const f = this.frame();
-    const t = Math.max(0, Math.min(f.len, f.along));
+    // dropped on the road, never on a roundabout island
+    const lo = f.A.island ? f.A.r : 0, hi = f.len - (f.B.island ? f.B.r : 0);
+    const t = Math.max(lo, Math.min(hi, f.along));
     this.x = f.A.x + f.ux * t;
     this.y = f.A.y + f.uy * t;
     this.a = Math.atan2(f.uy, f.ux);
