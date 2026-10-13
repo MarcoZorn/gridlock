@@ -38,6 +38,29 @@ node report.mjs                            # LIVE.md from every run's telemetry
 node tools/osm.mjs extract.json maps/name.json "Place"   # an OpenStreetMap extract as a map
 ```
 
+## What it found, so far
+
+- **Drivers learn to drive a city they have never seen.** After 300
+  generations the evolved champion out-drove my hand-written controller on
+  twelve unseen cities.
+- **Right of way did not evolve.** Not in a whole city, not in an arena that
+  is nothing but one crossroads, not with crashes priced three or six times
+  higher, and not with better eyesight. About 60% of junction conflicts end
+  without a collision, the same as for drivers that have never met traffic.
+- **No side of the road, but almost.** Which side cars keep to is inherited
+  and shared from one generation to the next (autocorrelation 0.71) and
+  drifts for a hundred generations at a time, but never locks in.
+- **Fines teach, and cost.** Raising the price of a red light cuts
+  red-running and car-on-car crashes within a hundred generations, and the
+  city moves a third as many people.
+- **With no fitness function, the cheapest car wins.** Every forty-day
+  economy bred small, underpowered, short-sighted cars.
+- **Cars and pedestrians cycle.** Once both populations can replace
+  themselves they oscillate like predator and prey.
+- **Two bugs mattered more than any tuning.** A four-second "lost" rule that
+  killed every car waiting at a red light, and a stagnation rule that culled
+  species for drawing hard cities.
+
 ## What is coded and what is evolved
 
 | coded | evolved |
