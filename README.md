@@ -1206,7 +1206,12 @@ trucks took over in three days from almost nothing. And the split did not
 last: run on to day 15, the couriers were gone and the whole fleet had
 converged on vans (cargo 0.4 to 0.8, the mean drifting down from 0.79 to
 0.63). At normal freight prices, in both seeds tried, nobody ever carried
-freight at all. The truck cities are also the big ones
+freight at all, and at double prices (same six seeds) only seed 13 did,
+settling on vans; it starts with roomy founders either way (a mean cargo of
+0.62 on day one here), so for that city the founders do matter. The
+threshold is somewhere between twice and three times today's freight rate,
+and above it, whether a city finds trucks is part luck of the founders and
+part luck of the first few days. The truck cities are also the big ones
 (120 cars, the ceiling, against 27 to 60), because freight is money the
 small-car cities leave on the table.
 
