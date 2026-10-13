@@ -124,13 +124,17 @@ export class City {
     // corners are rounded off. Without it a turn has to fit inside the overlap
     // of two road ends, which means crawling, and evolution almost never finds
     // a brain that brakes that hard before it has learned to turn at all.
+    this.junction = new Int16Array(this.gw * this.gh).fill(-1);
     for (const n of this.nodes) {
       const r = Math.max(...n.edges.map((e) => e.hw)) + 8;
       const x0 = Math.max(0, Math.floor((n.x - r) / CELL)), x1 = Math.min(this.gw - 1, Math.ceil((n.x + r) / CELL));
       const y0 = Math.max(0, Math.floor((n.y - r) / CELL)), y1 = Math.min(this.gh - 1, Math.ceil((n.y + r) / CELL));
       for (let gy = y0; gy <= y1; gy++) {
         for (let gx = x0; gx <= x1; gx++) {
-          if (Math.hypot((gx + 0.5) * CELL - n.x, (gy + 0.5) * CELL - n.y) <= r) this.mask[gy * this.gw + gx] = 1;
+          if (Math.hypot((gx + 0.5) * CELL - n.x, (gy + 0.5) * CELL - n.y) <= r) {
+            this.mask[gy * this.gw + gx] = 1;
+            this.junction[gy * this.gw + gx] = n.id;
+          }
         }
       }
       n.r = r;
@@ -140,6 +144,12 @@ export class City {
   contains(x, y) {
     if (x < 0 || y < 0 || x >= this.w || y >= this.h) return false;
     return this.mask[((y / CELL) | 0) * this.gw + ((x / CELL) | 0)] === 1;
+  }
+
+  // Which junction apron a point is in, or -1.
+  junctionAt(x, y) {
+    if (x < 0 || y < 0 || x >= this.w || y >= this.h) return -1;
+    return this.junction[((y / CELL) | 0) * this.gw + ((x / CELL) | 0)];
   }
 
   edgeBetween(a, b) {
