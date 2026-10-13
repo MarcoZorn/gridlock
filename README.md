@@ -585,9 +585,10 @@ Map data © [OpenStreetMap](https://www.openstreetmap.org/copyright) contributor
 | `src/pedestrians.js` | people crossing the road, the second population |
 | `src/ecosim.js`, `src/ffworker.js` | the ecosystem page and its fast-forward worker |
 | `src/render.js` | drawing shared by both pages, pan/zoom, picking |
-| `headless.mjs`, `report.mjs` | long runs and `LIVE.md` |
-| `tools/osm.mjs`, `maps/` | OpenStreetMap import, and imported maps |
-| `src/genome.js`, `src/neat.js` | NEAT, unchanged from neat-from-scratch |
+| `headless.mjs`, `src/waveworker.mjs`, `report.mjs` | long runs (traffic waves on worker threads) and `LIVE.md` |
+| `tools/osm.mjs`, `maps/` | OpenStreetMap import; Turin, Barcelona, and the crossroads arenas |
+| `src/genome.js`, `src/neat.js` | NEAT from neat-from-scratch, plus networks compiled to typed arrays and save/load |
+| `test.mjs` | `node test.mjs`: everything above, checked headlessly |
 | `track.html`, `src/track.js`, `src/car.js`, ... | the original single-track demo |
 
 ## Reading
