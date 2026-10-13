@@ -20,8 +20,9 @@ export const BODY = {
   fov: Math.PI * 1.1,
   lostTicks: 240,   // no route progress for this long and the car is lost
   lookahead: 35,    // how far down the route the steering target sits
-  dropSpeed: 40,    // must be this slow at the destination to deliver
-  towTicks: 120, maxCrashes: 12, damageCost: 1,
+  dropSpeed: 40,
+  stoppedSpeed: 6,  // below this a car in a junction counts as waiting    // must be this slow at the destination to deliver
+  towTicks: 120, graceTicks: 45, maxCrashes: 12, damageCost: 1,
 };
 
 const ANGLES = Array.from({ length: N_RAYS }, (_, i) => -BODY.fov / 2 + (BODY.fov * i) / (N_RAYS - 1));
@@ -30,7 +31,9 @@ export const rayAngles = () => ANGLES;
 const wrap = (a) => Math.atan2(Math.sin(a), Math.cos(a));
 
 export class Driver {
-  constructor(genome, city, route) {
+  // `t0` is how far along the first road the car starts, so a city full of
+  // cars does not begin with everyone stacked on the same junction.
+  constructor(genome, city, route, t0 = 0) {
     this.genome = genome;
     this.city = city;
     this.alive = true;
@@ -38,18 +41,21 @@ export class Driver {
     this.crashes = 0;
     this.damage = 0;       // sum of (impact speed / top speed) squared
     this.towing = 0;       // ticks left sitting at the kerb after a crash
+    this.grace = 0;        // ticks after a tow when the car cannot be hit yet
     this.v = 0;
     this.ticks = 0;
     this.trips = 0;
     this.banked = 0;       // route distance from finished trips
     this.tripTicks = [];
+    this.dist = 0;         // distance actually driven, for crashes per km
+    this.waitTicks = 0;    // ticks spent stopped inside a junction
     this.wallRay = new Float64Array(N_RAYS);
     this.carRay = new Float64Array(N_RAYS);
     this.closing = new Float64Array(N_RAYS);
     this.inputs = new Float64Array(N_INPUTS);
     this.out = new Float64Array(N_OUTPUTS);
     const n0 = city.nodes[route[0]], n1 = city.nodes[route[1]];
-    this.x = n0.x; this.y = n0.y;
+    this.x = n0.x + (n1.x - n0.x) * t0; this.y = n0.y + (n1.y - n0.y) * t0;
     this.a = Math.atan2(n1.y - n0.y, n1.x - n0.x);
     this.setRoute(route);
   }
@@ -63,6 +69,11 @@ export class Driver {
     this.tripStart = this.ticks;
     this.routeLen = this.city.pathLength(route);
   }
+
+  // Solid cars collide and show up on other cars' rays. A car being towed, or
+  // just put back on the road, is neither: it would otherwise be dropped on
+  // top of whoever is passing and crash again on the spot.
+  get solid() { return this.alive && this.towing === 0 && this.grace === 0; }
 
   get vx() { return Math.cos(this.a) * this.v; }
   get vy() { return Math.sin(this.a) * this.v; }
@@ -108,7 +119,7 @@ export class Driver {
     const rad = BODY.len * 0.5;
     const svx = this.vx, svy = this.vy;
     hash.near(this.x, this.y, R + rad, (o) => {
-      if (o === this || !o.alive) return;
+      if (o === this || !o.solid) return;
       const ox = o.x - this.x, oy = o.y - this.y;
       const d2 = ox * ox + oy * oy;
       if (d2 > (R + rad) * (R + rad)) return;
@@ -131,7 +142,8 @@ export class Driver {
   step(dt, hash) {
     if (!this.alive) return;
     this.ticks++;
-    if (this.towing > 0) { this.towing--; return; }
+    if (this.towing > 0) { if (--this.towing === 0) this.grace = BODY.graceTicks; return; }
+    if (this.grace > 0) this.grace--;
     this.sense(hash);
     const f = this.frame();
     const R = BODY.rayRange;
@@ -160,6 +172,8 @@ export class Driver {
     this.v += (throttle >= 0 ? throttle * BODY.accel : throttle * BODY.brake) * dt;
     this.v -= this.v * BODY.drag * dt;
     this.v = Math.max(-BODY.maxReverse, Math.min(BODY.maxSpeed, this.v));
+    this.dist += Math.abs(this.v) * dt;
+    if (Math.abs(this.v) < BODY.stoppedSpeed && this.city.junctionAt(this.x, this.y) >= 0) this.waitTicks++;
     this.x += Math.cos(this.a) * this.v * dt;
     this.y += Math.sin(this.a) * this.v * dt;
 
@@ -242,10 +256,11 @@ export class Driver {
   // die at the first corner whether it braked or not, the fitness landscape
   // would be flat right where it matters, and evolution would never find out
   // that braking helps. A fine per crash keeps the slope.
-  crash() {
+  crash(speed = this.v) {
     this.crashes++;
-    const impact = this.v / BODY.maxSpeed;
+    const impact = Math.min(1.5, Math.abs(speed) / BODY.maxSpeed);
     this.damage += impact * impact;
+    if (this.onCrash) this.onCrash(this);
     this.crashed = true;
     const f = this.frame();
     const t = Math.max(0, Math.min(f.len, f.along));

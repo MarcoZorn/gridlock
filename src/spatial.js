@@ -15,13 +15,14 @@ export class SpatialHash {
     this.items = [];
   }
 
+  // Only items whose `solid` is true are indexed.
   rebuild(items) {
     this.items = items;
     if (this.next.length < items.length) this.next = new Int32Array(items.length * 2);
     this.head.fill(-1);
     for (let i = 0; i < items.length; i++) {
       const it = items[i];
-      if (!it.alive) continue;
+      if (!it.solid) continue;
       const c = this.cellOf(it.x, it.y);
       this.next[i] = this.head[c];
       this.head[c] = i;
