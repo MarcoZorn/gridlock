@@ -2,7 +2,7 @@
 import { EcoWorld, ECON } from "./ecoworld.js";
 import { Population, Rng } from "./neat.js";
 import { Crowd } from "./pedestrians.js";
-import { fitCanvas, panZoom, drawCity, drawClosures, drawLights, drawRoute, drawRays, drawCar, speciesColour } from "./render.js";
+import { fitCanvas, panZoom, cityLayer, drawCity, drawClosures, drawLights, drawRoute, drawRays, drawCar, speciesColour } from "./render.js";
 import { drawNetwork } from "./netview.js";
 
 const $ = (id) => document.getElementById(id);
@@ -14,6 +14,7 @@ const bod = $("bodies"), octx = bod.getContext("2d");
 let world, founders = null, graph = null, size = "small", running = true, speed = 1, showRays = true, follow = false;
 let selected = null, colourBy = "species", control = "none", editing = false, draft = null;
 const cam = { x: 0, y: 0, k: 1, fitted: false };
+const roads = cityLayer();
 
 function layout() {
   const w = Math.max(320, Math.floor(view.parentElement.getBoundingClientRect().width - 20));
@@ -95,11 +96,11 @@ function draw() {
 
   const W = view.clientWidth, H = view.clientHeight, k = cam.k;
   vctx.clearRect(0, 0, W, H);
+  roads(vctx, world.city, cam, W, H);
   vctx.save();
   vctx.translate(W / 2, H / 2);
   vctx.scale(k, k);
   vctx.translate(-cam.x, -cam.y);
-  drawCity(vctx, world.city, k);
   drawLights(vctx, world.city, k);
   drawClosures(vctx, world.city, k);
   if (draft) {

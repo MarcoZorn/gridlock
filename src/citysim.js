@@ -2,7 +2,7 @@
 import { CityWorld } from "./cityworld.js";
 import { SIZES } from "./ecoworld.js";
 import { BODY } from "./driver.js";
-import { fitCanvas, panZoom, drawCity, drawHeat, drawSenses, drawLights, drawRoute, drawRays, drawCar } from "./render.js";
+import { fitCanvas, panZoom, cityLayer, drawCity, drawHeat, drawSenses, drawLights, drawRoute, drawRays, drawCar } from "./render.js";
 import { drawNetwork } from "./netview.js";
 import { drawSparkline } from "./sparkline.js";
 
@@ -17,6 +17,7 @@ let pending = 0, selected = null;
 let traffic = false, density = 40, heatMode = 0, control = "none", size = "small";
 const HEAT_MODES = ["off", "crashes", "congestion"];
 const cam = { x: 0, y: 0, k: 1, fitted: false };
+const roads = cityLayer();
 
 
 function layout() {
@@ -52,12 +53,12 @@ function draw() {
 
   const W = view.clientWidth, H = view.clientHeight, k = cam.k;
   vctx.clearRect(0, 0, W, H);
+  roads(vctx, world.city, cam, W, H);
   vctx.save();
   vctx.translate(W / 2, H / 2);
   vctx.scale(k, k);
   vctx.translate(-cam.x, -cam.y);
 
-  drawCity(vctx, world.city, k);
   if (heatMode) drawHeat(vctx, world.heat, heatMode);
   drawLights(vctx, world.city, k);
   if (focus) drawRoute(vctx, world.city, focus, k);
