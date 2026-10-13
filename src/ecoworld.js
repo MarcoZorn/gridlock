@@ -88,6 +88,7 @@ export class EcoWorld {
     this.species = [];          // { id, brain, body, size, born }
     this.nextSpecies = 0;
     this.threshold = 0.8;       // nudged so the number of species stays readable
+    this.ancestry = new Map();  // id -> { parent, born, died, generation, species, children }
     this.log = [];              // telemetry rows
     this.events = { births: 0, deaths: 0, immigrants: 0, trips: 0, crashes: 0, carCrashes: 0, earned: 0, deadheads: 0, freight: 0, tripTicks: 0, pedHits: 0 };
     this.crowd = pedestrians ? new Crowd(this.city, new Rng(seed * 7 + 1), pedestrians) : null;
@@ -156,6 +157,8 @@ export class EcoWorld {
       this.events.crashes++;
     };
     this.cars.push(d);
+    this.ancestry.set(d.id, { parent: d.parent, born: this.tick, died: -1, generation: d.generation, species: d.species, children: 0 });
+    if (parent && this.ancestry.has(parent.id)) this.ancestry.get(parent.id).children++;
     return d;
   }
 
@@ -250,6 +253,7 @@ export class EcoWorld {
       }
     }
     const before = this.cars.length;
+    for (const d of this.cars) if (d.cash < 0 && this.ancestry.has(d.id)) this.ancestry.get(d.id).died = this.tick;
     this.cars = this.cars.filter((d) => d.cash >= 0);
     this.events.deaths += before - this.cars.length;
     this.events.births += born.length;
@@ -260,7 +264,7 @@ export class EcoWorld {
     }
 
     this.tick++;
-    if (this.tick % SPECIES_EVERY === 0) this.speciate();
+    if (this.tick % SPECIES_EVERY === 0) { this.speciate(); this.pruneAncestry(); }
     if (this.tick % 600 === 0) this.record();
   }
 
@@ -296,6 +300,8 @@ export class EcoWorld {
         this.species.push(home);
       }
       d.species = home.id;
+      const a = this.ancestry.get(d.id);
+      if (a) a.species = home.id;
       counts.set(home.id, (counts.get(home.id) || 0) + 1);
     }
     this.species = this.species.filter((s) => counts.has(s.id));
@@ -321,6 +327,27 @@ export class EcoWorld {
     });
     if (this.crowd) this.crowd.events = { crossings: 0, hit: 0, starved: 0, born: 0 };
     this.events = { births: 0, deaths: 0, immigrants: 0, trips: 0, crashes: 0, carCrashes: 0, earned: 0, deadheads: 0, freight: 0, tripTicks: 0, pedHits: 0 };
+  }
+
+  // Ancestry is only kept for cars someone alive descends from; everything
+  // else is forgotten, so the record stays the size of the living family tree.
+  pruneAncestry() {
+    const keep = new Set();
+    for (const d of this.cars) {
+      for (let id = d.id; id >= 0 && !keep.has(id); id = this.ancestry.get(id)?.parent ?? -1) keep.add(id);
+    }
+    for (const id of this.ancestry.keys()) if (!keep.has(id)) this.ancestry.delete(id);
+  }
+
+  // A car's line back to its founder: [{ id, born, generation, ... }], oldest first.
+  lineage(d) {
+    const line = [];
+    for (let id = d.id; id >= 0; id = this.ancestry.get(id)?.parent ?? -1) {
+      const a = this.ancestry.get(id);
+      if (!a) break;
+      line.unshift({ id, ...a });
+    }
+    return line;
   }
 
   // How much bigger than the city the economy was tuned on.
@@ -379,6 +406,7 @@ export class EcoWorld {
       species: this.species.map((s) => ({ id: s.id, brain: s.brain.toJSON(), body: s.body.toJSON(), born: s.born, size: s.size })),
       log: this.log,
       crowd: this.crowd ? this.crowd.toJSON() : null,
+      ancestry: [...this.ancestry],
     };
   }
 
@@ -405,6 +433,7 @@ export class EcoWorld {
     w.nextId = j.nextId;
     w.species = j.species.map((s) => ({ id: s.id, brain: Genome.fromJSON(s.brain), body: Body.fromJSON(s.body), born: s.born, size: s.size }));
     w.log = j.log || [];
+    if (j.ancestry) w.ancestry = new Map(j.ancestry);
     if (j.crowd) w.crowd = Crowd.fromJSON(j.crowd, w.city, new Rng(j.seed * 7 + 1));
     w.city.time = w.tick * DT;
     return w;
