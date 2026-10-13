@@ -1,0 +1,196 @@
+// Drawing the city and the cars on it, shared by the generations page and
+// the ecosystem page. Everything here draws in world coordinates into
+// whatever transform the caller has set up.
+import { rayAngles } from "./driver.js";
+import { LANE_W } from "./city.js";
+
+const ANGLES = rayAngles();
+
+export function fitCanvas(c, cssW, cssH) {
+  const dpr = Math.min(2, window.devicePixelRatio || 1);
+  c.width = cssW * dpr; c.height = cssH * dpr;
+  c.style.width = cssW + "px"; c.style.height = cssH + "px";
+  c.getContext("2d").setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+
+// Roads are drawn the way they were baked: a fat round-capped stroke per edge
+// and a disc per junction apron, so the picture and the collision mask agree.
+export function drawCity(ctx, c, k) {
+  ctx.lineCap = "round";
+  for (const pass of [0, 1]) {
+    ctx.strokeStyle = ctx.fillStyle = pass ? "#1b1d24" : "rgba(255,255,255,0.16)";
+    const grow = pass ? 0 : 1.5 / k;
+    for (const e of c.edges) {
+      const a = c.nodes[e.a], b = c.nodes[e.b];
+      ctx.lineWidth = (e.hw + 2) * 2 + grow * 2;
+      ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+    }
+    for (const n of c.nodes) {
+      ctx.beginPath(); ctx.arc(n.x, n.y, n.r + grow, 0, Math.PI * 2); ctx.fill();
+    }
+  }
+  // Lane markings stop short of the junction aprons, as painted ones do.
+  ctx.lineCap = "butt";
+  for (const e of c.edges) {
+    const a = c.nodes[e.a], b = c.nodes[e.b];
+    const ux = (b.x - a.x) / e.len, uy = (b.y - a.y) / e.len;
+    const nx = -uy, ny = ux;
+    const s0 = a.r, s1 = e.len - b.r;
+    if (s1 <= s0) continue;
+    const line = (off, dash, col) => {
+      ctx.setLineDash(dash);
+      ctx.strokeStyle = col;
+      ctx.lineWidth = 1.2 / k;
+      ctx.beginPath();
+      ctx.moveTo(a.x + ux * s0 + nx * off, a.y + uy * s0 + ny * off);
+      ctx.lineTo(a.x + ux * s1 + nx * off, a.y + uy * s1 + ny * off);
+      ctx.stroke();
+    };
+    if (e.lanes > 1) line(0, [], "rgba(232,196,106,0.35)");
+    else line(0, [6, 8], "rgba(255,255,255,0.18)");
+    for (let l = 1; l < e.lanes; l++) {
+      line(l * LANE_W, [5, 9], "rgba(255,255,255,0.14)");
+      line(-l * LANE_W, [5, 9], "rgba(255,255,255,0.14)");
+    }
+  }
+  ctx.setLineDash([]);
+}
+
+// The heatmap is a tiny image, one pixel per heat cell, scaled up with
+// smoothing on. Thousands of cells cost one drawImage instead of a rect each.
+const heatCanvas = document.createElement("canvas"), hctx = heatCanvas.getContext("2d");
+export function drawHeat(ctx, h, mode) {
+  const grid = mode === 1 ? h.crash : h.slow;
+  if (heatCanvas.width !== h.w || heatCanvas.height !== h.h) { heatCanvas.width = h.w; heatCanvas.height = h.h; }
+  let max = 0;
+  for (let i = 0; i < grid.length; i++) if (grid[i] > max) max = grid[i];
+  const img = hctx.createImageData(h.w, h.h);
+  const [r, g, b] = mode === 1 ? [232, 110, 100] : [232, 196, 106];
+  for (let i = 0; i < grid.length; i++) {
+    if (!grid[i]) continue;
+    // square root so a few hot spots do not wash everything else out
+    const t = Math.sqrt(grid[i] / max);
+    img.data[i * 4] = r; img.data[i * 4 + 1] = g; img.data[i * 4 + 2] = b;
+    img.data[i * 4 + 3] = Math.round(40 + 215 * t);
+  }
+  hctx.putImageData(img, 0, 0);
+  ctx.imageSmoothingEnabled = true;
+  ctx.drawImage(heatCanvas, 0, 0, h.w * h.cell, h.h * h.cell);
+}
+
+// What the selected car is feeling right now: every input to its network,
+// grouped the way the network sees them.
+export function drawSenses(canvas, d) {
+  const nctx = canvas.getContext("2d");
+  const W = canvas.clientWidth, H = canvas.clientHeight;
+  nctx.clearRect(0, 0, W, H);
+  if (!d) return;
+  const groups = [["wall", 0, 3], ["car", 1, 3], ["closing", 2, 3]];
+  const colW = W / 4, barH = 34, top = 4;
+  nctx.font = "9px ui-monospace, monospace";
+  nctx.textBaseline = "top";
+  groups.forEach(([label, off, stride], gi) => {
+    const x0 = gi * colW;
+    for (let i = 0; i < 5; i++) {
+      const v = d.inputs[i * stride + off];
+      const bw = colW / 6, x = x0 + 4 + i * (bw + 1);
+      nctx.fillStyle = "#232733";
+      nctx.fillRect(x, top, bw, barH);
+      nctx.fillStyle = label === "closing" ? (v > 0 ? "#e86e64" : "#5ac8a0") : "#6ea8ff";
+      const hgt = label === "closing" ? Math.abs(v) * barH : (1 - v) * barH;
+      nctx.fillRect(x, top + barH - hgt, bw, hgt);
+    }
+    nctx.fillStyle = "#8b93a7";
+    nctx.fillText(label, x0 + 4, top + barH + 6);
+  });
+  const route = ["spd", "hdg", "lat", "jct", "trn", "sig"];
+  for (let i = 0; i < 6; i++) {
+    const v = d.inputs[15 + i];
+    const bw = colW / 7, x = 3 * colW + 4 + i * (bw + 1);
+    nctx.fillStyle = "#232733";
+    nctx.fillRect(x, top, bw, barH);
+    nctx.fillStyle = "#e8c46a";
+    const mid = top + barH / 2, hgt = Math.max(-1, Math.min(1, v)) * barH / 2;
+    if (i === 5) { nctx.fillStyle = v > 0 ? "#5ac8a0" : "#e86e64"; nctx.fillRect(x, top + barH / 2 - 4, bw, v ? 8 : 0); }
+    else if (i === 0 || i >= 3) nctx.fillRect(x, top + barH - Math.abs(v) * barH, bw, Math.abs(v) * barH);
+    else nctx.fillRect(x, hgt > 0 ? mid - hgt : mid, bw, Math.abs(hgt));
+  }
+  nctx.fillStyle = "#8b93a7";
+  nctx.fillText("route", 3 * colW + 4, top + barH + 6);
+}
+
+// A light is a short bar across each road where it meets the junction apron.
+export function drawLights(ctx, c, k) {
+  if (c.roundabouts) {
+    for (const n of c.nodes) {
+      if (!n.island) continue;
+      ctx.fillStyle = "#2a3a30";
+      ctx.strokeStyle = "rgba(255,255,255,0.25)";
+      ctx.lineWidth = 1.2 / k;
+      ctx.beginPath(); ctx.arc(n.x, n.y, n.island, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+    }
+    return;
+  }
+  if (c.control !== "lights") return;
+  ctx.lineWidth = 3 / k;
+  ctx.lineCap = "butt";
+  for (const n of c.nodes) {
+    if (!n.light) continue;
+    for (const e of n.edges) {
+      const m = c.other(e, n.id), o = c.nodes[m];
+      const len = Math.hypot(o.x - n.x, o.y - n.y);
+      const ux = (o.x - n.x) / len, uy = (o.y - n.y) / len;
+      const cx = n.x + ux * n.r, cy = n.y + uy * n.r;
+      ctx.strokeStyle = c.green(n.id, m) ? "#5ac8a0" : "#e86e64";
+      ctx.beginPath();
+      ctx.moveTo(cx - uy * e.hw, cy + ux * e.hw);
+      ctx.lineTo(cx + uy * e.hw, cy - ux * e.hw);
+      ctx.stroke();
+    }
+  }
+}
+
+export function drawRoute(ctx, city, d, k) {
+  const n = city.nodes;
+  ctx.strokeStyle = "rgba(110,168,255,0.55)";
+  ctx.lineWidth = 3 / k;
+  ctx.lineJoin = "round";
+  ctx.beginPath();
+  ctx.moveTo(d.x, d.y);
+  for (let i = d.seg + 1; i < d.route.length; i++) ctx.lineTo(n[d.route[i]].x, n[d.route[i]].y);
+  ctx.stroke();
+  const end = n[d.route[d.route.length - 1]];
+  ctx.fillStyle = "#6ea8ff";
+  ctx.beginPath(); ctx.arc(end.x, end.y, 5, 0, Math.PI * 2); ctx.fill();
+  if (d.tx !== undefined) {
+    ctx.fillStyle = "#e8c46a";
+    ctx.beginPath(); ctx.arc(d.tx, d.ty, 2.5, 0, Math.PI * 2); ctx.fill();
+  }
+}
+
+export function drawRays(ctx, d, k) {
+  ctx.lineWidth = 1 / k;
+  for (let i = 0; i < ANGLES.length; i++) {
+    const ang = d.a + ANGLES[i];
+    const car = d.carRay[i] < d.wallRay[i];
+    const r = car ? d.carRay[i] : d.wallRay[i];
+    ctx.strokeStyle = car ? "rgba(255,138,92,0.7)" : "rgba(110,168,255,0.4)";
+    ctx.beginPath();
+    ctx.moveTo(d.x, d.y);
+    ctx.lineTo(d.x + Math.cos(ang) * r, d.y + Math.sin(ang) * r);
+    ctx.stroke();
+  }
+}
+
+export function drawCar(ctx, d, colour, alpha) {
+  ctx.save();
+  ctx.translate(d.x, d.y);
+  ctx.rotate(d.a);
+  ctx.globalAlpha = alpha;
+  ctx.fillStyle = d.towing > 0 ? "#e86e64" : colour;
+  const { len, wid } = d.p;
+  ctx.fillRect(-len / 2, -wid / 2, len, wid);
+  ctx.fillStyle = "rgba(0,0,0,0.35)";
+  ctx.fillRect(len * 0.1, -wid / 2 + 0.8, len * 0.22, wid - 1.6);
+  ctx.restore();
+}

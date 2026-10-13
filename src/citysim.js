@@ -1,16 +1,15 @@
 // Browser front end for the city: run it, draw it, pan and zoom, inspect a car.
 import { CityWorld } from "./cityworld.js";
-import { BODY, rayAngles } from "./driver.js";
-import { LANE_W } from "./city.js";
+import { BODY } from "./driver.js";
+import { fitCanvas, drawCity, drawHeat, drawSenses, drawLights, drawRoute, drawRays, drawCar } from "./render.js";
 import { drawNetwork } from "./netview.js";
 import { drawSparkline } from "./sparkline.js";
 
-const ANGLES = rayAngles();
 const $ = (id) => document.getElementById(id);
 const view = $("view"), vctx = view.getContext("2d");
 const brain = $("brain"), bctx = brain.getContext("2d");
 const spark = $("spark"), sctx = spark.getContext("2d");
-const senses = $("senses"), nctx = senses.getContext("2d");
+const senses = $("senses");
 
 let world, running = true, speed = 1, showRays = true, showAll = true, follow = false;
 let pending = 0, selected = null;
@@ -18,12 +17,6 @@ let traffic = false, density = 40, heatMode = 0, control = "none";
 const HEAT_MODES = ["off", "crashes", "congestion"];
 const cam = { x: 0, y: 0, k: 1, fitted: false };
 
-function fitCanvas(c, cssW, cssH) {
-  const dpr = Math.min(2, window.devicePixelRatio || 1);
-  c.width = cssW * dpr; c.height = cssH * dpr;
-  c.style.width = cssW + "px"; c.style.height = cssH + "px";
-  c.getContext("2d").setTransform(dpr, 0, 0, dpr, 0, 0);
-}
 
 function layout() {
   const w = Math.max(320, Math.floor(view.parentElement.getBoundingClientRect().width - 20));
@@ -51,186 +44,6 @@ function reset(seed) {
 
 const toWorld = (sx, sy) => [(sx - view.clientWidth / 2) / cam.k + cam.x, (sy - view.clientHeight / 2) / cam.k + cam.y];
 
-// Roads are drawn the way they were baked: a fat round-capped stroke per edge
-// and a disc per junction apron, so the picture and the collision mask agree.
-function drawCity(c, k) {
-  vctx.lineCap = "round";
-  for (const pass of [0, 1]) {
-    vctx.strokeStyle = vctx.fillStyle = pass ? "#1b1d24" : "rgba(255,255,255,0.16)";
-    const grow = pass ? 0 : 1.5 / k;
-    for (const e of c.edges) {
-      const a = c.nodes[e.a], b = c.nodes[e.b];
-      vctx.lineWidth = (e.hw + 2) * 2 + grow * 2;
-      vctx.beginPath(); vctx.moveTo(a.x, a.y); vctx.lineTo(b.x, b.y); vctx.stroke();
-    }
-    for (const n of c.nodes) {
-      vctx.beginPath(); vctx.arc(n.x, n.y, n.r + grow, 0, Math.PI * 2); vctx.fill();
-    }
-  }
-  // Lane markings stop short of the junction aprons, as painted ones do.
-  vctx.lineCap = "butt";
-  for (const e of c.edges) {
-    const a = c.nodes[e.a], b = c.nodes[e.b];
-    const ux = (b.x - a.x) / e.len, uy = (b.y - a.y) / e.len;
-    const nx = -uy, ny = ux;
-    const s0 = a.r, s1 = e.len - b.r;
-    if (s1 <= s0) continue;
-    const line = (off, dash, col) => {
-      vctx.setLineDash(dash);
-      vctx.strokeStyle = col;
-      vctx.lineWidth = 1.2 / k;
-      vctx.beginPath();
-      vctx.moveTo(a.x + ux * s0 + nx * off, a.y + uy * s0 + ny * off);
-      vctx.lineTo(a.x + ux * s1 + nx * off, a.y + uy * s1 + ny * off);
-      vctx.stroke();
-    };
-    if (e.lanes > 1) line(0, [], "rgba(232,196,106,0.35)");
-    else line(0, [6, 8], "rgba(255,255,255,0.18)");
-    for (let l = 1; l < e.lanes; l++) {
-      line(l * LANE_W, [5, 9], "rgba(255,255,255,0.14)");
-      line(-l * LANE_W, [5, 9], "rgba(255,255,255,0.14)");
-    }
-  }
-  vctx.setLineDash([]);
-}
-
-// The heatmap is a tiny image, one pixel per heat cell, scaled up with
-// smoothing on. Thousands of cells cost one drawImage instead of a rect each.
-const heatCanvas = document.createElement("canvas"), hctx = heatCanvas.getContext("2d");
-function drawHeat() {
-  const h = world.heat, grid = heatMode === 1 ? h.crash : h.slow;
-  if (heatCanvas.width !== h.w || heatCanvas.height !== h.h) { heatCanvas.width = h.w; heatCanvas.height = h.h; }
-  let max = 0;
-  for (let i = 0; i < grid.length; i++) if (grid[i] > max) max = grid[i];
-  const img = hctx.createImageData(h.w, h.h);
-  const [r, g, b] = heatMode === 1 ? [232, 110, 100] : [232, 196, 106];
-  for (let i = 0; i < grid.length; i++) {
-    if (!grid[i]) continue;
-    // square root so a few hot spots do not wash everything else out
-    const t = Math.sqrt(grid[i] / max);
-    img.data[i * 4] = r; img.data[i * 4 + 1] = g; img.data[i * 4 + 2] = b;
-    img.data[i * 4 + 3] = Math.round(40 + 215 * t);
-  }
-  hctx.putImageData(img, 0, 0);
-  vctx.imageSmoothingEnabled = true;
-  vctx.drawImage(heatCanvas, 0, 0, h.w * h.cell, h.h * h.cell);
-}
-
-// What the selected car is feeling right now: every input to its network,
-// grouped the way the network sees them.
-function drawSenses(d) {
-  const W = senses.clientWidth, H = senses.clientHeight;
-  nctx.clearRect(0, 0, W, H);
-  if (!d) return;
-  const groups = [["wall", 0, 3], ["car", 1, 3], ["closing", 2, 3]];
-  const colW = W / 4, barH = 34, top = 4;
-  nctx.font = "9px ui-monospace, monospace";
-  nctx.textBaseline = "top";
-  groups.forEach(([label, off, stride], gi) => {
-    const x0 = gi * colW;
-    for (let i = 0; i < 5; i++) {
-      const v = d.inputs[i * stride + off];
-      const bw = colW / 6, x = x0 + 4 + i * (bw + 1);
-      nctx.fillStyle = "#232733";
-      nctx.fillRect(x, top, bw, barH);
-      nctx.fillStyle = label === "closing" ? (v > 0 ? "#e86e64" : "#5ac8a0") : "#6ea8ff";
-      const hgt = label === "closing" ? Math.abs(v) * barH : (1 - v) * barH;
-      nctx.fillRect(x, top + barH - hgt, bw, hgt);
-    }
-    nctx.fillStyle = "#8b93a7";
-    nctx.fillText(label, x0 + 4, top + barH + 6);
-  });
-  const route = ["spd", "hdg", "lat", "jct", "trn", "sig"];
-  for (let i = 0; i < 6; i++) {
-    const v = d.inputs[15 + i];
-    const bw = colW / 7, x = 3 * colW + 4 + i * (bw + 1);
-    nctx.fillStyle = "#232733";
-    nctx.fillRect(x, top, bw, barH);
-    nctx.fillStyle = "#e8c46a";
-    const mid = top + barH / 2, hgt = Math.max(-1, Math.min(1, v)) * barH / 2;
-    if (i === 5) { nctx.fillStyle = v > 0 ? "#5ac8a0" : "#e86e64"; nctx.fillRect(x, top + barH / 2 - 4, bw, v ? 8 : 0); }
-    else if (i === 0 || i >= 3) nctx.fillRect(x, top + barH - Math.abs(v) * barH, bw, Math.abs(v) * barH);
-    else nctx.fillRect(x, hgt > 0 ? mid - hgt : mid, bw, Math.abs(hgt));
-  }
-  nctx.fillStyle = "#8b93a7";
-  nctx.fillText("route", 3 * colW + 4, top + barH + 6);
-}
-
-// A light is a short bar across each road where it meets the junction apron.
-function drawLights(c, k) {
-  if (c.roundabouts) {
-    for (const n of c.nodes) {
-      if (!n.island) continue;
-      vctx.fillStyle = "#2a3a30";
-      vctx.strokeStyle = "rgba(255,255,255,0.25)";
-      vctx.lineWidth = 1.2 / k;
-      vctx.beginPath(); vctx.arc(n.x, n.y, n.island, 0, Math.PI * 2); vctx.fill(); vctx.stroke();
-    }
-    return;
-  }
-  if (c.control !== "lights") return;
-  vctx.lineWidth = 3 / k;
-  vctx.lineCap = "butt";
-  for (const n of c.nodes) {
-    if (!n.light) continue;
-    for (const e of n.edges) {
-      const m = c.other(e, n.id), o = c.nodes[m];
-      const len = Math.hypot(o.x - n.x, o.y - n.y);
-      const ux = (o.x - n.x) / len, uy = (o.y - n.y) / len;
-      const cx = n.x + ux * n.r, cy = n.y + uy * n.r;
-      vctx.strokeStyle = c.green(n.id, m) ? "#5ac8a0" : "#e86e64";
-      vctx.beginPath();
-      vctx.moveTo(cx - uy * e.hw, cy + ux * e.hw);
-      vctx.lineTo(cx + uy * e.hw, cy - ux * e.hw);
-      vctx.stroke();
-    }
-  }
-}
-
-function drawRoute(d, k) {
-  const n = world.city.nodes;
-  vctx.strokeStyle = "rgba(110,168,255,0.55)";
-  vctx.lineWidth = 3 / k;
-  vctx.lineJoin = "round";
-  vctx.beginPath();
-  vctx.moveTo(d.x, d.y);
-  for (let i = d.seg + 1; i < d.route.length; i++) vctx.lineTo(n[d.route[i]].x, n[d.route[i]].y);
-  vctx.stroke();
-  const end = n[d.route[d.route.length - 1]];
-  vctx.fillStyle = "#6ea8ff";
-  vctx.beginPath(); vctx.arc(end.x, end.y, 5, 0, Math.PI * 2); vctx.fill();
-  if (d.tx !== undefined) {
-    vctx.fillStyle = "#e8c46a";
-    vctx.beginPath(); vctx.arc(d.tx, d.ty, 2.5, 0, Math.PI * 2); vctx.fill();
-  }
-}
-
-function drawRays(d, k) {
-  vctx.lineWidth = 1 / k;
-  for (let i = 0; i < ANGLES.length; i++) {
-    const ang = d.a + ANGLES[i];
-    const car = d.carRay[i] < d.wallRay[i];
-    const r = car ? d.carRay[i] : d.wallRay[i];
-    vctx.strokeStyle = car ? "rgba(255,138,92,0.7)" : "rgba(110,168,255,0.4)";
-    vctx.beginPath();
-    vctx.moveTo(d.x, d.y);
-    vctx.lineTo(d.x + Math.cos(ang) * r, d.y + Math.sin(ang) * r);
-    vctx.stroke();
-  }
-}
-
-function drawCar(d, colour, alpha) {
-  vctx.save();
-  vctx.translate(d.x, d.y);
-  vctx.rotate(d.a);
-  vctx.globalAlpha = alpha;
-  vctx.fillStyle = d.towing > 0 ? "#e86e64" : colour;
-  const { len, wid } = d.p;
-  vctx.fillRect(-len / 2, -wid / 2, len, wid);
-  vctx.fillStyle = "rgba(0,0,0,0.35)";
-  vctx.fillRect(len * 0.1, -wid / 2 + 0.8, len * 0.22, wid - 1.6);
-  vctx.restore();
-}
 
 function draw() {
   if (!cam.fitted) fitCam();
@@ -244,25 +57,25 @@ function draw() {
   vctx.scale(k, k);
   vctx.translate(-cam.x, -cam.y);
 
-  drawCity(world.city, k);
-  if (heatMode) drawHeat();
-  drawLights(world.city, k);
-  if (focus) drawRoute(focus, k);
+  drawCity(vctx, world.city, k);
+  if (heatMode) drawHeat(vctx, world.heat, heatMode);
+  drawLights(vctx, world.city, k);
+  if (focus) drawRoute(vctx, world.city, focus, k);
   if (showAll) {
     for (const d of world.cars) {
       if (d === focus || !d.alive) continue;
-      drawCar(d, "#5a6a8a", 0.8);
+      drawCar(vctx, d, "#5a6a8a", 0.8);
     }
   }
   if (focus) {
-    if (showRays && focus.alive) drawRays(focus, k);
-    drawCar(focus, selected ? "#6ea8ff" : "#ff8a5c", 1);
+    if (showRays && focus.alive) drawRays(vctx, focus, k);
+    drawCar(vctx, focus, selected ? "#6ea8ff" : "#ff8a5c", 1);
   }
   vctx.restore();
 
   drawNetwork(bctx, focus ? focus.genome : null, brain.clientWidth, brain.clientHeight);
   drawSparkline(sctx, world.history, spark.clientWidth, spark.clientHeight);
-  drawSenses(focus && focus.alive ? focus : null);
+  drawSenses(senses, focus && focus.alive ? focus : null);
 
   let alive = 0, trips = 0, crashes = 0;
   for (const d of world.cars) { if (d.alive) alive++; trips += d.trips; crashes += d.crashes; }
