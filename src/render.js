@@ -317,3 +317,13 @@ export function panZoom(view, cam, onPick, grab = null) {
 // One colour per species id, spread round the wheel by the golden angle so
 // neighbouring ids never look alike.
 export const speciesColour = (id, l = 62) => `hsl(${(id * 137.508) % 360}, 65%, ${l}%)`;
+
+// Toggle buttons show their state with data-on; mirror it into aria-pressed
+// so it is announced, not just coloured.
+export function announceToggles(root = document) {
+  const sync = (b) => { if (b.hasAttribute("data-on")) b.setAttribute("aria-pressed", b.dataset.on === "true"); };
+  for (const b of root.querySelectorAll("button")) {
+    sync(b);
+    new MutationObserver(() => sync(b)).observe(b, { attributes: true, attributeFilter: ["data-on"] });
+  }
+}
