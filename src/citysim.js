@@ -145,6 +145,15 @@ panZoom(view, cam, (wx, wy) => {
 });
 view.addEventListener("dblclick", () => { cam.fitted = false; follow = false; $("follow").dataset.on = false; });
 
+// A saved world restarts its generation exactly, so rewinding to the start
+// of this generation is a save and a load: the same fares, the same drivers,
+// the same minute again, crash for crash.
+$("replay").onclick = () => {
+  const keep = selected ? world.cars.indexOf(selected) : -1;
+  world = CityWorld.fromJSON(JSON.parse(JSON.stringify(world)));
+  selected = keep >= 0 ? world.cars[keep] : null;
+  pending = 0;
+};
 $("play").onclick = (e) => { running = !running; e.target.textContent = running ? "Pause" : "Play"; };
 $("skip").onclick = () => { pending += 1; };
 $("jump").onclick = () => { pending += 25; };
