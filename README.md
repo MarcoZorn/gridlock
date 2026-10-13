@@ -512,6 +512,12 @@ empty loop can afford big jumps; a city driver with twenty-one inputs, routes,
 junctions and other cars has more to break with each one. There is no right
 mutation size, only a right one for the task.
 
+Population size is not the bottleneck either. For the same compute, 120
+drivers for 300 generations ended at a mean of 213 and 240 drivers for 150
+generations at 119; and 240 drivers for the full 300 generations, twice the
+compute, ended at 210. What these drivers need is more generations, not more
+of them per generation.
+
 ### Extensions
 
 **Route choice.** A body gene, `jam`, sets how much a driver lets current
