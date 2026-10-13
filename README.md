@@ -658,7 +658,23 @@ for the start of a run? No. From scratch, 300 generations, three seeds:
 | sharing on | 226 / 255 / 169 | 719 / 742 / 607 | 2.00 | 4.9 |
 | sharing off | 291 / 401 / 288 | 740 / 822 / 727 | 2.71 | 3.1 |
 
-Half as fit again on average, every seed. In neat-from-scratch, on tracks
+Half as fit again on average, every seed. But that is fitness in the six
+cities they were raised in, which could just as well be a population that has
+specialised harder. So the same six populations, as they were, in twelve
+cities none of them had seen, with traffic:
+
+| unseen cities | trips per car | crashes per 1000 units driven |
+|---|---|---|
+| sharing on | 2.06 / 1.75 / 0.94 | 4.01 / 3.80 / 6.08 |
+| sharing off | 1.99 / 2.09 / 2.05 | 3.75 / 3.46 / 3.88 |
+
+It holds, and the clearest difference is the spread: with sharing one seed
+in three never learned to drive well, without it none did. One check went
+the other way: a population raised for 1025 generations without sharing came
+out at 1.35 trips per car in the unseen cities against 1.48 for the drivers
+the site ships (`docs/trained.json`), at the same crash rate. One run each,
+and those were raised under older settings (stagnation 18 among them), so it
+is not a clean comparison, but it is a reason not to oversell this. In neat-from-scratch, on tracks
 easy enough to solve in a few generations, it made no difference either way;
 in this city it is a handicap from the first generation to the three
 thousandth. New populations here now evolve without it (checkpoints saved
