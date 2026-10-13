@@ -59,6 +59,9 @@ node tools/osm.mjs extract.json maps/name.json "Place"   # an OpenStreetMap extr
 - **No side of the road, but almost.** Which side cars keep to is inherited
   and shared from one generation to the next (autocorrelation 0.71) and
   drifts for a hundred generations at a time, but never locks in.
+- **Lights teach easing off.** Drivers raised under traffic lights approach
+  a red at little more than half the speed of a green, by lifting off the
+  throttle rather than braking; drivers raised without signals ignore them.
 - **Fines teach, and cost.** Raising the price of a red light cuts
   red-running and car-on-car crashes within a hundred generations, and the
   city moves a third as many people.
@@ -482,7 +485,13 @@ The ecosystem page can load the first of these cities as it was on day 40
   accelerate 58%, and they brake no more when approaching a junction (9.6%)
   than anywhere else. Their speed control is mostly easing off, and it does
   not know about junctions, which is the right-of-way story above seen from
-  the driver's seat.
+  the driver's seat. Drivers raised under traffic lights are different, just
+  not in the way the brake lights would suggest: they brake no more on a red
+  either, but they come up to one at 16 units/s against 28 on a green,
+  easing off the throttle (0.14 against 0.22). The drivers raised without
+  signals approach a red at 45 and a green at 40: the light means nothing to
+  them. So a light does teach a junction-aware habit; it is easing off, not
+  stopping.
 - **Director.** A toggle on both pages that, every few seconds, cuts to
   whichever car has the most traffic around it and follows it, brain and
   senses on screen. Left alone, it is the quickest way to see what drivers
