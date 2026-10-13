@@ -274,7 +274,7 @@ function frame() {
 panZoom(view, cam, (wx, wy) => {
   if (editing) {
     const { edge, dist } = world.city.nearestEdge(wx, wy);
-    if (edge && dist < edge.hw + 6) { world.city.toggleClosed(edge); world.cityEdited(); }
+    if (edge && dist < edge.hw + 6) world.cycleRoad(edge);
     return;
   }
   let best = null, bd = 20 / cam.k + 10;
