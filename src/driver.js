@@ -30,6 +30,7 @@ export const BODY = {
   wallDamage: 1,    // damage from a kerb strike, relative to hitting a car
   wrecks: 0,        // 1: a crashed car blocks the road until it is towed (an experiment)
   wreckBlame: 0,    // 1: and pays for every car that runs into it while it does
+  junctionPrice: 1, // a crash inside a junction costs this many times as much
   towTicks: 120, graceTicks: 45, maxCrashes: 12, damageCost: 1,
 };
 
@@ -379,6 +380,7 @@ export class Driver {
       return;
     }
     this.crashes++;
+    if (BODY.junctionPrice !== 1 && this.city.junctionAt(this.x, this.y) >= 0) scale *= BODY.junctionPrice;
     const impact = Math.min(1.5, Math.abs(speed) / BODY.maxSpeed);
     this.damage += impact * impact * scale;
     if (this.onCrash) this.onCrash(this);

@@ -60,9 +60,10 @@ node tools/osm.mjs extract.json maps/name.json "Place"   # an OpenStreetMap extr
   junctions about twice as much and start out resolving more conflicts, but
   longer runs and more memory channels do not climb past the same plateau,
   and in the full city it makes no difference at all.
-- **Right of way does not pay here.** A hand-written yield rule bolted onto
-  the evolved drivers costs them 7% of their trips and saves no crashes at
-  all; junction collisions are too rare to be worth stopping for.
+- **Right of way does not pay here, until a junction crash costs thirty.**
+  A hand-written yield rule costs evolved drivers 7% of their trips and
+  saves no crashes. Priced at thirty times an ordinary crash, junction
+  crashes become worth avoiding, and drivers learn to, without waiting more.
 - **Right of way did not evolve beyond that.** Not in a whole city, not in an arena that
   is nothing but one crossroads, not with crashes priced three or six times
   higher, not with better eyesight, and not when both cars pay for a
@@ -270,6 +271,28 @@ when a side ray sees a car closing in near a junction is crude, and a better
 one might pay where this one does not. It uses only inputs the drivers
 already have, though, so it is at least one thing they could evolve, and it
 is not worth evolving.
+
+How expensive would a junction crash have to be? With the price of crashes
+inside a junction multiplied (`JPRICE=10 node tools/yieldrule.mjs rule`),
+the rule loses fitness at three times (135 against 140), breaks even at ten
+(120 against 121) and pays at thirty (105 against 102). The earlier attempts
+priced every crash three or six times higher; a junction crash needs to cost
+about thirty times an ordinary one before stopping for it is worth it.
+
+So, with `BODY.junctionPrice` at 30, the shipped drivers for 300 more
+generations, against the same 300 without:
+
+| last 100 generations | conflicts ending without a crash | waiting | trips per car | crashes per km |
+|---|---|---|---|---|
+| normal prices | 79.4% | 7.6% | 1.03 | 14.6 |
+| junction crashes x30 | 87.0% | 6.4% | 1.09 | 11.0 |
+
+It works, and not the way I predicted. Eight more points of crossing
+conflicts end without a collision, crashes per km fall by a quarter and
+trips hold. But waiting does not rise: it jumped to 10% in the first fifty
+generations and then fell below the control's. They learned to get out of
+each other's way at junctions without stopping for each other. One run, so
+a hint, but the strongest one yet that the plateau was about price.
 (The conflict and
 car-on-car counters are no use here: a wreck in a junction counts as an
 unresolved conflict, and touching one counts as a collision every tick.)

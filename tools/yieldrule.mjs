@@ -20,6 +20,14 @@ if (mode !== "none") Genome.prototype.activate = function (inp, out) {
   return out;
 };
 // POP=runs/x/state.json MAP=crossroads to try another population on another map
+// JPRICE=10 makes a crash inside a junction cost ten times as much
+import { Driver } from "../src/driver.js";
+if (process.env.JPRICE) {
+  const crash = Driver.prototype.crash, k = +process.env.JPRICE;
+  Driver.prototype.crash = function (speed, scale = 1) {
+    return crash.call(this, speed, this.city.junctionAt(this.x, this.y) >= 0 ? scale * k : scale);
+  };
+}
 const pop = Population.fromJSON(JSON.parse(fs.readFileSync(process.env.POP || "docs/trained.json", "utf8")).pop);
 const graph = process.env.MAP ? JSON.parse(fs.readFileSync(`maps/${process.env.MAP}.json`, "utf8")) : null;
 let trips = 0, crashes = 0, n = 0, km = 0, fit = 0;
@@ -31,4 +39,4 @@ for (const seed of [77, 91, 101]) {
     for (const c of [...e.finished, ...e.cars]) { trips += c.trips; crashes += c.crashes; km += c.dist; fit += c.fitness(); n++; }
   }
 }
-console.log(mode.padEnd(6), `fitness ${(fit / n).toFixed(0)}  trips/car ${(trips / n).toFixed(2)}  crashes/car ${(crashes / n).toFixed(2)}  crashes per 1000 units ${(1000 * crashes / km).toFixed(2)}  rule fired ${(100 * forced / Math.max(1, calls)).toFixed(1)}% of ticks`);
+console.log(`junction price x${process.env.JPRICE || 1}`, mode.padEnd(6), `fitness ${(fit / n).toFixed(0)}  trips/car ${(trips / n).toFixed(2)}  crashes/car ${(crashes / n).toFixed(2)}  crashes per 1000 units ${(1000 * crashes / km).toFixed(2)}  rule fired ${(100 * forced / Math.max(1, calls)).toFixed(1)}% of ticks`);
