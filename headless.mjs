@@ -29,7 +29,7 @@ const mapName = arg("map", null);
 // a name from maps/, or a path to any map file
 const graph = mapName ? JSON.parse(fs.readFileSync(mapName.endsWith(".json") ? mapName : `maps/${mapName}.json`, "utf8")) : null;
 const from = arg("from", null);   // start from another run's checkpoint
-const threads = +arg("threads", 3);
+const threads = +arg("threads", 3);   // traffic waves run side by side on this many threads
 // experiment knobs on the car's body constants, e.g. --body wallDamage=0,
 // and on the economy's, e.g. --econ crashCost=27
 for (const [flag, consts] of [["body", BODY], ["econ", ECON]]) {
@@ -38,7 +38,7 @@ for (const [flag, consts] of [["body", BODY], ["econ", ECON]]) {
     if (!(k in consts)) { console.error(`unknown ${flag} constant ${k}`); process.exit(1); }
     consts[k] = +v;
   }
-}  // traffic waves run side by side on this many threads
+}
 
 fs.mkdirSync(dir, { recursive: true });
 const statePath = path.join(dir, "state.json");
