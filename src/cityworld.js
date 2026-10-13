@@ -16,10 +16,12 @@ export class CityWorld {
   // city or a packed one without changing anything about evolution.
   // `control` is what runs the junctions: "none" or "lights". It is a switch
   // on the same population, so the same brains can be compared under both.
-  constructor({ seed = 1, popSize = 120, ticks = 3600, traffic = false, cities = 6, density = 40, pop = null, control = "none", size = null } = {}) {
+  // `graph` replaces the rotating generated cities with one fixed map (see
+  // tools/osm.mjs, or maps/crossroads.json).
+  constructor({ seed = 1, popSize = 120, ticks = 3600, traffic = false, cities = 6, density = 40, pop = null, control = "none", size = null, graph = null } = {}) {
     this.seed = seed;
     this.control = control;
-    this.opts = { seed, popSize, ticks, cities, size };
+    this.opts = { seed, popSize, ticks, cities, size, graph };
     this.density = density;
     this.ticksPerGen = ticks;
     this.traffic = traffic;
@@ -37,7 +39,7 @@ export class CityWorld {
     // A handful of cities, rotated per generation, for the same reason the
     // track demo rotates tracks: evolve in one city and you get drivers who
     // know that city, not drivers who can read a road.
-    this.cities = Array.from({ length: cities }, (_, i) => new City(seed * 31 + i, size || {}));
+    this.cities = graph ? [new City(seed * 31, { graph })] : Array.from({ length: cities }, (_, i) => new City(seed * 31 + i, size || {}));
     this.history = [];
     this.newGeneration();
   }
