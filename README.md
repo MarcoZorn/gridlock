@@ -16,6 +16,14 @@ is building towards is whether, once everyone shares the streets, drivers invent
 yielding, queueing and lane discipline on their own, or split into species like
 couriers and trucks, or just gridlock.
 
+The answers so far: a side of the road, yes, when there is no fitness
+function and enough traffic, and which side is chance. Yielding, no, because
+in these cities it does not pay; priced high enough it starts to, in drivers
+that already know how to drive. Species of couriers and trucks, no: the
+cheapest small car wins every economy. And gridlock, only when crashes are
+made to stay in the road, because these drivers crash their way through a
+queue rather than wait in it.
+
 It grew out of [neat-from-scratch](docs/neat.md), whose NEAT engine it still
 runs on, and borrows its later ideas from
 [primordial](https://github.com/MarcoZorn/primordial). No libraries, no build
