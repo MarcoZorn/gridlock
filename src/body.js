@@ -7,15 +7,16 @@
 // pays for, which is the point.
 import { BODY } from "./driver.js";
 
-export const TRAITS = ["length", "width", "engine", "brakes", "range", "rays", "cargo"];
+export const TRAITS = ["length", "width", "engine", "brakes", "range", "rays", "cargo", "jam"];
 
 const lerp = (a, b, t) => a + (b - a) * t;
 // genes that come out as the standard week-1 car: 10 x 5, ~170 accel, 120 range
-const STOCK = { length: 0.17, width: 0.33, engine: 0.47, brakes: 0.5, range: 0.43, rays: 0.8, cargo: 0.1 };
+const STOCK = { length: 0.17, width: 0.33, engine: 0.47, brakes: 0.5, range: 0.43, rays: 0.8, cargo: 0.1, jam: 0 };
 
 export class Body {
   constructor(genes) {
-    this.genes = genes;   // { trait: 0..1 }
+    // { trait: 0..1 }; saves from before a trait existed get its stock value
+    this.genes = { ...STOCK, ...genes };
     this.derive();
   }
 
@@ -59,6 +60,9 @@ export class Body {
     // Running costs per second of existing and per unit driven.
     this.upkeep = 0.02 + 0.03 * g.range * (this.p.rays === 5 ? 1 : 0.6) + 0.02 * mass;
     this.fuel = 0.0016 * mass * engine;
+    // Not physics but planning: how much this driver lets traffic push its
+    // route away from the shortest one. The map is free; the choice is not.
+    this.jam = g.jam * 3;
   }
 
   mutate(rng, sigma = 0.04) {
