@@ -351,7 +351,9 @@ export class EcoWorld {
   }
 
   // How much bigger than the city the economy was tuned on.
-  get scale() { return this.city.edges.length / BASE_ROADS; }
+  // Capped at four: past that a real map would ask for a thousand cars, which
+  // is more than a browser can draw or a person can follow.
+  get scale() { return Math.min(4, this.city.edges.length / BASE_ROADS); }
 
   // The editor's two building moves, logged so a save can replay them.
   build(a, b) {
