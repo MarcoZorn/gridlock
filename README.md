@@ -608,8 +608,7 @@ and only the largest connected piece is kept. On an imported map a node that
 is only a bend in the road gets an apron as big as the bend is sharp, so a
 curving street is not strung with beads. `eco.html?map=turin` runs the
 ecosystem on the main streets of central Turin, and `eco.html?map=barcelona`
-on Barcelona's Eixample, chamfered corners and all. One-way streets are still
-treated as two-way, and a map past four times the size of a small city keeps
+on Barcelona's Eixample, chamfered corners and all. A map past four times the size of a small city keeps
 the economy of a city four times the size, so a real map never asks a
 browser to draw a thousand cars.
 
@@ -619,17 +618,30 @@ browser to draw a thousand cars.
 
 Map data © [OpenStreetMap](https://www.openstreetmap.org/copyright) contributors, ODbL.
 
+**One-way streets.** Most of these streets are one-way: 184 of the 196
+Eixample ways in the extract, 110 of Turin's 128. The importer keeps the
+arrows (an edge `[a, b, lanes, 1]` runs from a to b only), A* never follows
+one backwards, and the renderer draws a chevron on them instead of a centre
+line. The catch is the edge of the map. A one-way street that runs out of
+the extract is a trap: cars go in and the way back is somewhere outside.
+Keeping only the piece of the network where every junction can reach every
+other cost Turin 60% of its junctions. So instead the importer opens a
+one-way road to two-way traffic wherever it joins that piece to a street
+that cannot get back, a layer at a time, until every street is in: all
+junctions kept, 98 of Turin's 342 roads one-way and 420 of Barcelona's 643.
+Nothing in the drivers changed, and the crash table below barely moved.
+
 **Where they crash.** The ecosystem page has the same heatmaps as the
 generation page (H): crashes, or cars crawling at walking pace. On a real map
 the crash layer is not a set of hot junctions but whole streets glowing, and
 counting says the same. Over two days from the same founders (only nodes
-where three or more roads meet count as junctions):
+where three or more roads meet count as junctions; one-way streets on):
 
 | city | crashes into walls | car-on-car | of those, at a junction |
 |---|---|---|---|
 | grid (small) | 25% | 75% | 27% |
-| Turin | 15% | 85% | 13% |
-| Barcelona | 17% | 83% | 21% |
+| Turin | 19% | 81% | 14% |
+| Barcelona | 17% | 83% | 18% |
 
 ![A day of crashes on central Turin: whole streets light up, the long diagonal brightest](docs/turin-heat.png)
 
@@ -640,7 +652,7 @@ them into a few long corridors, they mostly crash into the one in front. Nothing
 the economy pays a car to keep its distance except the repair bill, and the
 repair bill is not enough.
 
-So I made it bigger. Six days on Turin from the same founders, two seeds,
+So I made it bigger. Six days on Turin (before one-way streets) from the same founders, two seeds,
 with the crash bill at its default and at three times that
 (`node headless.mjs --eco --map turin --econ crashCost=27`):
 
