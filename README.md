@@ -338,6 +338,22 @@ the city within a day, and the hit rate halves, from about 12 to about 6 per
 hundred crossings, in that same first day. Caution was always easy to evolve;
 it just needed a population that survives long enough to evolve it.
 
+That version, though, starved the cars: a full crowd crossing fourteen
+thousand times a day meant so many fines that no car lived long enough to
+have children. With a smaller crowd and a smaller fine the two populations
+finally live together, and they do what predator and prey do. Over twenty
+days, every two days:
+
+| day | 0 | 2 | 4 | 6 | 8 | 10 | 12 | 14 | 16 | 18 |
+|---|---|---|---|---|---|---|---|---|---|---|
+| cars | 30 | 41 | 49 | 47 | 44 | 51 | 51 | 50 | 49 | 50 |
+| people | 55 | 49 | 27 | 43 | 49 | 36 | 30 | 35 | 35 | 35 |
+| hit per 100 crossings | 12 | 14 | 21 | 16 | 15 | 18 | 20 | 17 | 17 | 17 |
+
+The cars multiply, crossings get deadlier, the crowd thins; with fewer people
+around fewer are hit, the crowd recovers, and round it goes, damping towards
+about fifty cars and thirty-five people.
+
 **Real streets.** `tools/osm.mjs` turns an OpenStreetMap extract (Overpass
 JSON) into a road graph: every way node becomes a junction, points closer than
 5 m are welded together, lanes come from the `lanes` tag or the road class,
