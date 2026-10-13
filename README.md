@@ -847,7 +847,9 @@ again with every car stretched back to the founders' size, same brains:
 | seed 7 | 1.16 | 1.26 |
 | seed 11 | 1.17 | 1.32 |
 
-Size is worth about 8%, a third of the fall. The rest is the driving.
+Size is worth about 8%, roughly a third of the fall (which was measured
+before Turin had its one-way streets, these runs are after). The rest is the
+driving.
 
 ## Files
 
