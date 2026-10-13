@@ -209,6 +209,8 @@ without signals score better under lights (1.4 trips a minute) than the
 lights-raised ones (0.6), and run 6.5 reds each against 2.6. They are not
 better drivers, they just never learned that red means anything.
 
+![A junction under traffic lights, drivers raised for 3000 generations with them](docs/lights.gif)
+
 **The price of a red light.** With the four-second bug fixed, drivers under
 lights still ran about 2.4 reds each per generation. That turned out to be
 rational: the fine was cheaper than the wait. Starting from the same
