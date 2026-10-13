@@ -859,8 +859,9 @@ same three seeds at day six:
 
 The later streets are busier, which alone would slow everyone down. But they
 come up on the car in front about 30% more gently, and brake more often to do
-it, and that is a habit, not the traffic. Nobody taught them to keep their
-distance: the repair bill did.
+it, which slower traffic explains less easily: closing speed is relative to
+the car ahead, and that car is slower too. Nobody taught them to keep their
+distance; if they learned it, the repair bill did.
 
 ## Files
 
