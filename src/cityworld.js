@@ -132,39 +132,8 @@ export class CityWorld {
     for (const d of this.cars) d.onCrash = (c) => this.heatAdd(this.heat.crash, c.x, c.y, 1);
   }
 
-  // Cars are two discs each, front and back, of the car's width. One disc of
-  // the car's length would make two cars side by side in neighbouring lanes
-  // touch, which is exactly the situation that must be survivable.
   collide() {
-    const h = this.hash;
-    h.rebuild(this.cars);
-    for (const a of this.cars) {
-      if (!a.solid) continue;
-      const offA = (a.p.len - a.p.wid) / 2;
-      const ax = Math.cos(a.a) * offA, ay = Math.sin(a.a) * offA;
-      h.near(a.x, a.y, a.p.len + 10, (b) => {
-        if (b === a || !b.solid || !a.solid || b.id < a.id) return;
-        const offB = (b.p.len - b.p.wid) / 2, rr = ((a.p.wid + b.p.wid) / 2) ** 2;
-        const bx = Math.cos(b.a) * offB, by = Math.sin(b.a) * offB;
-        for (const sa of [1, -1]) {
-          for (const sb of [1, -1]) {
-            const dx = a.x + ax * sa - b.x - bx * sb, dy = a.y + ay * sa - b.y - by * sb;
-            if (dx * dx + dy * dy < rr) {
-              if (this.onCarCrash) this.onCarCrash(a, b);
-              // Each car is charged for its own speed towards the other. Shared
-              // damage made a car that was rear-ended at a standstill pay as
-              // much as the one that hit it, which is noise to selection: the
-              // careful driver is punished for someone else's mistake.
-              const nx = b.x - a.x, ny = b.y - a.y, nl = Math.hypot(nx, ny) || 1;
-              a.crash(Math.max(0, (a.vx * nx + a.vy * ny) / nl));
-              b.crash(Math.max(0, -(b.vx * nx + b.vy * ny) / nl));
-              this.carCrashes++;
-              return;
-            }
-          }
-        }
-      });
-    }
+    this.carCrashes += collideCars(this.cars, this.hash, this.onCarCrash);
   }
 
   step() {
@@ -289,4 +258,41 @@ export class CityWorld {
     }
     return best;
   }
+}
+
+// Cars are two discs each, front and back, of the car's width. One disc of
+// the car's length would make two cars side by side in neighbouring lanes
+// touch, which is exactly the situation that must be survivable.
+// Returns how many collisions there were. Cars need distinct `id`s.
+export function collideCars(cars, h, onCarCrash) {
+  let n = 0;
+  h.rebuild(cars);
+  for (const a of cars) {
+    if (!a.solid) continue;
+    const offA = (a.p.len - a.p.wid) / 2;
+    const ax = Math.cos(a.a) * offA, ay = Math.sin(a.a) * offA;
+    h.near(a.x, a.y, a.p.len + 10, (b) => {
+      if (b === a || !b.solid || !a.solid || b.id < a.id) return;
+      const offB = (b.p.len - b.p.wid) / 2, rr = ((a.p.wid + b.p.wid) / 2) ** 2;
+      const bx = Math.cos(b.a) * offB, by = Math.sin(b.a) * offB;
+      for (const sa of [1, -1]) {
+        for (const sb of [1, -1]) {
+          const dx = a.x + ax * sa - b.x - bx * sb, dy = a.y + ay * sa - b.y - by * sb;
+          if (dx * dx + dy * dy < rr) {
+            if (onCarCrash) onCarCrash(a, b);
+            // Each car is charged for its own speed towards the other. Shared
+            // damage made a car that was rear-ended at a standstill pay as
+            // much as the one that hit it, which is noise to selection: the
+            // careful driver is punished for someone else's mistake.
+            const nx = b.x - a.x, ny = b.y - a.y, nl = Math.hypot(nx, ny) || 1;
+            a.crash(Math.max(0, (a.vx * nx + a.vy * ny) / nl));
+            b.crash(Math.max(0, -(b.vx * nx + b.vy * ny) / nl));
+            n++;
+            return;
+          }
+        }
+      }
+    });
+  }
+  return n;
 }

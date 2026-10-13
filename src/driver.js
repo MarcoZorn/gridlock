@@ -64,12 +64,22 @@ export class Driver {
     this.closing = new Float64Array(N_RAYS);
     this.inputs = new Float64Array(N_INPUTS);
     this.out = new Float64Array(N_OUTPUTS);
-    const n0 = city.nodes[route[0]], n1 = city.nodes[route[1]];
+    this.place(route, t0);
+  }
+
+  // Put the car on the first road of `route`, `t0` of the way along, at a
+  // standstill. Used at birth, and to drop a lost car somewhere new.
+  place(route, t0 = 0) {
+    const n0 = this.city.nodes[route[0]], n1 = this.city.nodes[route[1]];
     // never on a roundabout island
     const len0 = Math.hypot(n1.x - n0.x, n1.y - n0.y);
     const s0 = Math.max(t0, n0.island ? n0.r / len0 : 0);
     this.x = n0.x + (n1.x - n0.x) * s0; this.y = n0.y + (n1.y - n0.y) * s0;
     this.a = Math.atan2(n1.y - n0.y, n1.x - n0.x);
+    this.v = 0;
+    this.alive = true;
+    this.towing = 0;
+    this.grace = BODY.graceTicks;
     this.setRoute(route);
   }
 
@@ -305,7 +315,7 @@ export class Driver {
     }
     const p = this.done + Math.max(0, Math.min(f.len, f.along));
     if (p > this.best + 0.5) { this.best = p; this.sinceBest = 0; }
-    else if (++this.sinceBest > BODY.lostTicks) this.alive = false;
+    else if (++this.sinceBest > BODY.lostTicks) { this.alive = false; this.lost = true; }
   }
 
   arrive() {
@@ -339,7 +349,7 @@ export class Driver {
     this.a = Math.atan2(f.uy, f.ux);
     this.v = 0;
     this.towing = BODY.towTicks;
-    if (this.crashes >= BODY.maxCrashes) this.alive = false;
+    if (this.crashes >= this.p.maxCrashes) this.alive = false;
   }
 
   // Route distance covered, plus a flat bonus per finished trip so that
