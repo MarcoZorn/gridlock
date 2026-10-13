@@ -199,6 +199,7 @@ for (const b of document.querySelectorAll("[data-control]")) {
     control = b.dataset.control;
     document.querySelectorAll("[data-control]").forEach((x) => (x.dataset.on = x === b));
     world.control = control;
+    syncUrl();
   };
 }
 $("edit").onclick = (e) => {
@@ -207,7 +208,41 @@ $("edit").onclick = (e) => {
   $("editHint").hidden = !editing;
   view.style.cursor = editing ? "crosshair" : "";
 };
-$("again").onclick = () => reset(Math.floor(Math.random() * 9999) + 1);
+$("again").onclick = () => { reset(Math.floor(Math.random() * 9999) + 1); syncUrl(); };
+
+// A day of city time in a worker. The live world carries on meanwhile; when
+// the worker is done its world replaces this one, a day older.
+let worker = null;
+$("ffDay").onclick = (e) => {
+  if (worker) return;
+  const btn = e.target;
+  worker = new Worker(new URL("./ffworker.js", import.meta.url), { type: "module" });
+  worker.onmessage = (m) => {
+    if (m.data.done) {
+      world = EcoWorld.fromJSON(m.data.world);
+      selected = null;
+      worker.terminate(); worker = null;
+      btn.textContent = "Fast-forward a day";
+      return;
+    }
+    btn.textContent = `Fast-forwarding ${Math.round(m.data.progress * 100)}%`;
+  };
+  worker.postMessage({ world: JSON.parse(JSON.stringify(world)), ticks: 24 * 60 * 60 });
+};
+
+// The city is its seed and its junction control; a link is enough to share it.
+function syncUrl() {
+  const u = new URL(location.href);
+  u.searchParams.set("seed", world.seed);
+  u.searchParams.set("control", control);
+  history.replaceState(null, "", u);
+}
+$("share").onclick = async (e) => {
+  syncUrl();
+  try { await navigator.clipboard.writeText(location.href); e.target.textContent = "Link copied"; }
+  catch { e.target.textContent = "Copy the address bar"; }
+  setTimeout(() => (e.target.textContent = "Copy link"), 1500);
+};
 window.addEventListener("resize", layout);
 
 window.gridlock = { get world() { return world; } };
@@ -219,5 +254,10 @@ try {
   const r = await fetch("docs/trained.json");
   if (r.ok) founders = Population.fromJSON((await r.json()).pop);
 } catch { /* no founders: start from minimal brains */ }
-reset(3);
+const params = new URLSearchParams(location.search);
+if (["none", "lights", "roundabouts"].includes(params.get("control"))) {
+  control = params.get("control");
+  document.querySelectorAll("[data-control]").forEach((x) => (x.dataset.on = x.dataset.control === control));
+}
+reset(+params.get("seed") || 3);
 frame();
