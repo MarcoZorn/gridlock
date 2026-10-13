@@ -158,6 +158,30 @@ at 1025, the sense is something to learn with, not something to drive by.
 generation page "Blind to cars" and "Blind to walls" do it live, and
 evolution carries on with the sense gone.
 
+## The city that cannot gridlock
+
+Real traffic has a fundamental diagram: as cars are added, flow rises, peaks
+at a critical density, and then falls, because past that point every new car
+slows everyone else by more than it adds. That fall is gridlock. Here are the
+shipped drivers in two unseen small cities (about 80 roads) with more and
+more cars on the road at once:
+
+| cars at once | flow (distance per tick, all cars) | mean speed | trips a minute | crashes per 1000 units | cars being towed |
+|---|---|---|---|---|---|
+| 10 | 5.3 | 35.4 | 17 | 2.2 | 15% |
+| 40 | 18.6 | 30.3 | 59 | 3.5 | 21% |
+| 120 | 43.4 | 24.2 | 130 | 6.5 | 30% |
+| 480 | 101.1 | 16.4 | 260 | 14.3 | 44% |
+| 1440 | 181.0 | 11.7 | 326 | 25.3 | 55% |
+
+No peak, even at eighteen cars a road. Speed falls, crashes climb, but flow
+keeps rising. The last column is why. A crashed car is towed, and while it is
+towed it is a ghost that nothing can hit; then it is put down again further
+along. At 1440 cars more than half are ghosts at any moment, so every jam
+dissolves into crashes and the crashes clear the road. A city called Gridlock
+cannot gridlock, because in it a tow truck is a way through a queue.
+(`node tools/fundamental.mjs 480` for any row.)
+
 ## What is coded and what is evolved
 
 | coded | evolved |
