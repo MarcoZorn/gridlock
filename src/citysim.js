@@ -253,6 +253,9 @@ for (const b of document.querySelectorAll("[data-speed]")) {
 }
 window.addEventListener("resize", layout);
 
+// Handle for poking at the run from the console.
+window.gridlock = { get world() { return world; }, ff(n) { pending += n; } };
+
 layout();
 reset(3);
 frame();
