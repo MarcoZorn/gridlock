@@ -831,9 +831,14 @@ Why does nobody learn to avoid the charge? Because it does not pay to. I took
 both charged cities at day 15 and ran each for six hours with every car's
 `jam` gene forced to the top, and again forced to zero: the same number of
 trips either way (329 against 326, 313 against 318), as long, and cash that
-came out better with avoidance in one city and worse in the other. My guess is that on a
-network of mostly one-way streets a detour costs about as much in distance as
-it saves in charge, so there is nothing for selection to find.
+came out better with avoidance in one city and worse in the other. So there
+is nothing for selection to find. My first guess was the one-way streets,
+where a detour costs about as much in distance as it saves in charge. But
+the same test on two-way Barcelona, charged for four days, came out the same
+(309 trips against 320, 313 against 305, cash again split). A route is picked
+once, at the start of a trip, from a picture of the traffic that is out of
+date within seconds, and a trip lasts half a minute; that may be why
+foresight is worth so little here, but I have not tested it.
 
 **Where they crash.** The ecosystem page has the same heatmaps as the
 generation page (H): crashes, or cars crawling at walking pace. On a real map
