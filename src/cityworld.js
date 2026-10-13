@@ -70,9 +70,9 @@ export class CityWorld {
   // A fare from `from` to somewhere at least `minDist` away, never starting
   // with a U-turn back to `cameFrom`.
   fare(from, cameFrom = -1, minDist = 300) {
-    const c = this.city, n = c.nodes.length, a = c.nodes[from];
+    const c = this.city, n = c.nodes.length, a = c.nodes[from], rng = this.waveRng || this.rng;
     let to, tries = 0;
-    do { to = this.rng.int(n); tries++; }
+    do { to = rng.int(n); tries++; }
     while (tries < 50 && (to === from || Math.hypot(c.nodes[to].x - a.x, c.nodes[to].y - a.y) < minDist));
     return c.route(from, to, cameFrom);
   }
@@ -93,6 +93,7 @@ export class CityWorld {
   }
 
   newGeneration() {
+    this.genRng = this.rng.s;   // a save restarts this generation exactly
     this.city = this.cities[this.pop.generation % this.cities.length];
     this.city.control = this.control;
     this.heat = this.heatOf(this.city);
@@ -100,6 +101,13 @@ export class CityWorld {
     this.finished = [];
     this.wave = 0;
     if (this.traffic) {
+      // Every wave draws its fares from its own random stream, seeded now.
+      // That makes a wave's outcome depend only on its seed and its drivers,
+      // so waves can run in any order, or all at once on separate threads,
+      // and give the same generation.
+      const n = Math.max(1, Math.min(this.density, this.pop.genomes.length));
+      this.waves = Math.ceil(this.pop.genomes.length / n);
+      this.waveSeeds = Array.from({ length: this.waves }, () => this.rng.int(2 ** 31));
       this.startWave();
     } else {
       this.chain = this.makeChain(12);
@@ -126,9 +134,11 @@ export class CityWorld {
   startWave() {
     const n = Math.max(1, Math.min(this.density, this.pop.genomes.length));
     const genomes = this.pop.genomes.slice(this.wave * n, (this.wave + 1) * n);
+    this.waveRng = new Rng(this.waveSeeds[this.wave] + 1);
     const onArrive = (d, here) => this.fare(here, d.route[d.route.length - 2]);
     this.cars = genomes.map((g, i) => {
-      const d = new Driver(g, this.city, this.fare(this.rng.int(this.city.nodes.length)), this.rng.range(0.15, 0.75));
+      const d = new Driver(g, this.city, this.fare(this.waveRng.int(this.city.nodes.length)), this.waveRng.range(0.15, 0.75));
+      d.genomeIndex = this.wave * n + i;
       d.onArrive = onArrive;
       d.id = i;
       return d;
@@ -175,6 +185,19 @@ export class CityWorld {
 
   step() {
     if (this.done) return false;
+    const alive = this.stepCars();
+    if (alive === 0 || this.tick >= this.ticksPerGen) {
+      if (this.traffic && this.wave + 1 < this.waves) {
+        this.finished.push(...this.cars);
+        this.wave++;
+        this.startWave();
+      } else this.done = true;
+    }
+    return true;
+  }
+
+  // One tick for the cars on the road now; returns how many are still alive.
+  stepCars() {
     let hash = null;
     if (this.traffic) { this.hash.rebuild(this.cars); hash = this.hash; }
     let alive = 0;
@@ -193,14 +216,40 @@ export class CityWorld {
       if (this.tick % 3 === 0) this.junctionConflicts();
     }
     this.tick++;
-    if (alive === 0 || this.tick >= this.ticksPerGen) {
-      if (this.traffic && this.wave + 1 < this.waves) {
-        this.finished.push(...this.cars);
-        this.wave++;
-        this.startWave();
-      } else this.done = true;
-    }
-    return true;
+    return alive;
+  }
+
+  // Run wave `k` of the current generation to its end, on its own, and
+  // return what the generation needs from it. This is what a worker thread
+  // runs; the main thread then merges the waves with mergeWaves().
+  runWave(k) {
+    this.wave = k;
+    this.carCrashes = 0; this.conflictCrashes = 0; this.conflicts = new Set();
+    this.side = { sum: 0, abs: 0, n: 0 };
+    this.startWave();
+    while (this.stepCars() > 0 && this.tick < this.ticksPerGen) {}
+    return {
+      cars: this.cars.map((d) => ({
+        gi: d.genomeIndex, banked: d.banked, best: d.best, trips: d.trips, damage: d.damage, crashes: d.crashes,
+        dist: d.dist, waitTicks: d.waitTicks, ticks: d.ticks, tripTicks: d.tripTicks, redRuns: d.redRuns,
+      })),
+      carCrashes: this.carCrashes, conflictCrashes: this.conflictCrashes, conflicts: this.conflicts.size, side: this.side,
+    };
+  }
+
+  // Put waves run elsewhere back together as if they had run here, then
+  // finish the generation as usual.
+  mergeWaves(results) {
+    const genomes = this.pop.genomes;
+    this.finished = [];
+    this.cars = results.flatMap((r) => r.cars.map((c) => Object.assign(Object.create(Driver.prototype), c, { genome: genomes[c.gi] })));
+    this.carCrashes = results.reduce((a, r) => a + r.carCrashes, 0);
+    this.conflictCrashes = results.reduce((a, r) => a + r.conflictCrashes, 0);
+    this.conflictCount = results.reduce((a, r) => a + r.conflicts, 0);
+    this.side = results.reduce((a, r) => ({ sum: a.sum + r.side.sum, abs: a.abs + r.side.abs, n: a.n + r.side.n }), { sum: 0, abs: 0, n: 0 });
+    this.done = true;
+    this.finish();
+    this.conflictCount = undefined;
   }
 
   // Crash damage is phased in over the first generations. Charge full price
@@ -262,9 +311,9 @@ export class CityWorld {
       crashesPerKm: km ? crashes / km : 0,
       waitShare: ticks ? wait / ticks : 0,                // share of time stopped in junctions
       side: this.side.n ? this.side.sum / this.side.n : 0, // mean lateral offset, + is right
-      conflicts: this.conflicts.size,
+      conflicts: this.conflictCount ?? this.conflicts.size,
       conflictCrashes: this.conflictCrashes,
-      yielded: this.conflicts.size ? 1 - Math.min(1, this.conflictCrashes / this.conflicts.size) : null,
+      yielded: (this.conflictCount ?? this.conflicts.size) ? 1 - Math.min(1, this.conflictCrashes / (this.conflictCount ?? this.conflicts.size)) : null,
       offCentre: this.side.n ? this.side.abs / this.side.n : 0,
     };
   }
@@ -275,7 +324,7 @@ export class CityWorld {
   toJSON() {
     return {
       v: 2, opts: this.opts, traffic: this.traffic, density: this.density, control: this.control,
-      rng: this.rng.s, pop: this.pop.toJSON(), history: this.history,
+      rng: this.genRng ?? this.rng.s, pop: this.pop.toJSON(), history: this.history,
     };
   }
 
