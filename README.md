@@ -631,9 +631,10 @@ where three or more roads meet count as junctions):
 | Turin | 15% | 85% | 13% |
 | Barcelona | 17% | 83% | 21% |
 
-The generation city, with its thin traffic, is the other way round: there a
-driver mostly crashes alone, into a kerb. Here, with three to five times the
-cars on the same streets, they mostly crash into the one in front. Nothing in
+In the generation city with traffic on, the same trained drivers crash into
+a kerb a little more often than into each other (57% walls over three
+generations). On the real maps, with 150 to 160 cars on streets that funnel
+them into a few long corridors, they mostly crash into the one in front. Nothing in
 the economy pays a car to keep its distance except the repair bill, and the
 repair bill is not enough.
 
