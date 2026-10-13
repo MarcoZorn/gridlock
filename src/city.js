@@ -240,6 +240,7 @@ export class City {
   // "am I on tarmac" question is a single array read. The roads are capsules
   // (a segment with round ends), so junctions fill themselves in for free.
   bake() {
+    this.version = (this.version || 0) + 1;   // anything cached from the old layout is stale
     this.gw = Math.ceil(this.w / CELL);
     this.gh = Math.ceil(this.h / CELL);
     this.mask = new Uint8Array(this.gw * this.gh);
