@@ -19,8 +19,9 @@ couriers and trucks, or just gridlock.
 The answers so far: a side of the road, yes, when there is no fitness
 function and enough traffic, and which side is chance. Yielding, no, because
 in these cities it does not pay; priced high enough it starts to, in drivers
-that already know how to drive. Species of couriers and trucks, no: the
-cheapest small car wins every economy. And gridlock, only when crashes are
+that already know how to drive. Couriers and trucks, only when freight pays
+three times as much, and then in half the cities, decided in the first day
+by what bodies the founders happened to have. And gridlock, only when crashes are
 made to stay in the road, because these drivers crash their way through a
 queue rather than wait in it.
 
@@ -91,8 +92,10 @@ node tools/osm.mjs extract.json maps/name.json "Place"   # an OpenStreetMap extr
 - **Fines teach, and cost.** Raising the price of a red light cuts
   red-running and car-on-car crashes within a hundred generations, and the
   city moves a third as many people.
-- **With no fitness function, the cheapest car wins.** Every forty-day
-  economy bred small, underpowered, short-sighted cars.
+- **With no fitness function, the cheapest car wins, unless freight pays.**
+  Every forty-day economy bred small, underpowered, short-sighted cars. With
+  freight paying triple, half the cities evolved trucks, one of them a city
+  of trucks and couriers side by side.
 - **In a crowded city the danger is the queue, not the crossing.** In the
   economy on Turin and Barcelona over 80% of crashes are car-on-car, and
   over 80% of those happen between junctions, in the traffic, not at the
@@ -1176,6 +1179,33 @@ Run on to day 12, the fleets come most of the way back, and then the price
 shows up where I expected it in the first place: with as many cars on the
 road again, trips take 40% longer than without the camera, and the city
 moves 30% fewer fares for 13% fewer crashes per car.
+
+**What it takes to evolve a truck.** Every economy so far bred small cars
+with no cargo room: freight pays by the load, but a big hull costs fuel,
+upkeep and top speed on every trip, loaded or not. With freight paying three
+times as much and three times as plentiful (`--econ
+freightRate=0.012,freightDemand=0.75`), six days, six seeds, the cargo gene
+of every car at the end:
+
+| seed | cars | cargo gene 0-0.2 / 0.2-0.4 / 0.4-0.6 / 0.6-0.8 / 0.8-1 | mean cargo, days 1 to 6 |
+|---|---|---|---|
+| 7 | 120 | 10 / 0 / 0 / 12 / 98 | |
+| 13 | 120 | 0 / 0 / 0 / 30 / 90 | 0.68 0.85 0.86 0.84 0.84 0.84 |
+| 9 | 45 | 0 / 3 / 25 / 17 / 0 | 0.27 0.33 0.42 0.50 0.55 0.54 |
+| 3 | 60 | 60 / 0 / 0 / 0 / 0 | 0.11 0.04 0.01 0.02 0.04 0.03 |
+| 5 | 27 | 27 / 0 / 0 / 0 / 0 | 0.15 0.06 0.10 0.04 0.01 0.05 |
+| 11 | 45 | 45 / 0 / 0 / 0 / 0 | |
+
+Trucks, in half the cities. In one of them, seed 7, the split the project
+was hoping for: 110 trucks and 10 small couriers living side by side on the
+same streets. Seed 13 went all trucks, seed 9 settled on vans, and three
+cities never left small cars. Which way a city goes looks decided early:
+half the founders get random bodies, and where enough of them happened to be
+roomy, someone carried freight early, got rich and had children (seed 13
+started at a mean cargo of 0.68 on day one). At normal freight prices, in
+both seeds tried, nobody ever did. The truck cities are also the big ones
+(120 cars, the ceiling, against 27 to 60), because freight is money the
+small-car cities leave on the table.
 
 **Where they crash.** The ecosystem page has the same heatmaps as the
 generation page (H): crashes, or cars crawling at walking pace. On a real map
