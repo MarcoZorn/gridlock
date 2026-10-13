@@ -2,6 +2,7 @@
 // fixed seed. If a refactor breaks NEAT this fails instead of quietly
 // producing cars that spin in circles forever.
 import assert from "node:assert";
+import fs from "node:fs";
 import { World } from "./src/world.js";
 import { Population } from "./src/neat.js";
 import { Genome, Innovations } from "./src/genome.js";
@@ -10,6 +11,8 @@ import { Track } from "./src/track.js";
 import { City } from "./src/city.js";
 import { SpatialHash } from "./src/spatial.js";
 import { CityWorld } from "./src/cityworld.js";
+import { EcoWorld, ECON } from "./src/ecoworld.js";
+import { Body } from "./src/body.js";
 
 // networks stay acyclic and produce finite output
 {
@@ -139,6 +142,35 @@ import { CityWorld } from "./src/cityworld.js";
     assert(Math.abs(ra.best - rb.best) < 1e-6 * Math.max(1, ra.best) && ra.trips === rb.trips, "resumed world must match the original");
   }
   console.log("ok  save and resume is exact");
+}
+
+// the ecosystem: founders drive, money flows, births and deaths happen, the
+// population stays inside its bounds, and a save keeps every car and wallet
+{
+  const trained = JSON.parse(fs.readFileSync("docs/trained.json", "utf8"));
+  const w = new EcoWorld({ seed: 9, founders: Population.fromJSON(trained.pop) });
+  for (let i = 0; i < 20000; i++) {
+    w.step();
+    assert(w.cars.length >= ECON.minCars && w.cars.length <= ECON.maxCars, "population must stay in bounds");
+  }
+  const total = w.log.reduce((a, r) => ({ births: a.births + r.births, deaths: a.deaths + r.deaths, trips: a.trips + r.trips }), { births: 0, deaths: 0, trips: 0 });
+  assert(total.trips > 0 && total.deaths > 0, "cars must earn and cars must die");
+  assert(w.cars.every((d) => d.cash >= 0), "nobody alive is in debt");
+  const b = EcoWorld.fromJSON(JSON.parse(JSON.stringify(w)));
+  assert(b.cars.length === w.cars.length, "a save keeps every car");
+  assert(Math.abs(b.cars.reduce((a, d) => a + d.cash, 0) - w.cars.reduce((a, d) => a + d.cash, 0)) < 1e-6, "a save keeps every wallet");
+  for (let i = 0; i < 600; i++) b.step();
+  console.log(`ok  ecosystem: ${total.trips} paid trips, ${total.births} births, ${total.deaths} deaths, resumes`);
+}
+
+// bodies: derived physics move the right way with the genes
+{
+  const g = { length: 0.2, width: 0.3, engine: 0.5, brakes: 0.5, range: 0.5, rays: 0.8, cargo: 0.1 };
+  const base = new Body(g), heavy = new Body({ ...g, cargo: 0.9 }), strong = new Body({ ...g, engine: 0.9 });
+  assert(heavy.capacity > base.capacity && heavy.p.mass > base.p.mass && heavy.p.accel < base.p.accel, "cargo room costs mass and acceleration");
+  assert(strong.p.accel > base.p.accel && strong.fuel > base.fuel, "a bigger engine pulls harder and burns more");
+  assert(new Body({ ...g, rays: 0.2 }).p.rays === 3, "low ray gene means three rays");
+  console.log("ok  body physics follow the genes");
 }
 
 console.log("\nall checks passed");
