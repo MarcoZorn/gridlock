@@ -57,9 +57,11 @@ node tools/osm.mjs extract.json maps/name.json "Place"   # an OpenStreetMap extr
   higher, not with better eyesight, and not when both cars pay for a
   crossing crash (that cut collisions 8%, but did not make anyone yield). About 60% of junction conflicts end
   without a collision, the same as for drivers that have never met traffic.
-- **No side of the road, but almost.** Which side cars keep to is inherited
-  and shared from one generation to the next (autocorrelation 0.71) and
-  drifts for a hundred generations at a time, but never locks in.
+- **A side of the road evolves, where the traffic is thick.** In the
+  generation city which side cars keep to is inherited (autocorrelation
+  0.71) but never locks in. In the economy on a crowded real map, within
+  four days nine cars in ten keep to one side. Which side is chance: one
+  Turin run drives on the left, its twin on the right.
 - **Lights teach easing off.** Drivers raised under traffic lights approach
   a red at little more than half the speed of a green, by lifting off the
   throttle rather than braking; drivers raised without signals ignore them.
@@ -73,7 +75,7 @@ node tools/osm.mjs extract.json maps/name.json "Place"   # an OpenStreetMap extr
   85-90% of those happen between junctions: rear-ends in slow traffic.
 - **One-way streets do not pay here.** Barcelona's Eixample with its real
   arrows carries a sixth fewer fares than the same streets two-way, and is
-  no safer: drivers without lanes gain nothing from them but detours.
+  no safer: the detours cost more than the conflicts saved.
 - **Cars and pedestrians cycle.** Once both populations can replace
   themselves they oscillate like predator and prey.
 - **Two bugs mattered more than any tuning.** A four-second "lost" rule that
@@ -386,6 +388,27 @@ generations or more before drifting the other way: one stretch of 133
 generations kept a clear lean. Keeping to a side is inherited and shared, which
 is what a convention is made of; it just never gets locked in.
 
+In the economy it does. Measured on two-way roads outside junctions, as a
+share of the cars on the right half of the road (relative to where they are
+going), after four to six days from the same founders:
+
+| economy | on the right half |
+|---|---|
+| founders, first hours | 43-49% |
+| Turin, seeds 7 and 11 | 2% / 87% |
+| Barcelona two-way, seeds 7 and 11 | 75% / 88% |
+| Barcelona one-way (few two-way roads left) | 51% / 32% |
+| generated grid, 40 days, four runs (thin traffic) | 23-62% |
+
+Turin seed 7 is a left-hand city, 98% of its cars on the left, and its twin
+a right-hand one. What decides it is how often cars meet head-on: a crowded
+real map, where the traffic is funnelled into a few long two-way streets,
+settles in days; a grid with seventy cars on it leans but never settles, like
+the generation city. And the code can not impose it. With `BODY.lane` the
+steering target sits in the middle of the right half of every two-way road,
+and one of the two Barcelona runs evolved to drive on the left anyway, 88% of
+it, against its own target.
+
 ### Week 3: no fitness function
 
 `EcoWorld` takes the score away. Every car has a wallet. Passengers pay by
@@ -650,10 +673,14 @@ with and without its arrows, four days, two seeds, days two to four:
 | two-way | 2567 / 2792 | 47 s / 48 s | 159 / 129 |
 
 With its arrows the city moves about a sixth fewer fares, and is no safer
-for it. The cars here do not keep to lanes, so a two-way street costs them
-nothing in capacity that a one-way street gives back, and what the arrows do
-add is distance: a fare across the block now goes round it. In a city of
-drivers that had evolved lane discipline the answer might be the other way.
+for it: what the arrows add is distance, a fare across the block now goes
+round it. I guessed this was because the cars had no lane discipline, so a
+two-way street cost them nothing a one-way street could give back. That was
+wrong. The two-way populations had evolved a side of the road by then (75%
+and 88% of cars on the right half, see "Which side of the road?"), and with
+the steering pulled to the right half of every two-way road (`--body
+lane=1`) the one-way city still moved 18% fewer fares (2139 and 2062 a day,
+against 2499 and 2632).
 
 **Where they crash.** The ecosystem page has the same heatmaps as the
 generation page (H): crashes, or cars crawling at walking pace. On a real map
