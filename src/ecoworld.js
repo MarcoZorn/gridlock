@@ -38,6 +38,8 @@ export const ECON = {
   wearDist: 40000,      // upkeep doubles every this many units on the odometer
   congestion: 0,        // a charge per second, times how full the road you are on is (an experiment, off)
   replan: 0,            // 1: at every junction a car re-plans the rest of its route on the traffic now (an experiment, off)
+  speedLimit: 0,        // a speed camera everywhere: over this speed a car pays...
+  speedFine: 0.3,       // ...this much a second at double the limit, in proportion below that (an experiment, off)
 };
 
 // One city day is 24 minutes of simulation, a minute per hour. Demand has a
@@ -237,6 +239,10 @@ export class EcoWorld {
       // grows with the odometer, so every car wears out in the end
       const wear = 1 + d.dist / ECON.wearDist;
       d.cash -= d.body.upkeep * wear * DT + d.body.fuel * Math.abs(d.v) * DT;
+      if (ECON.speedLimit && Math.abs(d.v) > ECON.speedLimit) {
+        d.cash -= ECON.speedFine * (Math.abs(d.v) / ECON.speedLimit - 1) * DT;
+        this.events.speeding = (this.events.speeding || 0) + DT;
+      }
       if (this.congestion && c.load) {
         const e = c.edgeBetween(d.route[d.seg], d.route[d.seg + 1]);
         if (e) d.cash -= this.congestion * c.load[e.id] * DT;

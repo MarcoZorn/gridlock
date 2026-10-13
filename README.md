@@ -838,7 +838,34 @@ the same test on two-way Barcelona, charged for four days, came out the same
 (309 trips against 320, 313 against 305, cash again split). A route is picked
 once, at the start of a trip, from a picture of the traffic that is out of
 date within seconds, and a trip lasts half a minute; that may be why
-foresight is worth so little here, but I have not tested it.
+foresight is worth so little here.
+
+So I tested it, with `ECON.replan`: every car plans the rest of its trip
+again at every junction, on the traffic as it is right then. Same probe, four
+cities: still nothing, trips and cash split both ways. Not stale information,
+then. What about the arithmetic? With the traffic of a charged Turin, a
+fully avoiding driver's route is 8% longer than the shortest and only a
+little emptier (mean load 0.18 against 0.24), so it saves about a quarter of
+a unit of charge per trip and pays about a third of one in fuel, upkeep and
+lost tips. Avoiding traffic roughly breaks even, which is why nothing
+selects for it.
+
+That predicts a big enough charge should change it. At five times the
+charge (0.5) the six-hour probe tilts the right way (avoiders lost less cash
+in three cities of four), and living under it for six more days:
+
+| jam gene, day by day under a charge of 0.5 | |
+|---|---|
+| Turin, seed 7 | 0.05 0.06 0.10 0.12 0.15 0.20 |
+| Turin, seed 11 | 0.05 0.05 0.02 0.03 0.04 0.05 |
+| Barcelona two-way, seed 7 | 0.06 0.07 0.12 0.13 0.14 0.09 |
+| Barcelona two-way, seed 11 | 0.23 0.21 0.15 0.16 0.15 0.12 |
+
+One climb in four, and a gene that mutates as gently as this one drifts by
+about that much on its own in 25 generations. Even a charge that bankrupts
+most of the city puts only a faint pull on route choice. Driving round the
+jam is a strategy for a city where jams are local; in these ones, the
+traffic is everywhere the fares are.
 
 **Where they crash.** The ecosystem page has the same heatmaps as the
 generation page (H): crashes, or cars crawling at walking pace. On a real map
