@@ -175,6 +175,16 @@ because the km fell faster; I suspected cars that stop being rear-ended by cars
 that do not, and the collision mix says otherwise (rear-ending a stopped car is
 16% of collisions at the low fine and 19% at the high one).
 
+**Which side of the road?** Nothing in the code prefers a side, and over
+thousands of generations no permanent convention appears: the average lateral
+offset of moving cars hovers near zero. But it is not noise. In a run with all
+120 cars on the road at once, the side the population keeps to in one
+generation predicts the next (autocorrelation 0.71 at lag 1, 0.53 at lag 6,
+against zero for the same numbers shuffled), and leanings last for a hundred
+generations or more before drifting the other way: one stretch of 133
+generations kept a clear lean. Keeping to a side is inherited and shared, which
+is what a convention is made of; it just never gets locked in.
+
 ### Week 3: no fitness function
 
 `EcoWorld` takes the score away. Every car has a wallet. Passengers pay by
