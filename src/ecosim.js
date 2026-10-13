@@ -50,6 +50,7 @@ function reset(seed) {
   world = new EcoWorld({ seed, control, founders: founders[control] || founders.none || null, graph, size });
   selected = null;
   $("peds-on").dataset.on = false;
+  $("charge").dataset.on = false;
   cam.fitted = false;
 }
 
@@ -372,6 +373,7 @@ function adoptEco(w) {
   document.querySelectorAll("[data-control]").forEach((x) => (x.dataset.on = x.dataset.control === control));
   document.querySelectorAll("[data-size]").forEach((x) => (x.dataset.on = x.dataset.size === size));
   $("peds-on").dataset.on = !!world.crowd;
+  $("charge").dataset.on = world.congestion > 0;
   selected = null; cam.fitted = false;
 }
 
@@ -405,6 +407,10 @@ $("loadFile").onchange = async (e) => {
 $("peds-on").onclick = (e) => {
   world.crowd = world.crowd ? null : new Crowd(world.city, new Rng(world.seed * 7 + 1), 40);
   e.target.dataset.on = !!world.crowd;
+};
+$("charge").onclick = (e) => {
+  world.congestion = world.congestion ? 0 : 0.1;
+  e.target.dataset.on = world.congestion > 0;
 };
 $("edit").onclick = (e) => {
   editing = !editing;

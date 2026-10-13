@@ -825,7 +825,7 @@ Four days is not long for a gene to move, so I ran all four on to day 15.
 The `jam` gene still sat at 0.04-0.08 in every run, charged or not. But the
 charged cities caught up: on day 15 they moved 2691 and 2398 fares with 176
 and 158 cars, against 2781 and 2726 with 287 and 285 uncharged. Nearly the
-same service from 40% fewer cars.
+same service from 40% fewer cars. The eco page has it as a button, saved with the city.
 
 **Where they crash.** The ecosystem page has the same heatmaps as the
 generation page (H): crashes, or cars crawling at walking pace. On a real map
