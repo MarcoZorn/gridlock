@@ -231,6 +231,14 @@ $("traffic").dataset.on = traffic;
 document.querySelectorAll("[data-density]").forEach((x) => (x.dataset.on = +x.dataset.density === density));
 document.querySelectorAll("[data-control]").forEach((x) => (x.dataset.on = x.dataset.control === control));
 
+// Visitors start on drivers that already know how to drive; a seed in the
+// URL, or New seed, starts from scratch instead.
 layout();
 reset(+params.get("seed") || 3);
+if (!params.get("seed")) {
+  try {
+    const r = await fetch("docs/trained.json");
+    if (r.ok) adopt(CityWorld.fromJSON(await r.json()));
+  } catch { /* stay on the fresh run */ }
+}
 frame();
