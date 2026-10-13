@@ -2,7 +2,7 @@
 // one, appends one line of telemetry per generation, checkpoints regularly.
 //
 //   node headless.mjs --run runs/lanes --gens 3000 --traffic-from 200 --density 40 --control lights
-//   node headless.mjs --eco --run runs/eco --days 30 --founders docs/trained.json [--pedestrians 40]
+//   node headless.mjs --eco --run runs/eco --days 30 --founders docs/trained.json [--pedestrians 40] [--map turin] [--econ crashCost=27]
 //
 // runs/<name>/telemetry.jsonl   one JSON object per generation (kept in git)
 // runs/<name>/state.json        the latest checkpoint (ignored by git)
@@ -10,7 +10,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { CityWorld } from "./src/cityworld.js";
 import { BODY } from "./src/driver.js";
-import { EcoWorld } from "./src/ecoworld.js";
+import { EcoWorld, ECON } from "./src/ecoworld.js";
 import { Population } from "./src/neat.js";
 import { Worker } from "node:worker_threads";
 
@@ -29,11 +29,14 @@ const mapName = arg("map", null);
 const graph = mapName ? JSON.parse(fs.readFileSync(`maps/${mapName}.json`, "utf8")) : null;
 const from = arg("from", null);   // start from another run's checkpoint
 const threads = +arg("threads", 3);
-// experiment knobs on the car's body constants, e.g. --body wallDamage=0
-for (const kv of (arg("body", "") || "").split(",").filter(Boolean)) {
-  const [k, v] = kv.split("=");
-  if (!(k in BODY)) { console.error(`unknown body constant ${k}`); process.exit(1); }
-  BODY[k] = +v;
+// experiment knobs on the car's body constants, e.g. --body wallDamage=0,
+// and on the economy's, e.g. --econ crashCost=27
+for (const [flag, consts] of [["body", BODY], ["econ", ECON]]) {
+  for (const kv of (arg(flag, "") || "").split(",").filter(Boolean)) {
+    const [k, v] = kv.split("=");
+    if (!(k in consts)) { console.error(`unknown ${flag} constant ${k}`); process.exit(1); }
+    consts[k] = +v;
+  }
 }  // traffic waves run side by side on this many threads
 
 fs.mkdirSync(dir, { recursive: true });
@@ -66,7 +69,7 @@ if (process.argv.includes("--eco")) {
   } else {
     const f = arg("founders", null);
     const founders = f ? Population.fromJSON(JSON.parse(fs.readFileSync(f, "utf8")).pop) : null;
-    eco = new EcoWorld({ seed, control, founders, pedestrians: +arg("pedestrians", 0) });
+    eco = new EcoWorld({ seed, control, founders, graph, size: arg("size", "small"), pedestrians: +arg("pedestrians", 0) });
     console.log(`new ecosystem ${dir}, seed ${seed}${f ? `, founders from ${f}` : ""}`);
   }
   let written = eco.log.length;
