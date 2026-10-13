@@ -230,6 +230,28 @@ every day, while small fast taxis own the evening. Lineages were close
 to thirty generations deep within ten city days. Bodies shrink over the days: short, light
 cars are cheaper to run.
 
+**Forty days.** Three ecosystems ran forty city days each (two seeds without
+signals, one with traffic lights and lights-trained founders):
+
+| | no signals, seed 3 | no signals, seed 7 | lights |
+|---|---|---|---|
+| cars | 70 | 73 | 41 |
+| paid trips / hour | 37 | 37 | 25 |
+| mean paid trip | 31 s | 32 s | 63 s |
+| deepest lineage | 96 generations | 93 | 36 |
+| engine gene (started 0.47) | 0.03 | 0.01 | 0.14 |
+| sensor range gene (started 0.43) | 0.02 | 0.14 | 0.08 |
+| jam-avoidance gene (started 0) | 0.37 | 0.84 | 0.87 |
+
+Every one of them bred the cheapest car it could: the engine gene went to the
+floor, sensors got short, bodies small, cargo room nil. In this economy a fare
+pays the same whether you took it fast or slowly, give or take the tip, while
+fuel and upkeep are paid every second, so a frugal crawler outlives a quick
+taxi. Minding traffic when routing rose in two runs out of three and drifted
+back in the third, so I would not call it a law. The lights city carried 40%
+fewer cars and took twice as long per trip, and its lineages turned over a
+third as often.
+
 ### Week 4: your city, long runs
 
 - **Editor.** On the ecosystem page, click a road to close it (it becomes a
@@ -276,6 +298,11 @@ a new best) was doing just that. Over five seeds and 300 generations, mean
 fitness at full crash price was 182 with the default, 212 with stagnation
 counted over 60 generations (ten trips round the six cities), and 219 with no
 culling at all. It is 60 now.
+
+**Is the fitness just noise?** Traffic-mode fitness plateaus, so I checked
+whether selection was simply blind: the same 120 genomes scored twice on
+different random fares and neighbours correlate at 0.86 as ghosts and 0.78 in
+traffic. The evaluation is sound; the plateau is the task.
 
 ### Extensions
 
