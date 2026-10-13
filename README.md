@@ -80,8 +80,9 @@ node tools/osm.mjs extract.json maps/name.json "Place"   # an OpenStreetMap extr
   no safer: a fare across the block has to go round it.
 - **Cars and pedestrians cycle.** Once both populations can replace
   themselves they oscillate like predator and prey.
-- **Late in a run, fitness sharing costs.** Switching it off at generation
-  2500 or 3000 gave 12-19% better drivers, best and mean, in both runs tried.
+- **Fitness sharing costs here.** Without it drivers were half as fit
+  again after 300 generations (three seeds out of three), and 12-19% better
+  when switched off late in two long runs. It is now off.
 - **Two bugs mattered more than any tuning.** A four-second "lost" rule that
   killed every car waiting at a red light, and a stagnation rule that culled
   species for drawing hard cities.
@@ -646,10 +647,19 @@ checkpoint with sharing on and off (`--no-sharing`), same cities:
 Better on every count, and not only on average: the best driver of each
 generation is 12-14% fitter too. By generation 2500 these populations are
 not inventing new structure, they are polishing weights, and protecting
-minorities only spends offspring on the lineages that are behind. Sharing is
-for the start of a run, which these branches never see; I have not tested a
-run from scratch without it. In neat-from-scratch, on tracks easy enough to
-solve in a few generations, it made no difference either way.
+minorities only spends offspring on the lineages that are behind. So is it only
+for the start of a run? No. From scratch, 300 generations, three seeds:
+
+| from scratch | mean fitness | best | trips per car | crashes per km |
+|---|---|---|---|---|
+| sharing on | 226 / 255 / 169 | 719 / 742 / 607 | 2.00 | 4.9 |
+| sharing off | 291 / 401 / 288 | 740 / 822 / 727 | 2.71 | 3.1 |
+
+Half as fit again on average, every seed. In neat-from-scratch, on tracks
+easy enough to solve in a few generations, it made no difference either way;
+in this city it is a handicap from the first generation to the three
+thousandth. New populations here now evolve without it (checkpoints saved
+before keep the setting they had, so the long runs carry on as they were).
 
 ### Extensions
 

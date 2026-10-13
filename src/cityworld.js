@@ -37,7 +37,9 @@ export class CityWorld {
     // `memory` gives every brain that many memory channels: extra outputs
     // fed back as extra inputs on the next tick.
     const m = memory === true ? 1 : +memory || 0;   // number of memory channels
-    this.pop = pop || new Population(N_INPUTS + m, N_OUTPUTS + m, { popSize, pWeight: 0.5, weightStep: 0.15, stagnation: 60 }, seed);
+    // No fitness sharing: from scratch, three seeds, mean fitness 327 without
+    // it against 217 with it, and better late in a run as well (README).
+    this.pop = pop || new Population(N_INPUTS + m, N_OUTPUTS + m, { popSize, pWeight: 0.5, weightStep: 0.15, stagnation: 60, sharing: false }, seed);
     this.rng = new Rng(seed * 7919 + 5);
     // A handful of cities, rotated per generation, for the same reason the
     // track demo rotates tracks: evolve in one city and you get drivers who
