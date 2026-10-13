@@ -27,6 +27,15 @@ export class Body {
     return new Body(g);
   }
 
+  // Anything at all. Founders are half stock cars and half these, because a
+  // truck is a long walk from a stock car through bodies that earn nothing
+  // extra on the way; evolution only gets to choose among what exists.
+  static random(rng) {
+    const g = {};
+    for (const t of TRAITS) g[t] = rng.next();
+    return new Body(g);
+  }
+
   derive() {
     const g = this.genes;
     const len = lerp(8, 20, g.length);
