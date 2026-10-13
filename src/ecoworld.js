@@ -86,6 +86,7 @@ export class EcoWorld {
     this.graph = graph;
     this.edits = [];   // expansions, built roads and road directions, in order, so a save can replay them
     this.congestion = ECON.congestion;   // this city's congestion charge, saved with it
+    this.speedLimit = ECON.speedLimit;   // and its speed camera, 0 for none
     this.city.control = control;
     this.cfg = { ...DEFAULTS, pWeight: 0.5, weightStep: 0.15 };
     this.innov = founders ? founders.innov : new Innovations(N_INPUTS + 1 + N_OUTPUTS);
@@ -239,8 +240,8 @@ export class EcoWorld {
       // grows with the odometer, so every car wears out in the end
       const wear = 1 + d.dist / ECON.wearDist;
       d.cash -= d.body.upkeep * wear * DT + d.body.fuel * Math.abs(d.v) * DT;
-      if (ECON.speedLimit && Math.abs(d.v) > ECON.speedLimit) {
-        d.cash -= ECON.speedFine * (Math.abs(d.v) / ECON.speedLimit - 1) * DT;
+      if (this.speedLimit && Math.abs(d.v) > this.speedLimit) {
+        d.cash -= ECON.speedFine * (Math.abs(d.v) / this.speedLimit - 1) * DT;
         this.events.speeding = (this.events.speeding || 0) + DT;
       }
       if (this.congestion && c.load) {
@@ -457,7 +458,7 @@ export class EcoWorld {
       v: 1, seed: this.seed, citySeed: this.city.seed, graph: this.graph, control: this.control, tick: this.tick, rng: this.rng.s,
       innov: this.innov.toJSON(), cfg: this.cfg, nextId: this.nextId, nextSpecies: this.nextSpecies, threshold: this.threshold,
       passengers: this.passengers, freight: this.freight,
-      closed: [...this.city.closed], edits: this.edits, size: this.size, congestion: this.congestion,
+      closed: [...this.city.closed], edits: this.edits, size: this.size, congestion: this.congestion, speedLimit: this.speedLimit,
       founders: this.founders ? this.founders.map((g) => g.toJSON()) : null,
       cars: this.cars.map((d) => ({
         brain: d.genome.toJSON(), body: d.body.toJSON(), cash: d.cash, id: d.id, born: d.born, parent: d.parent,
@@ -480,6 +481,7 @@ export class EcoWorld {
     }
     w.edits = [...(j.edits || [])];
     w.congestion = j.congestion ?? ECON.congestion;
+    w.speedLimit = j.speedLimit ?? ECON.speedLimit;
     for (const id of j.closed || []) w.city.closed.add(id);
     w.tick = j.tick; w.rng.s = j.rng; w.cfg = j.cfg;
     w.innov = Innovations.fromJSON(j.innov);
