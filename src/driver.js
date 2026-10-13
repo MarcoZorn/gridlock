@@ -63,6 +63,8 @@ export class Driver {
     this.wallRay = new Float64Array(N_RAYS);
     this.carRay = new Float64Array(N_RAYS);
     this.closing = new Float64Array(N_RAYS);
+    this.dx = new Float64Array(N_RAYS);   // ray directions, worked out once per tick
+    this.dy = new Float64Array(N_RAYS);
     this.inputs = new Float64Array(N_INPUTS);
     this.out = new Float64Array(N_OUTPUTS);
     this.place(route, t0);
@@ -118,6 +120,7 @@ export class Driver {
     for (let i = 0; i < N_RAYS; i++) {
       const ang = this.a + ANGLES[i];
       const cx = Math.cos(ang), cy = Math.sin(ang);
+      this.dx[i] = cx; this.dy[i] = cy;
       let d = 0, hit = R;
       while (d < R) {
         d += BODY.rayStep;
@@ -150,8 +153,7 @@ export class Driver {
       const d2 = ox * ox + oy * oy;
       if (d2 > (R + rad) * (R + rad)) return;
       for (let i = 0; i < N_RAYS; i++) {
-        const ang = this.a + ANGLES[i];
-        const cx = Math.cos(ang), cy = Math.sin(ang);
+        const cx = this.dx[i], cy = this.dy[i];
         const t = ox * cx + oy * cy;
         if (t < 0) continue;
         const p2 = d2 - t * t;
