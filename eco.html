@@ -26,7 +26,7 @@
     <p class="hint">drag to pan, scroll or pinch to zoom, click a car to follow it, double-click to reset the view</p>
   </div>
 
-  <aside>
+  <aside class="data-col">
     <div class="card">
       <h2>The city</h2>
       <div class="row"><span>time of day</span><span id="clock">-</span></div>
@@ -61,8 +61,12 @@
       <div class="row"><span>current job</span><span id="cJob">-</span></div>
     </div>
 
+  </aside>
+
+  <aside class="controls-col">
     <div class="card">
       <h2>Controls</h2>
+      <div class="sub first">Run and speed</div>
       <div class="controls">
         <button id="play">Pause</button>
         <button data-speed="1" data-on="true">1x</button>
@@ -70,21 +74,25 @@
         <button data-speed="16">16x</button>
         <button data-speed="64">64x</button>
       </div>
+      <div class="sub">View</div>
       <div class="controls">
         <button id="colour" data-on="true">Colour: species</button>
         <button id="rays" data-on="true">Sensors</button>
         <button id="follow" data-on="false">Follow</button>
       </div>
+      <div class="sub">Junctions</div>
       <div class="controls">
         <button data-control="none" data-on="true">No signals</button>
         <button data-control="lights">Traffic lights</button>
         <button data-control="roundabouts">Roundabouts</button>
       </div>
+      <div class="sub">City size</div>
       <div class="controls">
         <button data-size="small" data-on="true">Small city</button>
         <button data-size="medium">Medium</button>
         <button data-size="large">Large</button>
       </div>
+      <div class="sub">Change the city</div>
       <div class="controls">
         <button id="grow-east">Grow east</button>
         <button id="grow-south">Grow south</button>
@@ -92,6 +100,7 @@
         <button id="edit" data-on="false">Edit roads</button>
         <button id="again">New city</button>
       </div>
+      <div class="sub">Time and sharing</div>
       <div class="controls">
         <button id="ffDay">Fast-forward a day</button>
         <button id="share">Copy link</button>

@@ -25,7 +25,7 @@
     <p class="hint">drag to pan, scroll or pinch to zoom, click a car to follow it</p>
   </div>
 
-  <aside>
+  <aside class="data-col">
     <div class="card">
       <h2>Run</h2>
       <div class="row"><span>generation</span><span id="gen">0</span></div>
@@ -74,14 +74,19 @@
       </div>
     </div>
 
+  </aside>
+
+  <aside class="controls-col">
     <div class="card">
       <h2>Controls</h2>
+      <div class="sub first">Run</div>
       <div class="controls">
         <button id="play">Pause</button>
         <button id="skip">Skip gen</button>
         <button id="jump">+25 gens</button>
         <button id="again">New seed</button>
       </div>
+      <div class="sub">Traffic, cars on the road at once</div>
       <div class="controls">
         <button id="traffic" data-on="false">Traffic</button>
         <button data-density="10">10</button>
@@ -89,25 +94,30 @@
         <button data-density="40" data-on="true">40</button>
         <button data-density="120">120</button>
       </div>
+      <div class="sub">Junctions</div>
       <div class="controls">
         <button data-control="none" data-on="true">No signals</button>
         <button data-control="lights">Traffic lights</button>
         <button data-control="roundabouts">Roundabouts</button>
       </div>
+      <div class="sub">City size</div>
       <div class="controls">
         <button data-size="small" data-on="true">Small city</button>
         <button data-size="medium">Medium</button>
         <button data-size="large">Large</button>
       </div>
+      <div class="sub">Overlay</div>
       <div class="controls">
         <button id="heat" data-on="false">Heatmap: off</button>
       </div>
+      <div class="sub">Drivers</div>
       <div class="controls">
         <button id="trained">Load trained drivers</button>
         <button id="save">Save run</button>
         <button id="load">Load run</button>
         <input id="loadFile" type="file" accept=".json,application/json" hidden>
       </div>
+      <div class="sub">Speed and view</div>
       <div class="controls">
         <button data-speed="1" data-on="true">1x</button>
         <button data-speed="4">4x</button>
