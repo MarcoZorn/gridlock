@@ -2,12 +2,15 @@
 // one, appends one line of telemetry per generation, checkpoints regularly.
 //
 //   node headless.mjs --run runs/lanes --gens 3000 --traffic-from 200 --density 40 --control lights
+//   node headless.mjs --eco --run runs/eco --days 30 --founders docs/trained.json
 //
 // runs/<name>/telemetry.jsonl   one JSON object per generation (kept in git)
 // runs/<name>/state.json        the latest checkpoint (ignored by git)
 import fs from "node:fs";
 import path from "node:path";
 import { CityWorld } from "./src/cityworld.js";
+import { EcoWorld } from "./src/ecoworld.js";
+import { Population } from "./src/neat.js";
 
 const arg = (name, def) => {
   const i = process.argv.indexOf(`--${name}`);
@@ -25,6 +28,56 @@ fs.mkdirSync(dir, { recursive: true });
 const statePath = path.join(dir, "state.json");
 const telemetry = path.join(dir, "telemetry.jsonl");
 
+let stop = false;
+process.on("SIGINT", () => { stop = true; });
+process.on("SIGTERM", () => { stop = true; });
+
+// Atomic save: write to a temp file and rename, so a run killed mid-write
+// never leaves a half-written checkpoint behind.
+function save(obj) {
+  fs.writeFileSync(statePath + ".tmp", JSON.stringify(obj));
+  fs.renameSync(statePath + ".tmp", statePath);
+}
+
+if (process.argv.includes("--eco")) {
+  // The ecosystem has no generations: run for a number of city days (24
+  // minutes of simulation each), writing its ten-minute telemetry rows.
+  const days = +arg("days", 10), TICKS_PER_DAY = 24 * 60 * 60;
+  let eco;
+  if (fs.existsSync(statePath)) {
+    eco = EcoWorld.fromJSON(JSON.parse(fs.readFileSync(statePath, "utf8")));
+    console.log(`resumed ${dir} at day ${(eco.tick / TICKS_PER_DAY).toFixed(2)}`);
+  } else {
+    const f = arg("founders", null);
+    const founders = f ? Population.fromJSON(JSON.parse(fs.readFileSync(f, "utf8")).pop) : null;
+    eco = new EcoWorld({ seed, control, founders });
+    console.log(`new ecosystem ${dir}, seed ${seed}${f ? `, founders from ${f}` : ""}`);
+  }
+  let written = eco.log.length;
+  while (!stop && eco.tick < days * TICKS_PER_DAY) {
+    eco.step();
+    if (eco.log.length > written) {
+      for (const r of eco.log.slice(written)) fs.appendFileSync(telemetry, JSON.stringify(r) + "\n");
+      written = eco.log.length;
+      const r = eco.log.at(-1);
+      if (eco.tick % (TICKS_PER_DAY / 4) === 0) {
+        console.log(`day ${(eco.tick / TICKS_PER_DAY).toFixed(2)} cars ${r.cars} species ${r.species.length} maxGen ${r.maxGen} cargo ${r.traits.cargo.toFixed(2)} engine ${r.traits.engine.toFixed(2)}`);
+      }
+    }
+    if (eco.tick % (TICKS_PER_DAY / 4) === 0) {
+      const j = eco.toJSON();
+      j.log = j.log.slice(-600);
+      eco.log = eco.log.slice(-600);
+      written = eco.log.length;
+      save(j);
+    }
+  }
+  const j = eco.toJSON();
+  save(j);
+  console.log(`stopped at day ${(eco.tick / TICKS_PER_DAY).toFixed(2)}`);
+  process.exit(0);
+}
+
 let world;
 if (fs.existsSync(statePath)) {
   world = CityWorld.fromJSON(JSON.parse(fs.readFileSync(statePath, "utf8")));
@@ -34,18 +87,11 @@ if (fs.existsSync(statePath)) {
   console.log(`new run ${dir}, seed ${seed}`);
 }
 
-// Write to a temp file and rename, so a run killed mid-write never leaves a
-// half-written checkpoint behind.
 function checkpoint() {
   const j = world.toJSON();
   j.history = j.history.slice(-400);
-  fs.writeFileSync(statePath + ".tmp", JSON.stringify(j));
-  fs.renameSync(statePath + ".tmp", statePath);
+  save(j);
 }
-
-let stop = false;
-process.on("SIGINT", () => { stop = true; });
-process.on("SIGTERM", () => { stop = true; });
 
 const t0 = Date.now();
 while (!stop && world.pop.generation < gens) {
