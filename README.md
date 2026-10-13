@@ -57,10 +57,10 @@ node tools/osm.mjs extract.json maps/name.json "Place"   # an OpenStreetMap extr
   higher, not with better eyesight, and not when both cars pay for a
   crossing crash (that cut collisions 8%, but did not make anyone yield). About 60% of junction conflicts end
   without a collision, the same as for drivers that have never met traffic.
-- **A side of the road evolves, where the traffic is thick.** In the
+- **A side of the road evolves, on real streets.** In the
   generation city which side cars keep to is inherited (autocorrelation
-  0.71) but never locks in. In the economy on a crowded real map, within
-  four days nine cars in ten keep to one side. Which side is chance: one
+  0.71) but never locks in. In the economy on a real map, within four days
+  usually eight or nine cars in ten keep to one side, crowded or not. Which side is chance: one
   Turin run drives on the left, its twin on the right.
 - **Lights teach easing off.** Drivers raised under traffic lights approach
   a red at little more than half the speed of a green, by lifting off the
@@ -401,11 +401,20 @@ going), after four to six days from the same founders:
 | generated grid, 40 days, four runs (thin traffic) | 23-62% |
 
 Turin seed 7 is a left-hand city, 98% of its cars on the left, and its twin
-a right-hand one. My reading is that it comes down to how often cars meet
-head-on, though I have not tested that directly: a crowded
-real map, where the traffic is funnelled into a few long two-way streets,
-settles in days; a grid with seventy cars on it leans but never settles, like
-the generation city. And the code can not impose it. With `BODY.lane` the
+a right-hand one. My first guess was crowding: the real maps run 150 to 300
+cars, the grids seventy. So I cut the demand on Turin (one-way streets on)
+to 40%, which halves the cars to about a hundred, three seeds each:
+
+| Turin, four days | cars | on the right half |
+|---|---|---|
+| full demand | 190-232 | 17% / 83% / 54% |
+| 40% demand | about 100 | 21% / 88% / 85% |
+
+The thin city settled every time, the full one two times out of three. So
+it is not the crowd, at least not between a hundred cars and three hundred.
+What is left is the map itself: the real ones funnel traffic into a few long
+two-way streets, the grid spreads it over many short ones broken up by
+junctions, where there is no side to keep. And the code can not impose it. With `BODY.lane` the
 steering target sits in the middle of the right half of every two-way road,
 and one of the two Barcelona runs evolved to drive on the left anyway, 88% of
 it, against its own target.
