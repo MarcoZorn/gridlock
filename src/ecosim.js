@@ -116,10 +116,13 @@ function drawBodies() {
   octx.strokeRect(0.5, 0.5, W - 1, H - 1);
   const capMax = 14, vMin = 60, vMax = 150;
   octx.fillStyle = "rgba(232,196,106,0.10)";
-  const fx = P + (ECON.freightMin / capMax) * (W - 2 * P);
+  // square-root axis: most cars carry next to nothing, and on a straight
+  // axis they all sat in one corner
+  const cx = (c) => P + Math.sqrt(Math.min(1, c / capMax)) * (W - 2 * P);
+  const fx = cx(ECON.freightMin);
   octx.fillRect(fx, 0, W - fx, H);
   for (const d of world.cars) {
-    const px = P + Math.min(1, d.body.capacity / capMax) * (W - 2 * P);
+    const px = cx(d.body.capacity);
     const py = H - P - Math.max(0, Math.min(1, (d.p.maxSpeed - vMin) / (vMax - vMin))) * (H - 2 * P);
     octx.fillStyle = speciesColour(d.species);
     octx.beginPath(); octx.arc(px, py, d === selected ? 4 : 2.5, 0, Math.PI * 2); octx.fill();
