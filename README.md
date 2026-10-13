@@ -192,9 +192,28 @@ Part of it, then: trips a minute now level off at about two hundred instead
 of climbing past three hundred. But flow still never turns down. A car that
 has just been put back is also untouchable for a grace period, and every
 crash takes a car out of the queue it was in, however briefly; the city has
-a ceiling but no collapse. Gridlock, the real kind where a full junction
-blocks the roads into it and the jam spreads backwards, needs cars that stay
-where they stopped, and here nothing ever has to.
+a ceiling but no collapse.
+
+So make crashes stay. With `BODY.wrecks` a crashed car is no ghost: it sits
+where it crashed, solid, until it is towed (`WRECKS=1`). With the usual
+two-second tow that lowers the ceiling (125 trips a minute at 1440 cars
+instead of 326) and still never turns it down. With wrecks that block the
+road for ten seconds (`WRECKS=1 TOW=600`), it finally happens:
+
+| cars at once, wrecks stay 10 s | mean speed | trips a minute | cars wrecked |
+|---|---|---|---|
+| 40 | 13.6 | 21.6 | 57% |
+| 120 | 7.8 | 29.5 | 69% |
+| 240 | 5.2 | 24.7 | 75% |
+| 480 | 3.7 | 25.8 | 80% |
+| 1440 | 2.4 | 21.3 | 88% |
+
+Trips peak at about 120 cars and fall after it: more cars, fewer people
+delivered. That is gridlock, and what it took was crashes that leave
+something in the road long enough for the queue behind to reach the junction
+before. These drivers, raised where a crash is a fine and a short tow, crash
+their way through traffic rather than queue in it, and only stop being able
+to once crashing stops clearing the road.
 (`node tools/fundamental.mjs 480` for any row.)
 
 ## What is coded and what is evolved
