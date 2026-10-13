@@ -14,8 +14,11 @@ export class CityWorld {
   // `density` is how many cars share the streets at once. The population is
   // driven in waves of that size, so the same brains can be tested in a quiet
   // city or a packed one without changing anything about evolution.
-  constructor({ seed = 1, popSize = 120, ticks = 3600, traffic = false, cities = 6, density = 40, pop = null } = {}) {
+  // `control` is what runs the junctions: "none" or "lights". It is a switch
+  // on the same population, so the same brains can be compared under both.
+  constructor({ seed = 1, popSize = 120, ticks = 3600, traffic = false, cities = 6, density = 40, pop = null, control = "none" } = {}) {
     this.seed = seed;
+    this.control = control;
     this.opts = { seed, popSize, ticks, cities };
     this.density = density;
     this.ticksPerGen = ticks;
@@ -83,6 +86,7 @@ export class CityWorld {
 
   newGeneration() {
     this.city = this.cities[this.pop.generation % this.cities.length];
+    this.city.control = this.control;
     this.heat = this.heatOf(this.city);
     this.hash = new SpatialHash(this.city.w, this.city.h);
     this.finished = [];
@@ -166,6 +170,7 @@ export class CityWorld {
     let hash = null;
     if (this.traffic) { this.hash.rebuild(this.cars); hash = this.hash; }
     let alive = 0;
+    this.city.time = this.tick * DT;
     const sample = this.tick % 6 === 0;
     for (const c of this.cars) {
       c.step(DT, hash);
@@ -205,6 +210,9 @@ export class CityWorld {
       gen: this.pop.generation,
       best: Math.max(...fits),
       mean: fits.reduce((a, b) => a + b, 0) / fits.length,
+      // the same drivers priced at the final damage cost, so generations
+      // before and after the ramp can be compared
+      meanFull: this.cars.reduce((t, c) => t + c.fitness(BODY.damageCost), 0) / this.cars.length,
       bestTrips: Math.max(...this.cars.map((c) => c.trips)),
       traffic: this.traffic,
       density: this.traffic ? this.density : 1,
@@ -228,15 +236,16 @@ export class CityWorld {
   // The numbers that say how the city as a whole is doing, as opposed to how
   // fit any one driver is.
   stats(cars = [...this.finished, ...this.cars]) {
-    let trips = 0, crashes = 0, dist = 0, wait = 0, ticks = 0, tripTicks = 0, n = 0;
+    let trips = 0, crashes = 0, dist = 0, wait = 0, ticks = 0, tripTicks = 0, n = 0, red = 0;
     for (const c of cars) {
+      red += c.redRuns;
       trips += c.trips; crashes += c.crashes; dist += c.dist; wait += c.waitTicks; ticks += c.ticks;
       for (const t of c.tripTicks) { tripTicks += t; n++; }
     }
     const km = (dist * M_PER_UNIT) / 1000;
     const minutes = (ticks * DT) / 60;
     return {
-      trips, crashes, carCrashes: this.carCrashes,
+      trips, crashes, carCrashes: this.carCrashes, redRuns: red, control: this.control,
       throughput: minutes ? trips / minutes : 0,         // trips per car-minute
       tripTime: n ? (tripTicks / n) * DT : 0,             // seconds
       crashesPerKm: km ? crashes / km : 0,
@@ -251,13 +260,13 @@ export class CityWorld {
   // progress restarts.
   toJSON() {
     return {
-      v: 1, opts: this.opts, traffic: this.traffic, density: this.density,
+      v: 2, opts: this.opts, traffic: this.traffic, density: this.density, control: this.control,
       rng: this.rng.s, pop: this.pop.toJSON(), history: this.history,
     };
   }
 
   static fromJSON(j) {
-    const w = new CityWorld({ ...j.opts, traffic: j.traffic, density: j.density, pop: Population.fromJSON(j.pop) });
+    const w = new CityWorld({ ...j.opts, traffic: j.traffic, density: j.density, control: j.control || "none", pop: Population.fromJSON(j.pop) });
     w.rng.s = j.rng;
     w.history = j.history || [];
     w.newGeneration();

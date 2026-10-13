@@ -117,14 +117,14 @@ import { CityWorld } from "./src/cityworld.js";
   const early = [], late = [];
   for (let i = 0; i < 60; i++) {
     const r = w.runGeneration();
-    // trips delivered, not fitness: fitness is repriced as crash damage is
-    // phased in, so the same driving scores less later on
-    (i < 6 ? early : i >= 48 ? late : []).push(r.trips);
+    // fitness at full crash price: the live fitness is repriced while crash
+    // damage is phased in, and trips alone reward reckless speed
+    (i < 6 ? early : i >= 48 ? late : []).push(r.meanFull);
   }
   const a = early.reduce((x, y) => x + y, 0) / early.length;
   const b = late.reduce((x, y) => x + y, 0) / late.length;
-  console.log(`    gen 0-5 trips ${a.toFixed(1)}   gen 48-59 trips ${b.toFixed(1)}`);
-  assert(b > a * 3 + 5, `city drivers must improve (${a.toFixed(1)} -> ${b.toFixed(1)} trips)`);
+  console.log(`    gen 0-5 ${a.toFixed(1)}   gen 48-59 ${b.toFixed(1)}  (mean fitness at full crash price)`);
+  assert(b > a * 2, `city drivers must improve (${a.toFixed(1)} -> ${b.toFixed(1)})`);
   console.log("ok  drivers learn routes");
 }
 
