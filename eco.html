@@ -40,7 +40,7 @@
       <li>Nobody is scored. A car earns fares, pays for fuel, upkeep and crashes, has a <b>child</b> when it saves enough and is <b>gone</b> when it goes broke.</li>
       <li>A day is 24 minutes: <b>rush hours</b> at 8:30 and 18:00, freight in business hours, and at <b>night</b> the city empties and the headlights come on.</li>
       <li><b>Species over time</b> and the <b>family tree</b> show who is winning; <b>Bodies</b> plots every car's cargo room against its top speed.</li>
-      <li>Nobody told them which <b>side of the road</b> to drive on. Watch the number: in a busy city one side usually wins within a few days, and which one is chance. <b>Heatmap</b> (H) shows where they crash, or crawl.</li>
+      <li>Nobody told them which <b>side of the road</b> to drive on. Watch the number and its chart: in a busy city one side usually wins within a few days, and which one is chance. <b>Heatmap</b> (H) shows where they crash, or crawl.</li>
       <li>On <b>Turin</b>, <b>Barcelona</b> and <b>Manhattan</b> the chevrons are real <b>one-way streets</b>.</li>
       <li><b>Edit roads</b>: click a street to make it one-way, then the other way, then closed, then two-way again, or drag from junction to junction to build one; <b>Grow</b> adds a district; <b>Pedestrians</b> adds people who have to get across.</li>
     </ul>
@@ -72,6 +72,12 @@
       <h2>Species over time</h2>
       <canvas id="species" role="img" aria-label="How many cars belong to each species over time"></canvas>
       <div class="legend">each band is a species, its height how many cars belong to it</div>
+    </div>
+
+    <div class="card">
+      <h2>Side of the road</h2>
+      <canvas id="sides" role="img" aria-label="Share of cars on two-way roads keeping right, hour by hour over the last four days"></canvas>
+      <div class="legend">share of cars on two-way roads right of the middle, hourly, last four days: top is all right, bottom all left</div>
     </div>
 
     <div class="card">

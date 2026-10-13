@@ -16,6 +16,7 @@ const $ = (id) => document.getElementById(id);
 const view = $("view"), vctx = view.getContext("2d");
 const brain = $("brain"), bctx = brain.getContext("2d");
 const spc = $("species"), sctx = spc.getContext("2d");
+const sdc = $("sides"), sdctx = sdc.getContext("2d");
 const bod = $("bodies"), octx = bod.getContext("2d");
 const tree = $("tree"), tctx = tree.getContext("2d");
 
@@ -31,6 +32,7 @@ function layout() {
   const bw = brain.parentElement.getBoundingClientRect().width - 28;
   fitCanvas(brain, bw, 150);
   fitCanvas(spc, bw, 110);
+  fitCanvas(sdc, bw, 70);
   fitCanvas(bod, bw, 130);
   fitCanvas(tree, bw, 140);
   cam.fitted = false;
@@ -73,6 +75,27 @@ function drawSpecies() {
     sctx.fill();
     top.forEach((v, i) => (base[i] = v));
   }
+}
+
+// Which side of the road, an hour at a time, over the last four days. A
+// convention shows up as the line leaving the middle and staying away.
+function drawSides() {
+  const W = sdc.clientWidth, H = sdc.clientHeight, log = world.log.slice(-576);
+  sdctx.clearRect(0, 0, W, H);
+  sdctx.strokeStyle = "rgba(255,255,255,0.12)";
+  sdctx.lineWidth = 1;
+  sdctx.beginPath(); sdctx.moveTo(0, H / 2); sdctx.lineTo(W, H / 2); sdctx.stroke();
+  const pts = [];
+  for (let i = 0; i + 6 <= log.length; i += 6) {
+    const h = log.slice(i, i + 6), all = h.reduce((a, r) => a + (r.sideAll || 0), 0);
+    if (all >= 50) pts.push([i / 575, h.reduce((a, r) => a + r.sideRight, 0) / all]);
+  }
+  if (pts.length < 2) return;
+  sdctx.strokeStyle = "#e8c46a";
+  sdctx.lineWidth = 1.5;
+  sdctx.beginPath();
+  for (const [x, y] of pts) sdctx.lineTo(x * W, (1 - y) * H);
+  sdctx.stroke();
 }
 
 // The family tree of everyone alive: each remembered birth is a line from
@@ -229,6 +252,7 @@ function draw() {
 
   drawNetwork(bctx, focus ? focus.genome : null, brain.clientWidth, brain.clientHeight);
   drawSpecies();
+  drawSides();
   drawTree(focus);
   drawBodies();
 
