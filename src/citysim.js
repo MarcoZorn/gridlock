@@ -225,9 +225,10 @@ function drawCar(d, colour, alpha) {
   vctx.rotate(d.a);
   vctx.globalAlpha = alpha;
   vctx.fillStyle = d.towing > 0 ? "#e86e64" : colour;
-  vctx.fillRect(-BODY.len / 2, -BODY.wid / 2, BODY.len, BODY.wid);
+  const { len, wid } = d.p;
+  vctx.fillRect(-len / 2, -wid / 2, len, wid);
   vctx.fillStyle = "rgba(0,0,0,0.35)";
-  vctx.fillRect(BODY.len * 0.1, -BODY.wid / 2 + 0.8, BODY.len * 0.22, BODY.wid - 1.6);
+  vctx.fillRect(len * 0.1, -wid / 2 + 0.8, len * 0.22, wid - 1.6);
   vctx.restore();
 }
 

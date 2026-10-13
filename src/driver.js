@@ -35,8 +35,14 @@ const wrap = (a) => Math.atan2(Math.sin(a), Math.cos(a));
 export class Driver {
   // `t0` is how far along the first road the car starts, so a city full of
   // cars does not begin with everyone stacked on the same junction.
-  constructor(genome, city, route, t0 = 0) {
+  //
+  // `p` is the car's physical make-up: engine, brakes, size, sensor range,
+  // how many of its rays work. It defaults to the standard BODY; an evolved
+  // body hands in its own. Inputs stay normalised against BODY's top speed,
+  // so a number means the same thing to every brain whatever it drives.
+  constructor(genome, city, route, t0 = 0, p = BODY) {
     this.genome = genome;
+    this.p = p;
     this.city = city;
     this.alive = true;
     this.crashed = false;
@@ -96,7 +102,7 @@ export class Driver {
   }
 
   sense(hash) {
-    const c = this.city, R = BODY.rayRange;
+    const c = this.city, R = this.p.rayRange;
     for (let i = 0; i < N_RAYS; i++) {
       const ang = this.a + ANGLES[i];
       const cx = Math.cos(ang), cy = Math.sin(ang);
@@ -123,10 +129,11 @@ export class Driver {
     // what the car is told is how far that is and how fast the gap is closing,
     // which is the one number that separates "car ahead, also moving" from
     // "car ahead, stopped, brake now".
-    const rad = BODY.len * 0.5;
+    
     const svx = this.vx, svy = this.vy;
-    hash.near(this.x, this.y, R + rad, (o) => {
+    hash.near(this.x, this.y, R + 10, (o) => {
       if (o === this || !o.solid) return;
+      const rad = o.p.len * 0.5;
       const ox = o.x - this.x, oy = o.y - this.y;
       const d2 = ox * ox + oy * oy;
       if (d2 > (R + rad) * (R + rad)) return;
@@ -153,12 +160,16 @@ export class Driver {
     if (this.grace > 0) this.grace--;
     this.sense(hash);
     const f = this.frame();
-    const R = BODY.rayRange;
+    const R = this.p.rayRange;
     let k = 0;
+    // A body with three rays has the even slots only; the missing ones read
+    // as empty road, so the brain's layout never changes shape.
+    const three = this.p.rays === 3;
     for (let i = 0; i < N_RAYS; i++) {
-      this.inputs[k++] = this.wallRay[i] / R;
-      this.inputs[k++] = this.carRay[i] / R;
-      this.inputs[k++] = Math.max(-1, Math.min(1, this.closing[i]));
+      const dead = three && i % 2 === 1;
+      this.inputs[k++] = dead ? 1 : this.wallRay[i] / R;
+      this.inputs[k++] = dead ? 1 : this.carRay[i] / R;
+      this.inputs[k++] = dead ? 0 : Math.max(-1, Math.min(1, this.closing[i]));
     }
     const [tx, ty] = this.lookahead(f, BODY.lookahead);
     this.tx = tx; this.ty = ty;
@@ -177,11 +188,12 @@ export class Driver {
     this.genome.activate(this.inputs, this.out);
     const steer = this.out[0], throttle = this.out[1];
 
-    const grip = Math.min(1, Math.abs(this.v) / BODY.minTurnSpeed);
-    this.a += steer * BODY.turnRate * grip * dt * Math.sign(this.v || 1);
-    this.v += (throttle >= 0 ? throttle * BODY.accel : throttle * BODY.brake) * dt;
-    this.v -= this.v * BODY.drag * dt;
-    this.v = Math.max(-BODY.maxReverse, Math.min(BODY.maxSpeed, this.v));
+    const p = this.p;
+    const grip = Math.min(1, Math.abs(this.v) / p.minTurnSpeed);
+    this.a += steer * p.turnRate * grip * dt * Math.sign(this.v || 1);
+    this.v += (throttle >= 0 ? throttle * p.accel : throttle * p.brake) * dt;
+    this.v -= this.v * p.drag * dt;
+    this.v = Math.max(-p.maxReverse, Math.min(p.maxSpeed, this.v));
     this.dist += Math.abs(this.v) * dt;
     if (Math.abs(this.v) < BODY.stoppedSpeed && this.city.junctionAt(this.x, this.y) >= 0) this.waitTicks++;
     this.x += Math.cos(this.a) * this.v * dt;

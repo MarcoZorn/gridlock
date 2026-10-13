@@ -136,14 +136,16 @@ export class CityWorld {
   // the car's length would make two cars side by side in neighbouring lanes
   // touch, which is exactly the situation that must be survivable.
   collide() {
-    const h = this.hash, off = (BODY.len - BODY.wid) / 2, rr = BODY.wid * BODY.wid;
+    const h = this.hash;
     h.rebuild(this.cars);
     for (const a of this.cars) {
       if (!a.solid) continue;
-      const ax = Math.cos(a.a) * off, ay = Math.sin(a.a) * off;
-      h.near(a.x, a.y, BODY.len, (b) => {
+      const offA = (a.p.len - a.p.wid) / 2;
+      const ax = Math.cos(a.a) * offA, ay = Math.sin(a.a) * offA;
+      h.near(a.x, a.y, a.p.len + 10, (b) => {
         if (b === a || !b.solid || !a.solid || b.id < a.id) return;
-        const bx = Math.cos(b.a) * off, by = Math.sin(b.a) * off;
+        const offB = (b.p.len - b.p.wid) / 2, rr = ((a.p.wid + b.p.wid) / 2) ** 2;
+        const bx = Math.cos(b.a) * offB, by = Math.sin(b.a) * offB;
         for (const sa of [1, -1]) {
           for (const sb of [1, -1]) {
             const dx = a.x + ax * sa - b.x - bx * sb, dy = a.y + ay * sa - b.y - by * sb;
