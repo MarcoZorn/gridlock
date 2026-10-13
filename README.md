@@ -72,11 +72,12 @@ node tools/osm.mjs extract.json maps/name.json "Place"   # an OpenStreetMap extr
 - **With no fitness function, the cheapest car wins.** Every forty-day
   economy bred small, underpowered, short-sighted cars.
 - **In a crowded city the danger is the queue, not the crossing.** In the
-  economy on Turin and Barcelona about 85% of crashes are car-on-car, and
-  85-90% of those happen between junctions: rear-ends in slow traffic.
+  economy on Turin and Barcelona over 80% of crashes are car-on-car, and
+  over 80% of those happen between junctions, in the traffic, not at the
+  crossings.
 - **One-way streets do not pay here.** Barcelona's Eixample with its real
   arrows carries a sixth fewer fares than the same streets two-way, and is
-  no safer: the detours cost more than the conflicts saved.
+  no safer: a fare across the block has to go round it.
 - **Cars and pedestrians cycle.** Once both populations can replace
   themselves they oscillate like predator and prey.
 - **Two bugs mattered more than any tuning.** A four-second "lost" rule that
