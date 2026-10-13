@@ -95,9 +95,9 @@ node tools/osm.mjs extract.json maps/name.json "Place"   # an OpenStreetMap extr
   once it has regrown, trips take 40% longer for 13% fewer crashes.
 - **Cars and pedestrians cycle.** Once both populations can replace
   themselves they oscillate like predator and prey.
-- **Fitness sharing costs here.** Without it drivers were half as fit
-  again after 300 generations (three seeds out of three), and 12-19% better
-  when switched off late in two long runs. It is now off.
+- **Fitness sharing costs here.** Raised without it, drivers made 35% more
+  trips in cities they had never seen (six seeds), and switching it off late
+  in two long runs helped too. It is now off.
 - **Two bugs mattered more than any tuning.** A four-second "lost" rule that
   killed every car waiting at a red light, and a stagnation rule that culled
   species for drawing hard cities.
