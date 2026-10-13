@@ -296,4 +296,23 @@ import { Crowd, PED } from "./src/pedestrians.js";
   console.log("ok  heatmaps add up, and start again when the city grows");
 }
 
+{
+  // the editor's click on a road: two-way, one-way, the other way, closed
+  const graph = { name: "block", nodes: [[40, 40], [240, 40], [240, 240], [40, 240], [40, 400]], edges: [[0, 1, 1], [1, 2, 1], [2, 3, 1], [3, 0, 1], [3, 4, 1]] };
+  const c = new City(1, { graph });
+  const top = c.edgeBetween(0, 1), spur = c.edgeBetween(3, 4);
+  assert(c.cycleRoad(top) === 1 && c.route(1, 0).join() === "1,2,3,0", "one-way: back round the block");
+  assert(c.cycleRoad(top) === 2 && c.route(0, 1).join() === "0,3,2,1", "the other way round");
+  assert(c.cycleRoad(top) === 3 && c.closed.has(top.id) && !top.oneway, "then closed");
+  assert(c.cycleRoad(top) === 0 && !c.closed.has(top.id) && top.a === 0, "then two-way, as it was");
+  assert(c.cycleRoad(spur) === 3, "a dead end can not be one-way either way: straight to closed");
+  // and a save replays it
+  const w = new EcoWorld({ seed: 2, startCars: 5, graph });
+  w.cycleRoad(w.city.edgeBetween(0, 1)); w.cycleRoad(w.city.edgeBetween(0, 1));
+  const back = EcoWorld.fromJSON(JSON.parse(JSON.stringify(w)));
+  const e = back.city.edgeBetween(0, 1);
+  assert(e.oneway && e.a === 1 && e.b === 0, "a saved city keeps its one-way streets");
+  console.log("ok  the editor makes streets one-way, either way, and never into a trap");
+}
+
 console.log("\nall checks passed");
