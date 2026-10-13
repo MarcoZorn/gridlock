@@ -219,8 +219,18 @@ for (const b of document.querySelectorAll("[data-speed]")) {
 window.addEventListener("resize", layout);
 
 // Handle for poking at the run from the console.
-window.gridlock = { get world() { return world; }, ff(n) { pending += n; } };
+window.gridlock = { get world() { return world; }, ff(n) { pending += n; }, cam };
+
+// ?seed=7&traffic=1&density=20&control=lights starts that run, so a setup
+// can be shared as a link.
+const params = new URLSearchParams(location.search);
+traffic = params.get("traffic") === "1";
+if ([10, 20, 40, 120].includes(+params.get("density"))) density = +params.get("density");
+if (["none", "lights", "roundabouts"].includes(params.get("control"))) control = params.get("control");
+$("traffic").dataset.on = traffic;
+document.querySelectorAll("[data-density]").forEach((x) => (x.dataset.on = +x.dataset.density === density));
+document.querySelectorAll("[data-control]").forEach((x) => (x.dataset.on = x.dataset.control === control));
 
 layout();
-reset(3);
+reset(+params.get("seed") || 3);
 frame();
