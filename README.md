@@ -98,6 +98,35 @@ node tools/osm.mjs extract.json maps/name.json "Place"   # an OpenStreetMap extr
   killed every car waiting at a red light, and a stagnation rule that culled
   species for drawing hard cities.
 
+## What the drivers actually look at
+
+Twenty-one inputs go into every brain. Which ones matter? The shipped
+drivers (`docs/trained.json`), in twelve cities they never saw, with one
+group of inputs at a time held at a neutral value (clear road, no car,
+centred, cruising, nothing ahead):
+
+| silenced | trips per car | crashes per 1000 units driven |
+|---|---|---|
+| nothing | 1.48 | 3.60 |
+| how sharp the next turn is | 1.63 | 3.56 |
+| distance to other cars | 1.56 | 4.09 |
+| distance to the junction | 1.44 | 3.45 |
+| how fast the gap to a car is closing | 1.44 | 3.65 |
+| distance to the walls | 1.23 | 5.83 |
+| heading error to the route | 0.68 | 6.26 |
+| own speed | 0.61 | 5.20 |
+| sideways position in the road | 0.38 | 13.65 |
+
+They drive by the route and the road: where they are across it, which way
+the route goes and how fast they are going. Walls matter a little. Other
+cars barely: blind to them, the drivers make more trips and only 14% more
+crashes, so what that sense mostly does is slow them down. Closing speed and
+the distance to the next junction, inputs added for the very behaviours the
+project hoped for (braking for a stopped car, waiting at a junction), are
+not used at all, which is the right-of-way plateau seen from the inside. And
+the turn input does harm: without it they make 10% more trips at the same
+crash rate. (`node tools/ablate.mjs turn`, and so on for each group.)
+
 ## What is coded and what is evolved
 
 | coded | evolved |
