@@ -863,7 +863,7 @@ in three cities of four), and living under it for six more days:
 
 One climb in four, and a gene that mutates as gently as this one drifts by
 about that much on its own in 25 generations. Even a charge that bankrupts
-most of the city puts only a faint pull on route choice. Driving round the
+most of the city puts only a faint pull on route choice. My reading: driving round the
 jam is a strategy for a city where jams are local; in these ones, the
 traffic is everywhere the fares are.
 
