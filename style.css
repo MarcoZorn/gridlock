@@ -54,3 +54,9 @@ nav.views { display: flex; flex-wrap: wrap; gap: 4px 16px; margin-bottom: 14px; 
 nav.views a { color: var(--dim); text-decoration: none; }
 nav.views a:hover { color: var(--ink); }
 nav.views a.here { color: var(--accent); }
+
+/* the "what am I looking at" key under the intro */
+details.key { margin-top: 10px; max-width: 72ch; font-size: 12.5px; color: var(--dim); }
+details.key summary { cursor: pointer; color: var(--blue); }
+details.key ul { margin: 8px 0 0; padding-left: 18px; line-height: 1.6; }
+details.key b { color: var(--ink); font-weight: 600; }

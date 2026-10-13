@@ -31,6 +31,17 @@
     how to drive the route is not. Every car is a NEAT brain that sees a fan of rays, its speed,
     which way its route goes and how sharp the next turn is, and it has to work out the rest.
   </p>
+  <details class="key">
+    <summary>What am I looking at?</summary>
+    <ul>
+      <li><b>Grey cars</b> are the population; the <b>orange</b> one is the leader (or <b>blue</b>, the car you clicked). <b>Red</b> means just crashed and being towed back to the road.</li>
+      <li>The <b>blue line</b> is the followed car's route from A*, the <b>yellow dot</b> the point on it the car is steering for.</li>
+      <li>The <b>thin lines</b> from it are its five rays: blue where they hit a kerb, orange where they hit another car.</li>
+      <li><b>Red tail lights</b> mean the brain is braking. Watch how rarely they come on.</li>
+      <li>On the right, the <b>brain</b> is the car's actual network (inputs left, steering and throttle right, evolved neurons between), and the <b>bars</b> under it are everything it feels this instant.</li>
+      <li><b>Traffic off</b>: every car is a ghost driving the same fares. <b>Traffic on</b>: they share the road and can hit each other.</li>
+    </ul>
+  </details>
 </header>
 
 <main>
