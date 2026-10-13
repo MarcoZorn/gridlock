@@ -26,6 +26,18 @@ export class Innovations {
   }
   // Splitting the same connection twice anywhere in the population should
   // produce the same new node id, for the same alignment reason.
+  toJSON() {
+    return { conn: [...this.conn], split: [...this.split], ni: this.nextInnov, nn: this.nextNode };
+  }
+
+  static fromJSON(j) {
+    const v = new Innovations(j.nn);
+    v.conn = new Map(j.conn);
+    v.split = new Map(j.split);
+    v.nextInnov = j.ni;
+    return v;
+  }
+
   splitNode(innov) {
     let v = this.split.get(innov);
     if (v === undefined) { v = this.nextNode++; this.split.set(innov, v); }
@@ -82,6 +94,27 @@ export class Genome {
   }
 
   dirty() { this._order = null; this._in = null; }
+
+  // Compact JSON: nodes as [id, kind, depth], connections as
+  // [innovation, in, out, weight, enabled]. Weights are rounded to six
+  // places, which is far below anything mutation or the network can feel.
+  toJSON() {
+    return {
+      i: this.nIn, o: this.nOut, b: this.biasId, out: this.outIds,
+      n: [...this.nodes.values()].map((n) => [n.id, n.kind[0], n.depth]),
+      c: [...this.conns.values()].map((c) => [c.innov, c.inId, c.outId, Math.round(c.w * 1e6) / 1e6, c.on ? 1 : 0]),
+    };
+  }
+
+  static fromJSON(j) {
+    const kinds = { i: "input", b: "bias", h: "hidden", o: "output" };
+    const g = new Genome(j.i, j.o);
+    g.biasId = j.b;
+    g.outIds = [...j.out];
+    for (const [id, k, depth] of j.n) g.nodes.set(id, { id, kind: kinds[k], depth });
+    for (const [innov, inId, outId, w, on] of j.c) g.conns.set(innov, { inId, outId, w, on: !!on, innov });
+    return g;
+  }
 
   order() {
     if (!this._order) {
