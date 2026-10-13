@@ -277,6 +277,16 @@ it. What did repeat is a small drop in collisions, 8% on average, in all
 three. Shared blame makes drivers a little more careful, not polite; it is
 `--shared-crossing`, off by default.
 
+What finally explained all of it was counting. In the crossroads arena, over
+the last 150 generations of a run, there were 168,404 crashes. A third were
+between cars, and of those, 7.9% were crossing collisions inside the
+junction. Right of way governs less than 3% of the damage a driver takes,
+even in an arena built around one junction. The rest is kerbs, head-ons on
+the arms and rear-ends. Evolution spends its effort where the damage is, and
+the damage is not at the junction. For yielding to evolve, everything else
+would have to be mostly solved first, and these drivers are still hitting
+walls.
+
 **Which side of the road?** Nothing in the code prefers a side, and over
 thousands of generations no permanent convention appears: the average lateral
 offset of moving cars hovers near zero. But it is not noise. In a run with all
