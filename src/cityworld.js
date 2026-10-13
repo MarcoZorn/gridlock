@@ -382,8 +382,10 @@ export function collideCars(cars, h, onCarCrash, sharedCrossing = false) {
               const rel = Math.hypot(a.vx - b.vx, a.vy - b.vy);
               a.crash(rel); b.crash(rel);
             } else {
-              a.crash(Math.max(0, (a.vx * nx + a.vy * ny) / nl));
-              b.crash(Math.max(0, -(b.vx * nx + b.vy * ny) / nl));
+              const va = Math.max(0, (a.vx * nx + a.vy * ny) / nl), vb = Math.max(0, -(b.vx * nx + b.vy * ny) / nl);
+              // a wreck (only solid with BODY.wrecks) is charged the speed of whoever hit it
+              a.crash(a.towing ? vb : va);
+              b.crash(b.towing ? va : vb);
             }
             n++;
             return;

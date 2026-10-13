@@ -29,6 +29,7 @@ export const BODY = {
   redFine: 0.2,     // damage-equivalent of running a red light
   wallDamage: 1,    // damage from a kerb strike, relative to hitting a car
   wrecks: 0,        // 1: a crashed car blocks the road until it is towed (an experiment)
+  wreckBlame: 0,    // 1: and pays for every car that runs into it while it does
   towTicks: 120, graceTicks: 45, maxCrashes: 12, damageCost: 1,
 };
 
@@ -371,7 +372,12 @@ export class Driver {
   // `scale` prices the damage: walls can be made cheaper than other cars
   // (BODY.wallDamage) to test what a driver learns when kerbs stop mattering.
   crash(speed = this.v, scale = 1) {
-    if (this.towing > 0) return;   // a wreck being hit is already wrecked
+    if (this.towing > 0) {
+      // a wreck being hit is already wrecked; with BODY.wreckBlame it pays
+      // for the car that ran into it, the jam its crash caused
+      if (BODY.wreckBlame) { const i = Math.min(1.5, Math.abs(speed) / BODY.maxSpeed); this.damage += i * i * scale; }
+      return;
+    }
     this.crashes++;
     const impact = Math.min(1.5, Math.abs(speed) / BODY.maxSpeed);
     this.damage += impact * impact * scale;
