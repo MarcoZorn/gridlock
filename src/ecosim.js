@@ -11,7 +11,7 @@ const brain = $("brain"), bctx = brain.getContext("2d");
 const spc = $("species"), sctx = spc.getContext("2d");
 const bod = $("bodies"), octx = bod.getContext("2d");
 
-let world, founders = null, graph = null, running = true, speed = 1, showRays = true, follow = false;
+let world, founders = null, graph = null, size = "small", running = true, speed = 1, showRays = true, follow = false;
 let selected = null, colourBy = "species", control = "none", editing = false, draft = null;
 const cam = { x: 0, y: 0, k: 1, fitted: false };
 
@@ -33,7 +33,7 @@ function fitCam() {
 }
 
 function reset(seed) {
-  world = new EcoWorld({ seed, control, founders, graph });
+  world = new EcoWorld({ seed, control, founders, graph, size });
   selected = null;
   $("peds-on").dataset.on = false;
   cam.fitted = false;
@@ -182,7 +182,7 @@ panZoom(view, cam, (wx, wy) => {
     move(x, y) { draft.x = x; draft.y = y; },
     end(x, y) {
       const { node: to, dist: d } = world.city.nearestNode(x, y);
-      if (to && d < to.r + 12 && world.city.addRoad(node.id, to.id)) world.cityEdited();
+      if (to && d < to.r + 12) world.build(node.id, to.id);
       draft = null;
     },
   };
@@ -214,6 +214,17 @@ for (const b of document.querySelectorAll("[data-control]")) {
     syncUrl();
   };
 }
+for (const b of document.querySelectorAll("[data-size]")) {
+  b.onclick = () => {
+    size = b.dataset.size;
+    document.querySelectorAll("[data-size]").forEach((x) => (x.dataset.on = x === b));
+    reset(world.seed);
+    syncUrl();
+  };
+}
+// Growing keeps the camera where it was, so you can watch the new blocks fill.
+$("grow-east").onclick = () => world.grow("east");
+$("grow-south").onclick = () => world.grow("south");
 $("peds-on").onclick = (e) => {
   world.crowd = world.crowd ? null : new Crowd(world.city, new Rng(world.seed * 7 + 1), 40);
   e.target.dataset.on = !!world.crowd;
@@ -251,6 +262,7 @@ function syncUrl() {
   const u = new URL(location.href);
   u.searchParams.set("seed", world.seed);
   u.searchParams.set("control", control);
+  u.searchParams.set("size", size);
   if (graph) u.searchParams.set("map", new URLSearchParams(location.search).get("map"));
   history.replaceState(null, "", u);
 }
@@ -272,6 +284,10 @@ try {
   if (r.ok) founders = Population.fromJSON((await r.json()).pop);
 } catch { /* no founders: start from minimal brains */ }
 const params = new URLSearchParams(location.search);
+if (["small", "medium", "large"].includes(params.get("size"))) {
+  size = params.get("size");
+  document.querySelectorAll("[data-size]").forEach((x) => (x.dataset.on = x.dataset.size === size));
+}
 // ?map=turin drives on maps/turin.json, a real street map
 if (/^[a-z0-9-]+$/.test(params.get("map") || "")) {
   try {

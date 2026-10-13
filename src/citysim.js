@@ -1,5 +1,6 @@
 // Browser front end for the city: run it, draw it, pan and zoom, inspect a car.
 import { CityWorld } from "./cityworld.js";
+import { SIZES } from "./ecoworld.js";
 import { BODY } from "./driver.js";
 import { fitCanvas, panZoom, drawCity, drawHeat, drawSenses, drawLights, drawRoute, drawRays, drawCar } from "./render.js";
 import { drawNetwork } from "./netview.js";
@@ -13,7 +14,7 @@ const senses = $("senses");
 
 let world, running = true, speed = 1, showRays = true, showAll = true, follow = false;
 let pending = 0, selected = null;
-let traffic = false, density = 40, heatMode = 0, control = "none";
+let traffic = false, density = 40, heatMode = 0, control = "none", size = "small";
 const HEAT_MODES = ["off", "crashes", "congestion"];
 const cam = { x: 0, y: 0, k: 1, fitted: false };
 
@@ -36,7 +37,7 @@ function fitCam() {
 }
 
 function reset(seed) {
-  world = new CityWorld({ seed, popSize: 120, traffic, density, control });
+  world = new CityWorld({ seed, popSize: 120, traffic, density, control, size: SIZES[size] });
   selected = null;
   cam.fitted = false;
   $("seed").textContent = seed;
@@ -198,6 +199,18 @@ $("trained").onclick = async () => {
     adopt(CityWorld.fromJSON(await r.json()));
   } catch (err) { alert(`Could not load the trained drivers: ${err.message}`); }
 };
+// A new size is a new set of cities, but the same drivers: the population is
+// kept, so you can see how brains raised in small towns cope with a big one.
+for (const b of document.querySelectorAll("[data-size]")) {
+  b.onclick = () => {
+    size = b.dataset.size;
+    document.querySelectorAll("[data-size]").forEach((x) => (x.dataset.on = x === b));
+    const pop = world.pop, history = world.history;
+    world = new CityWorld({ seed: world.seed, popSize: 120, traffic, density, control, size: SIZES[size], pop });
+    world.history = history;
+    selected = null; cam.fitted = false;
+  };
+}
 $("heat").onclick = (e) => {
   heatMode = (heatMode + 1) % HEAT_MODES.length;
   e.target.dataset.on = heatMode > 0;
@@ -227,6 +240,8 @@ const params = new URLSearchParams(location.search);
 traffic = params.get("traffic") === "1";
 if ([10, 20, 40, 120].includes(+params.get("density"))) density = +params.get("density");
 if (["none", "lights", "roundabouts"].includes(params.get("control"))) control = params.get("control");
+if (SIZES[params.get("size")]) size = params.get("size");
+document.querySelectorAll("[data-size]").forEach((x) => (x.dataset.on = x.dataset.size === size));
 $("traffic").dataset.on = traffic;
 document.querySelectorAll("[data-density]").forEach((x) => (x.dataset.on = +x.dataset.density === density));
 document.querySelectorAll("[data-control]").forEach((x) => (x.dataset.on = x.dataset.control === control));
