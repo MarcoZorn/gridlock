@@ -90,9 +90,9 @@ node tools/osm.mjs extract.json maps/name.json "Place"   # an OpenStreetMap extr
 - **A congestion charge prices cars out, it does not teach detours.** After
   two weeks the city moves nearly as many people (7% fewer) with 40% fewer
   cars, faster and safer; the gene for avoiding busy roads never moves.
-- **A speed limit is obeyed, and halves the city.** Drivers settle a third
-  slower, trips take only 7% longer (most of a trip is queueing), and the
-  fines along the way price out half the fleet.
+- **A speed limit is obeyed, and costs a third of the fares.** Drivers
+  settle a third slower; the fines while they learn crash the fleet, and
+  once it has regrown, trips take 40% longer for 13% fewer crashes.
 - **Cars and pedestrians cycle.** Once both populations can replace
   themselves they oscillate like predator and prey.
 - **Fitness sharing costs here.** Without it drivers were half as fit
@@ -916,13 +916,19 @@ speed decide the fines are worth paying? Four days, two seeds:
 |---|---|---|---|---|---|
 | no camera | 232 / 190 | 2584 / 2219 | 56 s / 58 s | 185 / 204 | 43 / 44 |
 | limit 35 | 101 / 69 | 1343 / 870 | 61 s / 61 s | 152 / 108 | 30 / 30 |
+| no camera, days 9-12 | 266 / 277 | 2730 / 2716 | 53 s / 62 s | 203 / 201 | |
+| limit 35, days 9-12 | 161 / 231 | 1686 / 2038 | 76 s / 86 s | 171 / 180 | |
 
 They obey, and overdo it: cars settle at 30, comfortably under the limit,
-and brake less (9% of the time against 13%). The surprise is how little it
-costs a trip, 7% longer for driving a third slower: most of a trip here is
-spent queueing, not cruising. What it does cost is the city. Learning to
-obey is paid for in fines while the slow learners are still around, and the
-fleet halves, and so do the fares.
+and brake less (9% of the time against 13%). At first it seemed to cost a
+trip almost nothing, 7% longer for driving a third slower. What it costs
+first is the city: the share of driving time over the limit falls from 45%
+on the first day to 27% on the fourth, and the fines paid while it falls
+drive the fleet down to the immigrant floor of 25 cars before it regrows.
+Run on to day 12, the fleets come most of the way back, and then the price
+shows up where I expected it in the first place: with as many cars on the
+road again, trips take 40% longer than without the camera, and the city
+moves 30% fewer fares for 13% fewer crashes per car.
 
 **Where they crash.** The ecosystem page has the same heatmaps as the
 generation page (H): crashes, or cars crawling at walking pace. On a real map
