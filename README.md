@@ -412,9 +412,11 @@ to 40%, which halves the cars to about a hundred, three seeds each:
 
 The thin city settled every time, the full one two times out of three. So
 it is not the crowd, at least not between a hundred cars and three hundred.
-What is left is the map itself: the real ones funnel traffic into a few long
-two-way streets, the grid spreads it over many short ones broken up by
-junctions, where there is no side to keep. And the code can not impose it. With `BODY.lane` the
+The suspect left, not yet tested, is the map itself: the real ones funnel
+traffic into a few long two-way streets, the grid spreads it over many short
+ones broken up by junctions, where there is no side to keep.
+
+And the code can not impose it. With `BODY.lane` the
 steering target sits in the middle of the right half of every two-way road,
 and one of the two Barcelona runs evolved to drive on the left anyway, 88% of
 it, against its own target.
