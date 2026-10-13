@@ -26,7 +26,8 @@ const seed = +arg("seed", 3);
 const every = +arg("checkpoint", 25);
 const control = arg("control", "none");
 const mapName = arg("map", null);
-const graph = mapName ? JSON.parse(fs.readFileSync(`maps/${mapName}.json`, "utf8")) : null;
+// a name from maps/, or a path to any map file
+const graph = mapName ? JSON.parse(fs.readFileSync(mapName.endsWith(".json") ? mapName : `maps/${mapName}.json`, "utf8")) : null;
 const from = arg("from", null);   // start from another run's checkpoint
 const threads = +arg("threads", 3);
 // experiment knobs on the car's body constants, e.g. --body wallDamage=0,
