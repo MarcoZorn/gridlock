@@ -8,7 +8,7 @@
 // If it learns any of that, it learned it.
 export const N_RAYS = 5;
 const PER_RAY = 3;             // wall distance, car distance, closing speed
-export const N_INPUTS = N_RAYS * PER_RAY + 5;
+export const N_INPUTS = N_RAYS * PER_RAY + 6;
 export const N_OUTPUTS = 2;    // steering, throttle
 
 export const BODY = {
@@ -22,7 +22,8 @@ export const BODY = {
   lookahead: 35,    // how far down the route the steering target sits
   keepLine: 1,      // 1: target keeps the car's lateral offset, 0: target on the centreline
   dropSpeed: 40,
-  stoppedSpeed: 6,  // below this a car in a junction counts as waiting    // must be this slow at the destination to deliver
+  stoppedSpeed: 6,
+  redFine: 0.2,     // damage-equivalent of running a red light  // below this a car in a junction counts as waiting    // must be this slow at the destination to deliver
   towTicks: 120, graceTicks: 45, maxCrashes: 12, damageCost: 1,
 };
 
@@ -50,6 +51,8 @@ export class Driver {
     this.tripTicks = [];
     this.dist = 0;         // distance actually driven, for crashes per km
     this.waitTicks = 0;    // ticks spent stopped inside a junction
+    this.redRuns = 0;      // junctions entered against a red light
+    this.inJunction = -1;
     this.wallRay = new Float64Array(N_RAYS);
     this.carRay = new Float64Array(N_RAYS);
     this.closing = new Float64Array(N_RAYS);
@@ -164,6 +167,9 @@ export class Driver {
     // How sharply is what decides braking, and abs() is two hidden neurons
     // a fresh network does not have.
     this.inputs[k++] = Math.abs(this.nextTurn()) / Math.PI;
+    // The light at the next junction: +1 green, -1 red, 0 if there is none.
+    const B = this.route[this.seg + 1], light = this.city.nodes[B].light && this.city.control === "lights";
+    this.inputs[k++] = light ? (this.city.green(B, this.route[this.seg]) ? 1 : -1) : 0;
 
     this.genome.activate(this.inputs, this.out);
     const steer = this.out[0], throttle = this.out[1];
@@ -179,7 +185,20 @@ export class Driver {
     this.y += Math.sin(this.a) * this.v * dt;
 
     if (!this.city.contains(this.x, this.y)) return this.crash();
+    this.checkLight();
     this.advance();
+  }
+
+  // Running a red is not a crash, it is a fine. The light is a convention,
+  // not a wall: nothing physically stops you, and whether that fine is worth
+  // respecting is for the population to find out.
+  checkLight() {
+    const j = this.city.junctionAt(this.x, this.y);
+    if (j >= 0 && j !== this.inJunction && j === this.route[this.seg + 1] && !this.city.green(j, this.route[this.seg])) {
+      this.redRuns++;
+      this.damage += BODY.redFine;
+    }
+    this.inJunction = j;
   }
 
   // The waypoint the car is pointed at is not the next junction but a point a
