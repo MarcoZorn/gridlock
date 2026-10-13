@@ -261,7 +261,14 @@ the code decides which way traffic should flow.
 
 1. *Traffic from scratch learns nothing.* A city full of random drivers is
    pure noise. Drivers learn alone first, as ghosts, and the streets fill up
-   later: traffic is a switch on the same population.
+   later: traffic is a switch on the same population. (Months of fixes
+   later this no longer holds: with the current code, 300 generations in
+   traffic from the very first came out as good in unseen cities as 200
+   alone and 100 in traffic, 1.67 trips per car against 1.58 over three
+   seeds, and the same crash rate. Whatever made the first generations pure
+   noise was fixed along the way, probably the shared crash damage below.
+   The switch stays, because a generation without traffic is three times
+   cheaper to run.)
 2. *Shared crash damage.* Two cars in a collision both paid in full, so a car
    rear-ended at a standstill paid as much as the one that hit it. Selection
    was punishing the careful driver for someone else's mistake. Now each car
