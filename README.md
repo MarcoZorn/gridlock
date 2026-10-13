@@ -25,13 +25,17 @@ step: serve the folder and open it.
 - `eco.html`: the city with no fitness function. Wallets, births, deaths, two
   markets, evolved bodies, a road editor, fast-forward by the day.
 - `LIVE.md`: tables and charts from the long headless runs.
+- URL options: `?seed=7`, `?size=small|medium|large`, `?control=none|lights|roundabouts`,
+  `?map=crossroads|turin|barcelona`, and on the generation page `?traffic=1&density=20`.
 
 ```
 python3 -m http.server                     # then http://localhost:8000
 node test.mjs                              # headless checks, including "does evolution work"
 node headless.mjs --run runs/x --gens 3000 --control lights --density 40
-node headless.mjs --eco --run runs/e --days 40 --founders docs/trained.json
+node headless.mjs --run runs/x2 --map crossroads --from runs/x/state.json --gens 4000
+node headless.mjs --eco --run runs/e --days 40 --founders docs/trained.json [--pedestrians 40]
 node report.mjs                            # LIVE.md from every run's telemetry
+node tools/osm.mjs extract.json maps/name.json "Place"   # an OpenStreetMap extract as a map
 ```
 
 ## What is coded and what is evolved
