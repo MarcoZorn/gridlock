@@ -18,7 +18,8 @@ export const BODY = {
   len: 10, wid: 5,
   rayRange: 120, rayStep: 6,
   fov: Math.PI * 1.1,
-  lostTicks: 240,   // no route progress for this long and the car is lost
+  lostTicks: 240,   // moving but no route progress for this long: lost
+  stuckTicks: 1800, // standing still with no progress for this long: stuck
   lookahead: 35,    // how far down the route the steering target sits
   keepLine: 1,      // 1: target keeps the car's lateral offset, 0: target on the centreline
   dropSpeed: 40,
@@ -89,6 +90,7 @@ export class Driver {
     this.done = 0;         // length of the segments already finished
     this.best = 0;         // furthest progress along this route
     this.sinceBest = 0;
+    this.still = 0;
     this.tripStart = this.ticks;
     this.routeLen = this.city.pathLength(route);
   }
@@ -314,8 +316,17 @@ export class Driver {
       f = this.frame();
     }
     const p = this.done + Math.max(0, Math.min(f.len, f.along));
-    if (p > this.best + 0.5) { this.best = p; this.sinceBest = 0; }
-    else if (++this.sinceBest > BODY.lostTicks) { this.alive = false; this.lost = true; }
+    // Lost means moving without getting anywhere: going round in circles or
+    // down the wrong street. Standing still is waiting, at a red light or in
+    // a queue, and only counts as stuck after much longer. An earlier version
+    // gave up on any car that made no progress for four seconds, which is
+    // shorter than a red light: stopping for one was a death sentence, and
+    // evolution duly selected for running them.
+    if (p > this.best + 0.5) { this.best = p; this.sinceBest = 0; this.still = 0; }
+    else if (Math.abs(this.v) > BODY.stoppedSpeed ? ++this.sinceBest > BODY.lostTicks : ++this.still > BODY.stuckTicks) {
+      this.alive = false;
+      this.lost = true;
+    }
   }
 
   arrive() {
