@@ -698,7 +698,10 @@ it makes no difference. The line is lower down: a small grid with fifty or
 seventy cars leans but does not settle, and neither do the 40-day runs on it
 (23-62%); a hundred cars on Turin settle every time. A grid is no obstacle
 either, the large one settles like the real maps. A convention needs enough
-traffic to meet often, and not very much more than that.
+traffic to meet often, and not very much more than that. The freight
+experiment below agrees without being asked: on day six the three cities that
+had evolved trucks or vans, with 87 to 98 cars, kept to a side at 75-86%;
+the three that stayed small, with 51 to 70, at 58%, 61% and 77%.
 
 Hour by hour, three seeds on Turin (`node tools/sidechart.mjs`, from the
 `sideAll` / `sideRight` counts every telemetry row now carries; the eco page
