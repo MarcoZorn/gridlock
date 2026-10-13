@@ -212,6 +212,38 @@ export class Population {
     this.generation++;
   }
 
+  // Everything needed to carry on evolving exactly where this left off:
+  // genomes, the innovation registry (without it new mutations would reuse
+  // old numbers for different genes), species and the random stream.
+  toJSON() {
+    return {
+      cfg: this.cfg, rng: this.rng.s, threshold: this.threshold, generation: this.generation,
+      innov: this.innov.toJSON(),
+      genomes: this.genomes.map((g) => g.toJSON()),
+      best: this.best ? { g: this.best.toJSON(), f: this.best.fitness } : null,
+      species: this.species.map((s) => ({ rep: s.rep.toJSON(), best: s.best, stale: s.stale })),
+    };
+  }
+
+  static fromJSON(j) {
+    const p = Object.create(Population.prototype);
+    p.cfg = { ...DEFAULTS, ...j.cfg };
+    p.rng = new Rng(1);
+    p.rng.s = j.rng;
+    p.threshold = j.threshold;
+    p.generation = j.generation;
+    p.innov = Innovations.fromJSON(j.innov);
+    p.genomes = j.genomes.map((g) => Genome.fromJSON(g));
+    p.best = null;
+    if (j.best) { p.best = Genome.fromJSON(j.best.g); p.best.fitness = j.best.f; }
+    p.species = j.species.map((s) => {
+      const sp = new Species(Genome.fromJSON(s.rep));
+      sp.best = s.best; sp.stale = s.stale;
+      return sp;
+    });
+    return p;
+  }
+
   speciate() {
     for (const s of this.species) s.members = [];
     for (const g of this.genomes) {
