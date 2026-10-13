@@ -7,7 +7,7 @@ import { SpatialHash } from "./spatial.js";
 export const DT = 1 / 60;
 
 export class CityWorld {
-  constructor({ seed = 1, popSize = 120, ticks = 1800, traffic = false, cities = 6 } = {}) {
+  constructor({ seed = 1, popSize = 120, ticks = 3600, traffic = false, cities = 6 } = {}) {
     this.seed = seed;
     this.ticksPerGen = ticks;
     this.traffic = traffic;
