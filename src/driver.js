@@ -30,6 +30,10 @@ export const BODY = {
   towTicks: 120, graceTicks: 45, maxCrashes: 12, damageCost: 1,
 };
 
+// Senses that can be switched off, to see what drivers do without them (and
+// what evolution does about it). Off means the input reads as empty road.
+export const SENSES = { cars: true, walls: true };
+
 const ANGLES = Array.from({ length: N_RAYS }, (_, i) => -BODY.fov / 2 + (BODY.fov * i) / (N_RAYS - 1));
 export const rayAngles = () => ANGLES;
 
@@ -186,9 +190,9 @@ export class Driver {
     const three = this.p.rays === 3;
     for (let i = 0; i < N_RAYS; i++) {
       const dead = three && i % 2 === 1;
-      this.inputs[k++] = dead ? 1 : this.wallRay[i] / R;
-      this.inputs[k++] = dead ? 1 : this.carRay[i] / R;
-      this.inputs[k++] = dead ? 0 : Math.max(-1, Math.min(1, this.closing[i]));
+      this.inputs[k++] = dead || !SENSES.walls ? 1 : this.wallRay[i] / R;
+      this.inputs[k++] = dead || !SENSES.cars ? 1 : this.carRay[i] / R;
+      this.inputs[k++] = dead || !SENSES.cars ? 0 : Math.max(-1, Math.min(1, this.closing[i]));
     }
     const [tx, ty] = this.lookahead(f, BODY.lookahead);
     this.tx = tx; this.ty = ty;
