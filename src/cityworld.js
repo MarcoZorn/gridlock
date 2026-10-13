@@ -26,7 +26,13 @@ export class CityWorld {
     // Gentler weight mutation than the track demo. In a shared city a broken
     // mutant is not just a bad score, it is an obstacle for everyone else, and
     // the default (80% of weights nudged by 0.4 every generation) breaks a lot.
-    this.pop = pop || new Population(N_INPUTS, N_OUTPUTS, { popSize, pWeight: 0.5, weightStep: 0.15 }, seed);
+    //
+    // Stagnation is counted over ten trips round the cities, not three. A
+    // species' best is compared across generations raced in different cities,
+    // so a run of hard cities looks like stagnation and the default (18
+    // generations) culled species for the luck of the draw. Over five seeds,
+    // 300 generations: 182 at 18, 212 at 60, 219 with no culling at all.
+    this.pop = pop || new Population(N_INPUTS, N_OUTPUTS, { popSize, pWeight: 0.5, weightStep: 0.15, stagnation: 60 }, seed);
     this.rng = new Rng(seed * 7919 + 5);
     // A handful of cities, rotated per generation, for the same reason the
     // track demo rotates tracks: evolve in one city and you get drivers who
