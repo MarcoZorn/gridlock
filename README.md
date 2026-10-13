@@ -57,11 +57,12 @@ node tools/osm.mjs extract.json maps/name.json "Place"   # an OpenStreetMap extr
   higher, not with better eyesight, and not when both cars pay for a
   crossing crash (that cut collisions 8%, but did not make anyone yield). About 60% of junction conflicts end
   without a collision, the same as for drivers that have never met traffic.
-- **A side of the road evolves, given a hundred cars.** In the
+- **Without a fitness function, a side of the road evolves.** In the
   generation city which side cars keep to is inherited (autocorrelation
-  0.71) but never locks in. In the economy, once there are about a hundred
-  cars, within four days usually three in four to nine in ten keep to one side. Which side is chance: one
-  Turin run drives on the left, its twin on the right.
+  0.71) but never locks in, even with 120 cars on the road. In the economy,
+  once there are about a hundred cars, within four days usually three in
+  four to nine in ten keep to one side. Which side is chance: one Turin run
+  drives on the left, its twin on the right.
 - **Lights teach easing off.** Drivers raised under traffic lights approach
   a red at little more than half the speed of a green, by lifting off the
   throttle rather than braking; drivers raised without signals ignore them.
