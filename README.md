@@ -50,7 +50,8 @@ node tools/osm.mjs extract.json maps/name.json "Place"   # an OpenStreetMap extr
   did not help either: drivers learned to dodge, not to wait.
 - **A memory helps, a little, and only early.** Brains with a memory wait in
   junctions about twice as much and start out resolving more conflicts, but
-  longer runs and more memory channels do not climb past the same plateau.
+  longer runs and more memory channels do not climb past the same plateau,
+  and in the full city it makes no difference at all.
 - **Right of way did not evolve beyond that.** Not in a whole city, not in an arena that
   is nothing but one crossroads, not with crashes priced three or six times
   higher, not with better eyesight, and not when both cars pay for a
@@ -363,6 +364,11 @@ long, and three more with three memory channels instead of one.
 Longer training did not build on it, and more memory did not add to it. The
 memory buys a small early edge and a habit of waiting, and the plateau is
 still there. Whatever taking turns needs, it is more than a scratchpad.
+
+And in the whole city, where junctions are a small part of the job, the
+memory makes no difference at all: three seeds each, 400 generations in
+traffic, mean fitness 112 without and 105 with, junction conflicts resolved
+about 80% either way, the seeds split both directions.
 
 **Which side of the road?** Nothing in the code prefers a side, and over
 thousands of generations no permanent convention appears: the average lateral
