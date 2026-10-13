@@ -19,7 +19,10 @@ export class CityWorld {
     this.density = density;
     this.ticksPerGen = ticks;
     this.traffic = traffic;
-    this.pop = new Population(N_INPUTS, N_OUTPUTS, { popSize }, seed);
+    // Gentler weight mutation than the track demo. In a shared city a broken
+    // mutant is not just a bad score, it is an obstacle for everyone else, and
+    // the default (80% of weights nudged by 0.4 every generation) breaks a lot.
+    this.pop = new Population(N_INPUTS, N_OUTPUTS, { popSize, pWeight: 0.5, weightStep: 0.15 }, seed);
     this.rng = new Rng(seed * 7919 + 5);
     // A handful of cities, rotated per generation, for the same reason the
     // track demo rotates tracks: evolve in one city and you get drivers who
@@ -139,8 +142,14 @@ export class CityWorld {
           for (const sb of [1, -1]) {
             const dx = a.x + ax * sa - b.x - bx * sb, dy = a.y + ay * sa - b.y - by * sb;
             if (dx * dx + dy * dy < rr) {
-              const rel = Math.hypot(a.vx - b.vx, a.vy - b.vy);
-              a.crash(rel); b.crash(rel);
+              if (this.onCarCrash) this.onCarCrash(a, b);
+              // Each car is charged for its own speed towards the other. Shared
+              // damage made a car that was rear-ended at a standstill pay as
+              // much as the one that hit it, which is noise to selection: the
+              // careful driver is punished for someone else's mistake.
+              const nx = b.x - a.x, ny = b.y - a.y, nl = Math.hypot(nx, ny) || 1;
+              a.crash(Math.max(0, (a.vx * nx + a.vy * ny) / nl));
+              b.crash(Math.max(0, -(b.vx * nx + b.vy * ny) / nl));
               this.carCrashes++;
               return;
             }
