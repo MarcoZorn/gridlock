@@ -75,6 +75,16 @@
     </div>
 
     <div class="card">
+      <h2>The city</h2>
+      <div class="row"><span>trips / car-minute</span><span id="sThru">-</span></div>
+      <div class="row"><span>mean trip time</span><span id="sTrip">-</span></div>
+      <div class="row"><span>crashes per km</span><span id="sCpk">-</span></div>
+      <div class="row"><span>car-on-car crashes</span><span id="sCar">-</span></div>
+      <div class="row"><span>time waiting in junctions</span><span id="sWait">-</span></div>
+      <div class="legend" id="sNote">last finished generation</div>
+    </div>
+
+    <div class="card">
       <h2>Fitness over time</h2>
       <canvas id="spark"></canvas>
       <div class="legend">
@@ -86,6 +96,7 @@
     <div class="card">
       <h2 id="brainTitle">Leader's brain</h2>
       <canvas id="brain"></canvas>
+      <canvas id="senses" style="margin-top:8px"></canvas>
       <div class="row" style="margin-top:6px"><span>nodes / connections</span><span id="size">-</span></div>
       <div class="row"><span>trips / crashes</span><span id="carStats">-</span></div>
       <div class="legend">
@@ -105,6 +116,16 @@
         <button id="again">New seed</button>
       </div>
       <div class="controls">
+        <button id="traffic" data-on="false">Traffic</button>
+        <button data-density="10">10</button>
+        <button data-density="20">20</button>
+        <button data-density="40" data-on="true">40</button>
+        <button data-density="120">120</button>
+      </div>
+      <div class="controls">
+        <button id="heat" data-on="false">Heatmap: off</button>
+      </div>
+      <div class="controls">
         <button data-speed="1" data-on="true">1x</button>
         <button data-speed="4">4x</button>
         <button data-speed="16">16x</button>
@@ -117,8 +138,10 @@
 </main>
 
 <footer>
-  Every car in a generation drives the same chain of fares, so the scores compare driving and not luck.
-  The city changes every generation. Give it fifty generations before judging. The original single-track
+  With traffic off every car is a ghost and all of them drive the same chain of fares, so the scores compare
+  driving and not luck. Turn traffic on once they can drive: then they share the streets, can hit each other,
+  and each one has its own fares. Density is how many are on the road at once; the population drives in waves.
+  The city changes every generation. The original single-track
   demo is still <a href="track.html">here</a>.
 </footer>
 

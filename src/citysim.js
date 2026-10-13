@@ -10,9 +10,12 @@ const $ = (id) => document.getElementById(id);
 const view = $("view"), vctx = view.getContext("2d");
 const brain = $("brain"), bctx = brain.getContext("2d");
 const spark = $("spark"), sctx = spark.getContext("2d");
+const senses = $("senses"), nctx = senses.getContext("2d");
 
 let world, running = true, speed = 1, showRays = true, showAll = true, follow = false;
 let pending = 0, selected = null;
+let traffic = false, density = 40, heatMode = 0;
+const HEAT_MODES = ["off", "crashes", "congestion"];
 const cam = { x: 0, y: 0, k: 1, fitted: false };
 
 function fitCanvas(c, cssW, cssH) {
@@ -28,6 +31,7 @@ function layout() {
   const bw = brain.parentElement.getBoundingClientRect().width - 28;
   fitCanvas(brain, bw, 170);
   fitCanvas(spark, bw, 60);
+  fitCanvas(senses, bw, 64);
   cam.fitted = false;
 }
 
@@ -39,7 +43,7 @@ function fitCam() {
 }
 
 function reset(seed) {
-  world = new CityWorld({ seed, popSize: 120 });
+  world = new CityWorld({ seed, popSize: 120, traffic, density });
   selected = null;
   cam.fitted = false;
   $("seed").textContent = seed;
@@ -88,6 +92,67 @@ function drawCity(c, k) {
     }
   }
   vctx.setLineDash([]);
+}
+
+// The heatmap is a tiny image, one pixel per heat cell, scaled up with
+// smoothing on. Thousands of cells cost one drawImage instead of a rect each.
+const heatCanvas = document.createElement("canvas"), hctx = heatCanvas.getContext("2d");
+function drawHeat() {
+  const h = world.heat, grid = heatMode === 1 ? h.crash : h.slow;
+  if (heatCanvas.width !== h.w || heatCanvas.height !== h.h) { heatCanvas.width = h.w; heatCanvas.height = h.h; }
+  let max = 0;
+  for (let i = 0; i < grid.length; i++) if (grid[i] > max) max = grid[i];
+  const img = hctx.createImageData(h.w, h.h);
+  const [r, g, b] = heatMode === 1 ? [232, 110, 100] : [232, 196, 106];
+  for (let i = 0; i < grid.length; i++) {
+    if (!grid[i]) continue;
+    // square root so a few hot spots do not wash everything else out
+    const t = Math.sqrt(grid[i] / max);
+    img.data[i * 4] = r; img.data[i * 4 + 1] = g; img.data[i * 4 + 2] = b;
+    img.data[i * 4 + 3] = Math.round(40 + 215 * t);
+  }
+  hctx.putImageData(img, 0, 0);
+  vctx.imageSmoothingEnabled = true;
+  vctx.drawImage(heatCanvas, 0, 0, h.w * h.cell, h.h * h.cell);
+}
+
+// What the selected car is feeling right now: every input to its network,
+// grouped the way the network sees them.
+function drawSenses(d) {
+  const W = senses.clientWidth, H = senses.clientHeight;
+  nctx.clearRect(0, 0, W, H);
+  if (!d) return;
+  const groups = [["wall", 0, 3], ["car", 1, 3], ["closing", 2, 3]];
+  const colW = W / 4, barH = 34, top = 4;
+  nctx.font = "9px ui-monospace, monospace";
+  nctx.textBaseline = "top";
+  groups.forEach(([label, off, stride], gi) => {
+    const x0 = gi * colW;
+    for (let i = 0; i < 5; i++) {
+      const v = d.inputs[i * stride + off];
+      const bw = colW / 6, x = x0 + 4 + i * (bw + 1);
+      nctx.fillStyle = "#232733";
+      nctx.fillRect(x, top, bw, barH);
+      nctx.fillStyle = label === "closing" ? (v > 0 ? "#e86e64" : "#5ac8a0") : "#6ea8ff";
+      const hgt = label === "closing" ? Math.abs(v) * barH : (1 - v) * barH;
+      nctx.fillRect(x, top + barH - hgt, bw, hgt);
+    }
+    nctx.fillStyle = "#8b93a7";
+    nctx.fillText(label, x0 + 4, top + barH + 6);
+  });
+  const route = ["spd", "hdg", "lat", "jct", "trn"];
+  for (let i = 0; i < 5; i++) {
+    const v = d.inputs[15 + i];
+    const bw = colW / 6, x = 3 * colW + 4 + i * (bw + 1);
+    nctx.fillStyle = "#232733";
+    nctx.fillRect(x, top, bw, barH);
+    nctx.fillStyle = "#e8c46a";
+    const mid = top + barH / 2, hgt = Math.max(-1, Math.min(1, v)) * barH / 2;
+    if (i === 0 || i >= 3) nctx.fillRect(x, top + barH - Math.abs(v) * barH, bw, Math.abs(v) * barH);
+    else nctx.fillRect(x, hgt > 0 ? mid - hgt : mid, bw, Math.abs(hgt));
+  }
+  nctx.fillStyle = "#8b93a7";
+  nctx.fillText("route", 3 * colW + 4, top + barH + 6);
 }
 
 function drawRoute(d, k) {
@@ -147,6 +212,7 @@ function draw() {
   vctx.translate(-cam.x, -cam.y);
 
   drawCity(world.city, k);
+  if (heatMode) drawHeat();
   if (focus) drawRoute(focus, k);
   if (showAll) {
     for (const d of world.cars) {
@@ -162,18 +228,29 @@ function draw() {
 
   drawNetwork(bctx, focus ? focus.genome : null, brain.clientWidth, brain.clientHeight);
   drawSparkline(sctx, world.history, spark.clientWidth, spark.clientHeight);
+  drawSenses(focus && focus.alive ? focus : null);
 
   let alive = 0, trips = 0, crashes = 0;
   for (const d of world.cars) { if (d.alive) alive++; trips += d.trips; crashes += d.crashes; }
   const last = world.history[world.history.length - 1];
   $("gen").textContent = world.pop.generation;
   $("city").textContent = `${world.pop.generation % world.cities.length + 1} of ${world.cities.length}`;
-  $("alive").textContent = `${alive}/${world.cars.length}`;
+  $("alive").textContent = world.traffic && world.waves > 1
+    ? `${alive}/${world.cars.length}, wave ${world.wave + 1}/${world.waves}`
+    : `${alive}/${world.cars.length}`;
   $("tick").textContent = pending > 0 ? `fast-forward ${pending}` : `${Math.round((world.tick / world.ticksPerGen) * 100)}%`;
   $("trips").textContent = trips;
   $("crashes").textContent = crashes;
   $("species").textContent = world.pop.species.length || "-";
   $("best").textContent = last ? Math.round(last.best) : "-";
+  if (last) {
+    $("sThru").textContent = last.throughput.toFixed(2);
+    $("sTrip").textContent = last.tripTime ? `${last.tripTime.toFixed(1)} s` : "-";
+    $("sCpk").textContent = last.crashesPerKm.toFixed(1);
+    $("sCar").textContent = last.carCrashes;
+    $("sWait").textContent = `${(last.waitShare * 100).toFixed(1)}%`;
+    $("sNote").textContent = `generation ${last.gen}, ${last.traffic ? `traffic, ${last.density} at once` : "ghosts, no traffic"}`;
+  }
   $("brainTitle").textContent = selected ? "Selected car's brain" : "Leader's brain";
   const cx = focus ? focus.genome.complexity() : null;
   $("size").textContent = cx ? `${cx.nodes} / ${cx.conns}` : "-";
@@ -238,6 +315,28 @@ $("play").onclick = (e) => { running = !running; e.target.textContent = running 
 $("skip").onclick = () => { pending += 1; };
 $("jump").onclick = () => { pending += 25; };
 $("again").onclick = () => { pending = 0; reset(Math.floor(Math.random() * 9999) + 1); };
+// Switching traffic or density restarts the current generation with the same
+// genomes, so nothing evolved is lost, only the generation in progress.
+$("traffic").onclick = (e) => {
+  traffic = !traffic;
+  e.target.dataset.on = traffic;
+  world.traffic = traffic;
+  selected = null;
+  world.newGeneration();
+};
+for (const b of document.querySelectorAll("[data-density]")) {
+  b.onclick = () => {
+    density = +b.dataset.density;
+    document.querySelectorAll("[data-density]").forEach((x) => (x.dataset.on = x === b));
+    world.density = density;
+    if (world.traffic) { selected = null; world.newGeneration(); }
+  };
+}
+$("heat").onclick = (e) => {
+  heatMode = (heatMode + 1) % HEAT_MODES.length;
+  e.target.dataset.on = heatMode > 0;
+  e.target.textContent = `Heatmap: ${HEAT_MODES[heatMode]}`;
+};
 $("rays").onclick = (e) => { showRays = !showRays; e.target.dataset.on = showRays; };
 $("crowd").onclick = (e) => { showAll = !showAll; e.target.dataset.on = showAll; };
 $("follow").onclick = (e) => {
