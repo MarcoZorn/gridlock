@@ -4,7 +4,10 @@
 import { parentPort } from "node:worker_threads";
 import { CityWorld } from "./cityworld.js";
 
-parentPort.on("message", ({ id, world, k }) => {
+import { BODY } from "./driver.js";
+
+parentPort.on("message", ({ id, world, k, body }) => {
+  if (body) Object.assign(BODY, body);   // the main thread's experiment knobs
   const w = CityWorld.fromJSON(JSON.parse(world));
   parentPort.postMessage({ id, result: w.runWave(k) });
 });

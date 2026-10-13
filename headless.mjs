@@ -9,6 +9,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { CityWorld } from "./src/cityworld.js";
+import { BODY } from "./src/driver.js";
 import { EcoWorld } from "./src/ecoworld.js";
 import { Population } from "./src/neat.js";
 import { Worker } from "node:worker_threads";
@@ -27,7 +28,13 @@ const control = arg("control", "none");
 const mapName = arg("map", null);
 const graph = mapName ? JSON.parse(fs.readFileSync(`maps/${mapName}.json`, "utf8")) : null;
 const from = arg("from", null);   // start from another run's checkpoint
-const threads = +arg("threads", 3);  // traffic waves run side by side on this many threads
+const threads = +arg("threads", 3);
+// experiment knobs on the car's body constants, e.g. --body wallDamage=0
+for (const kv of (arg("body", "") || "").split(",").filter(Boolean)) {
+  const [k, v] = kv.split("=");
+  if (!(k in BODY)) { console.error(`unknown body constant ${k}`); process.exit(1); }
+  BODY[k] = +v;
+}  // traffic waves run side by side on this many threads
 
 fs.mkdirSync(dir, { recursive: true });
 const statePath = path.join(dir, "state.json");
@@ -119,7 +126,7 @@ function job(world, k) {
     });
   }
   const id = nextJob++;
-  return new Promise((resolve) => { pending.set(id, resolve); pool[id % threads].postMessage({ id, world, k }); });
+  return new Promise((resolve) => { pending.set(id, resolve); pool[id % threads].postMessage({ id, world, k, body: { ...BODY } }); });
 }
 async function parallelGeneration() {
   const snapshot = JSON.stringify(world);

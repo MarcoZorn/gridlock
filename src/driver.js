@@ -24,7 +24,8 @@ export const BODY = {
   keepLine: 1,      // 1: target keeps the car's lateral offset, 0: target on the centreline
   dropSpeed: 40,
   stoppedSpeed: 6,
-  redFine: 0.2,     // damage-equivalent of running a red light  // below this a car in a junction counts as waiting    // must be this slow at the destination to deliver
+  redFine: 0.2,     // damage-equivalent of running a red light
+  wallDamage: 1,    // damage from a kerb strike, relative to hitting a car  // below this a car in a junction counts as waiting    // must be this slow at the destination to deliver
   towTicks: 120, graceTicks: 45, maxCrashes: 12, damageCost: 1,
 };
 
@@ -213,7 +214,7 @@ export class Driver {
     this.x += Math.cos(this.a) * this.v * dt;
     this.y += Math.sin(this.a) * this.v * dt;
 
-    if (!this.city.contains(this.x, this.y)) return this.crash();
+    if (!this.city.contains(this.x, this.y)) return this.crash(this.v, BODY.wallDamage);
     this.checkLight();
     this.advance();
   }
@@ -347,10 +348,12 @@ export class Driver {
   // die at the first corner whether it braked or not, the fitness landscape
   // would be flat right where it matters, and evolution would never find out
   // that braking helps. A fine per crash keeps the slope.
-  crash(speed = this.v) {
+  // `scale` prices the damage: walls can be made cheaper than other cars
+  // (BODY.wallDamage) to test what a driver learns when kerbs stop mattering.
+  crash(speed = this.v, scale = 1) {
     this.crashes++;
     const impact = Math.min(1.5, Math.abs(speed) / BODY.maxSpeed);
-    this.damage += impact * impact;
+    this.damage += impact * impact * scale;
     if (this.onCrash) this.onCrash(this);
     this.crashed = true;
     const f = this.frame();
