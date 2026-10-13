@@ -835,6 +835,20 @@ than in the first two (1.36 and 1.26 crashes per car per ten minutes with
 100-150 cars on the road, down to 1.01 and 0.99). Every crash is paid for in
 cash, and the ones who pay least are the ones who get to have children.
 
+Part of that is not care but size. Over the same days the cars shrink, in
+every run: the length gene falls from about 0.17 to 0.02 and width and cargo
+fall too, a footprint about a quarter smaller. To split the two, I took
+three six-day Turin populations and ran each for half a day as evolved, and
+again with every car stretched back to the founders' size, same brains:
+
+| Turin, day 6 | crashes per car per ten minutes, as evolved | at the founders' size |
+|---|---|---|
+| seed 3 | 1.19 | 1.24 |
+| seed 7 | 1.16 | 1.26 |
+| seed 11 | 1.17 | 1.32 |
+
+Size is worth about 8%, a third of the fall. The rest is the driving.
+
 ## Files
 
 | file | what is in it |
