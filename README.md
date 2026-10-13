@@ -537,6 +537,11 @@ generations at 119; and 240 drivers for the full 300 generations, twice the
 compute, ended at 210. What these drivers need is more generations, not more
 of them per generation.
 
+The steering target's distance down the route is a coded choice worth
+checking too: at 25 units ahead the drivers did worse (mean 184 over three
+seeds), at 35, the value everything here was raised on, 213, and at 55, 225,
+which is inside the noise. It stays at 35.
+
 ### Extensions
 
 **Route choice.** A body gene, `jam`, sets how much a driver lets current
