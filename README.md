@@ -637,6 +637,21 @@ that cannot get back, a layer at a time, until every street is in: all
 junctions kept, 98 of Turin's 342 roads one-way and 420 of Barcelona's 643.
 Nothing in the drivers changed, and the crash table below barely moved.
 
+Do they help? Real cities make streets one-way to remove conflicts at
+crossings and to fit more cars through. The same founders on the Eixample
+with and without its arrows, four days, two seeds, days two to four:
+
+| Barcelona | trips a day | mean trip | crashes per car per day |
+|---|---|---|---|
+| one-way | 2199 / 2284 | 58 s / 49 s | 140 / 139 |
+| two-way | 2567 / 2792 | 47 s / 48 s | 159 / 129 |
+
+With its arrows the city moves about a sixth fewer fares, and is no safer
+for it. The cars here do not keep to lanes, so a two-way street costs them
+nothing in capacity that a one-way street gives back, and what the arrows do
+add is distance: a fare across the block now goes round it. In a city of
+drivers that had evolved lane discipline the answer might be the other way.
+
 **Where they crash.** The ecosystem page has the same heatmaps as the
 generation page (H): crashes, or cars crawling at walking pace. On a real map
 the crash layer is not a set of hot junctions but whole streets glowing, and
