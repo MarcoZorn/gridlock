@@ -18,10 +18,11 @@ export class CityWorld {
   // on the same population, so the same brains can be compared under both.
   // `graph` replaces the rotating generated cities with one fixed map (see
   // tools/osm.mjs, or maps/crossroads.json).
-  constructor({ seed = 1, popSize = 120, ticks = 3600, traffic = false, cities = 6, density = 40, pop = null, control = "none", size = null, graph = null } = {}) {
+  constructor({ seed = 1, popSize = 120, ticks = 3600, traffic = false, cities = 6, density = 40, pop = null, control = "none", size = null, graph = null, sharedCrossing = false } = {}) {
+    this.sharedCrossing = sharedCrossing;
     this.seed = seed;
     this.control = control;
-    this.opts = { seed, popSize, ticks, cities, size, graph };
+    this.opts = { seed, popSize, ticks, cities, size, graph, sharedCrossing };
     this.density = density;
     this.ticksPerGen = ticks;
     this.traffic = traffic;
@@ -156,7 +157,7 @@ export class CityWorld {
     this.carCrashes += collideCars(this.cars, this.hash, (a, b) => {
       if (this.onCarCrash) this.onCarCrash(a, b);
       if (crossing(a, b) && this.city.junctionAt(a.x, a.y) >= 0) this.conflictCrashes++;
-    });
+    }, this.sharedCrossing);
   }
 
   // Right of way, measured: two cars in the same junction at the same time on
@@ -362,7 +363,10 @@ function crossing(a, b) {
 }
 
 // Returns how many collisions there were. Cars need distinct `id`s.
-export function collideCars(cars, h, onCarCrash) {
+//
+// With `sharedCrossing`, two cars that collide while crossing paths inside a
+// junction both pay for the full closing speed, however the impact landed.
+export function collideCars(cars, h, onCarCrash, sharedCrossing = false) {
   let n = 0;
   h.rebuild(cars);
   for (const a of cars) {
@@ -384,8 +388,14 @@ export function collideCars(cars, h, onCarCrash) {
             // much as the one that hit it, which is noise to selection: the
             // careful driver is punished for someone else's mistake.
             const nx = b.x - a.x, ny = b.y - a.y, nl = Math.hypot(nx, ny) || 1;
-            a.crash(Math.max(0, (a.vx * nx + a.vy * ny) / nl));
-            b.crash(Math.max(0, -(b.vx * nx + b.vy * ny) / nl));
+            if (sharedCrossing && crossing(a, b) && a.city && a.city.junctionAt(a.x, a.y) >= 0) {
+              // a crossing collision in a junction: both pulled out, both pay
+              const rel = Math.hypot(a.vx - b.vx, a.vy - b.vy);
+              a.crash(rel); b.crash(rel);
+            } else {
+              a.crash(Math.max(0, (a.vx * nx + a.vy * ny) / nl));
+              b.crash(Math.max(0, -(b.vx * nx + b.vy * ny) / nl));
+            }
             n++;
             return;
           }

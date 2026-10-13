@@ -100,7 +100,7 @@ if (fs.existsSync(statePath)) {
   world.history = [];
   console.log(`new run ${dir} from ${from}, generation ${world.pop.generation}`);
 } else {
-  world = new CityWorld({ seed, popSize: 120, density, control, graph });
+  world = new CityWorld({ seed, popSize: 120, density, control, graph, sharedCrossing: process.argv.includes("--shared-crossing") });
   console.log(`new run ${dir}, seed ${seed}`);
 }
 
