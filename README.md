@@ -503,6 +503,15 @@ whether selection was simply blind: the same 120 genomes scored twice on
 different random fares and neighbours correlate at 0.86 as ghosts and 0.78 in
 traffic. The evaluation is sound; the plateau is the task.
 
+**Mutation size, two projects, opposite answers.** In the Python cars
+project a bigger weight step (0.6 against 0.35) measurably helped drivers
+generalise to unseen tracks. Here the same question, three seeds and 300
+generations in the rotating cities, gave the opposite: mean fitness 213 with
+the gentle step (0.15), 210 at 0.3, 189 at 0.6. A car with eight inputs on an
+empty loop can afford big jumps; a city driver with twenty-one inputs, routes,
+junctions and other cars has more to break with each one. There is no right
+mutation size, only a right one for the task.
+
 ### Extensions
 
 **Route choice.** A body gene, `jam`, sets how much a driver lets current
