@@ -13,62 +13,13 @@ const CELL = 4;
 // junction a little gives streets that meet at slightly wrong angles, which is
 // both more like a real city and harder to drive, since no turn is exactly 90.
 export class City {
-  constructor(seed = 1, { cols = 9, rows = 6, spacing = 150, jitter = 0.22, prune = 0.18 } = {}) {
+  // Pass `graph` ({ nodes: [[x, y]], edges: [[a, b, lanes]] }, as written by
+  // tools/osm.mjs) to build a real place instead of a generated one.
+  constructor(seed = 1, { cols = 9, rows = 6, spacing = 150, jitter = 0.22, prune = 0.18, graph = null } = {}) {
     const rng = new Rng(seed * 2246822519 + 3);
     this.seed = seed;
-    const margin = 60;
-    this.w = (cols - 1) * spacing + margin * 2;
-    this.h = (rows - 1) * spacing + margin * 2;
-
-    this.nodes = [];
-    for (let j = 0; j < rows; j++) {
-      for (let i = 0; i < cols; i++) {
-        const edge = i === 0 || j === 0 || i === cols - 1 || j === rows - 1;
-        const jx = edge ? 0 : rng.range(-jitter, jitter) * spacing;
-        const jy = edge ? 0 : rng.range(-jitter, jitter) * spacing;
-        this.nodes.push({ id: this.nodes.length, x: margin + i * spacing + jx, y: margin + j * spacing + jy, edges: [] });
-      }
-    }
-
-    // One or two arterial rows and columns. They are wider, so they carry more
-    // lanes, which matters later when everyone wants the same road.
-    const artRows = new Set([1 + rng.int(rows - 2)]);
-    const artCols = new Set([1 + rng.int(cols - 2)]);
-    if (cols > 6) artCols.add(1 + rng.int(cols - 2));
-
-    const id = (i, j) => j * cols + i;
-    const cand = [];
-    for (let j = 0; j < rows; j++) {
-      for (let i = 0; i < cols; i++) {
-        if (i + 1 < cols) cand.push([id(i, j), id(i + 1, j), artRows.has(j)]);
-        if (j + 1 < rows) cand.push([id(i, j), id(i, j + 1), artCols.has(i)]);
-      }
-    }
-    this.edges = [];
-    for (const [a, b, art] of cand) this.addEdge(a, b, art ? 2 : 1);
-
-    // Knock out side streets at random, but never one that would split the
-    // city in two. Removing an edge can leave a junction with a single road,
-    // and that is where dead ends come from: nobody draws them on purpose.
-    const order = this.edges.filter((e) => e.lanes === 1).map((e) => e.id);
-    for (let k = order.length - 1; k > 0; k--) {
-      const r = rng.int(k + 1);
-      [order[k], order[r]] = [order[r], order[k]];
-    }
-    const target = Math.round(order.length * prune);
-    let removed = 0;
-    for (const eid of order) {
-      if (removed >= target) break;
-      const e = this.edges[eid];
-      if (this.degree(e.a) <= 1 || this.degree(e.b) <= 1) continue;
-      e.dead = true;
-      if (this.connected()) removed++;
-      else e.dead = false;
-    }
-    this.edges = this.edges.filter((e) => !e.dead);
-    this.edges.forEach((e, i) => (e.id = i));
-    for (const n of this.nodes) n.edges = [];
-    for (const e of this.edges) { this.nodes[e.a].edges.push(e); this.nodes[e.b].edges.push(e); }
+    if (graph) this.fromGraph(graph);
+    else this.generate(rng, cols, rows, spacing, jitter, prune);
 
     this.bake();
 
@@ -149,6 +100,73 @@ export class City {
     return t >= LIGHT.green + LIGHT.allRed && t < LIGHT.green * 2 + LIGHT.allRed;
   }
 
+  generate(rng, cols, rows, spacing, jitter, prune) {
+    const margin = 60;
+
+    this.w = (cols - 1) * spacing + margin * 2;
+    this.h = (rows - 1) * spacing + margin * 2;
+
+    this.nodes = [];
+    for (let j = 0; j < rows; j++) {
+      for (let i = 0; i < cols; i++) {
+        const edge = i === 0 || j === 0 || i === cols - 1 || j === rows - 1;
+        const jx = edge ? 0 : rng.range(-jitter, jitter) * spacing;
+        const jy = edge ? 0 : rng.range(-jitter, jitter) * spacing;
+        this.nodes.push({ id: this.nodes.length, x: margin + i * spacing + jx, y: margin + j * spacing + jy, edges: [] });
+      }
+    }
+
+    // One or two arterial rows and columns. They are wider, so they carry more
+    // lanes, which matters later when everyone wants the same road.
+    const artRows = new Set([1 + rng.int(rows - 2)]);
+    const artCols = new Set([1 + rng.int(cols - 2)]);
+    if (cols > 6) artCols.add(1 + rng.int(cols - 2));
+
+    const id = (i, j) => j * cols + i;
+    const cand = [];
+    for (let j = 0; j < rows; j++) {
+      for (let i = 0; i < cols; i++) {
+        if (i + 1 < cols) cand.push([id(i, j), id(i + 1, j), artRows.has(j)]);
+        if (j + 1 < rows) cand.push([id(i, j), id(i, j + 1), artCols.has(i)]);
+      }
+    }
+    this.edges = [];
+    for (const [a, b, art] of cand) this.addEdge(a, b, art ? 2 : 1);
+
+    // Knock out side streets at random, but never one that would split the
+    // city in two. Removing an edge can leave a junction with a single road,
+    // and that is where dead ends come from: nobody draws them on purpose.
+    const order = this.edges.filter((e) => e.lanes === 1).map((e) => e.id);
+    for (let k = order.length - 1; k > 0; k--) {
+      const r = rng.int(k + 1);
+      [order[k], order[r]] = [order[r], order[k]];
+    }
+    const target = Math.round(order.length * prune);
+    let removed = 0;
+    for (const eid of order) {
+      if (removed >= target) break;
+      const e = this.edges[eid];
+      if (this.degree(e.a) <= 1 || this.degree(e.b) <= 1) continue;
+      e.dead = true;
+      if (this.connected()) removed++;
+      else e.dead = false;
+    }
+    this.edges = this.edges.filter((e) => !e.dead);
+    this.edges.forEach((e, i) => (e.id = i));
+    for (const n of this.nodes) n.edges = [];
+    for (const e of this.edges) { this.nodes[e.a].edges.push(e); this.nodes[e.b].edges.push(e); }
+  }
+
+  fromGraph(graph) {
+    this.name = graph.name;
+    this.smoothBends = true;
+    this.nodes = graph.nodes.map(([x, y], id) => ({ id, x, y, edges: [] }));
+    this.edges = [];
+    for (const [a, b, lanes] of graph.edges) if (a !== b && !this.edgeBetween(a, b)) this.addEdge(a, b, lanes);
+    this.w = Math.max(...this.nodes.map((n) => n.x)) + 40;
+    this.h = Math.max(...this.nodes.map((n) => n.y)) + 40;
+  }
+
   addEdge(a, b, lanes) {
     const na = this.nodes[a], nb = this.nodes[b];
     const e = { id: this.edges.length, a, b, lanes, hw: lanes * LANE_W, len: Math.hypot(nb.x - na.x, nb.y - na.y) };
@@ -203,7 +221,16 @@ export class City {
     // a brain that brakes that hard before it has learned to turn at all.
     this.junction = new Int16Array(this.gw * this.gh).fill(-1);
     for (const n of this.nodes) {
-      const r = Math.max(...n.edges.map((e) => e.hw)) + 8;
+      let r = Math.max(...n.edges.map((e) => e.hw)) + 8;
+      // On imported maps most nodes are just points along a curving street.
+      // A full apron at each would string the road with beads; a bend gets
+      // an apron as big as it is sharp, and a straight run gets none.
+      if (this.smoothBends && n.edges.length === 2) {
+        const [p, q] = n.edges.map((e) => this.nodes[this.other(e, n.id)]);
+        const a1 = Math.atan2(n.y - p.y, n.x - p.x), a2 = Math.atan2(q.y - n.y, q.x - n.x);
+        const bend = Math.abs(Math.atan2(Math.sin(a2 - a1), Math.cos(a2 - a1))) / (Math.PI / 2);
+        r = Math.max(...n.edges.map((e) => e.hw)) + 2 + 6 * Math.min(1, bend);
+      }
       const x0 = Math.max(0, Math.floor((n.x - r) / CELL)), x1 = Math.min(this.gw - 1, Math.ceil((n.x + r) / CELL));
       const y0 = Math.max(0, Math.floor((n.y - r) / CELL)), y1 = Math.min(this.gh - 1, Math.ceil((n.y + r) / CELL));
       for (let gy = y0; gy <= y1; gy++) {
