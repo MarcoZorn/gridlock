@@ -309,7 +309,9 @@ generations, the way crash damage itself is ramped in, makes no difference
 (86.8% resolved, 1.24 trips per car, 10.0 crashes per km). What made the
 price work was not when it rose in a run but how much driving the population
 already knew: a thousand generations or more of it, in both cases where it
-worked.
+worked. In the economy, where a crash is paid in cash, the same price
+(`--body junctionPrice=30` on Turin) is not a lesson but a bankruptcy: the
+fleet falls to 39 and 58 cars against about 250, and fares by 70%.
 (The conflict and
 car-on-car counters are no use here: a wreck in a junction counts as an
 unresolved conflict, and touching one counts as a collision every tick.)
