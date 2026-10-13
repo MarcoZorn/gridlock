@@ -203,6 +203,15 @@ pushier, not more polite. Making crashes three or six times as expensive
 from the same start only made everyone slower. Right of way did not evolve
 here, under any price I tried.
 
+My next suspect was perception: five thin rays fifty degrees apart, and a car
+seventy units away spans eight degrees, so two cars closing on a junction
+from different arms mostly fall between each other's rays. So I tried seeing
+cars by sector instead, each of the five car inputs reporting the nearest car
+anywhere in its slice, and raised two populations from scratch on the
+crossroads, identical but for that. After 550 generations in traffic the
+thin rays resolved 67% of conflicts and the sectors 61%, with more crashes.
+Seeing the other car was not what was missing. Dropped.
+
 **Which side of the road?** Nothing in the code prefers a side, and over
 thousands of generations no permanent convention appears: the average lateral
 offset of moving cars hovers near zero. But it is not noise. In a run with all
