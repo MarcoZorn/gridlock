@@ -79,19 +79,62 @@ export class City {
     this.control = "none";
     this.time = 0;
     for (const n of this.nodes) {
-      if (n.edges.length < 3) continue;
-      const axis = (e) => {
-        const m = this.nodes[this.other(e, n.id)];
-        return Math.atan2(m.y - n.y, m.x - n.x);
-      };
-      const a0 = axis(n.edges[0]);
-      const group = new Map();
-      for (const e of n.edges) {
-        const d = Math.abs(Math.sin(axis(e) - a0));   // 0 along the first road's axis, 1 across it
-        group.set(this.other(e, n.id), d < 0.7 ? 0 : 1);
-      }
-      n.light = { group, offset: rng.range(0, LIGHT.cycle) };
+      if (n.edges.length >= 3) this.setupLight(n, rng.range(0, LIGHT.cycle));
     }
+    this.closed = new Set();   // edge ids closed to routing by the editor
+  }
+
+  setupLight(n, offset) {
+    const axis = (e) => {
+      const m = this.nodes[this.other(e, n.id)];
+      return Math.atan2(m.y - n.y, m.x - n.x);
+    };
+    const a0 = axis(n.edges[0]);
+    const group = new Map();
+    for (const e of n.edges) {
+      const d = Math.abs(Math.sin(axis(e) - a0));   // 0 along the first road's axis, 1 across it
+      group.set(this.other(e, n.id), d < 0.7 ? 0 : 1);
+    }
+    n.light = { group, offset };
+  }
+
+  // The editor. Closing a road takes it out of route finding but leaves the
+  // tarmac: it is a roadblock, not a hole, so nobody already on it is
+  // dropped into the void. A new road is real tarmac and is baked in, and
+  // the junctions at its ends grow aprons, lights and islands to match.
+  toggleClosed(e) {
+    if (this.closed.has(e.id)) this.closed.delete(e.id);
+    else this.closed.add(e.id);
+  }
+
+  addRoad(a, b, lanes = 1) {
+    if (a === b || this.edgeBetween(a, b)) return null;
+    const e = this.addEdge(a, b, lanes);
+    this.bake();
+    for (const id of [a, b]) {
+      const n = this.nodes[id];
+      if (n.edges.length >= 3) this.setupLight(n, n.light ? n.light.offset : (id * 7.3) % LIGHT.cycle);
+    }
+    return e;
+  }
+
+  nearestEdge(x, y) {
+    let best = null, bd = Infinity;
+    for (const e of this.edges) {
+      const a = this.nodes[e.a], b = this.nodes[e.b];
+      const d = segDist(x, y, a.x, a.y, b.x, b.y);
+      if (d < bd) { bd = d; best = e; }
+    }
+    return { edge: best, dist: bd };
+  }
+
+  nearestNode(x, y) {
+    let best = null, bd = Infinity;
+    for (const n of this.nodes) {
+      const d = Math.hypot(n.x - x, n.y - y);
+      if (d < bd) { bd = d; best = n; }
+    }
+    return { node: best, dist: bd };
   }
 
   // Is the light green for a car driving into junction `node` from `from`?
@@ -224,7 +267,15 @@ export class City {
       const p = this.routeAvoiding(from, to, cameFrom);
       if (p) return p;
     }
-    return this.routeAvoiding(from, to, -1);
+    const p = this.routeAvoiding(from, to, -1);
+    if (p || !this.closed || !this.closed.size) return p;
+    // Closures cut this trip off entirely: drive through the roadblock
+    // rather than not at all.
+    const closed = this.closed;
+    this.closed = null;
+    const q = this.routeAvoiding(from, to, -1);
+    this.closed = closed;
+    return q;
   }
 
   routeAvoiding(from, to, ban) {
@@ -247,6 +298,7 @@ export class City {
       for (const e of this.nodes[cur].edges) {
         const m = this.other(e, cur);
         if (cur === from && m === ban) continue;
+        if (this.closed && this.closed.has(e.id)) continue;
         const t = g[cur] + e.len;
         if (t < g[m]) {
           g[m] = t;
