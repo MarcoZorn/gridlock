@@ -37,6 +37,7 @@ export const ECON = {
   fareQueue: 20,        // fares waiting beyond this go to another firm
   wearDist: 40000,      // upkeep doubles every this many units on the odometer
   congestion: 0,        // a charge per second, times how full the road you are on is (an experiment, off)
+  replan: 0,            // 1: at every junction a car re-plans the rest of its route on the traffic now (an experiment, off)
 };
 
 // One city day is 24 minutes of simulation, a minute per hour. Demand has a
@@ -220,6 +221,7 @@ export class EcoWorld {
     const c = this.city;
     c.time = this.tick * DT;
     if (this.tick % 30 === 0) this.sampleSide();
+    if (ECON.replan && c.load) this.replanAll();
     const scale = this.scale;
     this.passengers = Math.min(ECON.fareQueue * scale, this.passengers + ECON.demand * scale * demandAt(c.time) * DT);
     this.freight = Math.min(ECON.fareQueue * scale, this.freight + ECON.freightDemand * scale * freightAt(c.time) * DT);
@@ -322,6 +324,20 @@ export class EcoWorld {
     for (const s of this.species) s.size = counts.get(s.id);
     if (this.species.length < 4) this.threshold = Math.max(0.1, this.threshold * 0.95);
     else if (this.species.length > 9) this.threshold *= 1.05;
+  }
+
+  // Each car that has just passed a junction plans the rest of its trip again
+  // on the traffic as it is now, the way a driver with a live map would.
+  replanAll() {
+    const c = this.city;
+    for (const d of this.cars) {
+      if (d.planned === d.seg || d.seg + 2 >= d.route.length) continue;
+      d.planned = d.seg;
+      const r = d.route, tail = c.route(r[d.seg + 1], r[r.length - 1], r[d.seg], d.body.jam);
+      if (!tail) continue;
+      d.route = r.slice(0, d.seg + 2).concat(tail.slice(1));
+      d.routeLen = c.pathLength(d.route);
+    }
   }
 
   // Which side of the road the city keeps to, if any. Nothing in the code
