@@ -1,6 +1,7 @@
 // Browser front end for the ecosystem: no generations, one long-running city.
 import { EcoWorld, ECON } from "./ecoworld.js";
-import { Population } from "./neat.js";
+import { Population, Rng } from "./neat.js";
+import { Crowd } from "./pedestrians.js";
 import { fitCanvas, panZoom, drawCity, drawClosures, drawLights, drawRoute, drawRays, drawCar, speciesColour } from "./render.js";
 import { drawNetwork } from "./netview.js";
 
@@ -34,6 +35,7 @@ function fitCam() {
 function reset(seed) {
   world = new EcoWorld({ seed, control, founders });
   selected = null;
+  $("peds-on").dataset.on = false;
   cam.fitted = false;
 }
 
@@ -108,6 +110,12 @@ function draw() {
     vctx.setLineDash([]);
   }
   if (focus) drawRoute(vctx, world.city, focus, k);
+  if (world.crowd) {
+    for (const p of world.crowd.people) {
+      vctx.fillStyle = p.crossing ? "#ffffff" : "rgba(230,232,238,0.45)";
+      vctx.beginPath(); vctx.arc(p.x, p.y, p.crossing ? 1.6 : 1.2, 0, Math.PI * 2); vctx.fill();
+    }
+  }
   for (const d of world.cars) if (d !== focus) drawCar(vctx, d, colourOf(d), 0.9);
   if (focus) {
     if (showRays) drawRays(vctx, focus, k);
@@ -128,6 +136,10 @@ function draw() {
   $("cash").textContent = (world.cars.reduce((a, d) => a + d.cash, 0) / Math.max(1, world.cars.length)).toFixed(1);
   $("maxgen").textContent = Math.max(0, ...world.cars.map((d) => d.generation));
   $("nspecies").textContent = world.species.length;
+  if (world.crowd) {
+    const ped = last.filter((r) => r.ped), x = ped.reduce((a, r) => a + r.ped.crossings, 0), h = ped.reduce((a, r) => a + r.ped.hit, 0);
+    $("peds").textContent = `${world.crowd.people.length} / ${x ? ((100 * h) / x).toFixed(1) : "-"}`;
+  } else $("peds").textContent = "-";
   $("carTitle").textContent = selected ? "Selected car" : "Richest car";
   if (focus) {
     $("cWallet").textContent = `${focus.cash.toFixed(1)} / ${focus.earned.toFixed(0)}`;
@@ -202,6 +214,10 @@ for (const b of document.querySelectorAll("[data-control]")) {
     syncUrl();
   };
 }
+$("peds-on").onclick = (e) => {
+  world.crowd = world.crowd ? null : new Crowd(world.city, new Rng(world.seed * 7 + 1), 40);
+  e.target.dataset.on = !!world.crowd;
+};
 $("edit").onclick = (e) => {
   editing = !editing;
   e.target.dataset.on = editing;
