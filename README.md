@@ -345,11 +345,22 @@ second arrives from the junction before:
 | all together | 0.67 | 5.63 | 2.61 | 9.6% |
 | green wave | 0.67 | 5.63 | 2.66 | 9.5% |
 
-Nothing. Drivers who run two or three reds a generation and wait less than a
-tenth of the time are not really governed by the lights, so it hardly
-matters when they change. A wave would need drivers who stop, and those, at
-a fine high enough to teach it, move a third as many people anyway. (Not
-tested: the high-fine population was never saved.)
+Nothing. My first thought was that drivers who run two or three reds a
+generation are not really governed by the lights, so their timing cannot
+matter. So I raised the high-fine population again (100 generations from the
+same checkpoint at a fine of 1.5) and tested it the same way:
+
+| fine 1.5 | trips per car | crashes per 1000 units | reds run per car | waiting |
+|---|---|---|---|---|
+| random offsets | 0.40 | 9.49 | 0.86 | 12.3% |
+| all together | 0.40 | 9.55 | 0.85 | 10.9% |
+| green wave | 0.41 | 9.69 | 0.85 | 12.1% |
+
+They run a third as many reds, and the timing still does nothing. Not the red
+running, then. A wave helps a car that drives straight along an avenue at a
+steady speed; these routes cross a jittered grid a few blocks at a time and
+turn at most junctions, and the wave only runs one way. That is my guess at
+why, not something I have tested.
 
 **The crossroads.** Junction conflicts are diluted in a whole city, so I
 built an arena that is nothing but the question: one junction, four arms, a
