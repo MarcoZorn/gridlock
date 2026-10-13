@@ -63,10 +63,13 @@ export class EcoWorld {
   // economy.
   // `pedestrians` adds a second evolving population that has to cross the
   // roads (see pedestrians.js); 0 leaves the city to the cars.
-  constructor({ seed = 1, citySeed = seed, control = "none", startCars = 50, founders = null, pedestrians = 0 } = {}) {
+  //
+  // `graph` is a real street map (see tools/osm.mjs) instead of a generated city.
+  constructor({ seed = 1, citySeed = seed, control = "none", startCars = 50, founders = null, pedestrians = 0, graph = null } = {}) {
     this.seed = seed;
     this.rng = new Rng(seed * 104729 + 7);
-    this.city = new City(citySeed);
+    this.city = new City(citySeed, { graph });
+    this.graph = graph;
     this.city.control = control;
     this.baseEdges = this.city.edges.length;   // anything past this was built in the editor
     this.cfg = { ...DEFAULTS, pWeight: 0.5, weightStep: 0.15 };
@@ -338,7 +341,7 @@ export class EcoWorld {
   // of traffic and saves a great deal of fragile state.
   toJSON() {
     return {
-      v: 1, seed: this.seed, citySeed: this.city.seed, control: this.control, tick: this.tick, rng: this.rng.s,
+      v: 1, seed: this.seed, citySeed: this.city.seed, graph: this.graph, control: this.control, tick: this.tick, rng: this.rng.s,
       innov: this.innov.toJSON(), cfg: this.cfg, nextId: this.nextId, nextSpecies: this.nextSpecies, threshold: this.threshold,
       passengers: this.passengers, freight: this.freight,
       closed: [...this.city.closed], added: this.city.edges.slice(this.baseEdges).map((e) => [e.a, e.b, e.lanes]),
@@ -354,7 +357,7 @@ export class EcoWorld {
   }
 
   static fromJSON(j) {
-    const w = new EcoWorld({ seed: j.seed, citySeed: j.citySeed, control: j.control, startCars: 0 });
+    const w = new EcoWorld({ seed: j.seed, citySeed: j.citySeed, control: j.control, startCars: 0, graph: j.graph || null });
     for (const [a, b, lanes] of j.added || []) w.city.addRoad(a, b, lanes);
     for (const id of j.closed || []) w.city.closed.add(id);
     w.tick = j.tick; w.rng.s = j.rng; w.cfg = j.cfg;

@@ -11,7 +11,7 @@ const brain = $("brain"), bctx = brain.getContext("2d");
 const spc = $("species"), sctx = spc.getContext("2d");
 const bod = $("bodies"), octx = bod.getContext("2d");
 
-let world, founders = null, running = true, speed = 1, showRays = true, follow = false;
+let world, founders = null, graph = null, running = true, speed = 1, showRays = true, follow = false;
 let selected = null, colourBy = "species", control = "none", editing = false, draft = null;
 const cam = { x: 0, y: 0, k: 1, fitted: false };
 
@@ -33,7 +33,7 @@ function fitCam() {
 }
 
 function reset(seed) {
-  world = new EcoWorld({ seed, control, founders });
+  world = new EcoWorld({ seed, control, founders, graph });
   selected = null;
   $("peds-on").dataset.on = false;
   cam.fitted = false;
@@ -251,6 +251,7 @@ function syncUrl() {
   const u = new URL(location.href);
   u.searchParams.set("seed", world.seed);
   u.searchParams.set("control", control);
+  if (graph) u.searchParams.set("map", new URLSearchParams(location.search).get("map"));
   history.replaceState(null, "", u);
 }
 $("share").onclick = async (e) => {
@@ -271,6 +272,13 @@ try {
   if (r.ok) founders = Population.fromJSON((await r.json()).pop);
 } catch { /* no founders: start from minimal brains */ }
 const params = new URLSearchParams(location.search);
+// ?map=turin drives on maps/turin.json, a real street map
+if (/^[a-z0-9-]+$/.test(params.get("map") || "")) {
+  try {
+    const r = await fetch(`maps/${params.get("map")}.json`);
+    if (r.ok) graph = await r.json();
+  } catch { /* fall back to a generated city */ }
+}
 if (["none", "lights", "roundabouts"].includes(params.get("control"))) {
   control = params.get("control");
   document.querySelectorAll("[data-control]").forEach((x) => (x.dataset.on = x.dataset.control === control));
