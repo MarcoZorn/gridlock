@@ -11,6 +11,7 @@ import path from "node:path";
 import { CityWorld } from "./src/cityworld.js";
 import { EcoWorld } from "./src/ecoworld.js";
 import { Population } from "./src/neat.js";
+import { Worker } from "node:worker_threads";
 
 const arg = (name, def) => {
   const i = process.argv.indexOf(`--${name}`);
@@ -26,6 +27,7 @@ const control = arg("control", "none");
 const mapName = arg("map", null);
 const graph = mapName ? JSON.parse(fs.readFileSync(`maps/${mapName}.json`, "utf8")) : null;
 const from = arg("from", null);   // start from another run's checkpoint
+const threads = +arg("threads", 3);  // traffic waves run side by side on this many threads
 
 fs.mkdirSync(dir, { recursive: true });
 const statePath = path.join(dir, "state.json");
@@ -102,6 +104,30 @@ if (fs.existsSync(statePath)) {
   console.log(`new run ${dir}, seed ${seed}`);
 }
 
+// Traffic generations are waves of cars that never meet, so the waves can run
+// on separate threads; CityWorld gives each its own random stream, which
+// makes the result the same as running them one after another.
+let pool = null;
+const pending = new Map();
+let nextJob = 0;
+function job(world, k) {
+  if (!pool) {
+    pool = Array.from({ length: threads }, () => {
+      const w = new Worker(new URL("./src/waveworker.mjs", import.meta.url));
+      w.on("message", ({ id, result }) => { pending.get(id)(result); pending.delete(id); });
+      return w;
+    });
+  }
+  const id = nextJob++;
+  return new Promise((resolve) => { pending.set(id, resolve); pool[id % threads].postMessage({ id, world, k }); });
+}
+async function parallelGeneration() {
+  const snapshot = JSON.stringify(world);
+  const results = await Promise.all(Array.from({ length: world.waves }, (_, k) => job(snapshot, k)));
+  world.mergeWaves(results);
+  return world.history.at(-1);
+}
+
 function checkpoint() {
   const j = world.toJSON();
   j.history = j.history.slice(-400);
@@ -117,7 +143,7 @@ while (!stop && world.pop.generation < gens) {
     world.control = control;
     world.newGeneration();
   }
-  const r = world.runGeneration();
+  const r = world.traffic && threads > 1 ? await parallelGeneration() : world.runGeneration();
   await tick();
   fs.appendFileSync(telemetry, JSON.stringify({ ...r, t: Math.round((Date.now() - t0) / 1000) }) + "\n");
   if (r.gen % 10 === 0) {
@@ -127,3 +153,4 @@ while (!stop && world.pop.generation < gens) {
 }
 checkpoint();
 console.log(`stopped at generation ${world.pop.generation}`);
+if (pool) for (const w of pool) w.terminate();
