@@ -173,4 +173,42 @@ import { Body } from "./src/body.js";
   console.log("ok  body physics follow the genes");
 }
 
+// growing a city keeps it connected and is the same every time
+{
+  const a = new City(4), b = new City(4);
+  for (const side of ["east", "south", "east"]) { a.expand(side); b.expand(side); }
+  assert(a.connected(), "a grown city stays connected");
+  assert(a.edges.length === b.edges.length && a.nodes.every((n, i) => n.x === b.nodes[i].x && n.y === b.nodes[i].y), "growth is deterministic");
+  assert(a.grid.cols === 11 && a.grid.rows === 7, "two columns and a row were added");
+  for (let t = 0; t < a.nodes.length; t += 7) assert(a.route(0, t), "every junction is reachable after growth");
+  console.log("ok  growth is connected and deterministic");
+}
+
+// ancestry keeps exactly the ancestors of the living
+{
+  const trained = JSON.parse(fs.readFileSync("docs/trained.json", "utf8"));
+  const w = new EcoWorld({ seed: 4, founders: Population.fromJSON(trained.pop) });
+  for (let i = 0; i < 30000; i++) w.step();
+  w.pruneAncestry();
+  const needed = new Set();
+  for (const d of w.cars) for (const a of w.lineage(d)) needed.add(a.id);
+  assert(w.cars.every((d) => w.ancestry.has(d.id)), "every living car is in the record");
+  assert([...w.ancestry.keys()].every((id) => needed.has(id)), "nothing but ancestors of the living is kept");
+  assert(w.cars.every((d) => w.lineage(d).at(-1).id === d.id && w.lineage(d)[0].parent === -1), "every line runs from a founder to the car");
+  console.log(`ok  ancestry: ${w.ancestry.size} remembered for ${w.cars.length} alive`);
+}
+
+// a world on a fixed map resumes exactly too
+{
+  const graph = JSON.parse(fs.readFileSync("maps/crossroads.json", "utf8"));
+  const a = new CityWorld({ seed: 2, popSize: 30, ticks: 600, traffic: true, density: 30, graph });
+  a.runGeneration();
+  const b = CityWorld.fromJSON(JSON.parse(JSON.stringify(a)));
+  a.newGeneration();
+  const ra = a.runGeneration(), rb = b.runGeneration();
+  assert(ra.trips === rb.trips && Math.abs(ra.best - rb.best) < 1e-9, "a fixed-map world resumes exactly");
+  assert(a.city.nodes.length === 13, "the crossroads map is used");
+  console.log("ok  fixed maps save and resume");
+}
+
 console.log("\nall checks passed");
