@@ -20,6 +20,7 @@ export const BODY = {
   fov: Math.PI * 1.1,
   lostTicks: 240,   // no route progress for this long and the car is lost
   lookahead: 35,    // how far down the route the steering target sits
+  keepLine: 1,      // 1: target keeps the car's lateral offset, 0: target on the centreline
   dropSpeed: 40,
   stoppedSpeed: 6,  // below this a car in a junction counts as waiting    // must be this slow at the destination to deliver
   towTicks: 120, graceTicks: 45, maxCrashes: 12, damageCost: 1,
@@ -197,7 +198,15 @@ export class Driver {
       len = Math.hypot(B.x - A.x, B.y - A.y);
     }
     const t = Math.min(1, left / len);
-    return [A.x + (B.x - A.x) * t, A.y + (B.y - A.y) * t];
+    // The target keeps the car's own sideways offset (within the road), so
+    // following it holds whatever line the car is already on. A target on the
+    // centreline would mean the coded part of the car drags everyone to the
+    // middle, and keeping to one side would have to fight the route itself.
+    // This way the code has no opinion about lanes; the brain gets the lateral
+    // offset as an input and can hold a side or not.
+    const ux = (B.x - A.x) / len, uy = (B.y - A.y) / len;
+    const lat = Math.max(-0.7, Math.min(0.7, f.lateral / this.edgeHW(f))) * this.edgeHW(f) * BODY.keepLine;
+    return [A.x + (B.x - A.x) * t - uy * lat, A.y + (B.y - A.y) * t + ux * lat];
   }
 
   edgeHW(f) {
