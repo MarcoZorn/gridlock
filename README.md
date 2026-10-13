@@ -79,9 +79,10 @@ node tools/osm.mjs extract.json maps/name.json "Place"   # an OpenStreetMap extr
   economy on Turin and Barcelona over 80% of crashes are car-on-car, and
   over 80% of those happen between junctions, in the traffic, not at the
   crossings.
-- **One-way streets do not pay here.** Barcelona's Eixample with its real
-  arrows carries a sixth fewer fares than the same streets two-way, and is
-  no safer: a fare across the block has to go round it.
+- **One-way streets do not pay here.** Barcelona's Eixample and Midtown
+  Manhattan with their real arrows carry a sixth to a fifth fewer fares than
+  the same streets two-way, and are no safer: a fare across the block has to
+  go round it.
 - **Cars and pedestrians cycle.** Once both populations can replace
   themselves they oscillate like predator and prey.
 - **Fitness sharing costs here.** Without it drivers were half as fit
@@ -770,8 +771,16 @@ with and without its arrows, four days, two seeds, days two to four:
 | one-way | 2199 / 2284 | 58 s / 49 s | 140 / 139 |
 | two-way | 2567 / 2792 | 47 s / 48 s | 159 / 129 |
 
-With its arrows the city moves about a sixth fewer fares, and is no safer
-for it: what the arrows add is distance, a fare across the block now goes
+And again on Midtown Manhattan (`?map=manhattan`, 136 of its 149 ways
+one-way in the extract), same settings:
+
+| Manhattan | trips a day | mean trip | crashes per car per day |
+|---|---|---|---|
+| one-way | 2014 / 1981 | 53 s / 57 s | 128 / 123 |
+| two-way | 2540 / 2557 | 48 s / 51 s | 135 / 124 |
+
+With its arrows Barcelona moves about a sixth fewer fares and Manhattan a
+fifth, and neither is meaningfully safer for it: what the arrows add is distance, a fare across the block now goes
 round it. I guessed this was because the cars had no lane discipline, so a
 two-way street cost them nothing a one-way street could give back. That was
 wrong. The two-way populations had evolved a side of the road by then (75%
