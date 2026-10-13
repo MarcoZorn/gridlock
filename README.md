@@ -189,6 +189,26 @@ the code decides which way traffic should flow.
    delivers signals on the event loop, and a simulation loop never yields to
    it. It now yields once a generation.
 
+**Three thousand generations.** With every bug above fixed, four
+populations ran 3000 generations each in traffic, one seed per junction
+control plus a quieter city. Averages over the last hundred:
+
+| | no signals, 40 at once | no signals, 20 at once | traffic lights | roundabouts |
+|---|---|---|---|---|
+| trips per car-minute | 1.24 | 1.67 | 0.84 | 1.05 |
+| crashes per km | 12.3 | 7.8 | 14.4 | 21.8 |
+| car-on-car crashes per car | 1.6 | 1.1 | 1.3 | 1.2 |
+| mean trip | 26 s | 19 s | 29 s | 27 s |
+| red lights run per car | | | 2.9 | |
+
+Leaving junctions alone moves the most people. Lights cut collisions
+between cars a little and throughput by a third; roundabouts trade
+throughput for kerb strikes on the islands. Halving the density does more
+for safety than any junction control. One caveat: the shipped drivers raised
+without signals score better under lights (1.4 trips a minute) than the
+lights-raised ones (0.6), and run 6.5 reds each against 2.6. They are not
+better drivers, they just never learned that red means anything.
+
 **The price of a red light.** With the four-second bug fixed, drivers under
 lights still ran about 2.4 reds each per generation. That turned out to be
 rational: the fine was cheaper than the wait. Starting from the same
