@@ -125,7 +125,7 @@ export class City {
     // of two road ends, which means crawling, and evolution almost never finds
     // a brain that brakes that hard before it has learned to turn at all.
     for (const n of this.nodes) {
-      const r = Math.max(...n.edges.map((e) => e.hw)) * 1.9;
+      const r = Math.max(...n.edges.map((e) => e.hw)) + 8;
       const x0 = Math.max(0, Math.floor((n.x - r) / CELL)), x1 = Math.min(this.gw - 1, Math.ceil((n.x + r) / CELL));
       const y0 = Math.max(0, Math.floor((n.y - r) / CELL)), y1 = Math.min(this.gh - 1, Math.ceil((n.y + r) / CELL));
       for (let gy = y0; gy <= y1; gy++) {
