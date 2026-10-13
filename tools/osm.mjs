@@ -18,7 +18,13 @@ if (!src || !dst) { console.error("usage: node tools/osm.mjs extract.json out.js
 const M_PER_UNIT = 0.4, MERGE = 12, MARGIN = 40;
 const LANES = { primary: 2, secondary: 2, tertiary: 1, residential: 1, unclassified: 1, living_street: 1 };
 
-const els = JSON.parse(fs.readFileSync(src, "utf8")).elements;
+const raw = fs.readFileSync(src, "utf8");
+if (!raw.trimStart().startsWith("{")) {
+  // Overpass answers errors (busy, timeout) with an HTML page, not JSON
+  console.error(`${src} is not Overpass JSON; the server probably refused the query, try again later`);
+  process.exit(1);
+}
+const els = JSON.parse(raw).elements;
 const osmNodes = new Map(els.filter((e) => e.type === "node").map((e) => [e.id, e]));
 const ways = els.filter((e) => e.type === "way" && e.tags && LANES[e.tags.highway] !== undefined);
 
