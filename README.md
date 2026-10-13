@@ -231,8 +231,9 @@ drivers were raised under older settings), so it is a hint, not a result.
 From scratch with today's settings (400 generations, the last 200 in traffic,
 three seeds each), the hint mostly goes: waiting over the last 50 generations
 5.0% with wrecks against 4.3% without, one seed of three the other way, and a
-fifth fewer trips. Wrecks make crashing expensive for everyone behind, not
-for the one who crashed, and selection only sees the second.
+fifth fewer trips. My reading: a wreck costs the cars behind it, not the one
+that crashed, and selection only ever counts what a driver's own choices
+cost that driver. The jam is somebody else's problem.
 (The conflict and
 car-on-car counters are no use here: a wreck in a junction counts as an
 unresolved conflict, and touching one counts as a collision every tick.)
