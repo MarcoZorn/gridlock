@@ -28,7 +28,7 @@ export const ECON = {
   freightMax: 10,       // the biggest load a single job ever has
   crashCost: 9,         // per (impact share)^2 per unit of mass
   towFee: 3,
-  pedestrianFine: 10,   // on top of the crash itself, for hitting someone on foot            // for a car that got lost and had to be fetched
+  pedestrianFine: 3,    // on top of the crash itself, for hitting someone on foot            // for a car that got lost and had to be fetched
   redFine: 2,
   minCars: 24,          // below this, immigrants arrive
   maxCars: 120,         // a hard ceiling for the sake of the frame rate

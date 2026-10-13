@@ -24,7 +24,7 @@ export const PED = {
   sight: 160,          // how far along the road it looks
   count: 40,           // population the city starts with
   min: 20,
-  max: 100,
+  max: 60,
 };
 
 const N_IN = 6, N_OUT = 1;   // [left dist, left closing, right dist, right closing, waited, bias-ish]
