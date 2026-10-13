@@ -13,6 +13,7 @@ import { Driver, BODY, N_INPUTS, N_OUTPUTS } from "./driver.js";
 import { Body, TRAITS } from "./body.js";
 import { SpatialHash } from "./spatial.js";
 import { collideCars, DT } from "./cityworld.js";
+import { Crowd } from "./pedestrians.js";
 
 // The economy, in one place so it can be tuned without hunting.
 export const ECON = {
@@ -26,7 +27,8 @@ export const ECON = {
   freightMin: 2,        // a vehicle needs this much room to take freight at all
   freightMax: 10,       // the biggest load a single job ever has
   crashCost: 9,         // per (impact share)^2 per unit of mass
-  towFee: 3,            // for a car that got lost and had to be fetched
+  towFee: 3,
+  pedestrianFine: 10,   // on top of the crash itself, for hitting someone on foot            // for a car that got lost and had to be fetched
   redFine: 2,
   minCars: 24,          // below this, immigrants arrive
   maxCars: 120,         // a hard ceiling for the sake of the frame rate
@@ -59,7 +61,9 @@ export class EcoWorld {
   // a trip never earns, never breeds, and nothing ever gets selected. The
   // founders only have to be able to drive; what they become is up to the
   // economy.
-  constructor({ seed = 1, citySeed = seed, control = "none", startCars = 50, founders = null } = {}) {
+  // `pedestrians` adds a second evolving population that has to cross the
+  // roads (see pedestrians.js); 0 leaves the city to the cars.
+  constructor({ seed = 1, citySeed = seed, control = "none", startCars = 50, founders = null, pedestrians = 0 } = {}) {
     this.seed = seed;
     this.rng = new Rng(seed * 104729 + 7);
     this.city = new City(citySeed);
@@ -76,7 +80,8 @@ export class EcoWorld {
     this.nextSpecies = 0;
     this.threshold = 0.8;       // nudged so the number of species stays readable
     this.log = [];              // telemetry rows
-    this.events = { births: 0, deaths: 0, immigrants: 0, trips: 0, crashes: 0, carCrashes: 0, earned: 0, deadheads: 0, freight: 0, tripTicks: 0 };
+    this.events = { births: 0, deaths: 0, immigrants: 0, trips: 0, crashes: 0, carCrashes: 0, earned: 0, deadheads: 0, freight: 0, tripTicks: 0, pedHits: 0 };
+    this.crowd = pedestrians ? new Crowd(this.city, new Rng(seed * 7 + 1), pedestrians) : null;
     this.passengers = ECON.fareQueue / 2;  // fares waiting for a car
     this.freight = ECON.fareQueue / 2;     // loads waiting for a vehicle with room
     for (let i = 0; i < startCars; i++) this.immigrate();
@@ -196,7 +201,9 @@ export class EcoWorld {
     c.time = this.tick * DT;
     this.passengers = Math.min(ECON.fareQueue, this.passengers + ECON.demand * demandAt(c.time) * DT);
     this.freight = Math.min(ECON.fareQueue, this.freight + ECON.freightDemand * freightAt(c.time) * DT);
-    this.hash.rebuild(this.cars);
+    // everything a car can see or hit: other cars, and anyone crossing
+    const onRoad = this.crowd ? this.cars.concat(this.crowd.people) : this.cars;
+    this.hash.rebuild(onRoad);
     if (this.tick % 30 === 0) c.measureLoad(this.cars);
     for (const d of this.cars) {
       const reds = d.redRuns;
@@ -214,7 +221,14 @@ export class EcoWorld {
         d.place(this.randomFare(from, -1, d.body.jam), this.rng.range(0.2, 0.7));
       }
     }
-    this.events.carCrashes += collideCars(this.cars, this.hash, null);
+    if (this.crowd) this.crowd.step(DT, this.cars);
+    this.events.carCrashes += collideCars(onRoad, this.hash, (a, b) => {
+      const ped = a.isPed ? a : b.isPed ? b : null;
+      if (!ped) return;
+      const car = ped === a ? b : a;
+      car.cash -= ECON.pedestrianFine;
+      this.events.pedHits++;
+    });
 
     // births and deaths, after everyone has moved
     const born = [];
@@ -293,8 +307,10 @@ export class EcoWorld {
       ...this.events,
       traits,
       species: this.species.map((s) => [s.id, s.size]),
+      ...(this.crowd ? { people: this.crowd.people.length, ped: { ...this.crowd.events } } : {}),
     });
-    this.events = { births: 0, deaths: 0, immigrants: 0, trips: 0, crashes: 0, carCrashes: 0, earned: 0, deadheads: 0, freight: 0, tripTicks: 0 };
+    if (this.crowd) this.crowd.events = { crossings: 0, hit: 0, starved: 0, born: 0 };
+    this.events = { births: 0, deaths: 0, immigrants: 0, trips: 0, crashes: 0, carCrashes: 0, earned: 0, deadheads: 0, freight: 0, tripTicks: 0, pedHits: 0 };
   }
 
   // After the editor changes the map: anyone whose remaining route uses a
@@ -346,7 +362,7 @@ export class EcoWorld {
     w.passengers = j.passengers; w.freight = j.freight;
     w.founders = j.founders ? j.founders.map((g) => Genome.fromJSON(g)) : null;
     w.cars = [];
-    w.events = { births: 0, deaths: 0, immigrants: 0, trips: 0, crashes: 0, carCrashes: 0, earned: 0, deadheads: 0, freight: 0, tripTicks: 0 };
+    w.events = { births: 0, deaths: 0, immigrants: 0, trips: 0, crashes: 0, carCrashes: 0, earned: 0, deadheads: 0, freight: 0, tripTicks: 0, pedHits: 0 };
     for (const c of j.cars) {
       const d = w.spawn(Genome.fromJSON(c.brain), Body.fromJSON(c.body), c.cash, null);
       Object.assign(d, { id: c.id, born: c.born, parent: c.parent, generation: c.generation, children: c.children, earned: c.earned, species: c.species, dist: c.dist });

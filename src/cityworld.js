@@ -314,6 +314,7 @@ export function collideCars(cars, h, onCarCrash) {
     const ax = Math.cos(a.a) * offA, ay = Math.sin(a.a) * offA;
     h.near(a.x, a.y, a.p.len + 10, (b) => {
       if (b === a || !b.solid || !a.solid || b.id < a.id) return;
+      if (a.isPed && b.isPed) return;   // people walk round each other
       const offB = (b.p.len - b.p.wid) / 2, rr = ((a.p.wid + b.p.wid) / 2) ** 2;
       const bx = Math.cos(b.a) * offB, by = Math.sin(b.a) * offB;
       for (const sa of [1, -1]) {
