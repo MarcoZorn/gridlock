@@ -68,6 +68,9 @@ node tools/osm.mjs extract.json maps/name.json "Place"   # an OpenStreetMap extr
   city moves a third as many people.
 - **With no fitness function, the cheapest car wins.** Every forty-day
   economy bred small, underpowered, short-sighted cars.
+- **In a crowded city the danger is the queue, not the crossing.** In the
+  economy on Turin and Barcelona about 85% of crashes are car-on-car, and
+  85-90% of those happen between junctions: rear-ends in slow traffic.
 - **Cars and pedestrians cycle.** Once both populations can replace
   themselves they oscillate like predator and prey.
 - **Two bugs mattered more than any tuning.** A four-second "lost" rule that
@@ -615,6 +618,24 @@ browser to draw a thousand cars.
 ![The ecosystem on central Turin's streets](docs/turin.png)
 
 Map data © [OpenStreetMap](https://www.openstreetmap.org/copyright) contributors, ODbL.
+
+**Where they crash.** The ecosystem page has the same heatmaps as the
+generation page (H): crashes, or cars crawling at walking pace. On a real map
+the crash layer is not a set of hot junctions but whole streets glowing, and
+counting says the same. Over two days from the same founders (only nodes
+where three or more roads meet count as junctions):
+
+| city | crashes into walls | car-on-car | of those, at a junction |
+|---|---|---|---|
+| grid (small) | 25% | 75% | 27% |
+| Turin | 15% | 85% | 13% |
+| Barcelona | 17% | 83% | 21% |
+
+The generation city, with its thin traffic, is the other way round: there a
+driver mostly crashes alone, into a kerb. Here, with three to five times the
+cars on the same streets, they mostly crash into the one in front. Nothing in
+the economy pays a car to keep its distance except the repair bill, and the
+repair bill is not enough.
 
 ## Files
 
