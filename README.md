@@ -827,6 +827,14 @@ charged cities caught up: on day 15 they moved 2691 and 2398 fares with 176
 and 158 cars, against 2781 and 2726 with 287 and 285 uncharged. Nearly the
 same service from 40% fewer cars. The eco page has it as a button, saved with the city.
 
+Why does nobody learn to avoid the charge? Because it does not pay to. I took
+both charged cities at day 15 and ran each for six hours with every car's
+`jam` gene forced to the top, and again forced to zero: the same number of
+trips either way (329 against 326, 313 against 318), as long, and cash that
+came out better with avoidance in one city and worse in the other. On a
+network of mostly one-way streets a detour costs about as much in distance as
+it saves in charge, so there is nothing for selection to find.
+
 **Where they crash.** The ecosystem page has the same heatmaps as the
 generation page (H): crashes, or cars crawling at walking pace. On a real map
 the crash layer is not a set of hot junctions but whole streets glowing, and
