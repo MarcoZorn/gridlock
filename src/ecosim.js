@@ -196,7 +196,6 @@ function draw() {
   vctx.translate(W / 2, H / 2);
   vctx.scale(k, k);
   vctx.translate(-cam.x, -cam.y);
-  if (heatMode) drawHeat(vctx, world.city.heatGrid(), heatMode);
   drawLights(vctx, world.city, k);
   drawClosures(vctx, world.city, k);
   if (draft) {
@@ -220,6 +219,13 @@ function draw() {
   }
   vctx.restore();
   drawNight(W, H, k);
+  if (heatMode) {
+    // a reading, not part of the scene: drawn over the night, not under it
+    vctx.save();
+    vctx.translate(W / 2, H / 2); vctx.scale(k, k); vctx.translate(-cam.x, -cam.y);
+    drawHeat(vctx, world.city.heatGrid(), heatMode);
+    vctx.restore();
+  }
 
   drawNetwork(bctx, focus ? focus.genome : null, brain.clientWidth, brain.clientHeight);
   drawSpecies();
