@@ -281,4 +281,17 @@ import { Crowd, PED } from "./src/pedestrians.js";
   console.log("ok  one-way streets are only driven one way, and trap no one");
 }
 
+{
+  // the heatmap lives on the city and starts afresh when the city changes shape
+  const c = new City(2);
+  c.addHeat("crash", 100, 100); c.addHeat("crash", 101, 101); c.addHeat("slow", 100, 100, 3);
+  const h = c.heatGrid(), i = ((100 / h.cell) | 0) * h.w + ((100 / h.cell) | 0);
+  assert(h.crash[i] === 2 && h.slow[i] === 3, "heat adds up where it happens");
+  c.addHeat("crash", -50, 1e9);   // off the map: ignored, not an error
+  c.expand("east");
+  const g = c.heatGrid();
+  assert(g !== h && g.w > h.w && g.crash.every((v) => v === 0), "a grown city gets a fresh, bigger heatmap");
+  console.log("ok  heatmaps add up, and start again when the city grows");
+}
+
 console.log("\nall checks passed");
