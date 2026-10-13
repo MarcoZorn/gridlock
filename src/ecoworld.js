@@ -294,6 +294,45 @@ export class EcoWorld {
     this.events = { births: 0, deaths: 0, immigrants: 0, trips: 0, crashes: 0, carCrashes: 0, earned: 0, deadheads: 0, freight: 0 };
   }
 
+  // A checkpoint keeps every car's brain, body, wallet and lineage, and the
+  // species labels. Where each car was on the road is not kept: on resume
+  // they start new fares from random places, which costs the city a minute
+  // of traffic and saves a great deal of fragile state.
+  toJSON() {
+    return {
+      v: 1, seed: this.seed, citySeed: this.city.seed, control: this.control, tick: this.tick, rng: this.rng.s,
+      innov: this.innov.toJSON(), cfg: this.cfg, nextId: this.nextId, nextSpecies: this.nextSpecies, threshold: this.threshold,
+      passengers: this.passengers, freight: this.freight,
+      founders: this.founders ? this.founders.map((g) => g.toJSON()) : null,
+      cars: this.cars.map((d) => ({
+        brain: d.genome.toJSON(), body: d.body.toJSON(), cash: d.cash, id: d.id, born: d.born, parent: d.parent,
+        generation: d.generation, children: d.children, earned: d.earned, species: d.species, dist: d.dist,
+      })),
+      species: this.species.map((s) => ({ id: s.id, brain: s.brain.toJSON(), body: s.body.toJSON(), born: s.born, size: s.size })),
+      log: this.log,
+    };
+  }
+
+  static fromJSON(j) {
+    const w = new EcoWorld({ seed: j.seed, citySeed: j.citySeed, control: j.control, startCars: 0 });
+    w.tick = j.tick; w.rng.s = j.rng; w.cfg = j.cfg;
+    w.innov = Innovations.fromJSON(j.innov);
+    w.nextSpecies = j.nextSpecies; w.threshold = j.threshold;
+    w.passengers = j.passengers; w.freight = j.freight;
+    w.founders = j.founders ? j.founders.map((g) => Genome.fromJSON(g)) : null;
+    w.cars = [];
+    w.events = { births: 0, deaths: 0, immigrants: 0, trips: 0, crashes: 0, carCrashes: 0, earned: 0, deadheads: 0, freight: 0 };
+    for (const c of j.cars) {
+      const d = w.spawn(Genome.fromJSON(c.brain), Body.fromJSON(c.body), c.cash, null);
+      Object.assign(d, { id: c.id, born: c.born, parent: c.parent, generation: c.generation, children: c.children, earned: c.earned, species: c.species, dist: c.dist });
+    }
+    w.nextId = j.nextId;
+    w.species = j.species.map((s) => ({ id: s.id, brain: Genome.fromJSON(s.brain), body: Body.fromJSON(s.body), born: s.born, size: s.size }));
+    w.log = j.log || [];
+    w.city.time = w.tick * DT;
+    return w;
+  }
+
   richest() {
     return this.cars.length ? this.cars.reduce((a, b) => (b.cash > a.cash ? b : a)) : null;
   }
