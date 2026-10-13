@@ -155,6 +155,7 @@ export class EcoWorld {
       const cost = hit * car.p.mass * ECON.crashCost;
       car.cash -= cost;
       this.events.crashes++;
+      this.city.addHeat("crash", car.x, car.y);
     };
     this.cars.push(d);
     this.ancestry.set(d.id, { parent: d.parent, born: this.tick, died: -1, generation: d.generation, species: d.species, children: 0 });
@@ -226,6 +227,7 @@ export class EcoWorld {
       // grows with the odometer, so every car wears out in the end
       const wear = 1 + d.dist / ECON.wearDist;
       d.cash -= d.body.upkeep * wear * DT + d.body.fuel * Math.abs(d.v) * DT;
+      if (d.solid && Math.abs(d.v) < 15) c.addHeat("slow", d.x, d.y);
       if (!d.alive && d.lost) {
         // fetched and dropped somewhere new, at a price
         d.cash -= ECON.towFee;

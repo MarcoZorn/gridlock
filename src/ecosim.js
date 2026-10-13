@@ -2,7 +2,7 @@
 import { EcoWorld, ECON } from "./ecoworld.js";
 import { Population, Rng } from "./neat.js";
 import { Crowd } from "./pedestrians.js";
-import { fitCanvas, panZoom, announceToggles, shortcuts, busiestCar, cityLayer, drawClosures, drawLights, drawRoute, drawRays, drawCar, speciesColour } from "./render.js";
+import { fitCanvas, panZoom, announceToggles, shortcuts, busiestCar, cityLayer, drawHeat, drawClosures, drawLights, drawRoute, drawRays, drawCar, speciesColour } from "./render.js";
 import { drawNetwork } from "./netview.js";
 
 const $ = (id) => document.getElementById(id);
@@ -196,6 +196,7 @@ function draw() {
   vctx.translate(W / 2, H / 2);
   vctx.scale(k, k);
   vctx.translate(-cam.x, -cam.y);
+  if (heatMode) drawHeat(vctx, world.city.heatGrid(), heatMode);
   drawLights(vctx, world.city, k);
   drawClosures(vctx, world.city, k);
   if (draft) {
@@ -418,8 +419,18 @@ window.gridlock = { get world() { return world; }, cam };
 
 // Founders come from the trained drivers if they are there, from scratch if
 // not (which works, it just takes a long time to get anywhere).
+// Where the cars crash and where they crawl, since this city was built or
+// last changed shape (the fast-forward worker keeps its own, so a skipped day
+// is not on the map).
+const HEAT_MODES = ["off", "crashes", "congestion"];
+let heatMode = 0;
+$("heat").onclick = (e) => {
+  heatMode = (heatMode + 1) % HEAT_MODES.length;
+  e.target.dataset.on = heatMode > 0;
+  e.target.textContent = `Heatmap: ${HEAT_MODES[heatMode]}`;
+};
 announceToggles();
-shortcuts({ space: "#play", 1: '[data-speed="1"]', 2: '[data-speed="4"]', 3: '[data-speed="16"]', 4: '[data-speed="64"]', f: "#follow", d: "#director", s: "#rays", c: "#colour", e: "#edit" });
+shortcuts({ space: "#play", 1: '[data-speed="1"]', 2: '[data-speed="4"]', 3: '[data-speed="16"]', 4: '[data-speed="64"]', f: "#follow", d: "#director", s: "#rays", c: "#colour", e: "#edit", h: "#heat" });
 layout();
 // Founders: the drivers raised without signals, and if they were shipped,
 // the ones raised under lights and on roundabouts, for a city run that way.
