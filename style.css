@@ -48,3 +48,9 @@ main { grid-template-columns: minmax(0, 1fr) 280px 230px; grid-template-areas: "
 @media (max-width: 900px) {
   main { grid-template-columns: minmax(0, 1fr); grid-template-areas: "stage" "controls" "data"; }
 }
+
+/* the views of the project, one click apart */
+nav.views { display: flex; flex-wrap: wrap; gap: 4px 16px; margin-bottom: 14px; font-size: 12px; }
+nav.views a { color: var(--dim); text-decoration: none; }
+nav.views a:hover { color: var(--ink); }
+nav.views a.here { color: var(--accent); }

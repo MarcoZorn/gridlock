@@ -6,6 +6,13 @@ import { fitCanvas, panZoom, cityLayer, drawClosures, drawLights, drawRoute, dra
 import { drawNetwork } from "./netview.js";
 
 const $ = (id) => document.getElementById(id);
+
+// highlight where we are in the nav
+{
+  const q = new URLSearchParams(location.search), page = location.pathname.endsWith("eco.html") ? "eco" : "gen";
+  const view = q.get("map") === "crossroads" ? "cross" : q.get("map") === "turin" ? "turin" : page;
+  document.querySelector(`nav.views [data-view="${view}"]`)?.classList.add("here");
+}
 const view = $("view"), vctx = view.getContext("2d");
 const brain = $("brain"), bctx = brain.getContext("2d");
 const spc = $("species"), sctx = spc.getContext("2d");
