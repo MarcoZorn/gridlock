@@ -28,9 +28,13 @@ fs.mkdirSync(dir, { recursive: true });
 const statePath = path.join(dir, "state.json");
 const telemetry = path.join(dir, "telemetry.jsonl");
 
+// Signals are delivered on the event loop, which a synchronous simulation
+// loop never yields to: without the occasional `await tick()` below, a
+// SIGTERM would be ignored and the run would die without its checkpoint.
 let stop = false;
 process.on("SIGINT", () => { stop = true; });
 process.on("SIGTERM", () => { stop = true; });
+const tick = () => new Promise((r) => setImmediate(r));
 
 // Atomic save: write to a temp file and rename, so a run killed mid-write
 // never leaves a half-written checkpoint behind.
@@ -56,6 +60,7 @@ if (process.argv.includes("--eco")) {
   let written = eco.log.length;
   while (!stop && eco.tick < days * TICKS_PER_DAY) {
     eco.step();
+    if (eco.tick % 3600 === 0) await tick();
     if (eco.log.length > written) {
       for (const r of eco.log.slice(written)) fs.appendFileSync(telemetry, JSON.stringify(r) + "\n");
       written = eco.log.length;
@@ -103,6 +108,7 @@ while (!stop && world.pop.generation < gens) {
     world.newGeneration();
   }
   const r = world.runGeneration();
+  await tick();
   fs.appendFileSync(telemetry, JSON.stringify({ ...r, t: Math.round((Date.now() - t0) / 1000) }) + "\n");
   if (r.gen % 10 === 0) {
     console.log(`gen ${r.gen} ${r.traffic ? "traffic" : "ghosts"} trips/car ${(r.trips / 120).toFixed(2)} crashes/km ${r.crashesPerKm.toFixed(1)} side ${r.side.toFixed(2)}${r.control === "lights" ? ` red ${r.redRuns}` : ""}`);
