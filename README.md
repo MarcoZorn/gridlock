@@ -135,6 +135,21 @@ it: 1.63 trips per car against 1.58, 3.41 crashes per 1000 units against
 3.62, split both ways by seed. It is not needed, and the harm is a habit of
 this one population, not something the input does to everyone.
 
+So is the sense of other cars useless too? I expected drivers raised blind
+to them from the start to come out the same. They do not, in any seed (300
+generations, the last 100 with traffic, then the same unseen cities):
+
+| raised | trips per car | crashes per 1000 units |
+|---|---|---|
+| seeing other cars | 1.39 / 1.71 / 1.64 | 4.08 / 3.54 / 3.23 |
+| blind to them | 1.25 / 1.24 / 1.12 | 4.31 / 4.84 / 4.65 |
+
+A quarter fewer trips and a quarter more crashes. Blindfolding a grown
+driver costs it almost nothing, but growing one blind costs a lot: the sense
+matters while a population learns to drive in traffic, and what it learns
+then (a speed, a line, a way of taking corners that leaves room) keeps
+working once the sense is gone. That last part is my reading, not tested.
+
 `node tools/ablate.mjs turn` (or any other group) repeats a row. On the
 generation page "Blind to cars" and "Blind to walls" do it live, and
 evolution carries on with the sense gone.
