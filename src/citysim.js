@@ -14,7 +14,7 @@ const senses = $("senses");
 
 let world, running = true, speed = 1, showRays = true, showAll = true, follow = false;
 let pending = 0, selected = null;
-let traffic = false, density = 40, heatMode = 0, control = "none", size = "small";
+let traffic = false, density = 40, heatMode = 0, control = "none", size = "small", graph = null;
 const HEAT_MODES = ["off", "crashes", "congestion"];
 const cam = { x: 0, y: 0, k: 1, fitted: false };
 const roads = cityLayer();
@@ -38,7 +38,7 @@ function fitCam() {
 }
 
 function reset(seed) {
-  world = new CityWorld({ seed, popSize: 120, traffic, density, control, size: SIZES[size] });
+  world = new CityWorld({ seed, popSize: 120, traffic, density, control, size: SIZES[size], graph });
   selected = null;
   cam.fitted = false;
   $("seed").textContent = seed;
@@ -207,7 +207,7 @@ for (const b of document.querySelectorAll("[data-size]")) {
     size = b.dataset.size;
     document.querySelectorAll("[data-size]").forEach((x) => (x.dataset.on = x === b));
     const pop = world.pop, history = world.history;
-    world = new CityWorld({ seed: world.seed, popSize: 120, traffic, density, control, size: SIZES[size], pop });
+    world = new CityWorld({ seed: world.seed, popSize: 120, traffic, density, control, size: SIZES[size], pop, graph });
     world.history = history;
     selected = null; cam.fitted = false;
   };
@@ -247,6 +247,15 @@ $("traffic").dataset.on = traffic;
 document.querySelectorAll("[data-density]").forEach((x) => (x.dataset.on = +x.dataset.density === density));
 document.querySelectorAll("[data-control]").forEach((x) => (x.dataset.on = x.dataset.control === control));
 
+// ?map=crossroads (or any maps/<name>.json) races on that one map instead
+// of the rotating generated cities.
+if (/^[a-z0-9-]+$/.test(params.get("map") || "")) {
+  try {
+    const r = await fetch(`maps/${params.get("map")}.json`);
+    if (r.ok) graph = await r.json();
+  } catch { /* generated cities after all */ }
+}
+
 // Visitors start on drivers that already know how to drive; a seed in the
 // URL, or New seed, starts from scratch instead.
 layout();
@@ -254,7 +263,12 @@ reset(+params.get("seed") || 3);
 if (!params.get("seed")) {
   try {
     const r = await fetch("docs/trained.json");
-    if (r.ok) adopt(CityWorld.fromJSON(await r.json()));
+    if (r.ok) {
+      const j = await r.json();
+      if (graph) j.opts = { ...j.opts, graph };
+      adopt(CityWorld.fromJSON(j));
+      if (graph) { traffic = true; world.traffic = true; $("traffic").dataset.on = true; world.newGeneration(); }
+    }
   } catch { /* stay on the fresh run */ }
 }
 frame();
