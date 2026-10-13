@@ -6,7 +6,16 @@
 // connection) are what let you still line two of them up and cross them over
 // sensibly. Everything in this file exists to serve that.
 
-export const ACT = (x) => Math.tanh(x);
+// tanh, as a Padé approximant (within 1e-4 of Math.tanh everywhere). Plain
+// arithmetic is faster than Math.tanh in V8, and unlike Math.tanh, which every
+// engine implements its own way, it gives the same bits in every browser, so a
+// shared city plays out the same in all of them.
+export const ACT = (x) => {
+  if (x > 4.97) return 1;
+  if (x < -4.97) return -1;
+  const x2 = x * x;
+  return (x * (135135 + x2 * (17325 + x2 * (378 + x2)))) / (135135 + x2 * (62370 + x2 * (3150 + x2 * 28)));
+};
 
 // One global registry per run. Two mutations that invent the same connection
 // in the same generation must get the same innovation number, otherwise the
