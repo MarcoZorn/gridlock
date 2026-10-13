@@ -175,11 +175,26 @@ more cars on the road at once:
 | 1440 | 181.0 | 11.7 | 326 | 25.3 | 55% |
 
 No peak, even at eighteen cars a road. Speed falls, crashes climb, but flow
-keeps rising. The last column is why. A crashed car is towed, and while it is
-towed it is a ghost that nothing can hit; then it is put down again further
-along. At 1440 cars more than half are ghosts at any moment, so every jam
-dissolves into crashes and the crashes clear the road. A city called Gridlock
-cannot gridlock, because in it a tow truck is a way through a queue.
+keeps rising. My first explanation was the last column: a crashed car is
+towed, and while it is towed it is a ghost that nothing can hit. At 1440 cars
+more than half are ghosts at any moment, so a jam dissolves into crashes and
+the crashes clear the road. Testing that, with the tow cut from 120 ticks to
+10 (`TOW=10`):
+
+| cars at once, short tow | flow | mean speed | trips a minute | cars being towed |
+|---|---|---|---|---|
+| 40 | 21.2 | 38.0 | 68 | 2% |
+| 120 | 44.7 | 32.1 | 135 | 4% |
+| 480 | 83.8 | 25.0 | 196 | 7% |
+| 1440 | 141.8 | 20.5 | 202 | 10% |
+
+Part of it, then: trips a minute now level off at about two hundred instead
+of climbing past three hundred. But flow still never turns down. A car that
+has just been put back is also untouchable for a grace period, and every
+crash takes a car out of the queue it was in, however briefly; the city has
+a ceiling but no collapse. Gridlock, the real kind where a full junction
+blocks the roads into it and the jam spreads backwards, needs cars that stay
+where they stopped, and here nothing ever has to.
 (`node tools/fundamental.mjs 480` for any row.)
 
 ## What is coded and what is evolved

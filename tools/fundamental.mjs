@@ -1,8 +1,11 @@
 import fs from "node:fs";
 import { CityWorld } from "../src/cityworld.js";
 import { Population } from "../src/neat.js";
+import { BODY } from "../src/driver.js";
+if (process.env.TOW) BODY.towTicks = +process.env.TOW;
 // Flow against density, the fundamental diagram of traffic: the shipped
 // drivers in two unseen cities with more and more cars on the road at once.
+// TOW=10 shortens the tow (normally 120 ticks).
 //
 //   node tools/fundamental.mjs 120
 const density = +process.argv[2];
