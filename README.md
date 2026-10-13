@@ -849,7 +849,18 @@ again with every car stretched back to the founders' size, same brains:
 
 Size is worth about 8%, roughly a third of the fall (which was measured
 before Turin had its one-way streets, these runs are after). The rest is the
-driving.
+driving. Measured on moving cars, the founders a few hours in against the
+same three seeds at day six:
+
+| Turin | speed | braking | a car ahead within 60 units | closing speed on it |
+|---|---|---|---|---|
+| founders | 46.3 | 10.9% of the time | 14% of the time | 0.25 |
+| day six | 41.1 | 13.4% of the time | 24% of the time | 0.18 |
+
+The later streets are busier, which alone would slow everyone down. But they
+come up on the car in front about 30% more gently, and brake more often to do
+it, and that is a habit, not the traffic. Nobody taught them to keep their
+distance: the repair bill did.
 
 ## Files
 
