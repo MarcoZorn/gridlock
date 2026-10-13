@@ -473,6 +473,9 @@ The ecosystem page can load the first of these cities as it was on day 40
   forgets lineages as they die out), and draws it: every birth a line from
   parent to child, across by time, up by generation. Within a city day or two
   it usually shows the same thing: everyone alive descends from one founder.
+- **Night.** The ecosystem's 24-minute day now gets dark: a wash from
+  evening to dawn and soft headlights, so the quiet small hours, when demand
+  and the population drop, are visible at a glance.
 - **Director.** A toggle on both pages that, every few seconds, cuts to
   whichever car has the most traffic around it and follows it, brain and
   senses on screen. Left alone, it is the quickest way to see what drivers

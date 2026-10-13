@@ -131,6 +131,44 @@ function drawBodies() {
   }
 }
 
+// Night falls on the city: a dark wash from evening to dawn, and headlights.
+// It is only paint, but it makes the clock readable at a glance, and the
+// quiet of the small hours, when demand drops, visible.
+function darkness(hour) {
+  // 0 by day, up to 0.55 deep in the night, with an hour of dusk and dawn
+  const ramp = (a, b, h) => Math.max(0, Math.min(1, (h - a) / (b - a)));
+  return 0.55 * (hour >= 12 ? ramp(19, 21, hour) : 1 - ramp(5.5, 7.5, hour));
+}
+function drawNight(W, H, k) {
+  const dark = darkness(((world.city.time / 60) % 24 + 24) % 24);
+  if (dark < 0.01) return;
+  vctx.fillStyle = `rgba(4,6,16,${dark})`;
+  vctx.fillRect(0, 0, W, H);
+  vctx.save();
+  vctx.translate(W / 2, H / 2);
+  vctx.scale(k, k);
+  vctx.translate(-cam.x, -cam.y);
+  vctx.globalCompositeOperation = "lighter";
+  const glow = 0.22 * dark / 0.55;
+  for (const d of world.cars) {
+    const len = d.p.len, reach = 24, ca = Math.cos(d.a), sa = Math.sin(d.a);
+    const fx = d.x + ca * len / 2, fy = d.y + sa * len / 2;
+    // a beam that fades with distance, not a solid wedge
+    const g = vctx.createLinearGradient(fx, fy, fx + ca * reach, fy + sa * reach);
+    g.addColorStop(0, `rgba(255,236,190,${glow})`);
+    g.addColorStop(1, "rgba(255,236,190,0)");
+    vctx.fillStyle = g;
+    vctx.beginPath();
+    vctx.moveTo(fx - sa * 1.5, fy + ca * 1.5);
+    vctx.lineTo(fx + ca * reach - sa * 7, fy + sa * reach + ca * 7);
+    vctx.lineTo(fx + ca * reach + sa * 7, fy + sa * reach - ca * 7);
+    vctx.lineTo(fx + sa * 1.5, fy - ca * 1.5);
+    vctx.closePath();
+    vctx.fill();
+  }
+  vctx.restore();
+}
+
 function clock(t) {
   const m = Math.floor(t) % (24 * 60);
   return `${String(Math.floor(m / 60)).padStart(2, "0")}:${String(m % 60).padStart(2, "0")}`;
@@ -186,6 +224,7 @@ function draw() {
     drawCar(vctx, focus, "#ffffff", 1);
   }
   vctx.restore();
+  drawNight(W, H, k);
 
   drawNetwork(bctx, focus ? focus.genome : null, brain.clientWidth, brain.clientHeight);
   drawSpecies();
