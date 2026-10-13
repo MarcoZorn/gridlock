@@ -6,6 +6,7 @@
 import { Rng } from "./neat.js";
 
 export const LANE_W = 9;
+export const LIGHT = { green: 5, allRed: 1.5, get cycle() { return (this.green + this.allRed) * 2; } };
 const CELL = 4;
 
 // A jittered grid. A perfect grid reads as a spreadsheet; nudging every
@@ -70,6 +71,39 @@ export class City {
     for (const e of this.edges) { this.nodes[e.a].edges.push(e); this.nodes[e.b].edges.push(e); }
 
     this.bake();
+
+    // Traffic lights at every junction where three or more roads meet. The
+    // roads are split into two groups by axis (roughly "north-south" and
+    // "east-west" for that junction) which take turns, with an all-red gap
+    // between them. Offsets are random so the city does not pulse in step.
+    this.control = "none";
+    this.time = 0;
+    for (const n of this.nodes) {
+      if (n.edges.length < 3) continue;
+      const axis = (e) => {
+        const m = this.nodes[this.other(e, n.id)];
+        return Math.atan2(m.y - n.y, m.x - n.x);
+      };
+      const a0 = axis(n.edges[0]);
+      const group = new Map();
+      for (const e of n.edges) {
+        const d = Math.abs(Math.sin(axis(e) - a0));   // 0 along the first road's axis, 1 across it
+        group.set(this.other(e, n.id), d < 0.7 ? 0 : 1);
+      }
+      n.light = { group, offset: rng.range(0, LIGHT.cycle) };
+    }
+  }
+
+  // Is the light green for a car driving into junction `node` from `from`?
+  // Junctions without a light, and every junction when lights are off, are
+  // always "green": nothing stops you, for better or worse.
+  green(node, from) {
+    const n = this.nodes[node];
+    if (this.control !== "lights" || !n.light) return true;
+    const t = (this.time + n.light.offset) % LIGHT.cycle;
+    const g = n.light.group.get(from);
+    if (g === 0) return t < LIGHT.green;
+    return t >= LIGHT.green + LIGHT.allRed && t < LIGHT.green * 2 + LIGHT.allRed;
   }
 
   addEdge(a, b, lanes) {
