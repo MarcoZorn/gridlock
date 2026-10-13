@@ -22,10 +22,11 @@ export const BODY = {
   stuckTicks: 1800, // standing still with no progress for this long: stuck
   lookahead: 35,    // how far down the route the steering target sits
   keepLine: 1,      // 1: target keeps the car's lateral offset, 0: target on the centreline
-  dropSpeed: 40,
-  stoppedSpeed: 6,
+  lane: 0,          // on a two-way road the target sits mid-way to one kerb: 1 right, -1 left
+  dropSpeed: 40,    // must be this slow at the destination to deliver
+  stoppedSpeed: 6,  // below this a car in a junction counts as waiting
   redFine: 0.2,     // damage-equivalent of running a red light
-  wallDamage: 1,    // damage from a kerb strike, relative to hitting a car  // below this a car in a junction counts as waiting    // must be this slow at the destination to deliver
+  wallDamage: 1,    // damage from a kerb strike, relative to hitting a car
   towTicks: 120, graceTicks: 45, maxCrashes: 12, damageCost: 1,
 };
 
@@ -262,7 +263,10 @@ export class Driver {
     // This way the code has no opinion about lanes; the brain gets the lateral
     // offset as an input and can hold a side or not.
     const ux = (B.x - A.x) / len, uy = (B.y - A.y) / len;
-    const lat = Math.max(-0.7, Math.min(0.7, f.lateral / this.edgeHW(f))) * this.edgeHW(f) * BODY.keepLine;
+    // With BODY.lane on, the code does have an opinion after all: keep right
+    // on a two-way road, anywhere on a one-way one. An experiment, off by default.
+    const hw = this.edgeHW(f), e = BODY.lane && this.city.edgeBetween(this.route[this.seg], this.route[this.seg + 1]);
+    const lat = e && !e.oneway ? hw * 0.5 * BODY.lane : Math.max(-0.7, Math.min(0.7, f.lateral / hw)) * hw * BODY.keepLine;
     let tx = A.x + (B.x - A.x) * t - uy * lat, ty = A.y + (B.y - A.y) * t + ux * lat;
     if (this.city.roundabouts) [tx, ty] = this.aroundIsland(tx, ty);
     return [tx, ty];
