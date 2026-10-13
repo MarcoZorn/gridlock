@@ -765,6 +765,13 @@ that cannot get back, a layer at a time, until every street is in: all
 junctions kept, 98 of Turin's 342 roads one-way and 420 of Barcelona's 643.
 Nothing in the drivers changed, and the crash table below barely moved.
 
+The editor can do it too. In "Edit roads" a click on a street makes it
+one-way, a second click turns it round, a third closes it and a fourth opens
+it both ways again. A direction that would leave some junction with no way
+back is skipped (the same check as the importer's), the change goes into the
+city's edit log so a save replays it, and anyone whose route now runs against
+an arrow is re-routed at the next junction.
+
 Do they help? Real cities make streets one-way to remove conflicts at
 crossings and to fit more cars through. The same founders on the Eixample
 with and without its arrows, four days, two seeds, days two to four:
