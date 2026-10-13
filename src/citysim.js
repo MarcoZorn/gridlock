@@ -1,7 +1,7 @@
 // Browser front end for the city: run it, draw it, pan and zoom, inspect a car.
 import { CityWorld } from "./cityworld.js";
 import { BODY } from "./driver.js";
-import { fitCanvas, drawCity, drawHeat, drawSenses, drawLights, drawRoute, drawRays, drawCar } from "./render.js";
+import { fitCanvas, panZoom, drawCity, drawHeat, drawSenses, drawLights, drawRoute, drawRays, drawCar } from "./render.js";
 import { drawNetwork } from "./netview.js";
 import { drawSparkline } from "./sparkline.js";
 
@@ -42,7 +42,6 @@ function reset(seed) {
   $("seed").textContent = seed;
 }
 
-const toWorld = (sx, sy) => [(sx - view.clientWidth / 2) / cam.k + cam.x, (sy - view.clientHeight / 2) / cam.k + cam.y];
 
 
 function draw() {
@@ -125,39 +124,15 @@ function frame() {
   requestAnimationFrame(frame);
 }
 
-// Pan by dragging, zoom about the cursor, click without dragging to select.
-let drag = null;
-view.addEventListener("pointerdown", (e) => {
-  view.setPointerCapture(e.pointerId);
-  drag = { x: e.offsetX, y: e.offsetY, cx: cam.x, cy: cam.y, moved: false };
-});
-view.addEventListener("pointermove", (e) => {
-  if (!drag) return;
-  const dx = e.offsetX - drag.x, dy = e.offsetY - drag.y;
-  if (Math.abs(dx) + Math.abs(dy) > 4) { drag.moved = true; view.classList.add("dragging"); }
-  if (drag.moved) { cam.x = drag.cx - dx / cam.k; cam.y = drag.cy - dy / cam.k; }
-});
-view.addEventListener("pointerup", (e) => {
-  view.classList.remove("dragging");
-  if (drag && !drag.moved) {
-    const [wx, wy] = toWorld(e.offsetX, e.offsetY);
-    let best = null, bd = 20 / cam.k + BODY.len;
-    for (const d of world.cars) {
-      if (!d.alive) continue;
-      const dd = Math.hypot(d.x - wx, d.y - wy);
-      if (dd < bd) { bd = dd; best = d; }
-    }
-    selected = best;
+panZoom(view, cam, (wx, wy) => {
+  let best = null, bd = 20 / cam.k + BODY.len;
+  for (const d of world.cars) {
+    if (!d.alive) continue;
+    const dd = Math.hypot(d.x - wx, d.y - wy);
+    if (dd < bd) { bd = dd; best = d; }
   }
-  drag = null;
+  selected = best;
 });
-view.addEventListener("wheel", (e) => {
-  e.preventDefault();
-  const [wx, wy] = toWorld(e.offsetX, e.offsetY);
-  cam.k = Math.max(0.2, Math.min(12, cam.k * Math.exp(-e.deltaY * 0.0015)));
-  const [nx, ny] = toWorld(e.offsetX, e.offsetY);
-  cam.x += wx - nx; cam.y += wy - ny;
-}, { passive: false });
 view.addEventListener("dblclick", () => { cam.fitted = false; follow = false; $("follow").dataset.on = false; });
 
 $("play").onclick = (e) => { running = !running; e.target.textContent = running ? "Pause" : "Play"; };

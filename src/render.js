@@ -194,3 +194,37 @@ export function drawCar(ctx, d, colour, alpha) {
   ctx.fillRect(len * 0.1, -wid / 2 + 0.8, len * 0.22, wid - 1.6);
   ctx.restore();
 }
+
+// Pan by dragging, zoom about the cursor, and a click that did not drag is a
+// pick at that world position. `cam` is { x, y, k }: the world point at the
+// centre of the canvas, and the scale.
+export function panZoom(view, cam, onPick) {
+  const toWorld = (sx, sy) => [(sx - view.clientWidth / 2) / cam.k + cam.x, (sy - view.clientHeight / 2) / cam.k + cam.y];
+  let drag = null;
+  view.addEventListener("pointerdown", (e) => {
+    view.setPointerCapture(e.pointerId);
+    drag = { x: e.offsetX, y: e.offsetY, cx: cam.x, cy: cam.y, moved: false };
+  });
+  view.addEventListener("pointermove", (e) => {
+    if (!drag) return;
+    const dx = e.offsetX - drag.x, dy = e.offsetY - drag.y;
+    if (Math.abs(dx) + Math.abs(dy) > 4) { drag.moved = true; view.classList.add("dragging"); }
+    if (drag.moved) { cam.x = drag.cx - dx / cam.k; cam.y = drag.cy - dy / cam.k; }
+  });
+  view.addEventListener("pointerup", (e) => {
+    view.classList.remove("dragging");
+    if (drag && !drag.moved) onPick(...toWorld(e.offsetX, e.offsetY));
+    drag = null;
+  });
+  view.addEventListener("wheel", (e) => {
+    e.preventDefault();
+    const [wx, wy] = toWorld(e.offsetX, e.offsetY);
+    cam.k = Math.max(0.2, Math.min(12, cam.k * Math.exp(-e.deltaY * 0.0015)));
+    const [nx, ny] = toWorld(e.offsetX, e.offsetY);
+    cam.x += wx - nx; cam.y += wy - ny;
+  }, { passive: false });
+}
+
+// One colour per species id, spread round the wheel by the golden angle so
+// neighbouring ids never look alike.
+export const speciesColour = (id, l = 62) => `hsl(${(id * 137.508) % 360}, 65%, ${l}%)`;
