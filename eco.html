@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Gridlock: the city without a fitness function</title>
+<meta name="description" content="Cars that live off fares, pay for fuel and crashes, breed when rich and die when broke. No fitness function.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <h1>Grid<span>lock</span>: no fitness function</h1>
+  <p>
+    Nobody scores these cars. Each has a wallet: fares pay in, fuel, wear and crash damage pay out.
+    A car that saves enough has a child, a mutated copy of its brain and its body. A car that goes broke is gone.
+    Passengers tip for speed, freight pays by the load, and there is only so much of either.
+    <a href="index.html">The generation-based city</a>.
+  </p>
+</header>
+
+<main>
+  <div class="stage">
+    <canvas id="view"></canvas>
+    <p class="hint">drag to pan, scroll to zoom, click a car to follow it, double-click to reset the view</p>
+  </div>
+
+  <aside>
+    <div class="card">
+      <h2>The city</h2>
+      <div class="row"><span>time of day</span><span id="clock">-</span></div>
+      <div class="row"><span>cars</span><span id="cars">-</span></div>
+      <div class="row"><span>passengers / loads waiting</span><span id="queues">-</span></div>
+      <div class="row"><span>born / died, last hour</span><span id="bd">-</span></div>
+      <div class="row"><span>mean wallet</span><span id="cash">-</span></div>
+      <div class="row"><span>oldest lineage, generations</span><span id="maxgen">-</span></div>
+      <div class="row"><span>species</span><span id="nspecies">-</span></div>
+    </div>
+
+    <div class="card">
+      <h2>Species over time</h2>
+      <canvas id="species"></canvas>
+      <div class="legend">each band is a species, its height how many cars belong to it</div>
+    </div>
+
+    <div class="card">
+      <h2>Bodies</h2>
+      <canvas id="bodies"></canvas>
+      <div class="legend">every car: cargo room across, top speed up, coloured by species</div>
+    </div>
+
+    <div class="card">
+      <h2 id="carTitle">Richest car</h2>
+      <canvas id="brain"></canvas>
+      <div class="row" style="margin-top:6px"><span>wallet / earned</span><span id="cWallet">-</span></div>
+      <div class="row"><span>generation / children</span><span id="cGen">-</span></div>
+      <div class="row"><span>length x width, mass</span><span id="cSize">-</span></div>
+      <div class="row"><span>top speed / cargo room</span><span id="cPerf">-</span></div>
+      <div class="row"><span>current job</span><span id="cJob">-</span></div>
+    </div>
+
+    <div class="card">
+      <h2>Controls</h2>
+      <div class="controls">
+        <button id="play">Pause</button>
+        <button data-speed="1" data-on="true">1x</button>
+        <button data-speed="4">4x</button>
+        <button data-speed="16">16x</button>
+        <button data-speed="64">64x</button>
+      </div>
+      <div class="controls">
+        <button id="colour" data-on="true">Colour: species</button>
+        <button id="rays" data-on="true">Sensors</button>
+        <button id="follow" data-on="false">Follow</button>
+      </div>
+      <div class="controls">
+        <button data-control="none" data-on="true">No signals</button>
+        <button data-control="lights">Traffic lights</button>
+        <button data-control="roundabouts">Roundabouts</button>
+      </div>
+      <div class="controls">
+        <button id="again">New city</button>
+      </div>
+    </div>
+  </aside>
+</main>
+
+<footer>
+  The founders are drivers evolved the old way, with a score, in the generation-based city: a world with no
+  fitness function cannot start from random brains, because a car that never finishes a trip never earns,
+  and nothing is ever selected. Half the founders get random bodies. Everything after that is the economy.
+  A day is 24 minutes: watch the morning and evening rush, and the vans that come out in business hours.
+</footer>
+
+<script type="module" src="src/ecosim.js"></script>
+</body>
+</html>
