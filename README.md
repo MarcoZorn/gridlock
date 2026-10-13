@@ -63,9 +63,9 @@ node tools/osm.mjs extract.json maps/name.json "Place"   # an OpenStreetMap extr
 - **Right of way does not pay here, until a junction crash costs thirty.**
   A hand-written yield rule costs evolved drivers 7% of their trips and
   saves no crashes. Priced at thirty times an ordinary crash, trained
-  drivers learn to avoid junction conflicts (87% resolved against 79%,
-  one run); a fresh population priced that way from the start mostly
-  learns to drive worse.
+  drivers learn to avoid junction conflicts (seven points more resolved,
+  in two populations); a fresh population priced that way from the start
+  mostly learns to drive worse.
 - **Right of way did not evolve beyond that.** Not in a whole city, not in an arena that
   is nothing but one crossroads, not with crashes priced three or six times
   higher, not with better eyesight, and not when both cars pay for a
@@ -288,12 +288,15 @@ generations, against the same 300 without:
 |---|---|---|---|---|
 | normal prices | 79.4% | 7.6% | 1.03 | 14.6 |
 | junction crashes x30 | 87.0% | 6.4% | 1.09 | 11.0 |
+| another population (generation 3000), normal prices | 78.3% | 2.6% | 1.13 | 12.3 |
+| the same, junction crashes x30 | 85.3% | 4.4% | 1.04 | 11.0 |
 
-It works, and not the way I predicted. Eight more points of crossing
-conflicts end without a collision, crashes per km fall by a quarter and
-trips hold. But waiting does not rise: it jumped to 10% in the first fifty
-generations and then fell below the control's. They learned to get out of
-each other's way at junctions without stopping for each other.
+It works, in both populations: seven or eight more points of crossing
+conflicts end without a collision, crashes per km fall, and trips hold or
+fall a little. Waiting is the inconsistent part: in the first population it
+jumped to 10% in the first fifty generations and then fell below the
+control's, so they learned to get out of each other's way without stopping;
+in the second it went up, from 2.6% to 4.4%.
 
 From scratch it is a different story (400 generations, three seeds each,
 last 50): conflicts resolved 87.4% at thirty times against 85.0% at normal
