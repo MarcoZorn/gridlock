@@ -30,7 +30,7 @@
 
 <main>
   <div class="stage">
-    <canvas id="view"></canvas>
+    <canvas id="view" role="img" aria-label="Top-down view of the city: roads, junctions and the cars driving on them"></canvas>
     <p class="hint">drag to pan, scroll or pinch to zoom, click a car to follow it</p>
   </div>
 
@@ -63,7 +63,7 @@
 
     <div class="card">
       <h2>Fitness over time</h2>
-      <canvas id="spark"></canvas>
+      <canvas id="spark" role="img" aria-label="Best and mean fitness over the generations"></canvas>
       <div class="legend">
         <span class="dot" style="background:#ff8a5c"></span>best
         &nbsp;<span class="dot" style="background:#5ac8a0"></span>population mean
@@ -72,7 +72,7 @@
 
     <div class="card">
       <h2 id="brainTitle">Leader's brain</h2>
-      <canvas id="brain"></canvas>
+      <canvas id="brain" role="img" aria-label="The neural network of the car in focus: inputs on the left, controls on the right"></canvas>
       <canvas id="senses" style="margin-top:8px"></canvas>
       <div class="row" style="margin-top:6px"><span>nodes / connections</span><span id="size">-</span></div>
       <div class="row"><span>trips / crashes</span><span id="carStats">-</span></div>

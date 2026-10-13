@@ -31,7 +31,7 @@
 
 <main>
   <div class="stage">
-    <canvas id="view"></canvas>
+    <canvas id="view" role="img" aria-label="Top-down view of the city: roads, junctions and the cars driving on them"></canvas>
     <p class="hint">drag to pan, scroll or pinch to zoom, click a car to follow it, double-click to reset the view</p>
   </div>
 
@@ -50,25 +50,25 @@
 
     <div class="card">
       <h2>Species over time</h2>
-      <canvas id="species"></canvas>
+      <canvas id="species" role="img" aria-label="How many cars belong to each species over time"></canvas>
       <div class="legend">each band is a species, its height how many cars belong to it</div>
     </div>
 
     <div class="card">
       <h2>Family tree</h2>
-      <canvas id="tree"></canvas>
+      <canvas id="tree" role="img" aria-label="Family tree of every car alive"></canvas>
       <div class="legend">every line is a birth, from parent to child, placed by when it happened (across) and how many generations deep (up). The white line is the selected or richest car's ancestry.</div>
     </div>
 
     <div class="card">
       <h2>Bodies</h2>
-      <canvas id="bodies"></canvas>
+      <canvas id="bodies" role="img" aria-label="Every car plotted by cargo room and top speed"></canvas>
       <div class="legend">every car: cargo room across (square-root scale; the shaded side can take freight), top speed up, coloured by species</div>
     </div>
 
     <div class="card">
       <h2 id="carTitle">Richest car</h2>
-      <canvas id="brain"></canvas>
+      <canvas id="brain" role="img" aria-label="The neural network of the car in focus: inputs on the left, controls on the right"></canvas>
       <div class="row" style="margin-top:6px"><span>wallet / earned</span><span id="cWallet">-</span></div>
       <div class="row"><span>generation / children</span><span id="cGen">-</span></div>
       <div class="row"><span>length x width, mass</span><span id="cSize">-</span></div>
