@@ -920,7 +920,9 @@ Population size is not the bottleneck either. For the same compute, 120
 drivers for 300 generations ended at a mean of 213 and 240 drivers for 150
 generations at 119; and 240 drivers for the full 300 generations, twice the
 compute, ended at 210. What these drivers need is more generations, not more
-of them per generation.
+of them per generation. (Still true with fitness sharing off, the new default:
+over three seeds, tested in unseen cities, 120 drivers for 300 generations
+made 1.58 trips per car, 240 for 150 made 1.39.)
 
 The steering target's distance down the route is a coded choice worth
 checking too: at 25 units ahead the drivers did worse (mean 184 over three
