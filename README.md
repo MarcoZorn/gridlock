@@ -5,7 +5,8 @@ A city where traffic evolves. There are no traffic laws anywhere in this code.
 **[Run it in your browser](https://marcozorn.github.io/gridlock/)** ·
 [the city with no fitness function](https://marcozorn.github.io/gridlock/eco.html) ·
 [on Turin's streets](https://marcozorn.github.io/gridlock/eco.html?map=turin) ·
-[on Barcelona's](https://marcozorn.github.io/gridlock/eco.html?map=barcelona)
+[on Barcelona's](https://marcozorn.github.io/gridlock/eco.html?map=barcelona) ·
+[on Manhattan's](https://marcozorn.github.io/gridlock/eco.html?map=manhattan)
 
 ![Generation 250: evolved drivers spread across a procedural city](docs/city.png)
 
@@ -26,7 +27,7 @@ step: serve the folder and open it.
   markets, evolved bodies, a road editor, fast-forward by the day.
 - `LIVE.md`: tables and charts from the long headless runs.
 - URL options: `?seed=7`, `?size=small|medium|large`, `?control=none|lights|roundabouts`,
-  `?map=crossroads|turin|barcelona`, and on the generation page `?traffic=1&density=20`.
+  `?map=crossroads|turin|barcelona|manhattan`, and on the generation page `?traffic=1&density=20`.
 
 ```
 python3 -m http.server                     # then http://localhost:8000
