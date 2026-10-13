@@ -10,6 +10,7 @@ const view = $("view"), vctx = view.getContext("2d");
 const brain = $("brain"), bctx = brain.getContext("2d");
 const spc = $("species"), sctx = spc.getContext("2d");
 const bod = $("bodies"), octx = bod.getContext("2d");
+const tree = $("tree"), tctx = tree.getContext("2d");
 
 let world, founders = null, graph = null, size = "small", running = true, speed = 1, showRays = true, follow = false;
 let selected = null, colourBy = "species", control = "none", editing = false, draft = null;
@@ -23,6 +24,7 @@ function layout() {
   fitCanvas(brain, bw, 150);
   fitCanvas(spc, bw, 110);
   fitCanvas(bod, bw, 130);
+  fitCanvas(tree, bw, 140);
   cam.fitted = false;
 }
 
@@ -61,6 +63,40 @@ function drawSpecies() {
     sctx.fillStyle = speciesColour(id, 55);
     sctx.fill();
     top.forEach((v, i) => (base[i] = v));
+  }
+}
+
+// The family tree of everyone alive: each remembered birth is a line from
+// parent to child, across by time, up by generation. Lineages that died out
+// are already forgotten, so what is left is the shape of the survivors.
+function drawTree(focus) {
+  const W = tree.clientWidth, H = tree.clientHeight, P = 6;
+  tctx.clearRect(0, 0, W, H);
+  const anc = world.ancestry;
+  if (!anc.size) return;
+  let t0 = Infinity, g1 = 1;
+  for (const a of anc.values()) { if (a.born < t0) t0 = a.born; if (a.generation > g1) g1 = a.generation; }
+  const t1 = Math.max(world.tick, t0 + 1);
+  const X = (t) => P + ((t - t0) / (t1 - t0)) * (W - 2 * P), Y = (g) => H - P - (g / g1) * (H - 2 * P);
+  tctx.lineWidth = 1;
+  for (const a of anc.values()) {
+    const p = anc.get(a.parent);
+    if (!p) continue;
+    tctx.strokeStyle = speciesColour(a.species, 55);
+    tctx.beginPath(); tctx.moveTo(X(p.born), Y(p.generation)); tctx.lineTo(X(a.born), Y(a.generation)); tctx.stroke();
+  }
+  for (const d of world.cars) {
+    const a = anc.get(d.id);
+    if (!a) continue;
+    tctx.fillStyle = speciesColour(d.species);
+    tctx.fillRect(X(a.born) - 1.5, Y(a.generation) - 1.5, 3, 3);
+  }
+  if (focus) {
+    const line = world.lineage(focus);
+    tctx.strokeStyle = "#ffffff"; tctx.lineWidth = 2;
+    tctx.beginPath();
+    line.forEach((a, i) => (i ? tctx.lineTo(X(a.born), Y(a.generation)) : tctx.moveTo(X(a.born), Y(a.generation))));
+    tctx.stroke();
   }
 }
 
@@ -126,6 +162,7 @@ function draw() {
 
   drawNetwork(bctx, focus ? focus.genome : null, brain.clientWidth, brain.clientHeight);
   drawSpecies();
+  drawTree(focus);
   drawBodies();
 
   const last = world.log.slice(-6);
