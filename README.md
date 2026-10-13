@@ -43,7 +43,11 @@ node tools/osm.mjs extract.json maps/name.json "Place"   # an OpenStreetMap extr
 - **Drivers learn to drive a city they have never seen.** After 300
   generations the evolved champion out-drove my hand-written controller on
   twelve unseen cities.
-- **Right of way did not evolve.** Not in a whole city, not in an arena that
+- **Junction manners plateau early.** Drivers raised on a crossroads learn
+  to avoid about ten more points of crossing conflicts than at first contact
+  (roughly 52% to 63%), then stop improving, because junction crashes are
+  under 5% of the damage a driver takes.
+- **Right of way did not evolve beyond that.** Not in a whole city, not in an arena that
   is nothing but one crossroads, not with crashes priced three or six times
   higher, not with better eyesight, and not when both cars pay for a
   crossing crash (that cut collisions 8%, but did not make anyone yield). About 60% of junction conflicts end
@@ -286,6 +290,24 @@ the arms and rear-ends. Evolution spends its effort where the damage is, and
 the damage is not at the junction. For yielding to evolve, everything else
 would have to be mostly solved first, and these drivers are still hitting
 walls.
+
+Two last runs put a number on what does evolve. Raised from scratch on the
+crossroads, three seeds each, junction conflicts resolved at first contact
+with traffic and over the last 150 generations:
+
+| seed | narrow roads | wide roads (two lanes each way) |
+|---|---|---|
+| 3 | 52% to 61% | 79% to 80% |
+| 7 | 54% to 59% | 76% to 81% |
+| 11 | 51% to 70% | 78% to 79% |
+
+So there is a learned part, about ten points on narrow roads, gained early
+and then flat; the population moved in from the city had already learned it,
+which is why that run looked flat from the start. Wide roads start far higher
+simply because there is room to miss, and cut crashes per km from about 26 to
+16, but junction crashes stay at 3 to 4.5% of all the damage, so the pressure
+to do better there stays small. Even with two lanes each way, no side of the
+road was chosen.
 
 **Which side of the road?** Nothing in the code prefers a side, and over
 thousands of generations no permanent convention appears: the average lateral
