@@ -13,6 +13,7 @@ import { SpatialHash } from "./src/spatial.js";
 import { CityWorld } from "./src/cityworld.js";
 import { EcoWorld, ECON } from "./src/ecoworld.js";
 import { Body } from "./src/body.js";
+import { Crowd, PED } from "./src/pedestrians.js";
 
 // networks stay acyclic and produce finite output
 {
@@ -241,6 +242,28 @@ import { Body } from "./src/body.js";
   const std = new CityWorld({ seed: 3, popSize: 20, ticks: 300 });
   assert(std.cars[0].inputs.length === 21, "standard brains are unchanged");
   console.log("ok  memory channel feeds back");
+}
+
+// pedestrians: kerbside spots, a walk straight across, and a crowd that saves
+{
+  const c = new City(3), crowd = new Crowd(c, new Rng(4), 60);
+  for (const p of crowd.people) {
+    assert(!c.contains(p.x, p.y), "a pedestrian waits off the road");
+    assert(c.contains(p.x + Math.cos(p.a) * p.left / 2, p.y + Math.sin(p.a) * p.left / 2), "and the way across is road");
+  }
+  // one pedestrian whose brain always says go, on an empty road
+  const p = crowd.people[0], real = p.brain;
+  p.brain = { activate: (i, o) => { o[0] = 1; return o; } };
+  const before = p.crossings, dt = 1 / 60;
+  let t = 0;
+  while (p.crossings === before && t < 30) { p.step(dt, [], crowd.rng); t += dt; }
+  const walk = (2 * (p.edge.hw + 6)) / PED.speed;
+  assert(p.crossings === before + 1, "a walker gets across");
+  assert(t < walk + 1, `crossing takes walking time (${t.toFixed(1)}s, expected about ${walk.toFixed(1)}s)`);
+  p.brain = real;
+  const back = Crowd.fromJSON(JSON.parse(JSON.stringify(crowd)), c, new Rng(9));
+  assert(back.people.length === crowd.people.length, "a crowd saves and loads");
+  console.log("ok  pedestrians wait at the kerb, cross, and save");
 }
 
 console.log("\nall checks passed");
