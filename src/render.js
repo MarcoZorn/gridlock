@@ -126,16 +126,18 @@ export function drawSenses(canvas, d) {
     nctx.fillStyle = "#8b93a7";
     nctx.fillText(label, x0 + 4, top + barH + 6);
   });
-  const route = ["spd", "hdg", "lat", "jct", "trn", "sig"];
-  for (let i = 0; i < 6; i++) {
+  // a brain with a memory channel shows it as a seventh bar
+  const route = ["spd", "hdg", "lat", "jct", "trn", "sig", ...(d.inputs.length > 21 ? ["mem"] : [])];
+  for (let i = 0; i < route.length; i++) {
     const v = d.inputs[15 + i];
     const bw = colW / 7, x = 3 * colW + 4 + i * (bw + 1);
     nctx.fillStyle = "#232733";
     nctx.fillRect(x, top, bw, barH);
     nctx.fillStyle = "#e8c46a";
     const mid = top + barH / 2, hgt = Math.max(-1, Math.min(1, v)) * barH / 2;
+    if (i === 6) nctx.fillStyle = "#8b7cf6";
     if (i === 5) { nctx.fillStyle = v > 0 ? "#5ac8a0" : "#e86e64"; nctx.fillRect(x, top + barH / 2 - 4, bw, v ? 8 : 0); }
-    else if (i === 0 || i >= 3) nctx.fillRect(x, top + barH - Math.abs(v) * barH, bw, Math.abs(v) * barH);
+    else if (i === 0 || (i >= 3 && i < 6)) nctx.fillRect(x, top + barH - Math.abs(v) * barH, bw, Math.abs(v) * barH);
     else nctx.fillRect(x, hgt > 0 ? mid - hgt : mid, bw, Math.abs(hgt));
   }
   nctx.fillStyle = "#8b93a7";
