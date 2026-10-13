@@ -419,6 +419,12 @@ seventy cars leans but does not settle, and neither do the 40-day runs on it
 either, the large one settles like the real maps. A convention needs enough
 traffic to meet often, and not very much more than that.
 
+Why the economy settles it in fifteen generations when the generation city,
+with 120 cars on the road, has not in thousands, I do not know yet. One
+difference is that a child here is born into the same traffic its parent
+just survived, and one city of cars evolves continuously; in the generation
+city every car is scored against a fresh shuffle of everyone else.
+
 And the code can not impose it. With `BODY.lane` the
 steering target sits in the middle of the right half of every two-way road,
 and one of the two Barcelona runs evolved to drive on the left anyway, 88% of
