@@ -53,9 +53,44 @@ export class City {
   // tarmac: it is a roadblock, not a hole, so nobody already on it is
   // dropped into the void. A new road is real tarmac and is baked in, and
   // the junctions at its ends grow aprons, lights and islands to match.
-  toggleClosed(e) {
-    if (this.closed.has(e.id)) this.closed.delete(e.id);
-    else this.closed.add(e.id);
+  // The editor's click on a road: two-way, one-way, one-way the other way,
+  // closed, and round again. A direction that would leave some junction with
+  // no way back is skipped. Returns the road's new state, 0 to 3.
+  cycleRoad(e) {
+    const state = this.closed.has(e.id) ? 3 : !e.oneway ? 0 : e.turned ? 2 : 1;
+    for (let next = (state + 1) % 4; ; next = (next + 1) % 4) {
+      this.setRoad(e, next);
+      if (next === 0 || next === 3 || this.stronglyConnected()) return next;
+    }
+  }
+
+  setRoad(e, state) {
+    if (state === 3) this.closed.add(e.id); else this.closed.delete(e.id);
+    // turning a one-way road round swaps its ends: a one-way road runs a to b
+    const turn = (state === 2) !== !!e.turned;
+    if (turn) { [e.a, e.b] = [e.b, e.a]; e.turned = !e.turned; }
+    e.oneway = state === 1 || state === 2;
+    this.version = (this.version || 0) + 1;   // the arrows are drawn into the cached road layer
+  }
+
+  // Can every junction reach every other, obeying the arrows? (Closures are
+  // left out: a closed road is still driven when there is no other way.)
+  stronglyConnected() {
+    const reach = (forward) => {
+      const seen = new Uint8Array(this.nodes.length), stack = [0];
+      seen[0] = 1;
+      let count = 1;
+      while (stack.length) {
+        const n = stack.pop();
+        for (const e of this.nodes[n].edges) {
+          if (e.oneway && (forward ? e.a : e.b) !== n) continue;
+          const m = this.other(e, n);
+          if (!seen[m]) { seen[m] = 1; count++; stack.push(m); }
+        }
+      }
+      return count === this.nodes.length;
+    };
+    return reach(true) && reach(false);
   }
 
   addRoad(a, b, lanes = 1) {
