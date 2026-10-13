@@ -57,10 +57,10 @@ node tools/osm.mjs extract.json maps/name.json "Place"   # an OpenStreetMap extr
   higher, not with better eyesight, and not when both cars pay for a
   crossing crash (that cut collisions 8%, but did not make anyone yield). About 60% of junction conflicts end
   without a collision, the same as for drivers that have never met traffic.
-- **A side of the road evolves, on real streets.** In the
+- **A side of the road evolves, given a hundred cars.** In the
   generation city which side cars keep to is inherited (autocorrelation
-  0.71) but never locks in. In the economy on a real map, within four days
-  usually eight or nine cars in ten keep to one side, crowded or not. Which side is chance: one
+  0.71) but never locks in. In the economy, once there are about a hundred
+  cars, within four days usually three in four to nine in ten keep to one side. Which side is chance: one
   Turin run drives on the left, its twin on the right.
 - **Lights teach easing off.** Drivers raised under traffic lights approach
   a red at little more than half the speed of a green, by lifting off the
@@ -401,20 +401,22 @@ going), after four to six days from the same founders:
 | generated grid, 40 days, four runs (thin traffic) | 23-62% |
 
 Turin seed 7 is a left-hand city, 98% of its cars on the left, and its twin
-a right-hand one. My first guess was crowding: the real maps run 150 to 300
-cars, the grids seventy. So I cut the demand on Turin (one-way streets on)
-to 40%, which halves the cars to about a hundred, three seeds each:
+a right-hand one. What does it take? Four days each from the same founders,
+three seeds, share of cars on the right half:
 
-| Turin, four days | cars | on the right half |
+| city | cars | on the right half |
 |---|---|---|
-| full demand | 190-232 | 17% / 83% / 54% |
-| 40% demand | about 100 | 21% / 88% / 85% |
+| small grid | 44-71 | 25% / 41% / 61% |
+| Turin, 40% demand | about 100 | 21% / 88% / 85% |
+| Turin, full demand | 190-232 | 17% / 83% / 54% |
+| large grid | 273-368 | 90% / 32% / 25% |
 
-The thin city settled every time, the full one two times out of three. So
-it is not the crowd, at least not between a hundred cars and three hundred.
-The suspect left, not yet tested, is the map itself: the real ones funnel
-traffic into a few long two-way streets, the grid spreads it over many short
-ones broken up by junctions, where there is no side to keep.
+My first guess was crowding, and between a hundred cars and three hundred
+it makes no difference. The line is lower down: a small grid with fifty or
+seventy cars leans but does not settle, and neither do the 40-day runs on it
+(23-62%); a hundred cars on Turin settle every time. A grid is no obstacle
+either, the large one settles like the real maps. A convention needs enough
+traffic to meet often, and not very much more than that.
 
 And the code can not impose it. With `BODY.lane` the
 steering target sits in the middle of the right half of every two-way road,
