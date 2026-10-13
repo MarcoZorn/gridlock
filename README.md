@@ -799,6 +799,25 @@ the steering pulled to the right half of every two-way road (`--body
 lane=1`) the one-way city still moved 18% fewer fares (2139 and 2062 a day,
 against 2499 and 2632).
 
+**A congestion charge.** London and Stockholm charge drivers for using
+busy streets. Here (`--econ congestion=0.1`) every car pays, each second, 0.1
+times how full the road it is on is: about as much as its upkeep on a road
+with a car every thirty units, more in a real jam. Turin, four days, two
+seeds, days two to four:
+
+| Turin | cars | trips a day | mean trip | crashes per car per day | `jam` gene |
+|---|---|---|---|---|---|
+| no charge | 232 / 190 | 2584 / 2219 | 56 s / 58 s | 185 / 204 | 0.04 |
+| charge | 126 / 89 | 2041 / 1611 | 43 s / 40 s | 139 / 158 | 0.04 |
+
+Nobody learned to drive round the traffic: the `jam` gene, which makes a
+driver's routes avoid full roads, did not move. What the charge did was the
+thing real ones are for, only more so. It priced out almost half the cars,
+the ones left make their trips a quarter faster, crash a quarter less, and
+each earns half as many fares again (16 a day against 11). The city as a
+whole moved a quarter fewer people, because a fare still waiting when the
+queue is full goes to another firm.
+
 **Where they crash.** The ecosystem page has the same heatmaps as the
 generation page (H): crashes, or cars crawling at walking pace. On a real map
 the crash layer is not a set of hot junctions but whole streets glowing, and
