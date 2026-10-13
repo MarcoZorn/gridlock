@@ -99,6 +99,7 @@ export class CityWorld {
     }
     this.cars.forEach((d, i) => (d.id = i));
     this.carCrashes = 0;
+    this.side = { sum: 0, abs: 0, n: 0 };
     this.wireCars();
     this.tick = 0;
     this.done = false;
@@ -164,11 +165,13 @@ export class CityWorld {
     let hash = null;
     if (this.traffic) { this.hash.rebuild(this.cars); hash = this.hash; }
     let alive = 0;
+    const sample = this.tick % 6 === 0;
     for (const c of this.cars) {
       c.step(DT, hash);
       if (c.alive) {
         alive++;
         if (c.solid && Math.abs(c.v) < 15) this.heatAdd(this.heat.slow, c.x, c.y, 1);
+        if (sample && c.solid && c.v > 20 && this.city.junctionAt(c.x, c.y) < 0) this.sampleSide(c);
       }
     }
     if (this.traffic) this.collide();
@@ -210,6 +213,17 @@ export class CityWorld {
     this.newGeneration();
   }
 
+  // Which side of the road do moving cars keep to, outside junctions? Lateral
+  // offset is measured relative to the direction of travel, so positive is
+  // right of the centreline. Nothing in the code prefers either side; if the
+  // average drifts away from zero under traffic, the population picked one.
+  sampleSide(c) {
+    const f = c.frame(), hw = c.edgeHW(f);
+    if (f.along < 0 || f.along > f.len) return;
+    const s = f.lateral / hw;
+    this.side.sum += s; this.side.abs += Math.abs(s); this.side.n++;
+  }
+
   // The numbers that say how the city as a whole is doing, as opposed to how
   // fit any one driver is.
   stats(cars = [...this.finished, ...this.cars]) {
@@ -226,6 +240,8 @@ export class CityWorld {
       tripTime: n ? (tripTicks / n) * DT : 0,             // seconds
       crashesPerKm: km ? crashes / km : 0,
       waitShare: ticks ? wait / ticks : 0,                // share of time stopped in junctions
+      side: this.side.n ? this.side.sum / this.side.n : 0, // mean lateral offset, + is right
+      offCentre: this.side.n ? this.side.abs / this.side.n : 0,
     };
   }
 
