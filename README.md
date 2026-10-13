@@ -434,6 +434,9 @@ back in the third, so I would not call it a law. The lights city carried 40%
 fewer cars and took twice as long per trip, and its lineages turned over a
 third as often.
 
+The ecosystem page can load the first of these cities as it was on day 40
+("Load a 40-day-old city"), lineages ninety-six generations deep and all.
+
 ### Week 4: your city, long runs
 
 - **Editor.** On the ecosystem page, click a road to close it (it becomes a
