@@ -82,6 +82,7 @@ export class EcoWorld {
     this.city = new City(citySeed, { graph, ...(graph ? {} : SIZES[this.size]) });
     this.graph = graph;
     this.edits = [];   // expansions, built roads and road directions, in order, so a save can replay them
+    this.congestion = ECON.congestion;   // this city's congestion charge, saved with it
     this.city.control = control;
     this.cfg = { ...DEFAULTS, pWeight: 0.5, weightStep: 0.15 };
     this.innov = founders ? founders.innov : new Innovations(N_INPUTS + 1 + N_OUTPUTS);
@@ -234,9 +235,9 @@ export class EcoWorld {
       // grows with the odometer, so every car wears out in the end
       const wear = 1 + d.dist / ECON.wearDist;
       d.cash -= d.body.upkeep * wear * DT + d.body.fuel * Math.abs(d.v) * DT;
-      if (ECON.congestion && c.load) {
+      if (this.congestion && c.load) {
         const e = c.edgeBetween(d.route[d.seg], d.route[d.seg + 1]);
-        if (e) d.cash -= ECON.congestion * c.load[e.id] * DT;
+        if (e) d.cash -= this.congestion * c.load[e.id] * DT;
       }
       if (d.solid && Math.abs(d.v) < 15) c.addHeat("slow", d.x, d.y);
       if (!d.alive && d.lost) {
@@ -434,7 +435,7 @@ export class EcoWorld {
       v: 1, seed: this.seed, citySeed: this.city.seed, graph: this.graph, control: this.control, tick: this.tick, rng: this.rng.s,
       innov: this.innov.toJSON(), cfg: this.cfg, nextId: this.nextId, nextSpecies: this.nextSpecies, threshold: this.threshold,
       passengers: this.passengers, freight: this.freight,
-      closed: [...this.city.closed], edits: this.edits, size: this.size,
+      closed: [...this.city.closed], edits: this.edits, size: this.size, congestion: this.congestion,
       founders: this.founders ? this.founders.map((g) => g.toJSON()) : null,
       cars: this.cars.map((d) => ({
         brain: d.genome.toJSON(), body: d.body.toJSON(), cash: d.cash, id: d.id, born: d.born, parent: d.parent,
@@ -456,6 +457,7 @@ export class EcoWorld {
       else w.city.addRoad(x, y, lanes);
     }
     w.edits = [...(j.edits || [])];
+    w.congestion = j.congestion ?? ECON.congestion;
     for (const id of j.closed || []) w.city.closed.add(id);
     w.tick = j.tick; w.rng.s = j.rng; w.cfg = j.cfg;
     w.innov = Innovations.fromJSON(j.innov);
