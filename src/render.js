@@ -227,15 +227,36 @@ export function panZoom(view, cam, onPick, grab = null) {
   const at = (e) => { const r = view.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; };
   let drag = null;
   let held = null;
+  // Two fingers down is a pinch: zoom by the change in their spread, about
+  // their midpoint. Any drag or pick in progress is abandoned.
+  const touches = new Map();
+  let pinch = null;
+  const spread = () => { const [a, b] = [...touches.values()]; return [Math.hypot(a[0] - b[0], a[1] - b[1]), (a[0] + b[0]) / 2, (a[1] + b[1]) / 2]; };
   view.addEventListener("pointerdown", (e) => {
     try { view.setPointerCapture(e.pointerId); } catch { /* synthetic or stale pointer */ }
     const [px, py] = at(e);
+    touches.set(e.pointerId, [px, py]);
+    if (touches.size === 2) {
+      const [d] = spread();
+      pinch = { d, k: cam.k };
+      drag = null; held = null;
+      return;
+    }
     drag = { x: px, y: py, cx: cam.x, cy: cam.y, moved: false };
     held = grab ? grab(...toWorld(px, py)) : null;
   });
   view.addEventListener("pointermove", (e) => {
-    if (!drag) return;
     const [px, py] = at(e);
+    if (touches.has(e.pointerId)) touches.set(e.pointerId, [px, py]);
+    if (pinch && touches.size === 2) {
+      const [d, mx, my] = spread();
+      const [wx, wy] = toWorld(mx, my);
+      cam.k = Math.max(0.2, Math.min(12, pinch.k * (d / Math.max(1, pinch.d))));
+      const [nx, ny] = toWorld(mx, my);
+      cam.x += wx - nx; cam.y += wy - ny;
+      return;
+    }
+    if (!drag) return;
     if (held) {
       if (Math.abs(px - drag.x) + Math.abs(py - drag.y) > 4) drag.moved = true;
       held.move(...toWorld(px, py));
@@ -245,8 +266,15 @@ export function panZoom(view, cam, onPick, grab = null) {
     if (Math.abs(dx) + Math.abs(dy) > 4) { drag.moved = true; view.classList.add("dragging"); }
     if (drag.moved) { cam.x = drag.cx - dx / cam.k; cam.y = drag.cy - dy / cam.k; }
   });
+  const lift = (e) => {
+    touches.delete(e.pointerId);
+    if (pinch) { if (touches.size < 2) pinch = null; drag = null; held = null; return true; }
+    return false;
+  };
+  view.addEventListener("pointercancel", lift);
   view.addEventListener("pointerup", (e) => {
     view.classList.remove("dragging");
+    if (lift(e)) return;
     const [px, py] = at(e);
     if (held && drag && drag.moved) held.end(...toWorld(px, py));
     else if (drag && !drag.moved) onPick(...toWorld(px, py));
