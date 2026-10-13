@@ -48,6 +48,9 @@ node tools/osm.mjs extract.json maps/name.json "Place"   # an OpenStreetMap extr
   (roughly 52% to 63%), then stop improving. Junction crashes are under 5%
   of the damage a driver takes, but making every other kind of damage free
   did not help either: drivers learned to dodge, not to wait.
+- **A memory helps, a little.** Brains with one number of memory wait in
+  junctions about twice as much and resolve more conflicts in two seeds of
+  three; the most promising lead so far.
 - **Right of way did not evolve beyond that.** Not in a whole city, not in an arena that
   is nothing but one crossroads, not with crashes priced three or six times
   higher, not with better eyesight, and not when both cars pay for a
@@ -329,6 +332,23 @@ collision is the only thing that hurts, these drivers learn to dodge, not to
 wait. A feed-forward brain with no memory, seeing five slices of the world,
 finds dodging easy and taking turns hard, and I think that is the honest
 place to leave it until the brains can remember.
+
+So I gave them a memory: one extra output whose value comes back as an extra
+input on the next tick (`--memory`). One number of state is enough, in
+principle, to mean "I am waiting for that car". Same protocol, three seeds:
+
+| seed | conflicts resolved, plain / memory | time waiting in junctions |
+|---|---|---|
+| 3 | 61% / 67% | 2.6% / 4.7% |
+| 7 | 59% / 69% | 2.1% / 4.7% |
+| 11 | 70% / 64% | 3.9% / 5.9% |
+
+Brains with a memory wait more in every seed, and resolve more conflicts in
+two of three (67% against 63% on average). Part of that is there from the
+first contact with traffic (63 to 69% against 51 to 54%), so some of what
+the memory buys is inertia, smoother and more cautious driving, rather than
+learned turn-taking. It is the first change that moved waiting in the right
+direction on every seed, which makes it the thread to pull next.
 
 **Which side of the road?** Nothing in the code prefers a side, and over
 thousands of generations no permanent convention appears: the average lateral
