@@ -304,8 +304,12 @@ prices, waiting 5.5% against 4.3%, but a third fewer trips (1.21 against
 1.81) and more crashes per km (10.2 against 7.9). A price that harsh from
 the first generation gets in the way of learning to drive at all. On drivers
 that already can, it buys some junction manners; on a fresh population it
-mostly buys caution everywhere. So: a price can move the plateau, applied
-late, and the right time to apply it is part of the answer.
+mostly buys caution everywhere. Ramping it in slowly over the traffic
+generations, the way crash damage itself is ramped in, makes no difference
+(86.8% resolved, 1.24 trips per car, 10.0 crashes per km). What made the
+price work was not when it rose in a run but how much driving the population
+already knew: a thousand generations or more of it, in both cases where it
+worked.
 (The conflict and
 car-on-car counters are no use here: a wreck in a junction counts as an
 unresolved conflict, and touching one counts as a collision every tick.)
