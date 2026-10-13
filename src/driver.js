@@ -268,8 +268,8 @@ export class Driver {
   // exactly what not braking does, so partial braking is never rewarded and
   // full braking is never reached. Damage that falls with speed makes every
   // bit of braking pay.
-  fitness() {
+  fitness(damageCost = BODY.damageCost) {
     const dist = this.banked + this.best;
-    return (dist / 10 + this.trips * 60) * Math.exp(-BODY.damageCost * this.damage);
+    return (dist / 10 + this.trips * 60) * Math.exp(-damageCost * this.damage);
   }
 }

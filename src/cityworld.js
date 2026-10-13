@@ -1,10 +1,11 @@
 // Ties the population to the city: hand out trips, run a generation, evolve.
 import { Population, Rng } from "./neat.js";
 import { City } from "./city.js";
-import { Driver, N_INPUTS, N_OUTPUTS } from "./driver.js";
+import { Driver, BODY, N_INPUTS, N_OUTPUTS } from "./driver.js";
 import { SpatialHash } from "./spatial.js";
 
 export const DT = 1 / 60;
+const DAMAGE_RAMP = 100;
 
 export class CityWorld {
   constructor({ seed = 1, popSize = 120, ticks = 3600, traffic = false, cities = 6 } = {}) {
@@ -69,9 +70,18 @@ export class CityWorld {
     return true;
   }
 
+  // Crash damage is phased in over the first generations. Charge full price
+  // from the start and the first brains, which all crash constantly, score
+  // so close to zero that selection has nothing to grip; some seeds never
+  // recover. Let them learn to get somewhere first, then make it expensive.
+  damageCost() {
+    return BODY.damageCost * Math.min(1, this.pop.generation / DAMAGE_RAMP);
+  }
+
   finish() {
-    for (const c of this.cars) c.genome.fitness = c.fitness();
-    const fits = this.cars.map((c) => c.fitness());
+    const cost = this.damageCost();
+    const fits = this.cars.map((c) => c.fitness(cost));
+    this.cars.forEach((c, i) => (c.genome.fitness = fits[i]));
     const trips = this.cars.reduce((t, c) => t + c.trips, 0);
     this.history.push({
       gen: this.pop.generation,
@@ -95,7 +105,7 @@ export class CityWorld {
   leader() {
     let best = null, bf = -Infinity;
     for (const c of this.cars) {
-      const f = c.fitness() + (c.alive ? 1 : 0);
+      const f = c.fitness(0) + (c.alive ? 1 : 0);
       if (f > bf) { bf = f; best = c; }
     }
     return best;
