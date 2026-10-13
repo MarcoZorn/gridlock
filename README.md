@@ -515,6 +515,12 @@ The ecosystem page can load the first of these cities as it was on day 40
   roads are narrow, so a ray's clearance is set by the kerb beside it, not
   the wall ahead, and it ends up taking smaller steps than a plain march.
   Reverted.
+  After that, `Math.tanh` itself was a fifth of the time. A Padé
+  approximant, within 1e-4 of it and clamped at ±4.97, runs the networks
+  1.8 times as fast, and since it is nothing but multiplication and
+  division it gives the same bits in every browser, which `Math.tanh` does
+  not promise. Trained drivers drive the same within the noise (over ten
+  generations, trips and crashes within 4%).
 
 **Stagnation in a rotating world.** Working on the Python
 [cars](https://github.com/MarcoZorn/cars) project in parallel turned up a
