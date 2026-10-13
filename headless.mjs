@@ -2,7 +2,7 @@
 // one, appends one line of telemetry per generation, checkpoints regularly.
 //
 //   node headless.mjs --run runs/lanes --gens 3000 --traffic-from 200 --density 40 --control lights
-//   node headless.mjs --eco --run runs/eco --days 30 --founders docs/trained.json
+//   node headless.mjs --eco --run runs/eco --days 30 --founders docs/trained.json [--pedestrians 40]
 //
 // runs/<name>/telemetry.jsonl   one JSON object per generation (kept in git)
 // runs/<name>/state.json        the latest checkpoint (ignored by git)
@@ -54,7 +54,7 @@ if (process.argv.includes("--eco")) {
   } else {
     const f = arg("founders", null);
     const founders = f ? Population.fromJSON(JSON.parse(fs.readFileSync(f, "utf8")).pop) : null;
-    eco = new EcoWorld({ seed, control, founders });
+    eco = new EcoWorld({ seed, control, founders, pedestrians: +arg("pedestrians", 0) });
     console.log(`new ecosystem ${dir}, seed ${seed}${f ? `, founders from ${f}` : ""}`);
   }
   let written = eco.log.length;

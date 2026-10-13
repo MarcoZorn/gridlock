@@ -106,6 +106,7 @@ if (ecoRuns.length) {
     ["mean length gene", (r) => r.traits.length],
     ["mean sensor range gene", (r) => r.traits.range],
     ["mean jam-avoidance gene", (r) => r.traits.jam ?? null],
+    ["pedestrians hit per 100 crossings", (r) => (r.ped && r.ped.crossings ? (100 * r.ped.hit) / r.ped.crossings : null)],
     ["mean paid trip time (s)", (r) => (r.trips && r.tripTicks !== undefined ? r.tripTicks / r.trips / 60 : null)],
   ];
   md += `## Ecosystems\n\nNo fitness function. Each column is the mean over a run's latest city day (144 rows, one per ten city minutes).\n\n`;
