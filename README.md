@@ -148,7 +148,11 @@ A quarter fewer trips and a quarter more crashes. Blindfolding a grown
 driver costs it almost nothing, but growing one blind costs a lot: the sense
 matters while a population learns to drive in traffic, and what it learns
 then (a speed, a line, a way of taking corners that leaves room) keeps
-working once the sense is gone. That last part is my reading, not tested.
+working once the sense is gone. The same three sighted populations,
+blindfolded only for the test: 1.38 / 1.73 / 1.75 trips per car, 4.44 / 3.85
+/ 3.68 crashes, as many trips as with their eyes open and 10% more crashes.
+It is not that old drivers have learned to do without: at 300 generations as
+at 1025, the sense is something to learn with, not something to drive by.
 
 `node tools/ablate.mjs turn` (or any other group) repeats a row. On the
 generation page "Blind to cars" and "Blind to walls" do it live, and
