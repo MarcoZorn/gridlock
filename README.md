@@ -86,6 +86,9 @@ node tools/osm.mjs extract.json maps/name.json "Place"   # an OpenStreetMap extr
 - **A congestion charge prices cars out, it does not teach detours.** After
   two weeks the city moves nearly as many people (7% fewer) with 40% fewer
   cars, faster and safer; the gene for avoiding busy roads never moves.
+- **A speed limit is obeyed, and halves the city.** Drivers settle a third
+  slower, trips take only 7% longer (most of a trip is queueing), and the
+  fines along the way price out half the fleet.
 - **Cars and pedestrians cycle.** Once both populations can replace
   themselves they oscillate like predator and prey.
 - **Fitness sharing costs here.** Without it drivers were half as fit
@@ -866,6 +869,23 @@ about that much on its own in 25 generations. Even a charge that bankrupts
 most of the city puts only a faint pull on route choice. My reading: driving round the
 jam is a strategy for a city where jams are local; in these ones, the
 traffic is everywhere the fares are.
+
+**A speed camera.** `--econ speedLimit=35` fines every car, each second it
+is over 35, in proportion to how far over (0.3 a second at double). Moving
+cars on Turin had been doing 41 to 46. Does a city whose passengers tip for
+speed decide the fines are worth paying? Four days, two seeds:
+
+| Turin, days 2-4 | cars | trips a day | mean trip | crashes per car per day | speed when moving |
+|---|---|---|---|---|---|
+| no camera | 232 / 190 | 2584 / 2219 | 56 s / 58 s | 185 / 204 | 43 / 44 |
+| limit 35 | 101 / 69 | 1343 / 870 | 61 s / 61 s | 152 / 108 | 30 / 30 |
+
+They obey, and overdo it: cars settle at 30, comfortably under the limit,
+and brake less (9% of the time against 13%). The surprise is how little it
+costs a trip, 7% longer for driving a third slower: most of a trip here is
+spent queueing, not cruising. What it does cost is the city. Learning to
+obey is paid for in fines while the slow learners are still around, and the
+fleet halves, and so do the fares.
 
 **Where they crash.** The ecosystem page has the same heatmaps as the
 generation page (H): crashes, or cars crawling at walking pace. On a real map
