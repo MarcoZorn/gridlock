@@ -708,6 +708,13 @@ its rays, so more of them is more to drive by. These drivers steer by the
 route and their place on the road (see "What the drivers actually look
 at"), so twelve more inputs are mostly twelve more things to learn to ignore.
 
+Then fewer should be better? Three rays against five, seeds 1-3: 1.80 trips
+per car against 1.58, every seed better, a clean win. Seeds 4-6: 1.44 against
+1.76, every seed worse. All six together: 1.62 against 1.67, nothing. Three
+seeds can show a 14% difference that is not there, which is a warning for
+every three-seed result on this page; the ones that matter are being re-run
+on three more.
+
 Population size is not the bottleneck either. For the same compute, 120
 drivers for 300 generations ended at a mean of 213 and 240 drivers for 150
 generations at 119; and 240 drivers for the full 300 generations, twice the
