@@ -234,6 +234,13 @@ three seeds each), the hint mostly goes: waiting over the last 50 generations
 fifth fewer trips. My reading: a wreck costs the cars behind it, not the one
 that crashed, and selection only ever counts what a driver's own choices
 cost that driver. The jam is somebody else's problem.
+
+So make it theirs: with `wreckBlame`, a wreck is charged for every car that
+runs into it, at that car's speed. Same three seeds: waiting 4.1%, 4.2%, 5.3%
+(4.5% on average, against 5.0% for wrecks alone and 4.3% for none), trips the
+same as with wrecks alone. Paying for the jam you cause does not teach
+waiting either. Whatever holds right of way back, it is not who gets the
+bill.
 (The conflict and
 car-on-car counters are no use here: a wreck in a junction counts as an
 unresolved conflict, and touching one counts as a collision every tick.)
