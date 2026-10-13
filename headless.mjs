@@ -1,7 +1,7 @@
 // Long runs without a browser. Resumes from the run's checkpoint if there is
 // one, appends one line of telemetry per generation, checkpoints regularly.
 //
-//   node headless.mjs --run runs/lanes --gens 3000 --traffic-from 200 --density 40
+//   node headless.mjs --run runs/lanes --gens 3000 --traffic-from 200 --density 40 --control lights
 //
 // runs/<name>/telemetry.jsonl   one JSON object per generation (kept in git)
 // runs/<name>/state.json        the latest checkpoint (ignored by git)
@@ -19,6 +19,7 @@ const trafficFrom = +arg("traffic-from", 200);
 const density = +arg("density", 40);
 const seed = +arg("seed", 3);
 const every = +arg("checkpoint", 25);
+const control = arg("control", "none");
 
 fs.mkdirSync(dir, { recursive: true });
 const statePath = path.join(dir, "state.json");
@@ -29,7 +30,7 @@ if (fs.existsSync(statePath)) {
   world = CityWorld.fromJSON(JSON.parse(fs.readFileSync(statePath, "utf8")));
   console.log(`resumed ${dir} at generation ${world.pop.generation}`);
 } else {
-  world = new CityWorld({ seed, popSize: 120, density });
+  world = new CityWorld({ seed, popSize: 120, density, control });
   console.log(`new run ${dir}, seed ${seed}`);
 }
 
@@ -49,15 +50,16 @@ process.on("SIGTERM", () => { stop = true; });
 const t0 = Date.now();
 while (!stop && world.pop.generation < gens) {
   const wantTraffic = world.pop.generation >= trafficFrom;
-  if (world.traffic !== wantTraffic || world.density !== density) {
+  if (world.traffic !== wantTraffic || world.density !== density || world.control !== control) {
     world.traffic = wantTraffic;
     world.density = density;
+    world.control = control;
     world.newGeneration();
   }
   const r = world.runGeneration();
   fs.appendFileSync(telemetry, JSON.stringify({ ...r, t: Math.round((Date.now() - t0) / 1000) }) + "\n");
   if (r.gen % 10 === 0) {
-    console.log(`gen ${r.gen} ${r.traffic ? "traffic" : "ghosts"} trips/car ${(r.trips / 120).toFixed(2)} crashes/km ${r.crashesPerKm.toFixed(1)} side ${r.side.toFixed(2)}`);
+    console.log(`gen ${r.gen} ${r.traffic ? "traffic" : "ghosts"} trips/car ${(r.trips / 120).toFixed(2)} crashes/km ${r.crashesPerKm.toFixed(1)} side ${r.side.toFixed(2)}${r.control === "lights" ? ` red ${r.redRuns}` : ""}`);
   }
   if (world.pop.generation % every === 0) checkpoint();
 }
