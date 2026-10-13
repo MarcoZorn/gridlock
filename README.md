@@ -214,6 +214,23 @@ something in the road long enough for the queue behind to reach the junction
 before. These drivers, raised where a crash is a fine and a short tow, crash
 their way through traffic rather than queue in it, and only stop being able
 to once crashing stops clearing the road.
+
+Which raises the question this project started with. If crashing through is
+why right of way never evolved, drivers raised with wrecks in the road should
+learn to wait. The shipped drivers, 300 more generations with `wrecks=1`
+(the normal two-second tow) and without, 40 cars at once:
+
+| | waiting in junctions, first 50 gens | last 100 gens | trips per car, last 100 |
+|---|---|---|---|
+| no wrecks | 7.6% | 7.6% | 1.03 |
+| wrecks | 7.7% | 9.7% | 0.84 |
+
+They do wait more, a quarter more, where the control does not move at all.
+It is small, one run each, and both runs drift down in trips (the shipped
+drivers were raised under older settings), but it is the first time anything
+other than a traffic-light fine has moved waiting. (The conflict and
+car-on-car counters are no use here: a wreck in a junction counts as an
+unresolved conflict, and touching one counts as a collision every tick.)
 (`node tools/fundamental.mjs 480` for any row.)
 
 ## What is coded and what is evolved
