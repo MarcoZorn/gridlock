@@ -76,7 +76,7 @@ export class EcoWorld {
     this.nextSpecies = 0;
     this.threshold = 0.8;       // nudged so the number of species stays readable
     this.log = [];              // telemetry rows
-    this.events = { births: 0, deaths: 0, immigrants: 0, trips: 0, crashes: 0, carCrashes: 0, earned: 0, deadheads: 0, freight: 0 };
+    this.events = { births: 0, deaths: 0, immigrants: 0, trips: 0, crashes: 0, carCrashes: 0, earned: 0, deadheads: 0, freight: 0, tripTicks: 0 };
     this.passengers = ECON.fareQueue / 2;  // fares waiting for a car
     this.freight = ECON.fareQueue / 2;     // loads waiting for a vehicle with room
     for (let i = 0; i < startCars; i++) this.immigrate();
@@ -85,12 +85,12 @@ export class EcoWorld {
   get control() { return this.city.control; }
   set control(c) { this.city.control = c; }
 
-  randomFare(from, cameFrom = -1) {
+  randomFare(from, cameFrom = -1, jam = 0) {
     const c = this.city, n = c.nodes.length, a = c.nodes[from];
     let to, tries = 0;
     do { to = this.rng.int(n); tries++; }
     while (tries < 50 && (to === from || Math.hypot(c.nodes[to].x - a.x, c.nodes[to].y - a.y) < 300));
-    return c.route(from, to, cameFrom);
+    return c.route(from, to, cameFrom, jam);
   }
 
   // A newcomer from outside: a fresh stock body and a brain one mutation away
@@ -113,7 +113,7 @@ export class EcoWorld {
   spawn(brain, body, cash, parent) {
     const p = { ...body.p, maxCrashes: Infinity };
     const from = this.rng.int(this.city.nodes.length);
-    const d = new Driver(brain, this.city, this.randomFare(from), this.rng.range(0.2, 0.7), p);
+    const d = new Driver(brain, this.city, this.randomFare(from, -1, body.jam), this.rng.range(0.2, 0.7), p);
     d.id = this.nextId++;
     d.body = body;
     d.cash = cash;
@@ -126,7 +126,7 @@ export class EcoWorld {
     this.newJob(d, true);
     d.onArrive = (car, here) => {
       this.pay(car);
-      const next = this.randomFare(here, car.route[car.route.length - 2]);
+      const next = this.randomFare(here, car.route[car.route.length - 2], car.body.jam);
       return next;
     };
     // newJob has to run after setRoute, which arrive() calls with our return
@@ -187,6 +187,7 @@ export class EcoWorld {
     d.cash += fare;
     d.earned += fare;
     this.events.trips++;
+    this.events.tripTicks += this.tick - j.start;
     this.events.earned += fare;
   }
 
@@ -196,6 +197,7 @@ export class EcoWorld {
     this.passengers = Math.min(ECON.fareQueue, this.passengers + ECON.demand * demandAt(c.time) * DT);
     this.freight = Math.min(ECON.fareQueue, this.freight + ECON.freightDemand * freightAt(c.time) * DT);
     this.hash.rebuild(this.cars);
+    if (this.tick % 30 === 0) c.measureLoad(this.cars);
     for (const d of this.cars) {
       const reds = d.redRuns;
       d.step(DT, this.hash);
@@ -209,7 +211,7 @@ export class EcoWorld {
         d.cash -= ECON.towFee;
         d.lost = false;
         const from = this.rng.int(c.nodes.length);
-        d.place(this.randomFare(from), this.rng.range(0.2, 0.7));
+        d.place(this.randomFare(from, -1, d.body.jam), this.rng.range(0.2, 0.7));
       }
     }
     this.events.carCrashes += collideCars(this.cars, this.hash, null);
@@ -292,7 +294,7 @@ export class EcoWorld {
       traits,
       species: this.species.map((s) => [s.id, s.size]),
     });
-    this.events = { births: 0, deaths: 0, immigrants: 0, trips: 0, crashes: 0, carCrashes: 0, earned: 0, deadheads: 0, freight: 0 };
+    this.events = { births: 0, deaths: 0, immigrants: 0, trips: 0, crashes: 0, carCrashes: 0, earned: 0, deadheads: 0, freight: 0, tripTicks: 0 };
   }
 
   // After the editor changes the map: anyone whose remaining route uses a
@@ -307,7 +309,7 @@ export class EcoWorld {
         if (!e || c.closed.has(e.id)) { blocked = true; break; }
       }
       if (!blocked) continue;
-      const tail = c.route(r[d.seg + 1], r[r.length - 1], r[d.seg]);
+      const tail = c.route(r[d.seg + 1], r[r.length - 1], r[d.seg], d.body.jam);
       if (!tail) continue;
       d.route = r.slice(0, d.seg + 2).concat(tail.slice(1));
       d.routeLen = c.pathLength(d.route);
@@ -344,7 +346,7 @@ export class EcoWorld {
     w.passengers = j.passengers; w.freight = j.freight;
     w.founders = j.founders ? j.founders.map((g) => Genome.fromJSON(g)) : null;
     w.cars = [];
-    w.events = { births: 0, deaths: 0, immigrants: 0, trips: 0, crashes: 0, carCrashes: 0, earned: 0, deadheads: 0, freight: 0 };
+    w.events = { births: 0, deaths: 0, immigrants: 0, trips: 0, crashes: 0, carCrashes: 0, earned: 0, deadheads: 0, freight: 0, tripTicks: 0 };
     for (const c of j.cars) {
       const d = w.spawn(Genome.fromJSON(c.brain), Body.fromJSON(c.body), c.cash, null);
       Object.assign(d, { id: c.id, born: c.born, parent: c.parent, generation: c.generation, children: c.children, earned: c.earned, species: c.species, dist: c.dist });
