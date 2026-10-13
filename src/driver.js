@@ -6,7 +6,8 @@
 // turns there, and it gets a fan of rays that see walls and other cars. It is
 // never told about lanes, right of way, or that other cars exist as a concept.
 // If it learns any of that, it learned it.
-export const N_RAYS = 5;
+// GRIDLOCK_RAYS (in Node only) tries another count, for experiments
+export const N_RAYS = +(globalThis.process?.env?.GRIDLOCK_RAYS) || 5;
 const PER_RAY = 3;             // wall distance, car distance, closing speed
 export const N_INPUTS = N_RAYS * PER_RAY + 6;
 export const N_OUTPUTS = 2;    // steering, throttle

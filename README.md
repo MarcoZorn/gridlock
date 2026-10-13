@@ -699,6 +699,15 @@ empty loop can afford big jumps; a city driver with twenty-one inputs, routes,
 junctions and other cars has more to break with each one. There is no right
 mutation size, only a right one for the task.
 
+Ray count went the same way. In cars, a ring of 16 rays instead of 8 was the
+biggest gain that project ever measured, nearly a lap more on unseen tracks.
+Here, 9 rays instead of 5 (`GRIDLOCK_RAYS=9`, 300 generations, three seeds,
+tested in unseen cities) came out worse: 1.29 trips per car against 1.58,
+4.08 crashes per 1000 units against 3.62. A car alone on a track drives by
+its rays, so more of them is more to drive by. These drivers steer by the
+route and their place on the road (see "What the drivers actually look
+at"), so twelve more inputs are mostly twelve more things to learn to ignore.
+
 Population size is not the bottleneck either. For the same compute, 120
 drivers for 300 generations ended at a mean of 213 and 240 drivers for 150
 generations at 119; and 240 drivers for the full 300 generations, twice the
