@@ -19,10 +19,12 @@ if (mode !== "none") Genome.prototype.activate = function (inp, out) {
   if (nearJunction && side) { out[1] = -1; forced++; }
   return out;
 };
-const pop = Population.fromJSON(JSON.parse(fs.readFileSync("docs/trained.json", "utf8")).pop);
+// POP=runs/x/state.json MAP=crossroads to try another population on another map
+const pop = Population.fromJSON(JSON.parse(fs.readFileSync(process.env.POP || "docs/trained.json", "utf8")).pop);
+const graph = process.env.MAP ? JSON.parse(fs.readFileSync(`maps/${process.env.MAP}.json`, "utf8")) : null;
 let trips = 0, crashes = 0, n = 0, km = 0, fit = 0;
 for (const seed of [77, 91, 101]) {
-  const e = new CityWorld({ seed, popSize: 120, traffic: true, density: 40 });
+  const e = new CityWorld({ seed, popSize: 120, traffic: true, density: 40, graph });
   for (let g = 0; g < 6; g++) {
     e.pop.genomes = pop.genomes; e.pop.generation = g; e.newGeneration();
     while (e.step()) {}

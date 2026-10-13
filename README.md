@@ -261,6 +261,14 @@ junction collisions are a few percent of all crashes, and a driver that
 stops for one of them loses more time than the crash would have cost. Every
 experiment above that tried to make drivers wait was pushing against a
 behaviour that does not pay.
+
+Not even in the crossroads arena, where the junction is the whole map. The
+same rule on the drivers raised there (`POP=runs/cross-none/state.json
+MAP=crossroads node tools/yieldrule.mjs rule`): fitness 80 with or without,
+a tenth fewer trips, 1% fewer crashes. The caveat is the rule itself: brake
+when a side ray sees a car closing in near a junction is crude, and a better
+one might pay where this one does not. But it is what the drivers could
+evolve with the inputs they have, and it is not worth evolving.
 (The conflict and
 car-on-car counters are no use here: a wreck in a junction counts as an
 unresolved conflict, and touching one counts as a collision every tick.)
