@@ -28,6 +28,7 @@ export const BODY = {
   stoppedSpeed: 6,  // below this a car in a junction counts as waiting
   redFine: 0.2,     // damage-equivalent of running a red light
   wallDamage: 1,    // damage from a kerb strike, relative to hitting a car
+  wrecks: 0,        // 1: a crashed car blocks the road until it is towed (an experiment)
   towTicks: 120, graceTicks: 45, maxCrashes: 12, damageCost: 1,
 };
 
@@ -110,7 +111,9 @@ export class Driver {
   // Solid cars collide and show up on other cars' rays. A car being towed, or
   // just put back on the road, is neither: it would otherwise be dropped on
   // top of whoever is passing and crash again on the spot.
-  get solid() { return this.alive && this.towing === 0 && this.grace === 0; }
+  // A car being towed is a ghost, unless BODY.wrecks: then it stays where it
+  // crashed, solid, until the tow truck takes it.
+  get solid() { return this.alive && (this.towing === 0 || BODY.wrecks) && this.grace === 0; }
 
   get vx() { return Math.cos(this.a) * this.v; }
   get vy() { return Math.sin(this.a) * this.v; }
@@ -368,6 +371,7 @@ export class Driver {
   // `scale` prices the damage: walls can be made cheaper than other cars
   // (BODY.wallDamage) to test what a driver learns when kerbs stop mattering.
   crash(speed = this.v, scale = 1) {
+    if (this.towing > 0) return;   // a wreck being hit is already wrecked
     this.crashes++;
     const impact = Math.min(1.5, Math.abs(speed) / BODY.maxSpeed);
     this.damage += impact * impact * scale;
