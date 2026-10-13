@@ -254,6 +254,25 @@ to 1018 trips and 24.9 to 27.3 seconds a trip. Every shortcut's effect is
 inside that. In a living population the churn swamps it; a proper test needs
 a fixed population on a network built for it.
 
+**Pedestrians.** A second population, run inside the ecosystem: people who
+need to get across the road. Each one waits at a kerb with a tiny NEAT brain
+that sees the nearest car coming from each side (distance and closing speed)
+and how long it has waited, and decides when to step out. Crossing feeds it,
+waiting starves it, being hit kills it, and enough crossings buys a child. The
+cars see people through the same rays that see other cars, so no brain had to
+change shape, and hitting someone costs the driver a fine on top of the
+crash.
+
+The first version ran fifteen city days and nothing evolved: about one
+crossing in eight ended in a hit, the whole time, and the crowd sat at its
+floor living on immigrants. The reason was arithmetic, not behaviour. A
+pedestrian needed about eight crossings to afford a child, and at those odds
+only a third live that long, so the crowd never replaced itself and there was
+nothing for selection to accumulate. Make children cheaper and the crowd fills
+the city within a day, and the hit rate halves, from about 12 to about 6 per
+hundred crossings, in that same first day. Caution was always easy to evolve;
+it just needed a population that survives long enough to evolve it.
+
 ## Files
 
 | file | what is in it |
@@ -265,6 +284,7 @@ a fixed population on a network built for it.
 | `src/citysim.js` | the generation page |
 | `src/ecoworld.js` | the economy: wallets, markets, births, deaths, species labels |
 | `src/body.js` | the body genome and the physics it implies |
+| `src/pedestrians.js` | people crossing the road, the second population |
 | `src/ecosim.js`, `src/ffworker.js` | the ecosystem page and its fast-forward worker |
 | `src/render.js` | drawing shared by both pages, pan/zoom, picking |
 | `headless.mjs`, `report.mjs` | long runs and `LIVE.md` |
