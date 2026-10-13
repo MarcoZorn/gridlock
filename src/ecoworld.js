@@ -80,7 +80,7 @@ export class EcoWorld {
     this.size = SIZES[size] ? size : "small";
     this.city = new City(citySeed, { graph, ...(graph ? {} : SIZES[this.size]) });
     this.graph = graph;
-    this.edits = [];   // expansions and built roads, in order, so a save can replay them
+    this.edits = [];   // expansions, built roads and road directions, in order, so a save can replay them
     this.city.control = control;
     this.cfg = { ...DEFAULTS, pWeight: 0.5, weightStep: 0.15 };
     this.innov = founders ? founders.innov : new Innovations(N_INPUTS + 1 + N_OUTPUTS);
@@ -107,8 +107,9 @@ export class EcoWorld {
   randomFare(from, cameFrom = -1, jam = 0) {
     const c = this.city, n = c.nodes.length, a = c.nodes[from];
     let to, tries = 0;
+    // somewhere else, and far enough to be worth a fare if the city has it
     do { to = this.rng.int(n); tries++; }
-    while (tries < 50 && (to === from || Math.hypot(c.nodes[to].x - a.x, c.nodes[to].y - a.y) < 300));
+    while (to === from || (tries < 50 && Math.hypot(c.nodes[to].x - a.x, c.nodes[to].y - a.y) < 300));
     return c.route(from, to, cameFrom, jam);
   }
 
@@ -382,6 +383,14 @@ export class EcoWorld {
     return e;
   }
 
+  // A click on a road in the editor: two-way, one-way, the other way, closed.
+  cycleRoad(e) {
+    const state = this.city.cycleRoad(e);
+    this.edits.push(["dir", e.a, e.b, state]);
+    this.cityEdited();
+    return state;
+  }
+
   // A new row of blocks on the east or south edge. Demand grows with the
   // road count, so a bigger city means a boom until the population catches up.
   grow(side) {
@@ -392,7 +401,8 @@ export class EcoWorld {
   }
 
   // After the editor changes the map: anyone whose remaining route uses a
-  // closed road is re-routed from the next junction, keeping their fare.
+  // closed road, or a one-way road the wrong way, is re-routed from the next
+  // junction, keeping their fare.
   cityEdited() {
     const c = this.city;
     for (const d of this.cars) {
@@ -400,7 +410,7 @@ export class EcoWorld {
       let blocked = false;
       for (let i = d.seg + 1; i + 1 < r.length; i++) {
         const e = c.edgeBetween(r[i], r[i + 1]);
-        if (!e || c.closed.has(e.id)) { blocked = true; break; }
+        if (!e || c.closed.has(e.id) || (e.oneway && e.a !== r[i])) { blocked = true; break; }
       }
       if (!blocked) continue;
       const tail = c.route(r[d.seg + 1], r[r.length - 1], r[d.seg], d.body.jam);
@@ -437,6 +447,7 @@ export class EcoWorld {
     for (const [a, b, lanes] of j.added || []) w.city.addRoad(a, b, lanes);   // saves from before the edit log
     for (const [kind, x, y, lanes] of j.edits || []) {
       if (kind === "grow") w.grow(x);
+      else if (kind === "dir") w.city.setRoad(w.city.edgeBetween(x, y), lanes);
       else w.city.addRoad(x, y, lanes);
     }
     w.edits = [...(j.edits || [])];
