@@ -241,6 +241,18 @@ export class City {
 
   get roundabouts() { return this.control === "roundabouts"; }
 
+  // How full each road is: cars on it per lane per 30 units of length,
+  // refreshed by whoever runs the traffic. Route choice reads it.
+  measureLoad(cars) {
+    if (!this.load || this.load.length !== this.edges.length) this.load = new Float32Array(this.edges.length);
+    this.load.fill(0);
+    for (const d of cars) {
+      const e = this.edgeBetween(d.route[d.seg], d.route[d.seg + 1]);
+      if (e) this.load[e.id] += 1;
+    }
+    for (const e of this.edges) this.load[e.id] /= Math.max(1, (e.len / 30) * e.lanes);
+  }
+
   // Which junction apron a point is in, or -1.
   junctionAt(x, y) {
     if (x < 0 || y < 0 || x >= this.w || y >= this.h) return -1;
@@ -261,24 +273,28 @@ export class City {
   // `cameFrom` is the junction the car just drove in from. Leaving by the same
   // road is a U-turn, which no car can make inside a junction, so the first
   // step may not go back there unless there is no other way out.
-  route(from, to, cameFrom = -1) {
+  //
+  // `jam` is how much the driver minds traffic: each road costs its length
+  // times (1 + jam x how full it is right now). At zero it is plain shortest
+  // path; above zero, drivers spread out, or all pile onto the same detour.
+  route(from, to, cameFrom = -1, jam = 0) {
     if (from === to) return [from];
     if (cameFrom >= 0 && this.nodes[from].edges.length > 1) {
-      const p = this.routeAvoiding(from, to, cameFrom);
+      const p = this.routeAvoiding(from, to, cameFrom, jam);
       if (p) return p;
     }
-    const p = this.routeAvoiding(from, to, -1);
+    const p = this.routeAvoiding(from, to, -1, jam);
     if (p || !this.closed || !this.closed.size) return p;
     // Closures cut this trip off entirely: drive through the roadblock
     // rather than not at all.
     const closed = this.closed;
     this.closed = null;
-    const q = this.routeAvoiding(from, to, -1);
+    const q = this.routeAvoiding(from, to, -1, jam);
     this.closed = closed;
     return q;
   }
 
-  routeAvoiding(from, to, ban) {
+  routeAvoiding(from, to, ban, jam = 0) {
     const n = this.nodes.length, goal = this.nodes[to];
     const g = new Float64Array(n).fill(Infinity);
     const f = new Float64Array(n).fill(Infinity);
@@ -299,7 +315,8 @@ export class City {
         const m = this.other(e, cur);
         if (cur === from && m === ban) continue;
         if (this.closed && this.closed.has(e.id)) continue;
-        const t = g[cur] + e.len;
+        // the heuristic stays admissible: a road never costs less than its length
+        const t = g[cur] + (jam && this.load ? e.len * (1 + jam * this.load[e.id]) : e.len);
         if (t < g[m]) {
           g[m] = t;
           came[m] = cur;
