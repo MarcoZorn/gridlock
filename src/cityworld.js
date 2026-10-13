@@ -35,9 +35,9 @@ export class CityWorld {
     // so a run of hard cities looks like stagnation and the default (18
     // generations) culled species for the luck of the draw. Over five seeds,
     // 300 generations: 182 at 18, 212 at 60, 219 with no culling at all.
-    // `memory` gives every brain a one-number memory channel: an extra output
-    // fed back as an extra input on the next tick.
-    const m = memory ? 1 : 0;
+    // `memory` gives every brain that many memory channels: extra outputs
+    // fed back as extra inputs on the next tick.
+    const m = memory === true ? 1 : +memory || 0;   // number of memory channels
     this.pop = pop || new Population(N_INPUTS + m, N_OUTPUTS + m, { popSize, pWeight: 0.5, weightStep: 0.15, stagnation: 60 }, seed);
     this.rng = new Rng(seed * 7919 + 5);
     // A handful of cities, rotated per generation, for the same reason the

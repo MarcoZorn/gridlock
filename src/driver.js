@@ -70,7 +70,7 @@ export class Driver {
     // one more output than standard has a memory channel (see step).
     this.inputs = new Float64Array(genome.nIn || N_INPUTS);
     this.out = new Float64Array(genome.nOut || N_OUTPUTS);
-    this.memory = 0;
+    this.memory = new Float64Array(Math.max(0, this.inputs.length - N_INPUTS));
     this.place(route, t0);
   }
 
@@ -205,10 +205,10 @@ export class Driver {
     // Memory: whatever the brain wrote to its extra output last tick comes
     // back as an extra input this tick. One number of state, carried from
     // moment to moment, is the difference between reacting and waiting.
-    if (this.inputs.length > N_INPUTS) this.inputs[k++] = this.memory;
+    for (let m = 0; m < this.memory.length; m++) this.inputs[k++] = this.memory[m];
 
     this.genome.activate(this.inputs, this.out);
-    if (this.out.length > N_OUTPUTS) this.memory = this.out[N_OUTPUTS];
+    for (let m = 0; m < this.memory.length; m++) this.memory[m] = this.out[N_OUTPUTS + m];
     const steer = this.out[0], throttle = this.out[1];
 
     const p = this.p;
