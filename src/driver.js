@@ -18,10 +18,10 @@ export const BODY = {
   len: 10, wid: 5,
   rayRange: 120, rayStep: 6,
   fov: Math.PI * 1.1,
-  lostTicks: 240,
-  lookahead: 35,
-  dropSpeed: 40,
-  towTicks: 240, maxCrashes: 12, crashKeep: 0.92,   // no route progress for this long and the car is lost
+  lostTicks: 240,   // no route progress for this long and the car is lost
+  lookahead: 35,    // how far down the route the steering target sits
+  dropSpeed: 40,    // must be this slow at the destination to deliver
+  towTicks: 120, maxCrashes: 12, damageCost: 1,
 };
 
 const ANGLES = Array.from({ length: N_RAYS }, (_, i) => -BODY.fov / 2 + (BODY.fov * i) / (N_RAYS - 1));
@@ -36,6 +36,7 @@ export class Driver {
     this.alive = true;
     this.crashed = false;
     this.crashes = 0;
+    this.damage = 0;       // sum of (impact speed / top speed) squared
     this.towing = 0;       // ticks left sitting at the kerb after a crash
     this.v = 0;
     this.ticks = 0;
@@ -243,6 +244,8 @@ export class Driver {
   // that braking helps. A fine per crash keeps the slope.
   crash() {
     this.crashes++;
+    const impact = this.v / BODY.maxSpeed;
+    this.damage += impact * impact;
     this.crashed = true;
     const f = this.frame();
     const t = Math.max(0, Math.min(f.len, f.along));
@@ -255,13 +258,18 @@ export class Driver {
   }
 
   // Route distance covered, plus a flat bonus per finished trip so that
-  // arriving is worth more than getting almost there. Each crash then scales
-  // the whole thing down. A flat fine per crash does not work: set it high
-  // and every early brain scores zero, so there is no slope to climb; set it
-  // low and crashing through corners beats braking for them. A multiplier is
-  // never zero and always makes the next crash cost something.
+  // arriving is worth more than getting almost there, scaled down by crash
+  // damage. Damage goes with impact speed squared, like kinetic energy.
+  //
+  // Two cheaper versions failed. A flat fine per crash: set it high and every
+  // early brain scores zero, so there is no slope to climb; set it low and
+  // crashing through corners beats braking for them. A fixed multiplier per
+  // crash: better, but braking from 110 to 80 still hits the wall and costs
+  // exactly what not braking does, so partial braking is never rewarded and
+  // full braking is never reached. Damage that falls with speed makes every
+  // bit of braking pay.
   fitness() {
     const dist = this.banked + this.best;
-    return (dist / 10 + this.trips * 60) * Math.pow(BODY.crashKeep, this.crashes);
+    return (dist / 10 + this.trips * 60) * Math.exp(-BODY.damageCost * this.damage);
   }
 }
