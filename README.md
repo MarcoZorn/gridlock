@@ -133,7 +133,11 @@ crash rate. Raised without it from the start, though (300 generations, three
 seeds, tested in the same unseen cities), drivers come out the same as with
 it: 1.63 trips per car against 1.58, 3.41 crashes per 1000 units against
 3.62, split both ways by seed. It is not needed, and the harm is a habit of
-this one population, not something the input does to everyone. (`node tools/ablate.mjs turn`, and so on for each group.)
+this one population, not something the input does to everyone.
+
+`node tools/ablate.mjs turn` (or any other group) repeats a row. On the
+generation page "Blind to cars" and "Blind to walls" do it live, and
+evolution carries on with the sense gone.
 
 ## What is coded and what is evolved
 
