@@ -20,6 +20,7 @@ const bod = $("bodies"), octx = bod.getContext("2d");
 const tree = $("tree"), tctx = tree.getContext("2d");
 
 let world, founders = {}, graph = null, size = "small", running = true, speed = 1, showRays = true, follow = false;
+let director = false, nextCut = 0;
 let selected = null, colourBy = "species", control = "none", editing = false, draft = null;
 const cam = { x: 0, y: 0, k: 1, fitted: false };
 const roads = cityLayer();
@@ -135,7 +136,22 @@ function clock(t) {
   return `${String(Math.floor(m / 60)).padStart(2, "0")}:${String(m % 60).padStart(2, "0")}`;
 }
 
+// Follow whoever has the most traffic around them, a few seconds at a time.
+function directorCut(now) {
+  if (!director || now < nextCut) return;
+  nextCut = now + 6000;
+  let best = null, bn = -1;
+  for (const d of world.cars) {
+    if (d.towing) continue;
+    let n = 0;
+    for (const o of world.cars) if (o !== d && Math.abs(o.x - d.x) < 70 && Math.abs(o.y - d.y) < 70) n++;
+    if (n > bn) { bn = n; best = d; }
+  }
+  if (best) { selected = best; follow = true; cam.k = Math.max(cam.k, 3); }
+}
+
 function draw() {
+  directorCut(performance.now());
   if (!cam.fitted) fitCam();
   if (selected && !world.cars.includes(selected)) selected = null;
   const focus = selected || world.richest();
@@ -245,6 +261,12 @@ for (const b of document.querySelectorAll("[data-speed]")) {
     document.querySelectorAll("[data-speed]").forEach((x) => (x.dataset.on = x === b));
   };
 }
+$("director").onclick = (e) => {
+  director = !director;
+  e.target.dataset.on = director;
+  nextCut = 0;
+  if (!director) { follow = false; $("follow").dataset.on = false; selected = null; }
+};
 $("colour").onclick = (e) => {
   colourBy = colourBy === "species" ? "job" : "species";
   e.target.textContent = `Colour: ${colourBy}`;
