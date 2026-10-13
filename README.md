@@ -33,8 +33,11 @@ python3 -m http.server                     # then http://localhost:8000
 node test.mjs                              # headless checks, including "does evolution work"
 node headless.mjs --run runs/x --gens 3000 --control lights --density 40
 node headless.mjs --run runs/x2 --map crossroads --from runs/x/state.json --gens 4000
-node headless.mjs --eco --run runs/e --days 40 --founders docs/trained.json [--pedestrians 40]
+node headless.mjs --eco --run runs/e --days 40 --founders docs/trained.json [--pedestrians 40] [--map turin]
+#   any run: --body k=v,... and --econ k=v,... override the car's and the economy's constants,
+#   --no-sharing (with --from) turns NEAT fitness sharing off for an older population
 node report.mjs                            # LIVE.md from every run's telemetry
+node tools/sidechart.mjs out.svg runs/e1 runs/e2   # which side of the road an economy keeps to
 node tools/osm.mjs extract.json maps/name.json "Place"   # an OpenStreetMap extract as a map
 ```
 
