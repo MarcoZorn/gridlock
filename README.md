@@ -139,12 +139,12 @@ So is the sense of other cars useless too? I expected drivers raised blind
 to them from the start to come out the same. They do not, in any seed (300
 generations, the last 100 with traffic, then the same unseen cities):
 
-| raised | trips per car | crashes per 1000 units |
+| raised | trips per car, six seeds | crashes per 1000 units |
 |---|---|---|
-| seeing other cars | 1.39 / 1.71 / 1.64 | 4.08 / 3.54 / 3.23 |
-| blind to them | 1.25 / 1.24 / 1.12 | 4.31 / 4.84 / 4.65 |
+| seeing other cars | 1.39 / 1.71 / 1.64 / 1.47 / 2.00 / 1.80 | 3.35 on average |
+| blind to them | 1.25 / 1.24 / 1.12 / 1.43 / 1.14 / 1.16 | 4.38 on average |
 
-A quarter fewer trips and a quarter more crashes. Blindfolding a grown
+A quarter fewer trips and nearly a third more crashes, every seed. Blindfolding a grown
 driver costs it almost nothing, but growing one blind costs a lot: the sense
 matters while a population learns to drive in traffic, and what it learns
 then (a speed, a line, a way of taking corners that leaves room) keeps
@@ -263,9 +263,9 @@ the code decides which way traffic should flow.
    pure noise. Drivers learn alone first, as ghosts, and the streets fill up
    later: traffic is a switch on the same population. (Months of fixes
    later this no longer holds: with the current code, 300 generations in
-   traffic from the very first came out as good in unseen cities as 200
-   alone and 100 in traffic, 1.67 trips per car against 1.58 over three
-   seeds, and the same crash rate. Whatever made the first generations pure
+   traffic from the very first came out about as good in unseen cities as
+   200 alone and 100 in traffic, 1.60 trips per car against 1.67 over six
+   seeds, 3.69 crashes per 1000 units against 3.35. Whatever made the first generations pure
    noise was fixed along the way, probably the shared crash damage below.
    The switch stays, because a generation without traffic is much
    cheaper to run.)
@@ -702,8 +702,8 @@ mutation size, only a right one for the task.
 Ray count went the same way. In cars, a ring of 16 rays instead of 8 was the
 biggest gain that project ever measured, nearly a lap more on unseen tracks.
 Here, 9 rays instead of 5 (`GRIDLOCK_RAYS=9`, 300 generations, three seeds,
-tested in unseen cities) came out worse: 1.29 trips per car against 1.58,
-4.08 crashes per 1000 units against 3.62. A car alone on a track drives by
+tested in unseen cities) came out worse: over six seeds 1.32 trips per car
+against 1.67, five seeds of six worse. A car alone on a track drives by
 its rays, so more of them is more to drive by. These drivers steer by the
 route and their place on the road (see "What the drivers actually look
 at"), so twelve more inputs are mostly twelve more things to learn to ignore.
@@ -712,8 +712,10 @@ Then fewer should be better? Three rays against five, seeds 1-3: 1.80 trips
 per car against 1.58, every seed better, a clean win. Seeds 4-6: 1.44 against
 1.76, every seed worse. All six together: 1.62 against 1.67, nothing. Three
 seeds can show a 14% difference that is not there, which is a warning for
-every three-seed result on this page; the ones that matter are being re-run
-on three more.
+every three-seed result on this page. So the ones from the same night were
+re-run on seeds 4-6: sharing, nine rays and raising drivers blind all held
+(the numbers in their sections are now six-seed ones), and traffic from the
+start stayed a draw.
 
 Population size is not the bottleneck either. For the same compute, 120
 drivers for 300 generations ended at a mean of 213 and 240 drivers for 150
@@ -756,11 +758,14 @@ cities none of them had seen, with traffic:
 
 | unseen cities | trips per car | crashes per 1000 units driven |
 |---|---|---|
-| sharing on | 2.06 / 1.75 / 0.94 | 4.01 / 3.80 / 6.08 |
-| sharing off | 1.99 / 2.09 / 2.05 | 3.75 / 3.46 / 3.88 |
+| sharing on, seeds 1-3 | 2.06 / 1.75 / 0.94 | 4.01 / 3.80 / 6.08 |
+| sharing off, seeds 1-3 | 1.99 / 2.09 / 2.05 | 3.75 / 3.46 / 3.88 |
+| sharing on, seeds 4-6 | 1.67 / 2.11 / 1.49 | 4.23 / 3.06 / 4.45 |
+| sharing off, seeds 4-6 | 2.47 / 2.68 / 2.26 | 3.18 / 2.91 / 3.48 |
 
-It holds, and the clearest difference is the spread: with sharing one seed
-in three never learned to drive well, without it none did. One check went
+It holds: over six seeds, 2.26 trips per car without sharing against 1.67
+with it, and 3.44 crashes per 1000 units against 4.27. Five seeds of six are
+better without, and the sixth is a tie. One check went
 the other way: a population raised for 1025 generations without sharing came
 out at 1.35 trips per car in the unseen cities against 1.48 for the drivers
 the site ships (`docs/trained.json`), at the same crash rate. One run each,
