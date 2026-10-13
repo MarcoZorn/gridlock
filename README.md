@@ -1211,7 +1211,7 @@ settling on vans; it starts with roomy founders either way (a mean cargo of
 0.62 on day one here), so for that city the founders do matter. The
 threshold is somewhere between twice and three times today's freight rate,
 and above it, whether a city finds trucks is part luck of the founders and
-part luck of the first few days. The truck cities are also the big ones
+part luck of the first few days. The eco page has the triple rate as a "Freight boom" button. The truck cities are also the big ones
 (120 cars, the ceiling, against 27 to 60), because freight is money the
 small-car cities leave on the table.
 
