@@ -45,7 +45,8 @@ node tools/osm.mjs extract.json maps/name.json "Place"   # an OpenStreetMap extr
   twelve unseen cities.
 - **Right of way did not evolve.** Not in a whole city, not in an arena that
   is nothing but one crossroads, not with crashes priced three or six times
-  higher, and not with better eyesight. About 60% of junction conflicts end
+  higher, not with better eyesight, and not when both cars pay for a
+  crossing crash (that cut collisions 8%, but did not make anyone yield). About 60% of junction conflicts end
   without a collision, the same as for drivers that have never met traffic.
 - **No side of the road, but almost.** Which side cars keep to is inherited
   and shared from one generation to the next (autocorrelation 0.71) and
@@ -256,6 +257,25 @@ anywhere in its slice, and raised two populations from scratch on the
 crossroads, identical but for that. After 550 generations in traffic the
 thin rays resolved 67% of conflicts and the sectors 61%, with more crashes.
 Seeing the other car was not what was missing. Dropped.
+
+The last suspect was who pays. Each car is charged for its own speed towards
+the other, which is right for a rear-end, but in a junction it means the car
+that pulls out in front of crossing traffic pays almost nothing when it is
+hit side-on: entering was free. So: an option where a crossing collision
+inside a junction costs both cars the full closing speed, and the same
+from-scratch crossroads protocol on three seeds, 550 generations in traffic,
+last 150 compared:
+
+| seed | conflicts resolved, own speed / shared | car-on-car crashes per car |
+|---|---|---|
+| 3 | 61% / 72% | 3.16 / 2.82 |
+| 7 | 59% / 60% | 3.24 / 2.96 |
+| 11 | 70% / 70% | 2.86 / 2.77 |
+
+The first seed looked like a breakthrough and the next two did not repeat
+it. What did repeat is a small drop in collisions, 8% on average, in all
+three. Shared blame makes drivers a little more careful, not polite; it is
+`--shared-crossing`, off by default.
 
 **Which side of the road?** Nothing in the code prefers a side, and over
 thousands of generations no permanent convention appears: the average lateral
