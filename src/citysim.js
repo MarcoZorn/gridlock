@@ -204,16 +204,17 @@ $("loadFile").onchange = async (e) => {
 };
 // Drivers raised under the junction control that is on now, if a set was
 // shipped for it (docs/trained-lights.json, ...), the no-signals set if not.
-$("trained").onclick = async () => {
-  try {
-    let r = control !== "none" ? await fetch(`docs/trained-${control}.json`) : null;
-    if (!r || !r.ok) r = await fetch("docs/trained.json");
-    const j = await r.json();
-    j.control = control;
-    if (graph) j.opts = { ...j.opts, graph };
-    adopt(CityWorld.fromJSON(j));
-  } catch (err) { alert(`Could not load the trained drivers: ${err.message}`); }
-};
+// The page's own settings (from the URL or the buttons) win over whatever
+// the saved run was doing.
+async function loadTrained() {
+  let r = control !== "none" ? await fetch(`docs/trained-${control}.json`) : null;
+  if (!r || !r.ok) r = await fetch("docs/trained.json");
+  const j = await r.json();
+  Object.assign(j, { control, traffic: j.traffic || traffic, density: params.has("density") ? density : j.density });
+  if (graph) { j.opts = { ...j.opts, graph }; j.traffic = true; }
+  adopt(CityWorld.fromJSON(j));
+}
+$("trained").onclick = () => loadTrained().catch((err) => alert(`Could not load the trained drivers: ${err.message}`));
 // A new size is a new set of cities, but the same drivers: the population is
 // kept, so you can see how brains raised in small towns cope with a big one.
 for (const b of document.querySelectorAll("[data-size]")) {
@@ -276,14 +277,6 @@ announceToggles();
 layout();
 reset(+params.get("seed") || 3);
 if (!params.get("seed")) {
-  try {
-    const r = await fetch("docs/trained.json");
-    if (r.ok) {
-      const j = await r.json();
-      if (graph) j.opts = { ...j.opts, graph };
-      adopt(CityWorld.fromJSON(j));
-      if (graph) { traffic = true; world.traffic = true; $("traffic").dataset.on = true; world.newGeneration(); }
-    }
-  } catch { /* stay on the fresh run */ }
+  try { await loadTrained(); } catch { /* stay on the fresh run */ }
 }
 frame();
