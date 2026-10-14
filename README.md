@@ -1115,7 +1115,16 @@ against 2499 and 2632). Nor is it that drivers get lost
 more often among one-way streets: counted per 100 trips, getting lost was
 more common one-way on Turin (17 against 12) and Manhattan (37 against 31)
 but less common on Barcelona (19 against 28). One seed each, so no pattern
-worth the name, and a reminder of how often these drivers get lost at all.
+worth the name, and a reminder of how often these drivers get lost at all. Where they get lost is the more interesting
+part: in a junction, two times in three on Turin and three in four on
+Manhattan, and only rarely off their route. A third of those are facing
+away from where they should be going, turned round in the apron; the rest
+are pointing the right way and crawling at about 10 units a second. I
+suspected the progress count, which stalls while a car crosses the second
+half of an apron, and let it count there; the lost count did not move. So
+these really are cars that cannot find their way through a junction in four
+seconds, which, along with the right-of-way results, says junctions are
+where these drivers are weakest.
 
 **A congestion charge.** London and Stockholm charge drivers for using
 busy streets. Here (`--econ congestion=0.1`) every car pays, each second, 0.1
