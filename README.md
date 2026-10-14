@@ -1175,7 +1175,10 @@ Since the two work on different losses, they should add up, and they do
 better than that: both together nearly double the fares of no rule at all
 (4768 a day against 2476), where each alone adds a third. The fleet fills
 the city to its ceiling, trips take as long as with no rule, and crashes
-per car double as with insurance alone. Two rules about who goes out of
+per car double as with insurance alone. It holds: on days 11 to 15, 4812
+and 4697 fares a day against 2737 and 2745 with no rule, at the 480-car
+ceiling, with trips a little quicker than with no rule (49-51 s against
+55-61). Two rules about who goes out of
 business, and when, did more for this city than any change to the drivers
 I tried. The sections below
 have the details and the longer runs.
