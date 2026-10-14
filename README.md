@@ -65,7 +65,9 @@ node tools/osm.mjs extract.json maps/name.json "Place"   # an OpenStreetMap extr
   as well in unseen ones (1.64 trips per car against 1.58, three seeds).
   On real streets, which they never saw either, they do better: per 1000
   units driven they crash 2.8 times on Turin, 1.4 on Barcelona and 1.3 on
-  Manhattan, against 3.5 on the generated grids.
+  Manhattan, against 3.5 on the generated grids. And the other way round:
+  raised on Manhattan alone, they drive generated grids as well as drivers
+  raised on them (1.63 trips per car against 1.58, three seeds).
 - **They drive by the route, but learn by the traffic.** Blindfolded to
   other cars, grown drivers barely notice; raised blind, they come out a
   quarter worse. Their position on the road and the route's direction are
