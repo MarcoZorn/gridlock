@@ -143,6 +143,10 @@ node tools/osm.mjs extract.json maps/name.json "Place"   # an OpenStreetMap extr
 - **Two rules about going out of business nearly double the city's fares.**
   Let a broke taxi finish its ride, and pool the cost of crashes: 4768
   fares a day against 2476, more than any change to the drivers did.
+- **Traffic lights killed Manhattan's economy, and two rules revived it.**
+  Under lights it never left the immigrant floor in twelve days; with
+  finishing the fare and insurance it carried 4000 fares a day, though
+  still a sixth fewer than the same rules without lights.
 - **Insure drivers and they crash twice as often, and move a third more
   people.** Not because they learn recklessness: the reckless ones simply
   stop going broke, and speed is what passengers pay for.
