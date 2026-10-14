@@ -1546,10 +1546,11 @@ business, finishing the fare and insurance, and nothing else changed (seed
 7, five days), Manhattan under lights delivers 2747, 3974, 4008, 4045 and
 4037 fares a day with a full fleet of 480 cars: twice what it carries
 without lights or rules, from a city that without the rules never got off
-the floor. The lights were not making trips unprofitable so much as making
-the early days fatal: cars going broke with passengers aboard before anyone
-could save enough for a child. Stop the dying, and the economy that the
-lights had killed runs better than any other in this README.
+the floor. My reading: the lights were not so much making trips
+unprofitable as making the early days fatal, cars going broke with
+passengers aboard before anyone could save enough for a child. Stop the
+dying, and the economy the lights had killed carries twice the fares of the
+same streets with no lights and no rules.
 
 **Where they crash.** The ecosystem page has the same heatmaps as the
 generation page (H): crashes, or cars crawling at walking pace. On a real map
