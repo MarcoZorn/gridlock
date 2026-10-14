@@ -80,7 +80,19 @@ export class Driver {
     this.inputs = new Float64Array(genome.nIn || N_INPUTS);
     this.out = new Float64Array(genome.nOut || N_OUTPUTS);
     this.memory = new Float64Array(Math.max(0, this.inputs.length - N_INPUTS));
+    this.signal = 0;      // 1: an indicator to show, and a sense of others' (useSignal)
+    this.indicator = 0;   // what this car shows, -1..1, set by its brain
+    this.seen = null;     // the nearest car its rays see
     this.place(route, t0);
+  }
+
+  // Signalling: one more output, an indicator the car shows, and one more
+  // input, the indicator of the nearest car its rays can see. Nothing says
+  // what a signal means; if it comes to mean anything, it evolved to.
+  useSignal() {
+    this.signal = 1;
+    this.memory = new Float64Array(Math.max(0, this.inputs.length - N_INPUTS - 1));
+    return this;
   }
 
   // Put the car on the first road of `route`, `t0` of the way along, at a
@@ -151,6 +163,7 @@ export class Driver {
       }
       this.wallRay[i] = hit;
       this.carRay[i] = R;
+      if (i === 0) { this.seen = null; this.seenDist = R; }
       this.closing[i] = 0;
     }
     if (!hash) return;
@@ -176,6 +189,7 @@ export class Driver {
         const hit = Math.max(0, t - Math.sqrt(rad * rad - p2));
         if (hit < this.carRay[i] && hit < this.wallRay[i]) {
           this.carRay[i] = hit;
+          if (hit < this.seenDist) { this.seenDist = hit; this.seen = o; }
           this.closing[i] = ((svx - o.vx) * cx + (svy - o.vy) * cy) / BODY.maxSpeed;
         }
       }
@@ -216,10 +230,12 @@ export class Driver {
     // Memory: whatever the brain wrote to its extra output last tick comes
     // back as an extra input this tick. One number of state, carried from
     // moment to moment, is the difference between reacting and waiting.
+    if (this.signal) this.inputs[k++] = this.seen ? this.seen.indicator || 0 : 0;
     for (let m = 0; m < this.memory.length; m++) this.inputs[k++] = this.memory[m];
 
     this.genome.activate(this.inputs, this.out);
-    for (let m = 0; m < this.memory.length; m++) this.memory[m] = this.out[N_OUTPUTS + m];
+    if (this.signal) this.indicator = Math.max(-1, Math.min(1, this.out[N_OUTPUTS]));
+    for (let m = 0; m < this.memory.length; m++) this.memory[m] = this.out[N_OUTPUTS + this.signal + m];
     const steer = this.out[0], throttle = this.out[1];
 
     const p = this.p;

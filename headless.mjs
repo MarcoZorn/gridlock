@@ -114,7 +114,7 @@ if (fs.existsSync(statePath)) {
   if (process.argv.includes("--no-sharing")) world.pop.cfg.sharing = false;
   console.log(`new run ${dir} from ${from}, generation ${world.pop.generation}`);
 } else {
-  world = new CityWorld({ seed, popSize: 120, density, control, graph, sharedCrossing: process.argv.includes("--shared-crossing"), memory: process.argv.includes("--memory") ? +(arg("memory", "1")) || 1 : 0 });
+  world = new CityWorld({ seed, popSize: 120, density, control, graph, sharedCrossing: process.argv.includes("--shared-crossing"), memory: process.argv.includes("--memory") ? +(arg("memory", "1")) || 1 : 0, signal: process.argv.includes("--signal") });
   console.log(`new run ${dir}, seed ${seed}`);
 }
 

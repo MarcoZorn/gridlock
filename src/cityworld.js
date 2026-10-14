@@ -17,11 +17,12 @@ export class CityWorld {
   // on the same population, so the same brains can be compared under both.
   // `graph` replaces the rotating generated cities with one fixed map (see
   // tools/osm.mjs, or maps/crossroads.json).
-  constructor({ seed = 1, popSize = 120, ticks = 3600, traffic = false, cities = 6, density = 40, pop = null, control = "none", size = null, graph = null, sharedCrossing = false, memory = false } = {}) {
+  constructor({ seed = 1, popSize = 120, ticks = 3600, traffic = false, cities = 6, density = 40, pop = null, control = "none", size = null, graph = null, sharedCrossing = false, memory = false, signal = false } = {}) {
     this.sharedCrossing = sharedCrossing;
     this.seed = seed;
     this.control = control;
-    this.opts = { seed, popSize, ticks, cities, size, graph, sharedCrossing, memory };
+    this.opts = { seed, popSize, ticks, cities, size, graph, sharedCrossing, memory, signal };
+    this.signal = !!signal;   // drivers with an indicator and a sense of others' (Driver.useSignal)
     this.density = density;
     this.ticksPerGen = ticks;
     this.traffic = traffic;
@@ -39,7 +40,8 @@ export class CityWorld {
     const m = memory === true ? 1 : +memory || 0;   // number of memory channels
     // No fitness sharing: from scratch, three seeds, mean fitness 327 without
     // it against 217 with it, and better late in a run as well (README).
-    this.pop = pop || new Population(N_INPUTS + m, N_OUTPUTS + m, { popSize, pWeight: 0.5, weightStep: 0.15, stagnation: 60, sharing: false }, seed);
+    const sig = signal ? 1 : 0;
+    this.pop = pop || new Population(N_INPUTS + m + sig, N_OUTPUTS + m + sig, { popSize, pWeight: 0.5, weightStep: 0.15, stagnation: 60, sharing: false }, seed);
     this.rng = new Rng(seed * 7919 + 5);
     // A handful of cities, rotated per generation, for the same reason the
     // track demo rotates tracks: evolve in one city and you get drivers who
@@ -104,6 +106,7 @@ export class CityWorld {
       const onArrive = (d) => this.routes[d.trips] || null;
       this.cars = this.pop.genomes.map((g) => {
         const d = new Driver(g, this.city, this.routes[0]);
+        if (this.signal) d.useSignal();
         d.onArrive = onArrive;
         return d;
       });
@@ -128,6 +131,7 @@ export class CityWorld {
     const onArrive = (d, here) => this.fare(here, d.route[d.route.length - 2]);
     this.cars = genomes.map((g, i) => {
       const d = new Driver(g, this.city, this.fare(this.waveRng.int(this.city.nodes.length)), this.waveRng.range(0.15, 0.75));
+      if (this.signal) d.useSignal();
       d.genomeIndex = this.wave * n + i;
       d.onArrive = onArrive;
       d.id = i;
