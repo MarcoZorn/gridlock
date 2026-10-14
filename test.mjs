@@ -327,8 +327,10 @@ import { Crowd, PED } from "./src/pedestrians.js";
   w.step();
   assert(w.cars.includes(busy), "a broke car with a fare aboard is still on the road");
   if (idle) assert(!w.cars.includes(idle), "a broke car with nothing aboard is gone");
-  assert(EcoWorld.fromJSON(JSON.parse(JSON.stringify(w))).finishFare === 1, "the rule is saved with the city");
-  console.log("ok  a taxi that runs out of money still finishes the ride");
+  Object.assign(w, { congestion: 0.1, speedLimit: 35, freightBoom: 3, insurance: 1 });
+  const back = EcoWorld.fromJSON(JSON.parse(JSON.stringify(w)));
+  for (const k of ["finishFare", "congestion", "speedLimit", "freightBoom", "insurance"]) assert(back[k] === w[k], `the ${k} rule is saved with the city`);
+  console.log("ok  a taxi that runs out of money still finishes the ride, and every rule is saved");
 }
 
 console.log("\nall checks passed");
