@@ -1173,6 +1173,8 @@ the two):
 | insurance | 324 | 3304 | 38 s | 377 |
 | finish the fare and insurance | 470 | 4768 | 55 s | 390 |
 
+![Fares a day under each rule: the congestion charge, speed camera, fuel tax and double fares below no rule at all, finishing the fare and insurance above it, and the two together highest](docs/rules.svg)
+
 Every rule that costs drivers money shrinks the fleet and the fares with it.
 Every rule that keeps marginal drivers in business grows the fleet; the
 fares follow straight away when the rule also stops passengers being lost
