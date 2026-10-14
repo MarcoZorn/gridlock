@@ -427,7 +427,13 @@ No language, so far. The indicators are used, every level of them, but the
 mutual information between the signal a car sees and whether it brakes is
 0.001 to 0.002 bits: the signal tells the car that sees it next to nothing.
 Two hundred generations of traffic may be too short for a meaning to
-settle; a thousand-generation run is under way.
+settle, so one population ran to generation 1000, 800 of them in traffic:
+still 0.0014 bits. A car brakes 27% of the time when the car it sees shows a
+low signal and 31% when it shows a high one. Signalling theory says why:
+a signal gets a meaning only when the one who reads it gains by acting on
+it, and in this city stopping for another car does not pay (see the yield
+rule above). The test of that is to make it pay: the same population,
+continued under thirty-times junction prices, is running.
 
 ## What is coded and what is evolved
 
