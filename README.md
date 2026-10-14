@@ -1386,6 +1386,22 @@ uninsured ones at 1.3 to 1.5, neither drifting. Two weeks without a reason
 to be careful bred no extra carelessness. The eco page has it as
 "Insurance" ([try it on Turin](https://marcozorn.github.io/gridlock/eco.html?map=turin&insure=1)).
 
+**Who gets rich?** Across the cars alive at day 15 in four Turin cities
+(200 to 300 each), the correlation between how fast a car earns and each of
+its genes, or the size of its brain:
+
+| | engine | brakes | sensor range | length | width | cargo | brain nodes | generation |
+|---|---|---|---|---|---|---|---|---|
+| correlation with earnings per hour | 0.06 to 0.11 | -0.06 to 0.07 | -0.06 to 0.11 | -0.10 to 0.02 | -0.15 to -0.06 | -0.10 to 0.03 | -0.11 to 0.14 | -0.25 to -0.12 |
+
+Nothing much. A bigger engine helps a little and a wider car costs a
+little, in every city, and that is all a body tells you; brain size tells
+you nothing. Among the cars on the road at any one time, which one gets rich
+is mostly which fares it happened to be given and which traffic it met.
+Selection still works, it just works on averages over lifetimes and
+lineages, not through any one trait that makes a car obviously richer than
+its neighbour.
+
 **Where they crash.** The ecosystem page has the same heatmaps as the
 generation page (H): crashes, or cars crawling at walking pace. On a real map
 the crash layer is not a set of hot junctions but whole streets glowing, and
