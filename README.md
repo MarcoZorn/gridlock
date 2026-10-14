@@ -110,8 +110,9 @@ node tools/osm.mjs extract.json maps/name.json "Place"   # an OpenStreetMap extr
 - **A speed limit is obeyed, and costs a third of the fares.** Drivers
   settle a third slower; the fines while they learn crash the fleet, and
   once it has regrown, trips take 40% longer for 13% fewer crashes.
-- **Four passengers in ten never arrive.** Their car goes broke or gets lost
-  on the way. Doubling fares, once the bigger fleet has grown in, gets 70%
+- **A city of drivers on the edge of bankruptcy loses passengers with
+  them.** Of 507 picked up in six hours, 89 vanished with a car that went
+  broke on the way and 41 with one that got lost. Doubling fares, once the bigger fleet has grown in, gets 70%
   of them there instead of 60%, at slower trips and more crashes.
 - **Cars and pedestrians cycle.** Once both populations can replace
   themselves they oscillate like predator and prey.
@@ -1281,8 +1282,11 @@ is what happens after the pick-up. Six hours of each city at day 15:
 | double fares | 511 / 510 | 361 / 353 (71% / 69%) |
 
 The same passengers are picked up either way, and in the normal city four
-in ten never arrive: the car that took them goes broke or gets lost on the
-way, and the fare goes with it. Richer drivers fail mid-trip less often, so
+in ten have not arrived by the end. Counting where they went, for seed 7:
+89 vanished with a car that went broke on the way, 41 with one that got
+lost and was fetched, and the rest were still in a car when the six hours
+ended. At double fares those two losses fall to 39 and 15. A city of
+drivers on the edge of bankruptcy loses its passengers with them. Richer drivers fail mid-trip less often, so
 more of the same passengers get there. Slower trips and more
 crashes, but more people moved. Add the congestion charge and it keeps the
 streets fast and the fleet half the size, and moves 28% fewer fares than
