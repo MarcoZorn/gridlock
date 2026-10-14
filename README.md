@@ -1173,7 +1173,10 @@ and 2553 fares a day against 2588 and 2363.
 
 **The rules side by side.** Every rule tried on the economy below, on the
 same Turin with the same founders, two seeds each, days two to six (means of
-the two):
+the two). Unless a section says otherwise, each economy experiment on this
+page is `node headless.mjs --eco --run runs/<name> --seed 7` (and `--seed
+11`) `--days 6 --founders docs/trained.json --map turin` plus the flags it
+names, compared with `FROM=2 TO=6 node tools/ecocmp.mjs`:
 
 | rule | cars | fares a day | mean trip | crashes per car per day |
 |---|---|---|---|---|
