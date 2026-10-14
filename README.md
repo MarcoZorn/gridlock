@@ -118,6 +118,9 @@ node tools/osm.mjs extract.json maps/name.json "Place"   # an OpenStreetMap extr
   broke on the way and 41 with one that got lost. Doubling fares, once the
   bigger fleet has grown in, gets 70% of them there instead of 60%, at
   slower trips and more crashes.
+- **Two rules about going out of business nearly double the city's fares.**
+  Let a broke taxi finish its ride, and pool the cost of crashes: 4768
+  fares a day against 2476, more than any change to the drivers did.
 - **Insure drivers and they crash twice as often, and move a third more
   people.** Not because they learn recklessness: the reckless ones simply
   stop going broke, and speed is what passengers pay for.
@@ -1173,8 +1176,8 @@ better than that: both together nearly double the fares of no rule at all
 (4768 a day against 2476), where each alone adds a third. The fleet fills
 the city to its ceiling, trips take as long as with no rule, and crashes
 per car double as with insurance alone. Two rules about who goes out of
-business, and when, matter more here than anything about how the cars
-drive. The sections below
+business, and when, did more for this city than any change to the drivers
+I tried. The sections below
 have the details and the longer runs.
 
 **A congestion charge.** London and Stockholm charge drivers for using
