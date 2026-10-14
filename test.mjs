@@ -333,4 +333,17 @@ import { Crowd, PED } from "./src/pedestrians.js";
   console.log("ok  a taxi that runs out of money still finishes the ride, and every rule is saved");
 }
 
+{
+  // on a real map, with its many short bends, every pedestrian finds a road
+  const c = new City(1, { graph: JSON.parse(fs.readFileSync("maps/turin.json", "utf8")) });
+  const crowd = new Crowd(c, new Rng(9), 60);
+  for (let i = 0; i < 500; i++) {
+    const p = crowd.people[i % crowd.people.length];
+    p.edge = undefined;
+    p.pickSpot(new Rng(1000 + i));
+    assert(p.edge && Number.isFinite(p.x) && Number.isFinite(p.y), "a pedestrian always finds a road to cross");
+  }
+  console.log("ok  pedestrians on a real map always find a road to cross");
+}
+
 console.log("\nall checks passed");
