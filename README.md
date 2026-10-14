@@ -112,8 +112,9 @@ node tools/osm.mjs extract.json maps/name.json "Place"   # an OpenStreetMap extr
   once it has regrown, trips take 40% longer for 13% fewer crashes.
 - **A city of drivers on the edge of bankruptcy loses passengers with
   them.** Of 507 picked up in six hours, 89 vanished with a car that went
-  broke on the way and 41 with one that got lost. Doubling fares, once the bigger fleet has grown in, gets 70%
-  of them there instead of 60%, at slower trips and more crashes.
+  broke on the way and 41 with one that got lost. Doubling fares, once the
+  bigger fleet has grown in, gets 70% of them there instead of 60%, at
+  slower trips and more crashes.
 - **Cars and pedestrians cycle.** Once both populations can replace
   themselves they oscillate like predator and prey.
 - **Fitness sharing costs here.** Raised without it, drivers made 35% more
