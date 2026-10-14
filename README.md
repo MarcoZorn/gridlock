@@ -37,7 +37,7 @@ step: serve the folder and open it.
   markets, evolved bodies, a road editor, fast-forward by the day.
 - `LIVE.md`: tables and charts from the long headless runs.
 - URL options: `?seed=7`, `?size=small|medium|large`, `?control=none|lights|roundabouts`,
-  on the eco page the rules `?charge=1&camera=1&boom=1&finish=1`,
+  on the eco page the rules `?charge=1&camera=1&boom=1&finish=1&insure=1`,
   `?map=crossroads|turin|barcelona|manhattan`, and on the generation page `?traffic=1&density=20`.
 
 ```
@@ -1383,7 +1383,8 @@ becoming careless, it is careless drivers no longer going out of business:
 the founders who crash a lot survive their first day instead of dying in it. Run on to day 15, it stays that way: the insured cities sit at 2.6
 to 2.7 crashes per car per ten minutes from day three to day fifteen, the
 uninsured ones at 1.3 to 1.5, neither drifting. Two weeks without a reason
-to be careful bred no extra carelessness.
+to be careful bred no extra carelessness. The eco page has it as
+"Insurance" ([try it on Turin](https://marcozorn.github.io/gridlock/eco.html?map=turin&insure=1)).
 
 **Where they crash.** The ecosystem page has the same heatmaps as the
 generation page (H): crashes, or cars crawling at walking pace. On a real map

@@ -54,6 +54,7 @@ function reset(seed) {
   $("camera").dataset.on = false;
   $("boom").dataset.on = false;
   $("finish").dataset.on = false;
+  $("insure").dataset.on = false;
   cam.fitted = false;
 }
 
@@ -383,6 +384,7 @@ function adoptEco(w) {
   $("camera").dataset.on = world.speedLimit > 0;
   $("boom").dataset.on = world.freightBoom > 1;
   $("finish").dataset.on = world.finishFare > 0;
+  $("insure").dataset.on = world.insurance > 0;
   selected = null; cam.fitted = false;
 }
 
@@ -416,6 +418,10 @@ $("loadFile").onchange = async (e) => {
 $("peds-on").onclick = (e) => {
   world.crowd = world.crowd ? null : new Crowd(world.city, new Rng(world.seed * 7 + 1), 40);
   e.target.dataset.on = !!world.crowd;
+};
+$("insure").onclick = (e) => {
+  world.insurance = world.insurance ? 0 : 1;
+  e.target.dataset.on = world.insurance > 0;
 };
 $("finish").onclick = (e) => {
   world.finishFare = world.finishFare ? 0 : 1;
@@ -469,7 +475,7 @@ function syncUrl() {
   u.searchParams.set("control", control);
   u.searchParams.set("size", size);
   if (graph) u.searchParams.set("map", new URLSearchParams(location.search).get("map"));
-  for (const [param, on] of [["charge", world.congestion > 0], ["camera", world.speedLimit > 0], ["boom", world.freightBoom > 1], ["finish", world.finishFare > 0]]) {
+  for (const [param, on] of [["charge", world.congestion > 0], ["camera", world.speedLimit > 0], ["boom", world.freightBoom > 1], ["finish", world.finishFare > 0], ["insure", world.insurance > 0]]) {
     if (on) u.searchParams.set(param, 1); else u.searchParams.delete(param);
   }
   history.replaceState(null, "", u);
@@ -527,5 +533,5 @@ await Promise.all([loadFounders("none"), control !== "none" ? loadFounders(contr
 for (const c of Object.keys(FOUNDER_FILES)) if (!founders[c]) loadFounders(c);
 reset(+params.get("seed") || 3);
 // ?charge=1&camera=1&boom=1&finish=1 start the city under those rules
-for (const id of ["charge", "camera", "boom", "finish"]) if (params.get(id) === "1") $(id).click();
+for (const id of ["charge", "camera", "boom", "finish", "insure"]) if (params.get(id) === "1") $(id).click();
 frame();
