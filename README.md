@@ -1157,10 +1157,15 @@ the two):
 
 Every rule that costs drivers money shrinks the fleet and the fares with it.
 Every rule that keeps marginal drivers in business grows the fleet; the
-fares follow straight away when the rule keeps passengers from being lost
-(finish the fare, insurance), and only later when it just pays more (double
-fares, fewer fares in these first days, a fifth more than no rule by day
-15). Finishing the fare is 42% ahead by then. The sections below
+fares follow straight away when the rule also stops passengers being lost
+on the way, and only later when it just pays more (double fares: fewer fares
+in these first days, a fifth more than no rule by day 15). Finishing the
+fare stops them going down with a bankrupt car, and is 42% ahead by day 15.
+Insurance does it differently: in six hours of each city at day 15, 71-72%
+of passengers delivered against 61-65%, but not by fewer bankruptcies
+(94-98 passengers lost that way, against 85-101). What goes is getting
+lost, 2-7 passengers against 29-30: insured drivers are fast, and a fast
+car is rarely one crawling round a junction until it is declared lost. The sections below
 have the details and the longer runs.
 
 **A congestion charge.** London and Stockholm charge drivers for using
