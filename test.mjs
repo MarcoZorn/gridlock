@@ -337,7 +337,9 @@ import { Crowd, PED } from "./src/pedestrians.js";
   // on a real map, with its many short bends, every pedestrian finds a road
   const c = new City(1, { graph: JSON.parse(fs.readFileSync("maps/turin.json", "utf8")) });
   const crowd = new Crowd(c, new Rng(9), 60);
-  for (let i = 0; i < 500; i++) {
+  // 64% of Turin's roads are too short to cross; the old pick failed about
+  // once in 8000 tries, so try many
+  for (let i = 0; i < 50000; i++) {
     const p = crowd.people[i % crowd.people.length];
     p.edge = undefined;
     p.pickSpot(new Rng(1000 + i));
