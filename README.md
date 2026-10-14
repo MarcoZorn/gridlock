@@ -1212,7 +1212,14 @@ and 4697 fares a day against 2737 and 2745 with no rule, at the 480-car
 ceiling, with trips a little quicker than with no rule (49-51 s against
 55-61). Two rules about who goes out of
 business, and when, did more for this city than any change to the drivers
-I tried. The sections below
+I tried.
+
+They also make it emptier. In every economy a car with no fare waiting
+drives somewhere for nothing, and those empty trips are 28-38% of all trips
+in a normal Turin (55-63% at night), against about three in five under
+insurance (61%) or both rules (59%): more cars than there are fares to
+share. The brains cannot tell whether they are carrying anyone, so an empty
+car drives exactly like a full one. That input does not exist yet. The sections below
 have the details and the longer runs.
 
 **A congestion charge.** London and Stockholm charge drivers for using
