@@ -1397,7 +1397,8 @@ its genes, or the size of its brain:
 Nothing much. A bigger engine helps a little and a wider car costs a
 little, in every city, and that is all a body tells you; brain size tells
 you nothing. Among the cars on the road at any one time, which one gets rich
-is mostly which fares it happened to be given and which traffic it met.
+is, as far as these numbers can tell, mostly circumstance: the fares it
+happened to be given and the traffic it met.
 Selection still works, it just works on averages over lifetimes and
 lineages, not through any one trait that makes a car obviously richer than
 its neighbour.
