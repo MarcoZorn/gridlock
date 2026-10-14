@@ -110,6 +110,9 @@ node tools/osm.mjs extract.json maps/name.json "Place"   # an OpenStreetMap extr
 - **A speed limit is obeyed, and costs a third of the fares.** Drivers
   settle a third slower; the fines while they learn crash the fleet, and
   once it has regrown, trips take 40% longer for 13% fewer crashes.
+- **Pay drivers more and the city moves fewer people.** Double fares bring
+  60% more cars onto the same streets, chasing the same passengers, and
+  15% fewer of them get delivered.
 - **Cars and pedestrians cycle.** Once both populations can replace
   themselves they oscillate like predator and prey.
 - **Fitness sharing costs here.** Raised without it, drivers made 35% more
@@ -1243,6 +1246,24 @@ cheapest car its genome allows has nothing left to give a fuel tax but
 bankruptcies. Trips get faster, as under the congestion charge, but only
 because the streets empty: after two weeks the charge still moved 93% of the
 fares, this tax moves 40% of them after six days.
+
+**Double fares.** Every tax above shrank the city, so what does money do?
+Passenger fares doubled (`--econ passengerRate=0.024`), Turin, six days, two
+seeds, days two to six:
+
+| Turin | cars | trips a day | mean trip | crashes per car per day | engine gene |
+|---|---|---|---|---|---|
+| normal fares | 242 / 206 | 2588 / 2363 | 57 s / 58 s | 188 / 206 | 0.50 / 0.40 |
+| double fares | 357 / 360 | 2046 / 2136 | 70 s / 63 s | 236 / 250 | 0.40 / 0.36 |
+
+Half as many cars again, and fewer people moved. The number of people who
+want a ride did not change, only what each pays, so twice the money lets
+twice as thin a margin pay: cars that would have gone broke stay on the
+road, competing for the same passengers. The fleet grows until the streets
+are full, trips slow down, more of them crash, and the city as a whole
+delivers 15% fewer fares with 60% more cars. Nobody bought a faster car with
+the money either; the engine gene went down. A tragedy of the commons with
+no one deciding anything.
 
 **Where they crash.** The ecosystem page has the same heatmaps as the
 generation page (H): crashes, or cars crawling at walking pace. On a real map
