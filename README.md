@@ -75,8 +75,9 @@ node tools/osm.mjs extract.json maps/name.json "Place"   # an OpenStreetMap extr
   A hand-written yield rule costs evolved drivers 7% of their trips and
   saves no crashes. Priced at thirty times an ordinary crash, trained
   drivers learn to avoid junction conflicts (seven points more resolved,
-  in two populations); a fresh population priced that way from the start
-  mostly learns to drive worse.
+  in two populations), at a price: in cities they have not seen they get
+  lost in junctions far more often. A fresh population priced that way from
+  the start mostly learns to drive worse.
 - **Right of way did not evolve beyond that.** Not in a whole city, not in an arena that
   is nothing but one crossroads, not with crashes priced three or six times
   higher, not with better eyesight, and not when both cars pay for a
