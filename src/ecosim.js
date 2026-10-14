@@ -53,6 +53,7 @@ function reset(seed) {
   $("charge").dataset.on = false;
   $("camera").dataset.on = false;
   $("boom").dataset.on = false;
+  $("finish").dataset.on = false;
   cam.fitted = false;
 }
 
@@ -378,6 +379,7 @@ function adoptEco(w) {
   $("charge").dataset.on = world.congestion > 0;
   $("camera").dataset.on = world.speedLimit > 0;
   $("boom").dataset.on = world.freightBoom > 1;
+  $("finish").dataset.on = world.finishFare > 0;
   selected = null; cam.fitted = false;
 }
 
@@ -411,6 +413,10 @@ $("loadFile").onchange = async (e) => {
 $("peds-on").onclick = (e) => {
   world.crowd = world.crowd ? null : new Crowd(world.city, new Rng(world.seed * 7 + 1), 40);
   e.target.dataset.on = !!world.crowd;
+};
+$("finish").onclick = (e) => {
+  world.finishFare = world.finishFare ? 0 : 1;
+  e.target.dataset.on = world.finishFare > 0;
 };
 $("boom").onclick = (e) => {
   world.freightBoom = world.freightBoom > 1 ? 1 : 3;

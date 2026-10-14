@@ -1304,7 +1304,8 @@ A third more people moved, by one rule about when a business may fail.
 The cars also stay a little longer and heavier, a softer edge to go broke
 on being a softer pressure to be minimal. It stays off by default because
 every economy number in this README was measured without it, but it is the
-single biggest lever on the city found so far. Richer drivers fail mid-trip less often, so
+single biggest lever on the city found so far. The eco page has it as
+"Finish the fare". Richer drivers fail mid-trip less often, so
 more of the same passengers get there. Slower trips and more
 crashes, but more people moved. Add the congestion charge and it keeps the
 streets fast and the fleet half the size, and moves 28% fewer fares than
