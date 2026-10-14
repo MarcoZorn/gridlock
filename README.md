@@ -1538,8 +1538,8 @@ slips back on day five. Under lights a Manhattan fare is worth between a
 half and a third of what it costs to deliver. Turin, with 49 lights on shorter trips,
 is in between: of two seeds, one was creeping back (271 fares a day by day
 six) and the other still dead (10). A grid under lights recovers in days,
-Turin sometimes, Manhattan never: the longer the trips and the more lights
-on them, the less a fare is worth.
+Turin sometimes, Manhattan never, which is consistent with a fare being
+worth less the longer the trip and the more lights on it.
 
 **Where they crash.** The ecosystem page has the same heatmaps as the
 generation page (H): crashes, or cars crawling at walking pace. On a real map
