@@ -194,6 +194,10 @@ blindfolded only for the test: 1.38 / 1.73 / 1.75 trips per car, 4.44 / 3.85
 / 3.68 crashes, as many trips as with their eyes open and 10% more crashes.
 It is not that old drivers have learned to do without: at 300 generations as
 at 1025, the sense is something to learn with, not something to drive by.
+Raised blind to the walls instead, three seeds: 1.36 / 1.14 / 1.14 trips per
+car and 4.10 / 4.43 / 4.80 crashes, about as far behind as the drivers
+raised blind to other cars. Both senses earn their keep while a population
+learns.
 
 Do they queue? On the same road, going the same way, a car that catches up
 with another either follows it or gets past. With the shipped drivers in
