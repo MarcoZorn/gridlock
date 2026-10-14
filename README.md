@@ -1164,7 +1164,7 @@ fare stops them going down with a bankrupt car, and is 42% ahead by day 15.
 Insurance does it differently: in six hours of each city at day 15, 71-72%
 of passengers delivered against 61-65%, but not by fewer bankruptcies
 (94-98 passengers lost that way, against 85-101). What goes is getting
-lost, 2-7 passengers against 29-30: insured drivers are fast, and a fast
+lost, 2-7 passengers against 29-30: insured drivers are fast, and presumably a fast
 car is rarely one crawling round a junction until it is declared lost. The sections below
 have the details and the longer runs.
 
