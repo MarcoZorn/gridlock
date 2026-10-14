@@ -1504,9 +1504,13 @@ starts on the floor too, but is delivering 290 fares a day by day three. It
 is not that these drivers cannot handle Manhattan's lights: in the
 generation city, where no money changes hands, they cover it as well with
 the lights as without (0.15 trips per 1000 units against 0.16, much the same
-crash rate). So it is the money. My guess, not tested, is that Manhattan's
-long trips with a red light every block cost more in time and running costs
-than the fare pays, so nobody ever saves enough to have a child.
+crash rate). So it is the money: Manhattan's long trips with a red light
+every block cost more in time and running costs than the fare pays, and
+nobody saves enough to have a child. Raising the fare tests that. At double
+fares, still nothing (2 to 35 fares a day); at triple, the city gets going,
+51 to 71 cars and 195 to 263 fares a day by days three and four, though it
+slips back on day five. Under lights a Manhattan fare is worth between a
+half and a third of what it costs to deliver.
 
 **Where they crash.** The ecosystem page has the same heatmaps as the
 generation page (H): crashes, or cars crawling at walking pace. On a real map
