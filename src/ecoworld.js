@@ -90,6 +90,7 @@ export class EcoWorld {
     this.congestion = ECON.congestion;   // this city's congestion charge, saved with it
     this.speedLimit = ECON.speedLimit;   // and its speed camera, 0 for none
     this.freightBoom = 1;                // freight pay and demand times this: at 3 trucks can evolve
+    this.finishFare = ECON.finishFare;   // a car with a fare aboard finishes it before it can go broke
     this.city.control = control;
     this.cfg = { ...DEFAULTS, pWeight: 0.5, weightStep: 0.15 };
     this.innov = founders ? founders.innov : new Innovations(N_INPUTS + 1 + N_OUTPUTS);
@@ -281,7 +282,7 @@ export class EcoWorld {
     const before = this.cars.length;
     // with ECON.finishFare a car that is carrying someone (or something)
     // finishes the job before it goes out of business
-    const broke = (d) => d.cash < 0 && !(ECON.finishFare && d.job && d.job.kind);
+    const broke = (d) => d.cash < 0 && !(this.finishFare && d.job && d.job.kind);
     for (const d of this.cars) if (broke(d) && this.ancestry.has(d.id)) this.ancestry.get(d.id).died = this.tick;
     this.cars = this.cars.filter((d) => !broke(d));
     this.events.deaths += before - this.cars.length;
@@ -464,7 +465,7 @@ export class EcoWorld {
       v: 1, seed: this.seed, citySeed: this.city.seed, graph: this.graph, control: this.control, tick: this.tick, rng: this.rng.s,
       innov: this.innov.toJSON(), cfg: this.cfg, nextId: this.nextId, nextSpecies: this.nextSpecies, threshold: this.threshold,
       passengers: this.passengers, freight: this.freight,
-      closed: [...this.city.closed], edits: this.edits, size: this.size, congestion: this.congestion, speedLimit: this.speedLimit, freightBoom: this.freightBoom,
+      closed: [...this.city.closed], edits: this.edits, size: this.size, congestion: this.congestion, speedLimit: this.speedLimit, freightBoom: this.freightBoom, finishFare: this.finishFare,
       founders: this.founders ? this.founders.map((g) => g.toJSON()) : null,
       cars: this.cars.map((d) => ({
         brain: d.genome.toJSON(), body: d.body.toJSON(), cash: d.cash, id: d.id, born: d.born, parent: d.parent,
@@ -489,6 +490,7 @@ export class EcoWorld {
     w.congestion = j.congestion ?? ECON.congestion;
     w.speedLimit = j.speedLimit ?? ECON.speedLimit;
     w.freightBoom = j.freightBoom ?? 1;
+    w.finishFare = j.finishFare ?? ECON.finishFare;
     for (const id of j.closed || []) w.city.closed.add(id);
     w.tick = j.tick; w.rng.s = j.rng; w.cfg = j.cfg;
     w.innov = Innovations.fromJSON(j.innov);
