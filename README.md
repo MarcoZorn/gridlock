@@ -182,7 +182,7 @@ Do they queue? On the same road, going the same way, a car that catches up
 with another either follows it or gets past. With the shipped drivers in
 unseen cities, overtakes (two cars swapping order on a road) per 1000 units
 driven: 0.10 with 40 cars at once, 0.28 with 120 and with 480. Crashes over
-the same distance are 3.5, 6.5 and 14.3, so a car is thirty to fifty times
+the same distance are 3.5, 6.5 and 14.3, so a car is twenty to fifty times
 more likely to hit another than to pass it, and 23-30% of same-road pairs
 are following within 25 units. They queue, and when the queue stops they
 run into it.
