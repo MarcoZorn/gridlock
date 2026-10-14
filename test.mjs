@@ -11,7 +11,7 @@ import { Track } from "./src/track.js";
 import { City } from "./src/city.js";
 import { SpatialHash } from "./src/spatial.js";
 import { CityWorld } from "./src/cityworld.js";
-import { EcoWorld, ECON } from "./src/ecoworld.js";
+import { EcoWorld, ECON, gini } from "./src/ecoworld.js";
 import { Body } from "./src/body.js";
 import { Crowd, PED } from "./src/pedestrians.js";
 
@@ -348,5 +348,8 @@ import { Crowd, PED } from "./src/pedestrians.js";
   }
   console.log("ok  pedestrians on a real map always find a road to cross");
 }
+
+assert(gini([1, 1, 1, 1]) === 0 && Math.abs(gini([0, 0, 0, 1]) - 0.75) < 1e-9, "gini: equal is 0, one of four holding everything is 0.75");
+console.log("ok  inequality measured");
 
 console.log("\nall checks passed");

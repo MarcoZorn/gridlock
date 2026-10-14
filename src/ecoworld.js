@@ -72,6 +72,15 @@ const SPECIES_EVERY = 600;   // ticks between speciation passes
 // What happened since the last telemetry row. `sideAll` / `sideRight`:
 // sampled cars on two-way roads, and how many of them right of the middle;
 // `pickups` / `dropoffs`: passengers taken on and passengers delivered.
+// Inequality of wealth: 0 everyone equal, 1 one car has it all.
+export function gini(xs) {
+  const v = [...xs].sort((a, b) => a - b), n = v.length, sum = v.reduce((a, b) => a + b, 0);
+  if (n < 2 || sum <= 0) return 0;
+  let acc = 0;
+  v.forEach((x, i) => (acc += (2 * (i + 1) - n - 1) * x));
+  return acc / (n * sum);
+}
+
 const freshEvents = () => ({ births: 0, deaths: 0, immigrants: 0, trips: 0, crashes: 0, carCrashes: 0, earned: 0, deadheads: 0, freight: 0, tripTicks: 0, pedHits: 0, sideAll: 0, sideRight: 0, pickups: 0, dropoffs: 0 });
 
 export class EcoWorld {
@@ -299,7 +308,12 @@ export class EcoWorld {
     const before = this.cars.length;
     // with ECON.finishFare a car that is carrying someone (or something)
     // finishes the job before it goes out of business
-    const broke = (d) => d.cash < 0 && !(this.finishFare && d.job && d.job.kind);
+    // but only a ride's grace: a car that has had its fare for three times the
+    // trip's expected length, or is 20 in debt, is out like any other. Without
+    // the limit, cars that kept getting lost with a fare aboard never died and
+    // ran up debts in the thousands.
+    const finishing = (d) => this.finishFare && d.job && d.job.kind && this.tick - d.job.start < 3 * d.job.expect && d.cash > -20;
+    const broke = (d) => d.cash < 0 && !finishing(d);
     for (const d of this.cars) if (broke(d) && this.ancestry.has(d.id)) this.ancestry.get(d.id).died = this.tick;
     this.cars = this.cars.filter((d) => !broke(d));
     this.events.deaths += before - this.cars.length;
@@ -406,6 +420,7 @@ export class EcoWorld {
       hour: ((this.city.time / 60) % 24),
       cars: this.cars.length,
       cash: this.cars.reduce((a, d) => a + d.cash, 0) / n,
+      gini: gini(this.cars.map((d) => Math.max(0, d.cash))),
       maxGen: Math.max(0, ...this.cars.map((d) => d.generation)),
       ...this.events,
       traits,
