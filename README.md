@@ -97,6 +97,9 @@ node tools/osm.mjs extract.json maps/name.json "Place"   # an OpenStreetMap extr
   higher, not with better eyesight, and not when both cars pay for a
   crossing crash (that cut collisions 8%, but did not make anyone yield). About 60% of junction conflicts end
   without a collision, the same as for drivers that have never met traffic.
+- **Light timing matters, if it is evolved.** A designed green wave did
+  nothing; searching each city's light offsets gave 11-27% more trips on
+  traffic the search never saw.
 - **Lights teach easing off.** Drivers raised under traffic lights approach
   a red at little more than half the speed of a green, by lifting off the
   throttle rather than braking; drivers raised without signals ignore them.
