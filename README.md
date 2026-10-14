@@ -1495,6 +1495,19 @@ day 15 the three big species are all vans, and one of them sees twice as
 far as the others (sensor range 0.76 against 0.38 and 0.40) and earns the
 same. Two ways to make the same living.
 
+**Lights on Manhattan.** Midtown runs on traffic lights, so I gave the
+economy's Manhattan lights at every junction of three or more roads (60 of
+them) and founders raised under lights. It never got going: twelve days on
+the 24-car immigrant floor, 1 to 57 fares a day where the same map without
+lights carries about 2000. On the generated grid an economy under lights
+starts on the floor too, but is delivering 290 fares a day by day three. It
+is not that these drivers cannot handle Manhattan's lights: in the
+generation city, where no money changes hands, they cover it as well with
+the lights as without (0.15 trips per 1000 units against 0.16, much the same
+crash rate). So it is the money. My guess, not tested, is that Manhattan's
+long trips with a red light every block cost more in time and running costs
+than the fare pays, so nobody ever saves enough to have a child.
+
 **Where they crash.** The ecosystem page has the same heatmaps as the
 generation page (H): crashes, or cars crawling at walking pace. On a real map
 the crash layer is not a set of hot junctions but whole streets glowing, and
