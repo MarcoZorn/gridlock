@@ -1154,6 +1154,7 @@ the two):
 | double fares | 358 | 2091 | 66 s | 243 |
 | finish the fare | 286 | 3279 | 69 s | 241 |
 | insurance | 324 | 3304 | 38 s | 377 |
+| finish the fare and insurance | 470 | 4768 | 55 s | 390 |
 
 Every rule that costs drivers money shrinks the fleet and the fares with it.
 Every rule that keeps marginal drivers in business grows the fleet; the
@@ -1165,7 +1166,15 @@ Insurance does it differently: in six hours of each city at day 15, 71-72%
 of passengers delivered against 61-65%, but not by fewer bankruptcies
 (94-98 passengers lost that way, against 85-101). What goes is getting
 lost, 2-7 passengers against 29-30: insured drivers are fast, and presumably a fast
-car is rarely one crawling round a junction until it is declared lost. The sections below
+car is rarely one crawling round a junction until it is declared lost.
+
+Since the two work on different losses, they should add up, and they do
+better than that: both together nearly double the fares of no rule at all
+(4768 a day against 2476), where each alone adds a third. The fleet fills
+the city to its ceiling, trips take as long as with no rule, and crashes
+per car double as with insurance alone. Two rules about who goes out of
+business, and when, matter more here than anything about how the cars
+drive. The sections below
 have the details and the longer runs.
 
 **A congestion charge.** London and Stockholm charge drivers for using
