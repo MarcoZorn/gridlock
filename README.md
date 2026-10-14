@@ -1550,7 +1550,11 @@ the floor. My reading: the lights were not so much making trips
 unprofitable as making the early days fatal, cars going broke with
 passengers aboard before anyone could save enough for a child. Stop the
 dying, and the economy the lights had killed carries twice the fares of the
-same streets with no lights and no rules.
+same streets with no lights and no rules. Do the lights help, once the rules
+keep everyone alive? No: the same rules without lights, same seed, carry
+4751-4825 fares a day from day two against 3974-4045 with them, a sixth
+more, and crash less (255 crashes per car per day against 295). On
+Manhattan, for these drivers, the lights cost fares and buy no safety.
 
 **Where they crash.** The ecosystem page has the same heatmaps as the
 generation page (H): crashes, or cars crawling at walking pace. On a real map
