@@ -1,9 +1,9 @@
 # Roadmap
 
-A hundred ideas, from next week to never, and the order to try them in.
+A hundred and fifty ideas, from next week to never, and the order to try them in.
 Hard on purpose: most have not been done, some may not be possible.
 
-## A hundred ideas
+## A hundred and fifty ideas
 
 ### Drivers that talk
 1. An indicator output and a sense of other cars' indicators: does a signalling language evolve, and does it solve right of way where nothing else did?
@@ -120,6 +120,58 @@ Hard on purpose: most have not been done, some may not be possible.
 98. Language between pedestrians and cars.
 99. A city whose drivers vote on the rules.
 100. Evolve the simulator's physics until the drivers stop crashing.
+
+### Fifty more
+101. Evolve the traffic code itself: rules as genomes that the drivers vote on with their survival.
+102. Accidents with insurance fraud: drivers that crash on purpose to claim.
+103. A black market for fares.
+104. Carpooling: one car, several passengers going roughly the same way.
+105. Buses with fixed routes, competing against taxis.
+106. Bike lanes and evolved cyclists.
+107. Parking: cars that must find a space, and circle until they do.
+108. Electric cars with charging stations and range anxiety.
+109. Fuel prices that follow demand.
+110. A rush-hour toll that evolves its own schedule.
+111. Night buses only, and what happens to the taxi economy.
+112. School runs: demand that peaks twice a day at fixed places.
+113. A football match: a sudden crowd at one junction.
+114. Earthquake: half the roads gone, which city recovers fastest?
+115. Snow: grip falls, does caution evolve within a winter?
+116. Fog: ray range halves at night.
+117. Drunk drivers: noise injected into some brains.
+118. Old drivers: reaction time grows with age.
+119. Learner drivers who copy their instructor.
+120. Driving schools as a business in the economy.
+121. Licences: a test cars must pass before they may carry fares.
+122. Police cars that fine speeders and evolve their own patrols.
+123. Ambulances whose fares are lives.
+124. Road rage: crash-prone drivers that make the ones around them worse.
+125. Reputation: passengers avoid drivers who crashed.
+126. Reviews: a star rating that changes fares.
+127. Language between platforms: drivers that move from one company to another.
+128. Inequality: a Gini coefficient for driver wealth, over time.
+129. Social mobility: do poor lineages ever become rich?
+130. Dynasties: how long do rich families stay rich?
+131. Entrepreneurs: a driver that buys a second car.
+132. Bankruptcy courts: debt forgiven or not.
+133. Interest rates for buying a bigger car.
+134. A central bank that prints fares.
+135. Inflation, measured in fares per kilometre.
+136. Cities trading drivers: migration between Turin and Barcelona.
+137. Brain drain: the best drivers leaving for the richer city.
+138. Tourism: a seasonal flood of fares from one district.
+139. Gentrification: districts whose demand grows, pushing others out.
+140. A train line through the city, and the taxi stations next to it.
+141. Airports: long trips, rare and lucrative.
+142. Evolution of taxi ranks without any being coded.
+143. Rivers and bridges as bottlenecks.
+144. One bridge closes: the Braess paradox in reverse.
+145. A city where every road is one-way, chosen by evolution, compared to Manhattan.
+146. Global: one economy across several real cities linked by highways.
+147. Interplanetary units: drive a Mars colony's roads at Mars gravity.
+148. Hand-drawn cities: draw on the canvas, drive it immediately.
+149. A city whose streets are grown by an L-system and then evolved.
+150. The simulator explains itself: generated plain-language reports of what each run discovered.
 
 ## Roadmap
 
