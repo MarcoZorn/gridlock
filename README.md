@@ -1535,7 +1535,11 @@ nobody saves enough to have a child. Raising the fare tests that. At double
 fares, still nothing (2 to 35 fares a day); at triple, the city gets going,
 51 to 71 cars and 195 to 263 fares a day by days three and four, though it
 slips back on day five. Under lights a Manhattan fare is worth between a
-half and a third of what it costs to deliver.
+half and a third of what it costs to deliver. Turin, with 49 lights on shorter trips,
+is in between: of two seeds, one was creeping back (271 fares a day by day
+six) and the other still dead (10). A grid under lights recovers in days,
+Turin sometimes, Manhattan never: the longer the trips and the more lights
+on them, the less a fare is worth.
 
 **Where they crash.** The ecosystem page has the same heatmaps as the
 generation page (H): crashes, or cars crawling at walking pace. On a real map
