@@ -337,12 +337,13 @@ import { Crowd, PED } from "./src/pedestrians.js";
   // on a real map, with its many short bends, every pedestrian finds a road
   const c = new City(1, { graph: JSON.parse(fs.readFileSync("maps/turin.json", "utf8")) });
   const crowd = new Crowd(c, new Rng(9), 60);
-  // 64% of Turin's roads are too short to cross; the old pick failed about
-  // once in 8000 tries, so try many
-  for (let i = 0; i < 50000; i++) {
-    const p = crowd.people[i % crowd.people.length];
+  // most of Turin's roads are too short to cross, and the old pick, twenty
+  // random roads, failed about 7 times in a million: these are three of the
+  // random streams it failed on, plus a few hundred ordinary ones
+  for (const seed of [82614, 104337, 113040, ...Array.from({ length: 300 }, (_, i) => 1000 + i)]) {
+    const p = crowd.people[0];
     p.edge = undefined;
-    p.pickSpot(new Rng(1000 + i));
+    p.pickSpot(new Rng(seed));
     assert(p.edge && Number.isFinite(p.x) && Number.isFinite(p.y), "a pedestrian always finds a road to cross");
   }
   console.log("ok  pedestrians on a real map always find a road to cross");
