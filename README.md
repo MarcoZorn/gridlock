@@ -1541,6 +1541,16 @@ six) and the other still dead (10). A grid under lights recovers in days,
 Turin sometimes, Manhattan never, which is consistent with a fare being
 worth less the longer the trip and the more lights on it.
 
+But money is not the only way out. With the two rules about going out of
+business, finishing the fare and insurance, and nothing else changed (seed
+7, five days), Manhattan under lights delivers 2747, 3974, 4008, 4045 and
+4037 fares a day with a full fleet of 480 cars: twice what it carries
+without lights or rules, from a city that without the rules never got off
+the floor. The lights were not making trips unprofitable so much as making
+the early days fatal: cars going broke with passengers aboard before anyone
+could save enough for a child. Stop the dying, and the economy that the
+lights had killed runs better than any other in this README.
+
 **Where they crash.** The ecosystem page has the same heatmaps as the
 generation page (H): crashes, or cars crawling at walking pace. On a real map
 the crash layer is not a set of hot junctions but whole streets glowing, and
