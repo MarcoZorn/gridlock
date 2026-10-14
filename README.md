@@ -243,7 +243,8 @@ road for ten seconds (`WRECKS=1 TOW=600`), it finally happens:
 | 1440 | 2.4 | 21.3 | 88% |
 
 Trips peak at about 120 cars and fall after it: more cars, fewer people
-delivered. That is gridlock, and what it took was crashes that leave
+delivered. On the generation page, "Wrecks stay" switches this on: load the
+trained drivers, turn traffic up and watch it lock. That is gridlock, and what it took was crashes that leave
 something in the road long enough for the queue behind to reach the junction
 before. These drivers, raised where a crash is a fine and a short tow, crash
 their way through traffic rather than queue in it, and only stop being able

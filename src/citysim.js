@@ -253,6 +253,12 @@ for (const b of document.querySelectorAll("[data-size]")) {
     selected = null; cam.fitted = false;
   };
 }
+const TOW = BODY.towTicks;
+$("wrecks").onclick = (e) => {
+  BODY.wrecks = BODY.wrecks ? 0 : 1;
+  BODY.towTicks = BODY.wrecks ? 600 : TOW;
+  e.target.dataset.on = !!BODY.wrecks;
+};
 $("blindCars").onclick = (e) => { SENSES.cars = !SENSES.cars; e.target.dataset.on = !SENSES.cars; };
 $("blindWalls").onclick = (e) => { SENSES.walls = !SENSES.walls; e.target.dataset.on = !SENSES.walls; };
 $("heat").onclick = (e) => {
