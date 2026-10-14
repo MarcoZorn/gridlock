@@ -110,9 +110,9 @@ node tools/osm.mjs extract.json maps/name.json "Place"   # an OpenStreetMap extr
 - **A speed limit is obeyed, and costs a third of the fares.** Drivers
   settle a third slower; the fines while they learn crash the fleet, and
   once it has regrown, trips take 40% longer for 13% fewer crashes.
-- **Pay drivers more and, after a slump, the city moves more people.**
-  Double fares fill the streets to the ceiling: 15% fewer fares while the
-  fleet grows, a fifth more once it has, at slower trips and more crashes.
+- **Four passengers in ten never arrive.** Their car goes broke or gets lost
+  on the way. Doubling fares, once the bigger fleet has grown in, gets 70%
+  of them there instead of 60%, at slower trips and more crashes.
 - **Cars and pedestrians cycle.** Once both populations can replace
   themselves they oscillate like predator and prey.
 - **Fitness sharing costs here.** Raised without it, drivers made 35% more
@@ -1270,8 +1270,20 @@ same seeds):
 
 The early slump was the fleet growing into the city. Once it fills it (480
 is the ceiling for a map this size), double fares move a fifth more people
-than normal ones. My reading, not measured: with that many cars on the
-road, fewer passengers wait long enough to give up and go to another firm. Slower trips and more
+than normal ones. My first reading was that with so many cars, fewer
+waiting passengers give up and go to another firm. Measured, the queue is
+almost never full in either city, so nobody is turned away. The difference
+is what happens after the pick-up. Six hours of each city at day 15:
+
+| Turin, day 15 | passengers picked up | delivered |
+|---|---|---|
+| normal fares | 507 / 510 | 313 / 305 (62% / 60%) |
+| double fares | 511 / 510 | 361 / 353 (71% / 69%) |
+
+The same passengers are picked up either way, and in the normal city four
+in ten never arrive: the car that took them goes broke or gets lost on the
+way, and the fare goes with it. Richer drivers fail mid-trip less often, so
+more of the same passengers get there. Slower trips and more
 crashes, but more people moved. Add the congestion charge and it keeps the
 streets fast and the fleet half the size, and moves 28% fewer fares than
 normal fares with no charge at all. In this city the charge buys speed and
