@@ -315,4 +315,20 @@ import { Crowd, PED } from "./src/pedestrians.js";
   console.log("ok  the editor makes streets one-way, either way, and never into a trap");
 }
 
+{
+  // finish the fare: a broke car with a fare aboard stays until it delivers
+  const w = new EcoWorld({ seed: 4, startCars: 30 });
+  w.finishFare = 1;
+  for (let i = 0; i < 1200 && !w.cars.some((d) => d.job && d.job.kind); i++) w.step();   // first trips carry nobody
+  const busy = w.cars.find((d) => d.job && d.job.kind), idle = w.cars.find((d) => !d.job || !d.job.kind);
+  assert(busy, "some car starts with a fare");
+  busy.cash = -1;
+  if (idle) idle.cash = -1;
+  w.step();
+  assert(w.cars.includes(busy), "a broke car with a fare aboard is still on the road");
+  if (idle) assert(!w.cars.includes(idle), "a broke car with nothing aboard is gone");
+  assert(EcoWorld.fromJSON(JSON.parse(JSON.stringify(w))).finishFare === 1, "the rule is saved with the city");
+  console.log("ok  a taxi that runs out of money still finishes the ride");
+}
+
 console.log("\nall checks passed");
