@@ -1223,7 +1223,12 @@ drives somewhere for nothing, and those empty trips are 28-38% of all trips
 in a normal Turin (55-63% at night), against about three in five under
 insurance (61%) or both rules (59%): more cars than there are fares to
 share. The brains cannot tell whether they are carrying anyone, so an empty
-car drives exactly like a full one. That input does not exist yet. The sections below
+car drives exactly like a full one. That input does not exist yet. Would it
+be worth having? Faking it with a coded rule, a throttle cap for cars with
+nobody aboard, on the day-15 Turin cities for six hours: fares barely move
+(304 to 333 in every setting), but with a hard cap (0.2) fewer cars die
+(258 against 294, 295 against 310) and the fleet ends a little bigger.
+Something for selection to find, then, but not much. The sections below
 have the details and the longer runs.
 
 **A congestion charge.** London and Stockholm charge drivers for using
