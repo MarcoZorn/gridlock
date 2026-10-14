@@ -110,9 +110,9 @@ node tools/osm.mjs extract.json maps/name.json "Place"   # an OpenStreetMap extr
 - **A speed limit is obeyed, and costs a third of the fares.** Drivers
   settle a third slower; the fines while they learn crash the fleet, and
   once it has regrown, trips take 40% longer for 13% fewer crashes.
-- **Pay drivers more and the city moves fewer people.** Double fares bring
-  60% more cars onto the same streets, chasing the same passengers, and
-  15% fewer of them get delivered.
+- **Pay drivers more and, after a slump, the city moves more people.**
+  Double fares fill the streets to the ceiling: 15% fewer fares while the
+  fleet grows, a fifth more once it has, at slower trips and more crashes.
 - **Cars and pedestrians cycle.** Once both populations can replace
   themselves they oscillate like predator and prey.
 - **Fitness sharing costs here.** Raised without it, drivers made 35% more
@@ -1256,14 +1256,27 @@ seeds, days two to six:
 | normal fares | 242 / 206 | 2588 / 2363 | 57 s / 58 s | 188 / 206 | 0.50 / 0.40 |
 | double fares | 357 / 360 | 2046 / 2136 | 70 s / 63 s | 236 / 250 | 0.40 / 0.36 |
 
-Half as many cars again, and fewer people moved. The number of people who
-want a ride did not change, only what each pays, so twice the money lets
-twice as thin a margin pay: cars that would have gone broke stay on the
-road, competing for the same passengers. The fleet grows until the streets
-are full, trips slow down, more of them crash, and the city as a whole
-delivers 15% fewer fares with 60% more cars. Nobody bought a faster car with
-the money either; the engine gene went down. A tragedy of the commons with
-no one deciding anything.
+Half as many cars again, and fewer people moved: trips slower, more
+crashes, 15% fewer fares. I wrote that up as a tragedy of the commons, cars
+on thin margins crowding the same streets for the same passengers. Then I
+ran it on to day 15 (days 11 to 15 against the 15-day runs at normal fares,
+same seeds):
+
+| Turin, days 11-15 | cars | trips a day | mean trip | crashes per car per day |
+|---|---|---|---|---|
+| normal fares | 279 / 285 | 2737 / 2745 | 55 s / 61 s | 208 / 206 |
+| double fares | 480 / 480 | 3211 / 3553 | 69 s / 67 s | 246 / 240 |
+| double fares and a congestion charge | 209 / 214 | 1973 / 1985 | 42 s / 43 s | 184 / 209 |
+
+The early slump was the fleet growing into the city. Once it fills it (480
+is the ceiling for a map this size), double fares move a fifth more people
+than normal ones: with that many cars on the road, fewer passengers wait
+long enough to give up and go to another firm. Slower trips and more
+crashes, but more people moved. Add the congestion charge and it keeps the
+streets fast and the fleet half the size, and moves 28% fewer fares than
+normal fares with no charge at all. In this city the charge buys speed and
+safety, paid for in fares, and more money for drivers buys throughput, paid
+for in time.
 
 **Where they crash.** The ecosystem page has the same heatmaps as the
 generation page (H): crashes, or cars crawling at walking pace. On a real map
