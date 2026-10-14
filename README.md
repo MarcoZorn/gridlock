@@ -1240,8 +1240,9 @@ The fleet loses three quarters of its cars and the city 60% of its fares,
 and the cars do not change to meet it: the engine gene stays where it was,
 and the length gene was already at its floor. An economy that has bred the
 cheapest car its genome allows has nothing left to give a fuel tax but
-bankruptcies. Unlike the congestion charge, which priced out the marginal
-cars and left the rest faster, this one only shrinks the city.
+bankruptcies. Trips get faster, as under the congestion charge, but only
+because the streets empty: after two weeks the charge still moved 93% of the
+fares, this tax moves 40% of them after six days.
 
 **Where they crash.** The ecosystem page has the same heatmaps as the
 generation page (H): crashes, or cars crawling at walking pace. On a real map
