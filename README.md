@@ -1141,6 +1141,26 @@ where these drivers are weakest. Giving them ten seconds instead of four
 (`--body lostTicks=600`) does not change what the city delivers either: 2374
 and 2553 fares a day against 2588 and 2363.
 
+**The rules side by side.** Every rule tried on the economy below, on the
+same Turin with the same founders, two seeds each, days two to six (means of
+the two):
+
+| rule | cars | fares a day | mean trip | crashes per car per day |
+|---|---|---|---|---|
+| none | 224 | 2476 | 58 s | 197 |
+| congestion charge | 122 | 2062 | 40 s | 160 |
+| speed camera | 96 | 1167 | 65 s | 136 |
+| fuel tax x3 | 58 | 1018 | 40 s | 135 |
+| double fares | 358 | 2091 | 66 s | 243 |
+| finish the fare | 286 | 3279 | 69 s | 241 |
+| insurance | 324 | 3304 | 38 s | 377 |
+
+Every rule that costs drivers money shrinks the fleet and the fares with it;
+every rule that keeps marginal drivers in business grows both. Days two to
+six are early days, though: by day 15 double fares move a fifth more people
+than no rule at all, and finishing the fare 42% more. The sections below
+have the details and the longer runs.
+
 **A congestion charge.** London and Stockholm charge drivers for using
 busy streets. Here (`--econ congestion=0.1`) every car pays, each second, 0.1
 times how full the road it is on is: about as much as its upkeep on a road
