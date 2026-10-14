@@ -148,5 +148,6 @@ commits and pushes.
 
 ## Done
 
+- 5. Any city in the browser: done (eco page "Any city", ?place=)
 - 2. Phantom jams: none; stops are stationary (tools/ring.mjs, docs/ring.png)
 - 1. Signalling: built (`--signal`); 400 generations, no meaning yet (0.002 bits); 1000-generation run under way

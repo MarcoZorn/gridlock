@@ -2,6 +2,7 @@
 import { EcoWorld, ECON } from "./ecoworld.js";
 import { Population, Rng } from "./neat.js";
 import { Crowd } from "./pedestrians.js";
+import { osmToGraph } from "./osm.js";
 import { fitCanvas, panZoom, announceToggles, shortcuts, busiestCar, cityLayer, drawHeat, drawClosures, drawLights, drawRoute, drawRays, drawCar, speciesColour } from "./render.js";
 import { drawNetwork } from "./netview.js";
 
@@ -21,6 +22,7 @@ const fac = $("fares"), factx = fac.getContext("2d");
 const bod = $("bodies"), octx = bod.getContext("2d");
 const tree = $("tree"), tctx = tree.getContext("2d");
 
+let place = null;   // a city typed by name, rebuilt from OpenStreetMap
 let world, founders = {}, graph = null, size = "small", running = true, speed = 1, showRays = true, follow = false;
 let director = false, nextCut = 0;
 let selected = null, colourBy = "species", control = "none", editing = false, draft = null;
@@ -496,7 +498,8 @@ function syncUrl() {
   u.searchParams.set("seed", world.seed);
   u.searchParams.set("control", control);
   u.searchParams.set("size", size);
-  if (graph) u.searchParams.set("map", new URLSearchParams(location.search).get("map"));
+  if (place) { u.searchParams.set("place", place); u.searchParams.delete("map"); }
+  else if (graph) u.searchParams.set("map", new URLSearchParams(location.search).get("map"));
   for (const [param, on] of [["charge", world.congestion > 0], ["camera", world.speedLimit > 0], ["boom", world.freightBoom > 1], ["finish", world.finishFare > 0], ["insure", world.insurance > 0]]) {
     if (on) u.searchParams.set(param, 1); else u.searchParams.delete(param);
   }
@@ -521,6 +524,38 @@ $("heat").onclick = (e) => {
   e.target.dataset.on = heatMode > 0;
   e.target.textContent = `Heatmap: ${HEAT_MODES[heatMode]}`;
 };
+// Any city: find the place, fetch about a square kilometre of its streets
+// from OpenStreetMap, turn them into a map and start an economy on it.
+$("go").onclick = async () => {
+  const q = $("place").value.trim(), say = (t) => ($("placeStatus").textContent = t);
+  if (!q) return;
+  try {
+    say("finding " + q + "...");
+    const hit = (await (await fetch(`https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(q)}`)).json())[0];
+    if (!hit) return say("no such place found");
+    const lat = +hit.lat, lon = +hit.lon, dLat = 0.0045, dLon = 0.0065 / Math.cos((lat * Math.PI) / 180) * 0.75;
+    const query = `[out:json][timeout:60];way["highway"~"^(primary|secondary|tertiary|residential|unclassified|living_street)$"](${lat - dLat},${lon - dLon},${lat + dLat},${lon + dLon});(._;>;);out body;`;
+    say("fetching streets...");
+    let res = null;
+    // public Overpass servers are often busy: try each for 40 seconds
+    const servers = ["https://overpass-api.de/api/interpreter", "https://maps.mail.ru/osm/tools/overpass/api/interpreter", "https://overpass.private.coffee/api/interpreter", "https://overpass.kumi.systems/api/interpreter"];
+    for (const [i, server] of servers.entries()) {
+      say(`fetching streets (server ${i + 1} of ${servers.length})...`);
+      const stop = new AbortController(), timer = setTimeout(() => stop.abort(), 40000);
+      const r = await fetch(server, { method: "POST", body: "data=" + encodeURIComponent(query), headers: { "Content-Type": "application/x-www-form-urlencoded" }, signal: stop.signal }).catch(() => null);
+      clearTimeout(timer);
+      const text = r && r.ok ? await r.text() : "";
+      if (text.trimStart().startsWith("{")) { res = JSON.parse(text); break; }
+    }
+    if (!res) return say("every map server is busy right now; try again in a few minutes");
+    const { map } = osmToGraph(res.elements, hit.display_name.split(",").slice(0, 2).join(","));
+    if (map.nodes.length < 12) return say("too few streets there to drive");
+    graph = map; place = q;
+    reset(world.seed);
+    say(`${map.name}: ${map.nodes.length} junctions, ${map.edges.length} roads. Map data © OpenStreetMap contributors`);
+  } catch (e) { say("could not build that city: " + e.message); }
+};
+$("place").onkeydown = (e) => { if (e.key === "Enter") $("go").click(); };
 announceToggles();
 shortcuts({ space: "#play", 1: '[data-speed="1"]', 2: '[data-speed="4"]', 3: '[data-speed="16"]', 4: '[data-speed="64"]', f: "#follow", d: "#director", s: "#rays", c: "#colour", e: "#edit", h: "#heat" });
 layout();
@@ -556,4 +591,5 @@ for (const c of Object.keys(FOUNDER_FILES)) if (!founders[c]) loadFounders(c);
 reset(+params.get("seed") || 3);
 // ?charge=1&camera=1&boom=1&finish=1 start the city under those rules
 for (const id of ["charge", "camera", "boom", "finish", "insure"]) if (params.get(id) === "1") $(id).click();
+if (params.get("place")) { $("place").value = params.get("place"); $("go").click(); }
 frame();

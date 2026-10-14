@@ -1139,7 +1139,13 @@ is only a bend in the road gets an apron as big as the bend is sharp, so a
 curving street is not strung with beads. `eco.html?map=turin` runs the
 ecosystem on the main streets of central Turin, and `eco.html?map=barcelona`
 on Barcelona's Eixample, chamfered corners and all, and `?map=manhattan` on
-Midtown Manhattan. A map past four times the size of a small city keeps
+Midtown Manhattan. Or any other: on the eco page, type a place under "Any
+city" (or open `eco.html?place=Lisbon Baixa`) and the page finds it with
+OpenStreetMap's geocoder, fetches about a square kilometre of its streets
+from an Overpass server, converts them in the browser with the same code as
+`tools/osm.mjs` (`src/osm.js`), and starts an economy there. The public map
+servers are often busy, so it tries four in turn; a shared link keeps the
+place. A map past four times the size of a small city keeps
 the economy of a city four times the size, so a real map never asks a
 browser to draw a thousand cars.
 
