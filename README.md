@@ -1362,7 +1362,7 @@ safety, paid for in fares, and more money for drivers buys throughput, paid
 for in time.
 
 **Insurance.** Moral hazard, the economists' worry about insurance, says a
-driver who does not pay for his own crashes will crash more. With
+driver who does not pay for their own crashes will crash more. With
 `--econ insurance=1` a crash costs the driver nothing, and every car pays a
 flat premium instead (0.034 a second, what the average uninsured car spends
 on crashes, so the city as a whole pays about the same). Turin, six days,
@@ -1373,8 +1373,8 @@ two seeds, days two to six:
 | uninsured | 242 / 206 | 2588 / 2363 | 57 s / 58 s | 188 / 206 | 42% / 43% |
 | insured | 303 / 344 | 3362 / 3245 | 39 s / 38 s | 374 / 380 | 28% / 28% |
 
-Twice the crashes, and more of them into walls: the crashes of drivers who
-take corners too fast. But also a third more fares, delivered in two thirds
+Twice the crashes, and more of them into walls, presumably the crashes of
+drivers who take corners too fast. But also a third more fares, delivered in two thirds
 of the time, because passengers tip for speed and nothing now charges for
 it. And it is not learned. Crashes per car per ten minutes on day one were
 already 2.19 and 2.37 against 1.05 and 1.25, and rose over the following
