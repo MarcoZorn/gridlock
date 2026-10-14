@@ -642,6 +642,22 @@ steady speed; these routes cross a jittered grid a few blocks at a time and
 turn at most junctions, and the wave only runs one way. That is my guess at
 why, not something I have tested.
 
+Then I let the timings evolve instead of designing them. A plain (1+1)
+search over the offsets of every light in one city, sixty tries, keeping
+any change that did not cost trips, with the lights-raised drivers fixed;
+then the evolved timings and the original random ones, each on four
+generations of traffic the search never saw (`node tools/lightsopt.mjs 91`):
+
+| city | random offsets | evolved offsets |
+|---|---|---|
+| 77 | 340 trips | 376 (+10.6%) |
+| 91 | 280 | 356 (+27.1%) |
+| 101 | 292 | 344 (+17.8%) |
+
+So timing does matter, a lot, just not in any pattern I knew to try. The
+green wave assumed cars going straight at an even speed; whatever the search
+found fits how these drivers actually move.
+
 **The crossroads.** Junction conflicts are diluted in a whole city, so I
 built an arena that is nothing but the question: one junction, four arms, a
 ring road joining their ends so there are no dead ends, and every fare
