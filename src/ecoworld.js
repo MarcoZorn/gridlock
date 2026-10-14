@@ -258,7 +258,16 @@ export class EcoWorld {
         d.cash -= ECON.towFee;
         d.lost = false;
         const from = this.rng.int(c.nodes.length);
-        d.place(this.randomFare(from, -1, d.body.jam), this.rng.range(0.2, 0.7));
+        const job = d.job, to = d.route[d.route.length - 1];
+        const keep = this.finishFare && job && job.kind && from !== to;
+        if (keep) {
+          // the fare stays aboard: dropped somewhere new, still bound for
+          // where it was going, without taking another job off the queues
+          const q = [this.passengers, this.freight];
+          d.place(c.route(from, to, -1, d.body.jam), this.rng.range(0.2, 0.7));
+          [this.passengers, this.freight] = q;
+          d.job = job;
+        } else d.place(this.randomFare(from, -1, d.body.jam), this.rng.range(0.2, 0.7));
       }
     }
     if (this.crowd) this.crowd.step(DT, this.cars);

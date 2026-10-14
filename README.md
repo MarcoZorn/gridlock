@@ -1305,7 +1305,10 @@ The cars also stay a little longer and heavier, a softer edge to go broke
 on being a softer pressure to be minimal. It stays off by default because
 every economy number in this README was measured without it, but it is the
 single biggest lever on the city found so far. The eco page has it as
-"Finish the fare". Richer drivers fail mid-trip less often, so
+"Finish the fare". Under the same rule a car fetched as lost keeps its fare
+too, and is dropped somewhere new still bound for where it was going rather
+than handed a fresh one; that adds another 4% of deliveries (407 and 404 in
+six hours, against 389 and 390). Richer drivers fail mid-trip less often, so
 more of the same passengers get there. Slower trips and more
 crashes, but more people moved. Add the congestion charge and it keeps the
 streets fast and the fleet half the size, and moves 28% fewer fares than
