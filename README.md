@@ -1451,8 +1451,8 @@ It is worse news for anyone on foot. With pedestrians crossing (`--pedestrians
 
 Hitting someone still costs the driver a fine, insured or not. But two and a
 half times the cars, crashing twice as easily, make the road all but
-impossible to cross: a fifth as many crossings, and more people hit than
-cross safely. (One of these runs found a bug on the way: on a real map a
+impossible to cross: a fifth as many crossings, and about as many people
+hit as cross. (One of these runs found a bug on the way: on a real map a
 pedestrian could fail to find a road with room to cross and end up with no
 road at all, which crashed the run. Fixed.) The eco page has it as
 "Insurance" ([try it on Turin](https://marcozorn.github.io/gridlock/eco.html?map=turin&insure=1)).
