@@ -1439,7 +1439,22 @@ becoming careless, it is careless drivers no longer going out of business:
 the founders who crash a lot survive their first day instead of dying in it. Run on to day 15, it stays that way: the insured cities sit at 2.6
 to 2.7 crashes per car per ten minutes from day three to day fifteen, the
 uninsured ones at 1.3 to 1.5, neither drifting. Two weeks without a reason
-to be careful bred no extra carelessness. The eco page has it as
+to be careful bred no extra carelessness.
+
+It is worse news for anyone on foot. With pedestrians crossing (`--pedestrians
+40`), days two to four, two seeds:
+
+| Turin with pedestrians | cars | people | crossings | hit per 100 crossings |
+|---|---|---|---|---|
+| uninsured | 138 / 132 | 30 / 28 | 7092 / 6543 | 29.5 / 29.9 |
+| insured | 351 / 313 | 20 / 20 | 1294 / 1485 | 124.7 / 97.8 |
+
+Hitting someone still costs the driver a fine, insured or not. But two and a
+half times the cars, crashing twice as easily, make the road all but
+impossible to cross: a fifth as many crossings, and more people hit than
+cross safely. (One of these runs found a bug on the way: on a real map a
+pedestrian could fail to find a road with room to cross and end up with no
+road at all, which crashed the run. Fixed.) The eco page has it as
 "Insurance" ([try it on Turin](https://marcozorn.github.io/gridlock/eco.html?map=turin&insure=1)).
 
 **Who gets rich?** Across the cars alive at day 15 in four Turin cities
