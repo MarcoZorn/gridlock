@@ -67,8 +67,9 @@ export function demandAt(t) {
 const SPECIES_EVERY = 600;   // ticks between speciation passes
 
 // What happened since the last telemetry row. `sideAll` / `sideRight`:
-// sampled cars on two-way roads, and how many of them right of the middle.
-const freshEvents = () => ({ births: 0, deaths: 0, immigrants: 0, trips: 0, crashes: 0, carCrashes: 0, earned: 0, deadheads: 0, freight: 0, tripTicks: 0, pedHits: 0, sideAll: 0, sideRight: 0 });
+// sampled cars on two-way roads, and how many of them right of the middle;
+// `pickups` / `dropoffs`: passengers taken on and passengers delivered.
+const freshEvents = () => ({ births: 0, deaths: 0, immigrants: 0, trips: 0, crashes: 0, carCrashes: 0, earned: 0, deadheads: 0, freight: 0, tripTicks: 0, pedHits: 0, sideAll: 0, sideRight: 0, pickups: 0, dropoffs: 0 });
 
 export class EcoWorld {
   // `founders` is a Population from the generation-based city: a no-fitness
@@ -194,7 +195,7 @@ export class EcoWorld {
       const fPay = d.body.capacity >= ECON.freightMin && this.freight >= 1 ? ECON.freightRate * this.freightBoom * fLoad : 0;
       const pPay = this.passengers >= 1 ? ECON.passengerRate * (1 + ECON.speedBonus / 2) : 0;
       if (fPay > pPay) { kind = "freight"; load = fLoad; this.freight--; }
-      else if (pPay > 0) { kind = "passenger"; this.passengers--; }
+      else if (pPay > 0) { kind = "passenger"; this.passengers--; this.events.pickups++; }
       else this.events.deadheads++;
     }
     d.job = {
@@ -216,6 +217,7 @@ export class EcoWorld {
       const took = Math.max(1, this.tick - j.start);
       const quick = Math.max(0, Math.min(1, j.expect / took - 0.5));
       fare = dist * ECON.passengerRate * (1 + ECON.speedBonus * quick);
+      this.events.dropoffs++;
     }
     d.cash += fare;
     d.earned += fare;
@@ -263,9 +265,9 @@ export class EcoWorld {
         if (keep) {
           // the fare stays aboard: dropped somewhere new, still bound for
           // where it was going, without taking another job off the queues
-          const q = [this.passengers, this.freight];
+          const q = [this.passengers, this.freight, this.events.pickups];
           d.place(c.route(from, to, -1, d.body.jam), this.rng.range(0.2, 0.7));
-          [this.passengers, this.freight] = q;
+          [this.passengers, this.freight, this.events.pickups] = q;
           d.job = job;
         } else d.place(this.randomFare(from, -1, d.body.jam), this.rng.range(0.2, 0.7));
       }
