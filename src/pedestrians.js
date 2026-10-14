@@ -53,8 +53,13 @@ export class Pedestrian {
   // A random point along a random road, away from junctions, on one kerb.
   pickSpot(rng) {
     const c = this.city;
+    // only roads with room for a crossing between their junction aprons: on a
+    // real map many are short bends, and twenty misses in a row left a person
+    // with no road at all
+    const roomy = c.edges.filter((e) => e.len - c.nodes[e.a].r - c.nodes[e.b].r > 24);
+    const pool = roomy.length ? roomy : [c.edges.reduce((a, b) => (b.len > a.len ? b : a))];
     for (let tries = 0; tries < 20; tries++) {
-      const e = rng.pick(c.edges), A = c.nodes[e.a], B = c.nodes[e.b];
+      const e = rng.pick(pool), A = c.nodes[e.a], B = c.nodes[e.b];
       const t = rng.range(0, 1), along = A.r + 8 + t * (e.len - A.r - B.r - 16);
       if (along <= A.r || along >= e.len - B.r) continue;
       const ux = (B.x - A.x) / e.len, uy = (B.y - A.y) / e.len, side = rng.next() < 0.5 ? 1 : -1;
