@@ -63,6 +63,9 @@ node tools/osm.mjs extract.json maps/name.json "Place"   # an OpenStreetMap extr
   unseen tracks; these lose nothing, presumably because they steer by the
   route, which every city has. Raised in one city instead of six, they do
   as well in unseen ones (1.64 trips per car against 1.58, three seeds).
+  On real streets, which they never saw either, they do better: per 1000
+  units driven they crash 2.8 times on Turin, 1.4 on Barcelona and 1.3 on
+  Manhattan, against 3.5 on the generated grids.
 - **They drive by the route, but learn by the traffic.** Blindfolded to
   other cars, grown drivers barely notice; raised blind, they come out a
   quarter worse. Their position on the road and the route's direction are
