@@ -1101,7 +1101,11 @@ wrong. The two-way populations had evolved a side of the road by then (75%
 and 88% of cars on the right half, see "Which side of the road?"), and with
 the steering pulled to the right half of every two-way road (`--body
 lane=1`) the one-way city still moved 18% fewer fares (2139 and 2062 a day,
-against 2499 and 2632).
+against 2499 and 2632). Nor is it that drivers get lost
+more often among one-way streets: counted per 100 trips, getting lost was
+more common one-way on Turin (17 against 12) and Manhattan (37 against 31)
+but less common on Barcelona (19 against 28). One seed each, so no pattern
+worth the name, and a reminder of how often these drivers get lost at all.
 
 **A congestion charge.** London and Stockholm charge drivers for using
 busy streets. Here (`--econ congestion=0.1`) every car pays, each second, 0.1
