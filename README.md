@@ -1222,7 +1222,9 @@ They also make it emptier. In every economy a car with no fare waiting
 drives somewhere for nothing, and those empty trips are 28-38% of all trips
 in a normal Turin (55-63% at night), against about three in five under
 insurance (61%) or both rules (59%): more cars than there are fares to
-share. The brains cannot tell whether they are carrying anyone, so an empty
+share. On the small generated grid it is two thirds from day two (65%) and
+creeps up to three quarters by day forty (74%) as the fleet slowly grows.
+The brains cannot tell whether they are carrying anyone, so an empty
 car drives exactly like a full one. That input does not exist yet. Would it
 be worth having? Faking it with a coded rule, a throttle cap for cars with
 nobody aboard, on the day-15 Turin cities for six hours: fares barely move
