@@ -94,6 +94,7 @@ export class EcoWorld {
     this.speedLimit = ECON.speedLimit;   // and its speed camera, 0 for none
     this.freightBoom = 1;                // freight pay and demand times this: at 3 trucks can evolve
     this.finishFare = ECON.finishFare;   // a car with a fare aboard finishes it before it can go broke
+    this.insurance = ECON.insurance;     // crashes paid by a pool, every car pays a premium
     this.city.control = control;
     this.cfg = { ...DEFAULTS, pWeight: 0.5, weightStep: 0.15 };
     this.innov = founders ? founders.innov : new Innovations(N_INPUTS + 1 + N_OUTPUTS);
@@ -171,7 +172,7 @@ export class EcoWorld {
       const hit = car.damage - lastDamage;
       lastDamage = car.damage;
       const cost = hit * car.p.mass * ECON.crashCost;
-      if (!ECON.insurance) car.cash -= cost;   // insured: the pool pays, see the premium
+      if (!this.insurance) car.cash -= cost;   // insured: the pool pays, see the premium
       this.events.crashes++;
       this.city.addHeat("crash", car.x, car.y);
     };
@@ -248,7 +249,7 @@ export class EcoWorld {
       // grows with the odometer, so every car wears out in the end
       const wear = 1 + d.dist / ECON.wearDist;
       d.cash -= d.body.upkeep * wear * DT + d.body.fuel * ECON.fuelTax * Math.abs(d.v) * DT;
-      if (ECON.insurance) d.cash -= ECON.premium * DT;
+      if (this.insurance) d.cash -= ECON.premium * DT;
       if (this.speedLimit && Math.abs(d.v) > this.speedLimit) {
         d.cash -= ECON.speedFine * (Math.abs(d.v) / this.speedLimit - 1) * DT;
         this.events.speeding = (this.events.speeding || 0) + DT;
@@ -480,7 +481,7 @@ export class EcoWorld {
       v: 1, seed: this.seed, citySeed: this.city.seed, graph: this.graph, control: this.control, tick: this.tick, rng: this.rng.s,
       innov: this.innov.toJSON(), cfg: this.cfg, nextId: this.nextId, nextSpecies: this.nextSpecies, threshold: this.threshold,
       passengers: this.passengers, freight: this.freight,
-      closed: [...this.city.closed], edits: this.edits, size: this.size, congestion: this.congestion, speedLimit: this.speedLimit, freightBoom: this.freightBoom, finishFare: this.finishFare,
+      closed: [...this.city.closed], edits: this.edits, size: this.size, congestion: this.congestion, speedLimit: this.speedLimit, freightBoom: this.freightBoom, finishFare: this.finishFare, insurance: this.insurance,
       founders: this.founders ? this.founders.map((g) => g.toJSON()) : null,
       cars: this.cars.map((d) => ({
         brain: d.genome.toJSON(), body: d.body.toJSON(), cash: d.cash, id: d.id, born: d.born, parent: d.parent,
@@ -506,6 +507,7 @@ export class EcoWorld {
     w.speedLimit = j.speedLimit ?? ECON.speedLimit;
     w.freightBoom = j.freightBoom ?? 1;
     w.finishFare = j.finishFare ?? ECON.finishFare;
+    w.insurance = j.insurance ?? ECON.insurance;
     for (const id of j.closed || []) w.city.closed.add(id);
     w.tick = j.tick; w.rng.s = j.rng; w.cfg = j.cfg;
     w.innov = Innovations.fromJSON(j.innov);
