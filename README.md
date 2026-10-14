@@ -1228,6 +1228,21 @@ once freight was being carried. The eco page has the triple rate as a
 (120 cars, the ceiling, against 27 to 60), because freight is money the
 small-car cities leave on the table.
 
+**A fuel tax.** Fuel costs three times as much (`--econ fuelTax=3`), Turin,
+six days, two seeds, days two to six:
+
+| Turin | cars | trips a day | mean trip | engine gene | length gene |
+|---|---|---|---|---|---|
+| no tax | 242 / 206 | 2588 / 2363 | 57 s / 58 s | 0.50 / 0.40 | 0.03 / 0.03 |
+| fuel x3 | 55 / 62 | 967 / 1069 | 40 s / 41 s | 0.47 / 0.41 | 0.02 / 0.03 |
+
+The fleet loses three quarters of its cars and the city 60% of its fares,
+and the cars do not change to meet it: the engine gene stays where it was,
+and the length gene was already at its floor. An economy that has bred the
+cheapest car its genome allows has nothing left to give a fuel tax but
+bankruptcies. Unlike the congestion charge, which priced out the marginal
+cars and left the rest faster, this one only shrinks the city.
+
 **Where they crash.** The ecosystem page has the same heatmaps as the
 generation page (H): crashes, or cars crawling at walking pace. On a real map
 the crash layer is not a set of hot junctions but whole streets glowing, and

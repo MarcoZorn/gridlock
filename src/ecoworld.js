@@ -37,6 +37,7 @@ export const ECON = {
   fareQueue: 20,        // fares waiting beyond this go to another firm
   wearDist: 40000,      // upkeep doubles every this many units on the odometer
   congestion: 0,        // a charge per second, times how full the road you are on is (an experiment, off)
+  fuelTax: 1,           // fuel costs this many times its price (an experiment)
   replan: 0,            // 1: at every junction a car re-plans the rest of its route on the traffic now (an experiment, off)
   speedLimit: 0,        // a speed camera everywhere: over this speed a car pays...
   speedFine: 0.3,       // ...this much a second at double the limit, in proportion below that (an experiment, off)
@@ -240,7 +241,7 @@ export class EcoWorld {
       // running costs: being on the road, and burning fuel to move; upkeep
       // grows with the odometer, so every car wears out in the end
       const wear = 1 + d.dist / ECON.wearDist;
-      d.cash -= d.body.upkeep * wear * DT + d.body.fuel * Math.abs(d.v) * DT;
+      d.cash -= d.body.upkeep * wear * DT + d.body.fuel * ECON.fuelTax * Math.abs(d.v) * DT;
       if (this.speedLimit && Math.abs(d.v) > this.speedLimit) {
         d.cash -= ECON.speedFine * (Math.abs(d.v) / this.speedLimit - 1) * DT;
         this.events.speeding = (this.events.speeding || 0) + DT;
