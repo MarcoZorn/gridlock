@@ -17,6 +17,7 @@ const view = $("view"), vctx = view.getContext("2d");
 const brain = $("brain"), bctx = brain.getContext("2d");
 const spc = $("species"), sctx = spc.getContext("2d");
 const sdc = $("sides"), sdctx = sdc.getContext("2d");
+const fac = $("fares"), factx = fac.getContext("2d");
 const bod = $("bodies"), octx = bod.getContext("2d");
 const tree = $("tree"), tctx = tree.getContext("2d");
 
@@ -33,6 +34,7 @@ function layout() {
   fitCanvas(brain, bw, 150);
   fitCanvas(spc, bw, 110);
   fitCanvas(sdc, bw, 70);
+  fitCanvas(fac, bw, 70);
   fitCanvas(bod, bw, 130);
   fitCanvas(tree, bw, 140);
   cam.fitted = false;
@@ -80,6 +82,23 @@ function drawSpecies() {
     sctx.fill();
     top.forEach((v, i) => (base[i] = v));
   }
+}
+
+// Fares delivered each city hour over the last four days, the measure every
+// rule on this page ends up being judged by.
+function drawFares() {
+  const W = fac.clientWidth, H = fac.clientHeight, log = world.log.slice(-576);
+  factx.clearRect(0, 0, W, H);
+  const hours = [];
+  for (let i = 0; i + 6 <= log.length; i += 6) hours.push(log.slice(i, i + 6).reduce((a, r) => a + r.trips, 0));
+  if (hours.length < 2) return;
+  const top = Math.max(...hours, 1);
+  factx.fillStyle = "#e8c46a";
+  const bw = W / 96;
+  hours.forEach((v, i) => factx.fillRect(i * bw, H - (v / top) * (H - 12), Math.max(1, bw - 1), (v / top) * (H - 12)));
+  factx.fillStyle = "rgba(230,232,238,0.7)";
+  factx.font = "10px monospace";
+  factx.fillText(`busiest hour ${top}`, 2, 10);
 }
 
 // Which side of the road, an hour at a time, over the last four days. A
@@ -258,6 +277,7 @@ function draw() {
   drawNetwork(bctx, focus ? focus.genome : null, brain.clientWidth, brain.clientHeight);
   drawSpecies();
   drawSides();
+  drawFares();
   drawTree(focus);
   drawBodies();
 
