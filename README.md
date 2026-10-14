@@ -118,6 +118,9 @@ node tools/osm.mjs extract.json maps/name.json "Place"   # an OpenStreetMap extr
   broke on the way and 41 with one that got lost. Doubling fares, once the
   bigger fleet has grown in, gets 70% of them there instead of 60%, at
   slower trips and more crashes.
+- **Insure drivers and they crash twice as often, and move a third more
+  people.** Not because they learn recklessness: the reckless ones simply
+  stop going broke, and speed is what passengers pay for.
 - **Cars and pedestrians cycle.** Once both populations can replace
   themselves they oscillate like predator and prey.
 - **Fitness sharing costs here.** Raised without it, drivers made 35% more
@@ -1357,6 +1360,27 @@ streets fast and the fleet half the size, and moves 28% fewer fares than
 normal fares with no charge at all. In this city the charge buys speed and
 safety, paid for in fares, and more money for drivers buys throughput, paid
 for in time.
+
+**Insurance.** Moral hazard, the economists' worry about insurance, says a
+driver who does not pay for his own crashes will crash more. With
+`--econ insurance=1` a crash costs the driver nothing, and every car pays a
+flat premium instead (0.034 a second, what the average uninsured car spends
+on crashes, so the city as a whole pays about the same). Turin, six days,
+two seeds, days two to six:
+
+| Turin | cars | trips a day | mean trip | crashes per car per day | car-on-car |
+|---|---|---|---|---|---|
+| uninsured | 242 / 206 | 2588 / 2363 | 57 s / 58 s | 188 / 206 | 42% / 43% |
+| insured | 303 / 344 | 3362 / 3245 | 39 s / 38 s | 374 / 380 | 28% / 28% |
+
+Twice the crashes, and more of them into walls: the crashes of drivers who
+take corners too fast. But also a third more fares, delivered in two thirds
+of the time, because passengers tip for speed and nothing now charges for
+it. And it is not learned. Crashes per car per ten minutes on day one were
+already 2.19 and 2.37 against 1.05 and 1.25, and rose over the following
+days no faster than the uninsured ones did. The hazard here is not drivers
+becoming careless, it is careless drivers no longer going out of business:
+the founders who crash a lot survive their first day instead of dying in it.
 
 **Where they crash.** The ecosystem page has the same heatmaps as the
 generation page (H): crashes, or cars crawling at walking pace. On a real map

@@ -39,6 +39,8 @@ export const ECON = {
   congestion: 0,        // a charge per second, times how full the road you are on is (an experiment, off)
   fuelTax: 1,           // fuel costs this many times its price (an experiment)
   finishFare: 0,        // 1: a car with a fare aboard cannot go broke until it delivers (an experiment)
+  insurance: 0,         // 1: crashes cost the driver nothing; every car pays the premium instead (an experiment)
+  premium: 0.034,       // per second: about what the average car spends on crashes uninsured
   replan: 0,            // 1: at every junction a car re-plans the rest of its route on the traffic now (an experiment, off)
   speedLimit: 0,        // a speed camera everywhere: over this speed a car pays...
   speedFine: 0.3,       // ...this much a second at double the limit, in proportion below that (an experiment, off)
@@ -169,7 +171,7 @@ export class EcoWorld {
       const hit = car.damage - lastDamage;
       lastDamage = car.damage;
       const cost = hit * car.p.mass * ECON.crashCost;
-      car.cash -= cost;
+      if (!ECON.insurance) car.cash -= cost;   // insured: the pool pays, see the premium
       this.events.crashes++;
       this.city.addHeat("crash", car.x, car.y);
     };
@@ -246,6 +248,7 @@ export class EcoWorld {
       // grows with the odometer, so every car wears out in the end
       const wear = 1 + d.dist / ECON.wearDist;
       d.cash -= d.body.upkeep * wear * DT + d.body.fuel * ECON.fuelTax * Math.abs(d.v) * DT;
+      if (ECON.insurance) d.cash -= ECON.premium * DT;
       if (this.speedLimit && Math.abs(d.v) > this.speedLimit) {
         d.cash -= ECON.speedFine * (Math.abs(d.v) / this.speedLimit - 1) * DT;
         this.events.speeding = (this.events.speeding || 0) + DT;
