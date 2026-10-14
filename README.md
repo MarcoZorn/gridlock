@@ -55,6 +55,8 @@ node tools/osm.mjs extract.json maps/name.json "Place"   # an OpenStreetMap extr
 
 ## What it found, so far
 
+### How they drive
+
 - **Drivers learn to drive a city they have never seen.** After 300
   generations the evolved champion out-drove my hand-written controller on
   twelve unseen cities, and the shipped drivers do exactly as well in
@@ -93,26 +95,34 @@ node tools/osm.mjs extract.json maps/name.json "Place"   # an OpenStreetMap extr
   higher, not with better eyesight, and not when both cars pay for a
   crossing crash (that cut collisions 8%, but did not make anyone yield). About 60% of junction conflicts end
   without a collision, the same as for drivers that have never met traffic.
+- **Lights teach easing off.** Drivers raised under traffic lights approach
+  a red at little more than half the speed of a green, by lifting off the
+  throttle rather than braking; drivers raised without signals ignore them.
+- **In a crowded city the danger is the queue, not the crossing.** In the
+  economy on Turin and Barcelona over 80% of crashes are car-on-car, and
+  over 80% of those happen between junctions, in the traffic, not at the
+  crossings.
+
+### What evolves on its own
+
 - **Without a fitness function, a side of the road evolves.** In the
   generation city which side cars keep to is inherited (autocorrelation
   0.71) but never locks in, even with 120 cars on the road. In the economy,
   once there are about a hundred cars, within four days usually three in
   four to nine in ten keep to one side. Which side is chance: one Turin run
   drives on the left, its twin on the right.
-- **Lights teach easing off.** Drivers raised under traffic lights approach
-  a red at little more than half the speed of a green, by lifting off the
-  throttle rather than braking; drivers raised without signals ignore them.
-- **Fines teach, and cost.** Raising the price of a red light cuts
-  red-running and car-on-car crashes within a hundred generations, and the
-  city moves a third as many people.
 - **With no fitness function, the cheapest car wins, unless freight pays.**
   Every forty-day economy bred small, underpowered, short-sighted cars. With
   freight paying triple, half the cities evolved trucks; one held trucks and
   couriers side by side for a while, then converged on vans.
-- **In a crowded city the danger is the queue, not the crossing.** In the
-  economy on Turin and Barcelona over 80% of crashes are car-on-car, and
-  over 80% of those happen between junctions, in the traffic, not at the
-  crossings.
+- **Cars and pedestrians cycle.** Once both populations can replace
+  themselves they oscillate like predator and prey.
+
+### Rules and prices
+
+- **Fines teach, and cost.** Raising the price of a red light cuts
+  red-running and car-on-car crashes within a hundred generations, and the
+  city moves a third as many people.
 - **One-way streets do not pay here.** Barcelona's Eixample and Midtown
   Manhattan with their real arrows carry a sixth to a fifth fewer fares than
   the same streets two-way, and are no safer: a fare across the block has to
@@ -134,8 +144,9 @@ node tools/osm.mjs extract.json maps/name.json "Place"   # an OpenStreetMap extr
 - **Insure drivers and they crash twice as often, and move a third more
   people.** Not because they learn recklessness: the reckless ones simply
   stop going broke, and speed is what passengers pay for.
-- **Cars and pedestrians cycle.** Once both populations can replace
-  themselves they oscillate like predator and prey.
+
+### Evolving them
+
 - **Fitness sharing costs here.** Raised without it, drivers made 35% more
   trips in cities they had never seen (six seeds), and switching it off late
   in two long runs helped too. It is now off.
