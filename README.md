@@ -391,6 +391,25 @@ car-on-car counters are no use here: a wreck in a junction counts as an
 unresolved conflict, and touching one counts as a collision every tick.)
 (`node tools/fundamental.mjs 480` for any row.)
 
+## Can they learn to signal?
+
+If right of way is about knowing what the other car will do, maybe they
+need to tell each other. With `--signal` every car gets one more output, an
+indicator it shows (anywhere from -1 to 1), and one more input, the
+indicator of the nearest car its rays can see. Nothing says what a signal
+means. Three seeds each way, 400 generations, the last 200 in traffic:
+
+| | conflicts resolved | waiting | trips per car | crashes per km |
+|---|---|---|---|---|
+| no signals | 84.9 / 82.6 / 87.4% | 3.7 / 4.2 / 5.1% | 1.77 / 1.84 / 1.83 | 7.7 / 8.1 / 7.9 |
+| signals | 84.9 / 85.7 / 85.1% | 1.8 / 6.7 / 6.3% | 1.88 / 1.75 / 1.64 | 7.4 / 8.4 / 8.6 |
+
+No language, so far. The indicators are used, every level of them, but the
+mutual information between the signal a car sees and whether it brakes is
+0.001 to 0.002 bits: the signal tells the car that sees it next to nothing.
+Two hundred generations of traffic may be too short for a meaning to
+settle; a thousand-generation run is under way.
+
 ## What is coded and what is evolved
 
 | coded | evolved |

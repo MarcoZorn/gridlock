@@ -148,4 +148,4 @@ commits and pushes.
 
 ## Done
 
-- 1. Signalling: started
+- 1. Signalling: built (`--signal`); 400 generations, no meaning yet (0.002 bits); 1000-generation run under way
