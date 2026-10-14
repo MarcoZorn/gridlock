@@ -1584,6 +1584,24 @@ day 15 the three big species are all vans, and one of them sees twice as
 far as the others (sensor range 0.76 against 0.38 and 0.40) and earns the
 same. Two ways to make the same living.
 
+**A loophole, found later.** Measuring inequality (a Gini coefficient of the
+cars' cash, now in every telemetry row) showed a city under "finish the
+fare" with a mean wallet of -128: of 480 cars, 177 were in debt, the worst
+by 3596. A car with a fare aboard could not go out of business, and some
+kept getting lost, being towed with the fare still aboard, and never
+delivering, so they never died. The rule now gives a ride's grace, not
+forever: a broke car may finish a fare it has had for less than three
+times the trip's expected length, and only while less than 20 in debt.
+With that, the debt is gone (the worst car at -18) and the gains hold or
+grow. Days two to six, Turin: finish the fare 3442 and 3509 fares a day
+(against 3249 and 3309 with the loophole, 2588 and 2363 with no rule); both
+rules 4715 and 4623; Manhattan under lights with both rules 3700 and 3767,
+and without lights 4779 and 4776, so on Manhattan the lights cost 22% once
+the rules are fair. The tables above were measured with the loophole and
+are left as they were. Inequality otherwise barely moves with the rules:
+Gini 0.35 with none, 0.35 with the congestion charge or imitation, 0.37
+with insurance.
+
 **Lights on Manhattan.** Midtown runs on traffic lights, so I gave the
 economy's Manhattan lights at every junction of three or more roads (60 of
 them) and founders raised under lights. It never got going: twelve days on
