@@ -1592,8 +1592,9 @@ kept getting lost, being towed with the fare still aboard, and never
 delivering, so they never died. The rule now gives a ride's grace, not
 forever: a broke car may finish a fare it has had for less than three
 times the trip's expected length, and only while less than 20 in debt.
-With that, the debt is gone (the worst car at -18) and the gains hold or
-grow. Days two to six, Turin: finish the fare 3442 and 3509 fares a day
+With that, the debt is gone (the worst car at -18) and the gains hold, or
+shrink a little for Manhattan under lights. Days two to six, Turin: finish
+the fare 3442 and 3509 fares a day
 (against 3249 and 3309 with the loophole, 2588 and 2363 with no rule); both
 rules 4715 and 4623; Manhattan under lights with both rules 3700 and 3767,
 and without lights 4779 and 4776, so on Manhattan the lights cost 22% once
