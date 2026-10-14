@@ -145,8 +145,8 @@ node tools/osm.mjs extract.json maps/name.json "Place"   # an OpenStreetMap extr
   fares a day against 2476, more than any change to the drivers did.
 - **Traffic lights killed Manhattan's economy, and two rules revived it.**
   Under lights it never left the immigrant floor in twelve days; with
-  finishing the fare and insurance it carried 4000 fares a day, though
-  still a sixth fewer than the same rules without lights.
+  finishing the fare and insurance it carried 4000-4500 fares a day (two
+  seeds), though still 7-16% fewer than the same rules without lights.
 - **Insure drivers and they crash twice as often, and move a third more
   people.** Not because they learn recklessness: the reckless ones simply
   stop going broke, and speed is what passengers pay for.
@@ -1555,10 +1555,11 @@ unprofitable as making the early days fatal, cars going broke with
 passengers aboard before anyone could save enough for a child. Stop the
 dying, and the economy the lights had killed carries twice the fares of the
 same streets with no lights and no rules. Do the lights help, once the rules
-keep everyone alive? No: the same rules without lights, same seed, carry
-4751-4825 fares a day from day two against 3974-4045 with them, a sixth
-more, and crash less (255 crashes per car per day against 295). On
-Manhattan, for these drivers, the lights cost fares and buy no safety.
+keep everyone alive? No: the same rules without lights carry 4751-4825
+fares a day from day two against 3974-4045 with them (seed 7), and
+4694-4814 against 4294-4502 (seed 11), 7 to 16% more, and crash less (255
+and 271 crashes per car per day against 295 and 302). On Manhattan, for
+these drivers, the lights cost fares and buy no safety.
 
 **Where they crash.** The ecosystem page has the same heatmaps as the
 generation page (H): crashes, or cars crawling at walking pace. On a real map
