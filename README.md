@@ -1455,6 +1455,22 @@ Selection still works, it just works on averages over lifetimes and
 lineages, not through any one trait that makes a car obviously richer than
 its neighbour.
 
+The species are another matter. They are labels from brain similarity, but
+bodies are inherited down the same lineages, so species come to differ in
+body too. Turin at day 15, the three species with 15 cars or more:
+
+| species | cars | earns per hour | engine | sensor range | rays |
+|---|---|---|---|---|---|
+| 44 | 88 | 9.16 | 0.63 | 0.09 | 0.64 |
+| 40 | 80 | 8.49 | 0.31 | 0.20 | 0.71 |
+| 45 | 38 | 7.23 | 0.34 | 0.20 | 0.84 |
+
+A powerful, short-sighted kind of car and a slower, longer-sighted one,
+sharing the city, the powerful one a little ahead. In the freight city at
+day 15 the three big species are all vans, and one of them sees twice as
+far as the others (sensor range 0.76 against 0.38 and 0.40) and earns the
+same. Two ways to make the same living.
+
 **Where they crash.** The ecosystem page has the same heatmaps as the
 generation page (H): crashes, or cars crawling at walking pace. On a real map
 the crash layer is not a set of hot junctions but whole streets glowing, and
