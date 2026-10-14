@@ -60,7 +60,8 @@ node tools/osm.mjs extract.json maps/name.json "Place"   # an OpenStreetMap extr
   twelve unseen cities, and the shipped drivers do exactly as well in
   cities they never saw as in the six they were raised in (1.49 trips per
   car against 1.46, the same crash rate). The Python cars lose a lap on
-  unseen tracks; these steer by the route, which every city has.
+  unseen tracks; these, presumably, because they steer by the route, which
+  every city has.
 - **They drive by the route, but learn by the traffic.** Blindfolded to
   other cars, grown drivers barely notice; raised blind, they come out a
   quarter worse. Their position on the road and the route's direction are
