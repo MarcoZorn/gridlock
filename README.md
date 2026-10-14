@@ -1380,7 +1380,10 @@ it. And it is not learned. Crashes per car per ten minutes on day one were
 already 2.19 and 2.37 against 1.05 and 1.25, and rose over the following
 days no faster than the uninsured ones did. The hazard here is not drivers
 becoming careless, it is careless drivers no longer going out of business:
-the founders who crash a lot survive their first day instead of dying in it.
+the founders who crash a lot survive their first day instead of dying in it. Run on to day 15, it stays that way: the insured cities sit at 2.6
+to 2.7 crashes per car per ten minutes from day three to day fifteen, the
+uninsured ones at 1.3 to 1.5, neither drifting. Two weeks without a reason
+to be careful bred no extra carelessness.
 
 **Where they crash.** The ecosystem page has the same heatmaps as the
 generation page (H): crashes, or cars crawling at walking pace. On a real map
