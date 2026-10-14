@@ -265,10 +265,11 @@ export class EcoWorld {
         if (keep) {
           // the fare stays aboard: dropped somewhere new, still bound for
           // where it was going, without taking another job off the queues
-          const q = [this.passengers, this.freight, this.events.pickups];
+          const q = [this.passengers, this.freight, this.events.pickups, this.events.deadheads], len = d.routeLen;
           d.place(c.route(from, to, -1, d.body.jam), this.rng.range(0.2, 0.7));
-          [this.passengers, this.freight, this.events.pickups] = q;
+          [this.passengers, this.freight, this.events.pickups, this.events.deadheads] = q;
           d.job = job;
+          d.routeLen = len;   // the fare is for the trip that was booked
         } else d.place(this.randomFare(from, -1, d.body.jam), this.rng.range(0.2, 0.7));
       }
     }
