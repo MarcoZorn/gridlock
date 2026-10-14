@@ -391,6 +391,25 @@ car-on-car counters are no use here: a wreck in a junction counts as an
 unresolved conflict, and touching one counts as a collision every tick.)
 (`node tools/fundamental.mjs 480` for any row.)
 
+## Phantom jams
+
+On a real ring road with nothing in the way, drivers still make jams: one
+brakes a little, the one behind brakes more, and a stop-and-go wave runs
+backwards round the ring (Sugiyama's 2008 experiment, filmed with real
+cars). The shipped drivers on a one-way ring of 32 junctions
+(`node tools/ring.mjs 90`), speed by position across, time running down,
+red stopped and green fast:
+
+![Space-time plot of 90 evolved cars on a ring road: green diagonal streaks of moving cars, and red marks that stay in one place rather than drifting backwards](docs/ring.png)
+
+No phantom jams. Cars stop, 8 to 11% of the time at every density from 10
+cars to 90, but the red marks are vertical: a car stopped in one place to
+deliver a fare or after a crash, with the traffic flowing round it. The
+backward-drifting bands that make a phantom jam never form. Their stopping
+is at places, not caused by the car in front, which fits everything else
+they do: they follow, but they do not react to the car ahead by braking
+for it.
+
 ## Can they learn to signal?
 
 If right of way is about knowing what the other car will do, maybe they
