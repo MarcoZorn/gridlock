@@ -50,6 +50,8 @@ node headless.mjs --eco --run runs/e --days 40 --founders docs/trained.json [--p
 #   --no-sharing (with --from) turns NEAT fitness sharing off for an older population
 node report.mjs                            # LIVE.md from every run's telemetry
 node tools/sidechart.mjs out.svg runs/e1 runs/e2   # which side of the road an economy keeps to
+FROM=2 TO=6 node tools/ecocmp.mjs e1 e2   # economy runs side by side: the source of most tables here
+node tools/fuzz.mjs 7                      # a crash hunt over maps, rules and pedestrians
 node tools/osm.mjs extract.json maps/name.json "Place"   # an OpenStreetMap extract as a map
 ```
 
