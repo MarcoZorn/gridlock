@@ -1270,8 +1270,8 @@ same seeds):
 
 The early slump was the fleet growing into the city. Once it fills it (480
 is the ceiling for a map this size), double fares move a fifth more people
-than normal ones: with that many cars on the road, fewer passengers wait
-long enough to give up and go to another firm. Slower trips and more
+than normal ones. My reading, not measured: with that many cars on the
+road, fewer passengers wait long enough to give up and go to another firm. Slower trips and more
 crashes, but more people moved. Add the congestion charge and it keeps the
 streets fast and the fleet half the size, and moves 28% fewer fares than
 normal fares with no charge at all. In this city the charge buys speed and
