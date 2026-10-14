@@ -17,7 +17,8 @@ yielding, queueing and lane discipline on their own, or split into species like
 couriers and trucks, or just gridlock.
 
 The answers so far: a side of the road, yes, when there is no fitness
-function and enough traffic, and which side is chance. Yielding, no, because
+function and enough traffic, and which side is chance. Queueing, yes: they
+follow the car in front and almost never overtake it. Yielding, no, because
 in these cities it does not pay; priced high enough it starts to, in drivers
 that already know how to drive. Couriers and trucks, only when freight pays
 three times as much, in half the cities, and side by side only for a while:
@@ -176,6 +177,15 @@ blindfolded only for the test: 1.38 / 1.73 / 1.75 trips per car, 4.44 / 3.85
 / 3.68 crashes, as many trips as with their eyes open and 10% more crashes.
 It is not that old drivers have learned to do without: at 300 generations as
 at 1025, the sense is something to learn with, not something to drive by.
+
+Do they queue? On the same road, going the same way, a car that catches up
+with another either follows it or gets past. With the shipped drivers in
+unseen cities, overtakes (two cars swapping order on a road) per 1000 units
+driven: 0.10 with 40 cars at once, 0.28 with 120 and with 480. Crashes over
+the same distance are 3.5, 6.5 and 14.3, so a car is thirty to fifty times
+more likely to hit another than to pass it, and 23-30% of same-road pairs
+are following within 25 units. They queue, and when the queue stops they
+run into it.
 
 `node tools/ablate.mjs turn` (or any other group) repeats a row. On the
 generation page "Blind to cars" and "Blind to walls" do it live, and
