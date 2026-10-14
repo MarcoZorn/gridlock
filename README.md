@@ -1131,7 +1131,9 @@ suspected the progress count, which stalls while a car crosses the second
 half of an apron, and let it count there; the lost count did not move. So
 these really are cars that cannot find their way through a junction in four
 seconds, which, along with the right-of-way results, says junctions are
-where these drivers are weakest.
+where these drivers are weakest. Giving them ten seconds instead of four
+(`--body lostTicks=600`) does not change what the city delivers either: 2374
+and 2553 fares a day against 2588 and 2363.
 
 **A congestion charge.** London and Stockholm charge drivers for using
 busy streets. Here (`--econ congestion=0.1`) every car pays, each second, 0.1
