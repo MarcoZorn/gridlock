@@ -1466,7 +1466,12 @@ body too. Turin at day 15, the three species with 15 cars or more:
 | 45 | 38 | 7.23 | 0.34 | 0.20 | 0.84 |
 
 A powerful, short-sighted kind of car and a slower, longer-sighted one,
-sharing the city, the powerful one a little ahead. In the freight city at
+sharing the city, the powerful one a little ahead. Not on its way to
+winning, though: from day 6 to day 15 species 44 grew from 36 cars to about
+150 and was shrinking again by the end (132), while 40 fell to 27 and came
+back to 86, and 45 grew from about ten to 42. They take turns, which is
+what you would see if each kind does best while it is the rarer one; that
+is a reading, not something measured. In the freight city at
 day 15 the three big species are all vans, and one of them sees twice as
 far as the others (sensor range 0.76 against 0.38 and 0.40) and earns the
 same. Two ways to make the same living.
