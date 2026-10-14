@@ -40,6 +40,7 @@ export const ECON = {
   fuelTax: 1,           // fuel costs this many times its price (an experiment)
   finishFare: 0,        // 1: a car with a fare aboard cannot go broke until it delivers (an experiment)
   insurance: 0,         // 1: crashes cost the driver nothing; every car pays the premium instead (an experiment)
+  imitate: 0,           // share of children who copy the most successful driver's brain, not the parent's (an experiment)
   premium: 0.034,       // per second: about what the average car spends on crashes uninsured
   replan: 0,            // 1: at every junction a car re-plans the rest of its route on the traffic now (an experiment, off)
   speedLimit: 0,        // a speed camera everywhere: over this speed a car pays...
@@ -325,6 +326,19 @@ export class EcoWorld {
       parent.genome.fitness = parent.earned; m.genome.fitness = m.earned;
       brain = crossover(parent.genome, m.genome, this.rng, this.cfg);
     } else brain = parent.genome.clone();
+    // Culture: with ECON.imitate the child learns to drive from the most
+    // successful car on the road (earnings per hour), not from its parent.
+    // The body is still the parent's.
+    if (ECON.imitate && this.rng.next() < ECON.imitate) {
+      let best = null, rate = -Infinity;
+      for (const o of this.cars) {
+        const age = this.tick - o.born;
+        if (age < 3600) continue;
+        const r = o.earned / age;
+        if (r > rate) { rate = r; best = o; }
+      }
+      if (best) brain = best.genome.clone();
+    }
     mutate(brain, this.innov, this.rng, this.cfg);
     const child = this.spawn(brain, parent.body.mutate(this.rng), ECON.childCash, parent);
     return child;

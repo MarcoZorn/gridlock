@@ -433,7 +433,10 @@ low signal and 31% when it shows a high one. Signalling theory says why:
 a signal gets a meaning only when the one who reads it gains by acting on
 it, and in this city stopping for another car does not pay (see the yield
 rule above). The test of that is to make it pay: the same population,
-continued under thirty-times junction prices, is running.
+continued for 400 generations under thirty-times junction prices, where
+avoiding conflicts does pay. That failed too: 0.0001 bits, a car braking
+27-30% of the time whatever it sees. Whatever a language would need here,
+a reason to listen was not enough.
 
 ## What is coded and what is evolved
 
@@ -1617,6 +1620,14 @@ fares a day from day two against 3974-4045 with them (seed 7), and
 4694-4814 against 4294-4502 (seed 11), 7 to 16% more, and crash less (255
 and 271 crashes per car per day against 295 and 302). On Manhattan, for
 these drivers, the lights cost fares and buy no safety.
+
+**Learning from the best.** Children normally drive like their parent.
+With `--econ imitate=0.3`, three in ten instead copy the driving brain of
+the most successful car on the road (earnings per hour), keeping their
+parent's body: culture alongside genes. Turin, days two to six: 2690 and
+2691 fares a day against 2588 and 2363, trips 53 s against 57-58, crashes
+per car a little higher (209 and 214 against 188 and 206). A modest gain,
+in both seeds.
 
 **Where they crash.** The ecosystem page has the same heatmaps as the
 generation page (H): crashes, or cars crawling at walking pace. On a real map

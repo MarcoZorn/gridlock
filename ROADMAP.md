@@ -150,4 +150,5 @@ commits and pushes.
 
 - 5. Any city in the browser: done (eco page "Any city", ?place=)
 - 2. Phantom jams: none; stops are stationary (tools/ring.mjs, docs/ring.png)
-- 1. Signalling: built (`--signal`); 400 generations, no meaning yet (0.002 bits); 1000-generation run under way
+- 1. Signalling: built (`--signal`); no meaning after 1000 generations (0.0014 bits), nor under junction prices that make listening pay (0.0001)
+- 6. Cultural transmission: `ECON.imitate`; copying the best driver adds a few percent of fares
