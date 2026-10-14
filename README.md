@@ -1155,10 +1155,12 @@ the two):
 | finish the fare | 286 | 3279 | 69 s | 241 |
 | insurance | 324 | 3304 | 38 s | 377 |
 
-Every rule that costs drivers money shrinks the fleet and the fares with it;
-every rule that keeps marginal drivers in business grows both. Days two to
-six are early days, though: by day 15 double fares move a fifth more people
-than no rule at all, and finishing the fare 42% more. The sections below
+Every rule that costs drivers money shrinks the fleet and the fares with it.
+Every rule that keeps marginal drivers in business grows the fleet; the
+fares follow straight away when the rule keeps passengers from being lost
+(finish the fare, insurance), and only later when it just pays more (double
+fares, fewer fares in these first days, a fifth more than no rule by day
+15). Finishing the fare is 42% ahead by then. The sections below
 have the details and the longer runs.
 
 **A congestion charge.** London and Stockholm charge drivers for using
