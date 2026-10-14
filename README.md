@@ -36,6 +36,7 @@ step: serve the folder and open it.
   markets, evolved bodies, a road editor, fast-forward by the day.
 - `LIVE.md`: tables and charts from the long headless runs.
 - URL options: `?seed=7`, `?size=small|medium|large`, `?control=none|lights|roundabouts`,
+  on the eco page the rules `?charge=1&camera=1&boom=1&finish=1`,
   `?map=crossroads|turin|barcelona|manhattan`, and on the generation page `?traffic=1&density=20`.
 
 ```
@@ -1125,7 +1126,8 @@ Four days is not long for a gene to move, so I ran all four on to day 15.
 The `jam` gene still sat at 0.04-0.08 in every run, charged or not. But the
 charged cities caught up: on day 15 they moved 2691 and 2398 fares with 176
 and 158 cars, against 2781 and 2726 with 287 and 285 uncharged. Nearly the
-same service from 40% fewer cars. The eco page has it as a button, saved with the city.
+same service from 40% fewer cars. The eco page has it as a button, saved with the city
+([try it on Turin](https://marcozorn.github.io/gridlock/eco.html?map=turin&charge=1)).
 
 Why does nobody learn to avoid the charge? Because it does not pay to. I took
 both charged cities at day 15 and ran each for six hours with every car's
@@ -1229,7 +1231,7 @@ and 0.54 rising to 0.61; seed 13 stays a city of heavy trucks at 0.84. All
 three are at the 120-car ceiling. There is a good van here, and a city that
 went all trucks early can stay that way, but nothing came back to small cars
 once freight was being carried. The eco page has the triple rate as a
-"Freight boom" button. The truck cities are also the big ones
+"Freight boom" button ([try it](https://marcozorn.github.io/gridlock/eco.html?boom=1&seed=13)). The truck cities are also the big ones
 (120 cars, the ceiling, against 27 to 60), because freight is money the
 small-car cities leave on the table.
 
@@ -1310,7 +1312,7 @@ The cars also stay a little longer and heavier, a softer edge to go broke
 on being a softer pressure to be minimal. It stays off by default because
 every economy number in this README was measured without it, but it is the
 single biggest lever on the city found so far. The eco page has it as
-"Finish the fare". Under the same rule a car fetched as lost keeps its fare
+"Finish the fare" ([try it on Turin](https://marcozorn.github.io/gridlock/eco.html?map=turin&finish=1)). Under the same rule a car fetched as lost keeps its fare
 too, and is dropped somewhere new still bound for where it was going rather
 than handed a fresh one; that adds another 4% of deliveries (407 and 404 in
 six hours, against 389 and 390). Richer drivers fail mid-trip less often, so
