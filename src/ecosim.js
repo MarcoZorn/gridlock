@@ -272,6 +272,9 @@ function draw() {
   // which side the cars on two-way roads kept to over the last city hour
   const side = sum("sideAll") >= 50 ? Math.round((100 * sum("sideRight")) / sum("sideAll")) : null;
   $("side").textContent = side === null ? "-" : side >= 50 ? `${side}% right` : `${100 - side}% left`;
+  // over the last day: an hour is too short, deliveries lag the pick-ups
+  const dayLog = world.log.slice(-144), daySum = (k) => dayLog.reduce((a, r) => a + (r[k] || 0), 0);
+  $("delivered").textContent = daySum("pickups") >= 30 ? `${Math.round((100 * daySum("dropoffs")) / daySum("pickups"))}%` : "-";
   $("cash").textContent = (world.cars.reduce((a, d) => a + d.cash, 0) / Math.max(1, world.cars.length)).toFixed(1);
   $("maxgen").textContent = Math.max(0, ...world.cars.map((d) => d.generation));
   $("nspecies").textContent = world.species.length;
