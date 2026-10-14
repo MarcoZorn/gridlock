@@ -1299,8 +1299,13 @@ Turin from the founders, two seeds, days two to six:
 |---|---|---|---|---|
 | as it is | 242 / 206 | 2588 / 2363 | 57 s / 58 s | 0.03 / 0.03 |
 | finish the fare | 278 / 293 | 3249 / 3309 | 71 s / 67 s | 0.13 / 0.07 |
+| as it is, days 11-15 | 279 / 285 | 2737 / 2745 | 55 s / 61 s | |
+| finish the fare, days 11-15 | 480 / 480 | 3887 / 3891 | 99 s / 107 s | |
 
-A third more people moved, by one rule about when a business may fail.
+A third more people moved, by one rule about when a business may fail, and
+by day 15, with the fleet at the 480-car ceiling, 42% more, though each trip
+now takes nearly twice as long. (Days 7 to 15 of these runs also had the
+towing change below.)
 The cars also stay a little longer and heavier, a softer edge to go broke
 on being a softer pressure to be minimal. It stays off by default because
 every economy number in this README was measured without it, but it is the
