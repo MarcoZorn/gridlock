@@ -38,6 +38,7 @@ export const ECON = {
   wearDist: 40000,      // upkeep doubles every this many units on the odometer
   congestion: 0,        // a charge per second, times how full the road you are on is (an experiment, off)
   fuelTax: 1,           // fuel costs this many times its price (an experiment)
+  finishFare: 0,        // 1: a car with a fare aboard cannot go broke until it delivers (an experiment)
   replan: 0,            // 1: at every junction a car re-plans the rest of its route on the traffic now (an experiment, off)
   speedLimit: 0,        // a speed camera everywhere: over this speed a car pays...
   speedFine: 0.3,       // ...this much a second at double the limit, in proportion below that (an experiment, off)
@@ -278,8 +279,11 @@ export class EcoWorld {
       }
     }
     const before = this.cars.length;
-    for (const d of this.cars) if (d.cash < 0 && this.ancestry.has(d.id)) this.ancestry.get(d.id).died = this.tick;
-    this.cars = this.cars.filter((d) => d.cash >= 0);
+    // with ECON.finishFare a car that is carrying someone (or something)
+    // finishes the job before it goes out of business
+    const broke = (d) => d.cash < 0 && !(ECON.finishFare && d.job && d.job.kind);
+    for (const d of this.cars) if (broke(d) && this.ancestry.has(d.id)) this.ancestry.get(d.id).died = this.tick;
+    this.cars = this.cars.filter((d) => !broke(d));
     this.events.deaths += before - this.cars.length;
     this.events.births += born.length;
     while (this.cars.length < ECON.minCars) {

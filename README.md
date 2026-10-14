@@ -1287,7 +1287,24 @@ in ten have not arrived by the end. Counting where they went, for seed 7:
 89 vanished with a car that went broke on the way, 41 with one that got
 lost and was fetched, and the rest were still in a car when the six hours
 ended. At double fares those two losses fall to 39 and 15. A city of
-drivers on the edge of bankruptcy loses its passengers with them. Richer drivers fail mid-trip less often, so
+drivers on the edge of bankruptcy loses its passengers with them.
+
+So let a taxi that runs out of money finish the ride it is on:
+`ECON.finishFare`, a car with a fare aboard cannot go out of business until
+it delivers. Six hours of the same day-15 cities: 76% of passengers
+delivered instead of 60-62%, none lost to a bankrupt car. Six whole days on
+Turin from the founders, two seeds, days two to six:
+
+| Turin | cars | trips a day | mean trip | length gene |
+|---|---|---|---|---|
+| as it is | 242 / 206 | 2588 / 2363 | 57 s / 58 s | 0.03 / 0.03 |
+| finish the fare | 278 / 293 | 3249 / 3309 | 71 s / 67 s | 0.13 / 0.07 |
+
+A third more people moved, by one rule about when a business may fail.
+The cars also stay a little longer and heavier, a softer edge to go broke
+on being a softer pressure to be minimal. It stays off by default because
+every economy number in this README was measured without it, but it is the
+single biggest lever on the city found so far. Richer drivers fail mid-trip less often, so
 more of the same passengers get there. Slower trips and more
 crashes, but more people moved. Add the congestion charge and it keeps the
 streets fast and the fleet half the size, and moves 28% fewer fares than
