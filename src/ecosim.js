@@ -469,6 +469,9 @@ function syncUrl() {
   u.searchParams.set("control", control);
   u.searchParams.set("size", size);
   if (graph) u.searchParams.set("map", new URLSearchParams(location.search).get("map"));
+  for (const [param, on] of [["charge", world.congestion > 0], ["camera", world.speedLimit > 0], ["boom", world.freightBoom > 1], ["finish", world.finishFare > 0]]) {
+    if (on) u.searchParams.set(param, 1); else u.searchParams.delete(param);
+  }
   history.replaceState(null, "", u);
 }
 $("share").onclick = async (e) => {
@@ -523,4 +526,6 @@ if (["none", "lights", "roundabouts"].includes(params.get("control"))) {
 await Promise.all([loadFounders("none"), control !== "none" ? loadFounders(control) : null]);
 for (const c of Object.keys(FOUNDER_FILES)) if (!founders[c]) loadFounders(c);
 reset(+params.get("seed") || 3);
+// ?charge=1&camera=1&boom=1&finish=1 start the city under those rules
+for (const id of ["charge", "camera", "boom", "finish"]) if (params.get(id) === "1") $(id).click();
 frame();
