@@ -1629,6 +1629,19 @@ are left as they were. Inequality otherwise barely moves with the rules:
 Gini 0.35 with none, 0.35 with the congestion charge or imitation, 0.37
 with insurance.
 
+**Is wealth inherited?** Every car's earnings per city hour over its life,
+ranked against the cars born in the same quarter-day, and paired with its
+parent's (`node tools/mobility.mjs turin 7`, four days, two seeds, with and
+without imitation, 2666 to 3224 pairs each). Only the comfortable breed: no
+parent sat below the 60th percentile of its own cohort. But the child of a
+rich car does no better than anyone: the rank correlation between parent and
+child is 0.00 to 0.01 in all four runs, and children of the poorest fifth of
+parents reach the top fifth 14 to 19% of the time, about the 20% of pure
+chance (children of the richest fifth: 22 to 24%). Imitation does not change
+it. Measured across all ages at once the correlation came out negative
+(-0.08 to -0.16), but that was the economy changing over the days, not the
+families: early parents and late children earn in different cities.
+
 **Lights on Manhattan.** Midtown runs on traffic lights, so I gave the
 economy's Manhattan lights at every junction of three or more roads (60 of
 them) and founders raised under lights. It never got going: twelve days on

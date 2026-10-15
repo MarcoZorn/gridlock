@@ -200,6 +200,7 @@ commits and pushes.
 
 ## Done
 
+- 129. Social mobility: earnings are not inherited (parent-child rank correlation 0.00-0.01); only the top two fifths breed (tools/mobility.mjs)
 - 57. Critical junctions: closing the busiest roads first is no worse than random on real maps; the fragile ones are quiet one-way side streets
 - 5. Any city in the browser: done (eco page "Any city", ?place=)
 - 2. Phantom jams: none; stops are stationary (tools/ring.mjs, docs/ring.png)
