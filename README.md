@@ -1667,6 +1667,30 @@ parent's body: culture alongside genes. Turin, days two to six: 2690 and
 per car a little higher (209 and 214 against 188 and 206). A modest gain,
 in both seeds.
 
+**How many roads can a city lose?** Close road segments at random, one at
+a time, and measure what share of the city can still reach, and be reached
+from, the rest, obeying the arrows (20 random orders each,
+`node tools/percolation.mjs turin`):
+
+| roads closed | 5% | 10% | 20% | 30% | 50% |
+|---|---|---|---|---|---|
+| generated grid | 99% | 99% | 92% | 73% | 33% |
+| Turin | 53% | 24% | 10% | 6% | 3% |
+| Barcelona | 56% | 19% | 6% | 3% | 2% |
+| Manhattan | 59% | 20% | 6% | 3% | 2% |
+| Turin, two-way | 80% | 60% | 25% | 13% | 5% |
+| Barcelona, two-way | 94% | 81% | 35% | 13% | 4% |
+| Manhattan, two-way | 93% | 79% | 34% | 11% | 4% |
+
+The real maps are far more fragile than the grid: one segment in twenty
+gone, and half of a one-way city can no longer get everywhere. Two things do
+it, about equally. A real street is a chain of short segments (every bend
+is a node), so closing any one of them closes the whole street; and a
+one-way street closed is a direction lost, with no way round it the other
+way. Take the arrows away and the same maps hold out about twice as long,
+but still nowhere near as long as the grid, where every block has four ways
+round it.
+
 **Where they crash.** The ecosystem page has the same heatmaps as the
 generation page (H): crashes, or cars crawling at walking pace. On a real map
 the crash layer is not a set of hot junctions but whole streets glowing, and
