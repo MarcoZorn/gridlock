@@ -203,6 +203,7 @@ commits and pushes.
 - 5. Any city in the browser: done (eco page "Any city", ?place=)
 - 2. Phantom jams: none; stops are stationary (tools/ring.mjs, docs/ring.png)
 - 1. Signalling: built (`--signal`); no meaning after 1000 generations (0.0014 bits), nor under junction prices that make listening pay (0.0001)
+- 7. Novelty search: tried in neat-from-scratch, four times slower on these non-deceptive tracks
 - 3. Evolving lights: offsets searched per city, +11 to +27% trips on fresh traffic (tools/lightsopt.mjs)
 - 128. Inequality: Gini in the telemetry; found and fixed the finish-the-fare loophole
 - 6. Cultural transmission: `ECON.imitate`; copying the best driver adds a few percent of fares
