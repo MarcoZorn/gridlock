@@ -203,6 +203,7 @@ commits and pushes.
 - 5. Any city in the browser: done (eco page "Any city", ?place=)
 - 2. Phantom jams: none; stops are stationary (tools/ring.mjs, docs/ring.png)
 - 1. Signalling: built (`--signal`); no meaning after 1000 generations (0.0014 bits), nor under junction prices that make listening pay (0.0001)
+- 62. Phase transition: side-of-road order rises smoothly with car count, no sharp jump at these sizes
 - 60. Zipf: species rank-size slopes -1.0 to -2.0, too few species to say
 - 59. Scaling: cars per road superlinear (1.25), fares 0.84 by construction
 - 58. Percolation: real one-way cities lose half their connectivity at 5% of roads closed (tools/percolation.mjs)

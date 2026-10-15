@@ -827,7 +827,14 @@ it makes no difference. The line is lower down: a small grid with fifty or
 seventy cars leans but does not settle, and neither do the 40-day runs on it
 (23-62%); a hundred cars on Turin settle every time. A grid is no obstacle
 either, the large one settles like the real maps. A convention needs enough
-traffic to meet often, and not very much more than that. The freight
+traffic to meet often, and not very much more than that. Is it a phase
+transition, an abrupt change at some critical number of cars, like a magnet
+ordering below its Curie point? Turning Turin's demand down to find out
+(no freight, four days, two seeds, the share of cars on the majority side
+over day four): 28-29 cars, 64% and 67%; 47-49 cars, 54% and 62%; 74-82
+cars, 73% and 72%; about 100 cars, 79-88% as above. A smooth rise rather
+than a jump, at least at these sizes; a sharp transition would need far
+bigger cities to show. The freight
 experiment below agrees without being asked: on day six the three cities that
 had evolved trucks or vans, with 87 to 98 cars, kept to a side at 75-86%;
 the three that stayed small, with 51 to 70, at 58%, 61% and 77%.
