@@ -1691,6 +1691,16 @@ way. Take the arrows away and the same maps hold out about twice as long,
 but still nowhere near as long as the grid, where every block has four ways
 round it.
 
+**Scaling.** Real cities produce more per head the bigger they are (urban
+scaling, exponents above 1). Here, three grid sizes (79, 181 and 343 roads),
+three seeds each, days two to four, fitted on a log scale: fares grow with
+roads at an exponent of 0.84 and cars at 1.25. The fares exponent is mostly
+built in, since demand is coded to grow with the road count up to four
+times a small city's, and that ceiling bends it below 1. The car count is
+not built in, and it is superlinear: a bigger city carries more cars per
+road, so each car earns fewer fares. Bigger here means more crowded, not
+more productive.
+
 **Where they crash.** The ecosystem page has the same heatmaps as the
 generation page (H): crashes, or cars crawling at walking pace. On a real map
 the crash layer is not a set of hot junctions but whole streets glowing, and
