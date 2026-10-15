@@ -1698,6 +1698,22 @@ way. Take the arrows away and the same maps hold out about twice as long,
 but still nowhere near as long as the grid, where every block has four ways
 round it.
 
+Which roads matter most? Close the busiest first instead, ranked by how
+many of 300 random shortest routes use them (`TARGETED=1`):
+
+| busiest closed first | 5% | 10% | 20% | 30% | 50% |
+|---|---|---|---|---|---|
+| generated grid | 100% | 98% | 98% | 52% | 27% |
+| Turin | 54% | 32% | 17% | 16% | 6% |
+| Barcelona | 42% | 32% | 18% | 7% | 3% |
+| Manhattan | 74% | 70% | 14% | 5% | 3% |
+
+Not the attack it is on most networks. Only Barcelona breaks faster at 5%;
+Turin and Manhattan hold out better against it than against chance at 10%.
+The busy roads are the avenues, and avenues have parallel avenues. What
+breaks a real city is the quiet one-way side street that is the only way
+out of its block, and no route count ranks it high.
+
 **Scaling.** Real cities produce more per head the bigger they are (urban
 scaling, exponents above 1). Here, three grid sizes (79, 181 and 343 roads),
 three seeds each, days two to four, fitted on a log scale: fares grow with

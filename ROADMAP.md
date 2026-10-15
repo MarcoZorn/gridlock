@@ -200,6 +200,7 @@ commits and pushes.
 
 ## Done
 
+- 57. Critical junctions: closing the busiest roads first is no worse than random on real maps; the fragile ones are quiet one-way side streets
 - 5. Any city in the browser: done (eco page "Any city", ?place=)
 - 2. Phantom jams: none; stops are stationary (tools/ring.mjs, docs/ring.png)
 - 1. Signalling: built (`--signal`); no meaning after 1000 generations (0.0014 bits), nor under junction prices that make listening pay (0.0001)
