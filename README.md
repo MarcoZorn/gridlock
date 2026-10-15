@@ -1701,6 +1701,14 @@ not built in, and it is superlinear: a bigger city carries more cars per
 road, so each car earns fewer fares. Bigger here means more crowded, not
 more productive.
 
+Zipf's law, the rank-size rule of city sizes and word frequencies, says the
+second-biggest is half the biggest, the third a third, a slope of -1 on a
+log scale. The species of four economies, averaged over their last two
+days: Turin -1.04, the freight city -1.09, the 40-day grid -1.55, and a
+finish-the-fare Turin -1.99, one species with 233 cars against 35. Close to
+Zipf in two of four, but with four to six species in a city there are too
+few points to call it a law.
+
 **Where they crash.** The ecosystem page has the same heatmaps as the
 generation page (H): crashes, or cars crawling at walking pace. On a real map
 the crash layer is not a set of hot junctions but whole streets glowing, and
