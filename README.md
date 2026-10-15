@@ -1655,8 +1655,8 @@ cash. Turin, days two to six, two seeds each
 Too little and the economy never takes off: a newborn with 5 goes broke
 before its first fare, and the city sits near the immigrant floor, unequal
 because the few survivors hold everything. Twice the default makes the
-city fairer and smaller: a parent needs 42 instead of 29 to spare for each
-child, so fewer are born, and 12-14% fewer fares are carried. The default
+city fairer and smaller: each child costs its parent 29 instead of 16, so
+fewer are born, and 12-14% fewer fares are carried. The default
 sits between the two, and a generous start buys equality with output.
 
 **Lights on Manhattan.** Midtown runs on traffic lights, so I gave the
