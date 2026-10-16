@@ -41,6 +41,7 @@ export const ECON = {
   finishFare: 0,        // 1: a car with a fare aboard cannot go broke until it delivers (an experiment)
   insurance: 0,         // 1: crashes cost the driver nothing; every car pays the premium instead (an experiment)
   imitate: 0,           // share of children who copy the most successful driver's brain, not the parent's (an experiment)
+  basic: 0,             // share of every fare taxed and paid back equally to every car, a basic income (an experiment)
   premium: 0.034,       // per second: about what the average car spends on crashes uninsured
   replan: 0,            // 1: at every junction a car re-plans the rest of its route on the traffic now (an experiment, off)
   speedLimit: 0,        // a speed camera everywhere: over this speed a car pays...
@@ -232,7 +233,8 @@ export class EcoWorld {
       fare = dist * ECON.passengerRate * (1 + ECON.speedBonus * quick);
       this.events.dropoffs++;
     }
-    d.cash += fare;
+    this.pool = (this.pool || 0) + fare * ECON.basic;
+    d.cash += fare * (1 - ECON.basic);
     d.earned += fare;
     this.events.trips++;
     this.events.tripTicks += this.tick - j.start;
@@ -243,6 +245,7 @@ export class EcoWorld {
     const c = this.city;
     c.time = this.tick * DT;
     if (this.tick % 30 === 0) this.sampleSide();
+    if (this.pool && this.cars.length) { for (const d of this.cars) d.cash += this.pool / this.cars.length; this.pool = 0; }
     if (ECON.replan && c.load) this.replanAll();
     const scale = this.scale;
     this.passengers = Math.min(ECON.fareQueue * scale, this.passengers + ECON.demand * scale * demandAt(c.time) * DT);
