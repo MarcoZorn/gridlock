@@ -1912,7 +1912,7 @@ Each driver is mostly a function of what it sees, and the road ahead
 says as much as the car ahead. The IDM catches a fraction of it, always
 with a headway of zero: these drivers keep no time gap, they brake when
 the car is there. Brain 61 is the odd one: half its moments are spent
-within 40 units of a car ahead, in queues it makes itself, where nothing
+within 40 units of a car ahead, in queues, where nothing
 it sees predicts when it will move.
 
 **Scaling.** Real cities produce more per head the bigger they are (urban
