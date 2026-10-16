@@ -200,6 +200,7 @@ commits and pushes.
 
 ## Done
 
+- 26. Basic income (`ECON.basic`): a quarter of fares shared lowers the Gini to 0.32 at no cost in fares, but trips take a quarter longer
 - 24. Inheritance: a bigger start lowers the Gini (0.35 to 0.30) but costs 12-14% of fares; too small (5) and the economy never starts
 - 129. Social mobility: earnings are not inherited (parent-child rank correlation 0.00-0.01); only the top two fifths breed (tools/mobility.mjs)
 - 57. Critical junctions: closing the busiest roads first is no worse than random on real maps; the fragile ones are quiet one-way side streets

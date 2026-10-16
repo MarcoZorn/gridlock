@@ -1659,6 +1659,23 @@ city fairer and smaller: each child costs its parent 29 instead of 16, so
 fewer are born, and 12-14% fewer fares are carried. The default
 sits between the two, and a generous start buys equality with output.
 
+**A basic income.** `--econ basic=0.25` takes a quarter of every fare and
+pays it back, every tick, in equal shares to every car on the road. Turin,
+days two to six, two seeds each:
+
+| share of fares shared out | fares a day | trip | crashes per car | Gini |
+|---|---|---|---|---|
+| none | 2588, 2363 | 57-58 s | 188, 206 | 0.35, 0.35 |
+| a quarter | 2664, 2630 | 70-73 s | 221, 227 | 0.32, 0.32 |
+| a half | 1999, 2569 | 80-86 s | 196, 234 | 0.27, 0.27 |
+
+A quarter shared out costs nothing in fares (a few percent more, in both
+seeds) and lowers the Gini. The price is paid by the passengers: trips take
+a quarter longer, and the drivers crash more. A car that keeps only three
+quarters of its fare has less reason to hurry or to be careful, and the
+slow and the reckless no longer go broke for it. Shared out by half, one
+seed loses a fifth of its fares and every trip is half as long again.
+
 **Lights on Manhattan.** Midtown runs on traffic lights, so I gave the
 economy's Manhattan lights at every junction of three or more roads (60 of
 them) and founders raised under lights. It never got going: twelve days on
