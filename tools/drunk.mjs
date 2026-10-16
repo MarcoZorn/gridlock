@@ -6,9 +6,10 @@ import { Population } from "../src/neat.js";
 // Crashes per 1000 units driven, for drunk and sober cars separately.
 //
 //   SHARE=0.2 NOISE=0.5 node tools/drunk.mjs
-// FOG=0.5 shortens every car's sight to half its range.
+// FOG=0.5 shortens every car's sight to half its range. DELAY=10 makes the
+// impaired share act on what they saw 10 ticks ago (old drivers), not noise.
 //   FOG=0.5 node tools/drunk.mjs
-const share = +(process.env.SHARE || 0), noise = +(process.env.NOISE || 0.5), density = 60, fog = +(process.env.FOG || 1);
+const share = +(process.env.SHARE || 0), noise = +(process.env.NOISE || 0.5), density = 60, fog = +(process.env.FOG || 1), delay = +(process.env.DELAY || 0);
 const pop = Population.fromJSON(JSON.parse(fs.readFileSync("docs/trained.json", "utf8")).pop);
 let x = 12345; const rnd = () => ((x = (x * 1664525 + 1013904223) % 4294967296) / 4294967296);
 const gauss = () => Math.sqrt(-2 * Math.log(rnd() + 1e-12)) * Math.cos(2 * Math.PI * rnd());
@@ -28,7 +29,11 @@ for (const seed of [77, 91, 105]) {
       drunk.add(c);
       const base = c.genome;
       c.genome = Object.create(base);
-      c.genome.activate = (inp, out) => { base.activate(inp, out); out[0] += noise * gauss(); out[1] += noise * gauss(); };
+      if (delay) {
+        const past = Array.from({ length: delay }, () => [0, 0]);
+        let k = 0;
+        c.genome.activate = (inp, out) => { base.activate(inp, out); const p = past[k]; past[k] = [out[0], out[1]]; k = (k + 1) % delay; out[0] = p[0]; out[1] = p[1]; };
+      } else c.genome.activate = (inp, out) => { base.activate(inp, out); out[0] += noise * gauss(); out[1] += noise * gauss(); };
     }
   };
   for (let g = 0; g < 3; g++) {
@@ -38,4 +43,4 @@ for (const seed of [77, 91, 105]) {
   }
 }
 const rate = ([d, k]) => (d ? (1000 * k / d).toFixed(2) : "-");
-console.log(`share ${share} noise ${noise} fog ${fog}: crashes per 1000 units, sober ${rate(sum.sober)}, drunk ${rate(sum.drunk)}; sight ${(range / made).toFixed(0)}, distance per tick ${((sum.sober[0] + sum.drunk[0]) / ticks).toFixed(1)}`);
+console.log(`share ${share} noise ${noise} fog ${fog} delay ${delay}: crashes per 1000 units, sober ${rate(sum.sober)}, drunk ${rate(sum.drunk)}; sight ${(range / made).toFixed(0)}, distance per tick ${((sum.sober[0] + sum.drunk[0]) / ticks).toFixed(1)}`);
