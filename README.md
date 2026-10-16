@@ -1720,6 +1720,23 @@ crashes per 1000 units stay where they were (4.26, 4.07, 4.27): more
 crashes an hour, the same per mile. Unlike people, nothing in their senses
 says the view is short, and none of them was ever raised in fog.
 
+**Slow reactions.** `DELAY=12` makes a car act on what it saw 12 ticks
+ago. Every car delayed, same three cities:
+
+| delay | crashes per 1000 units | distance per tick |
+|---|---|---|
+| none | 4.26 | 26.3 |
+| 3 ticks (0.05 s) | 4.41 | 24.7 |
+| 6 ticks (0.1 s) | 5.87 | 19.5 |
+| 12 ticks (0.2 s) | 17.10 | 9.5 |
+| 24 ticks (0.4 s) | 21.57 | 9.1 |
+
+A fifth of a second, a quarter of a human's reaction time, quadruples the
+crashes and halves the traffic. These drivers were raised with instant
+reflexes and drive like it: closer and later than anyone who reacts in a
+second could. With a third of the cars delayed by 0.2 s, they crash four
+times as often (16.91) and the rest a little less (4.01), as with drunks.
+
 **Lights on Manhattan.** Midtown runs on traffic lights, so I gave the
 economy's Manhattan lights at every junction of three or more roads (60 of
 them) and founders raised under lights. It never got going: twelve days on
