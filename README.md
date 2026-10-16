@@ -1704,11 +1704,11 @@ driven:
 | 30%, 5 | 4.01 | 10.74 |
 | 60%, 5 | 3.81 | 10.35 |
 
-Noise of 0.5, half the full range of a control, changes nothing: at sixty
+Noise of 0.5, a quarter of a control's full range, changes nothing: at sixty
 decisions a second the car's own inertia averages it away. Heavier noise
 makes the drunk cars crash up to two and a half times as often, and the
-sober ones slightly less. The drunks hurt themselves, and spend their time
-being towed rather than in the way of anyone else.
+sober ones slightly less. The drunks hurt themselves, and probably spend
+their time being towed rather than in the way of anyone else (not measured).
 
 **Lights on Manhattan.** Midtown runs on traffic lights, so I gave the
 economy's Manhattan lights at every junction of three or more roads (60 of
