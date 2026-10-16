@@ -1699,16 +1699,26 @@ driven:
 | drunk share, noise | sober cars | drunk cars |
 |---|---|---|
 | none | 4.26 | - |
-| 30%, 0.5 | 4.19 | 4.14 |
-| 30%, 2 | 4.11 | 5.74 |
-| 30%, 5 | 4.01 | 10.74 |
-| 60%, 5 | 3.81 | 10.35 |
+| 30%, 0.5 | 4.33 | 4.12 |
+| 30%, 2 | 4.05 | 5.62 |
+| 30%, 5 | 3.82 | 12.52 |
+| 60%, 5 | 3.20 | 11.19 |
 
-Noise of 0.5, a quarter of a control's full range, changes nothing: at sixty
-decisions a second the car's own inertia averages it away. Heavier noise
-makes the drunk cars crash up to two and a half times as often, and the
-sober ones slightly less. The drunks hurt themselves, and probably spend
-their time being towed rather than in the way of anyone else (not measured).
+Noise of 0.5, a quarter of a control's full range, changes nothing: at
+sixty decisions a second the car's own inertia averages it away. Heavier
+noise makes the drunk cars crash three times as often, and the sober ones
+less: the whole city slows down (distance per tick 26.3 sober, 21.1 with a
+third of the cars very drunk), and slower traffic is safer traffic.
+(A first version of this table only made the first of each city's two
+waves of cars drunk; this one makes them all.)
+
+**Fog.** `FOG=0.5` halves every car's sight. The drivers do not slow down;
+they speed up. A ray reads its distance as a share of the car's range, so
+in fog a wall 30 units off reads as the edge of sight, open road. Distance
+per tick rises from 26.3 to 31.3 at half sight and 32.9 at a quarter, and
+crashes per 1000 units stay where they were (4.26, 4.07, 4.27): more
+crashes an hour, the same per mile. Like people, they drive as fast in
+fog as they can see, and none of them was ever raised in fog.
 
 **Lights on Manhattan.** Midtown runs on traffic lights, so I gave the
 economy's Manhattan lights at every junction of three or more roads (60 of

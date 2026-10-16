@@ -200,7 +200,8 @@ commits and pushes.
 
 ## Done
 
-- 117. Drunk drivers: noisy cars crash up to 2.5x as often; the sober ones around them slightly less, not more (tools/drunk.mjs)
+- 117. Drunk drivers: noisy cars crash 3x as often; the city slows and the sober ones crash less (tools/drunk.mjs)
+- 116. Fog: half sight makes drivers faster, not slower; crashes per distance unchanged (FOG=0.5)
 - 27. Minimum fare (`ECON.minFare`): 15% more per fare turns into a few more cars, not more fares or equality
 - 26. Basic income (`ECON.basic`): a quarter of fares shared lowers the Gini to 0.32 at no cost in fares, but trips take a quarter longer
 - 24. Inheritance: a bigger start lowers the Gini (0.35 to 0.30) but costs 12-14% of fares; too small (5) and the economy never starts
