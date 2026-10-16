@@ -43,6 +43,7 @@ export const ECON = {
   imitate: 0,           // share of children who copy the most successful driver's brain, not the parent's (an experiment)
   basic: 0,             // share of every fare taxed and paid back equally to every car, a basic income (an experiment)
   minFare: 0,           // no passenger fare pays less than this, a minimum wage per fare (an experiment)
+  reputation: 0,        // passengers refuse a car that crashes this many times more often than the average car (an experiment)
   premium: 0.034,       // per second: about what the average car spends on crashes uninsured
   replan: 0,            // 1: at every junction a car re-plans the rest of its route on the traffic now (an experiment, off)
   speedLimit: 0,        // a speed camera everywhere: over this speed a car pays...
@@ -202,13 +203,22 @@ export class EcoWorld {
   // sent for nothing. Because each market is finite, the more cars chase one
   // of them the less each earns there: taxis and trucks can both make a
   // living, and neither is written down anywhere as a job.
+  // Reputation: crashes per tick of life, against the average car's.
+  trusted(d) {
+    if (!ECON.reputation) return true;
+    const rate = (o) => o.crashes / Math.max(1, this.tick - o.born);
+    let sum = 0;
+    for (const o of this.cars) sum += rate(o);
+    return rate(d) <= ECON.reputation * sum / this.cars.length;
+  }
+
   newJob(d, first = false) {
     let kind = null, load = 0;
     if (!first) {
       // take whichever waiting job pays this vehicle more per unit of route
       const fLoad = Math.min(d.body.capacity, ECON.freightMax);
       const fPay = d.body.capacity >= ECON.freightMin && this.freight >= 1 ? ECON.freightRate * this.freightBoom * fLoad : 0;
-      const pPay = this.passengers >= 1 ? ECON.passengerRate * (1 + ECON.speedBonus / 2) : 0;
+      const pPay = this.passengers >= 1 && this.trusted(d) ? ECON.passengerRate * (1 + ECON.speedBonus / 2) : 0;
       if (fPay > pPay) { kind = "freight"; load = fLoad; this.freight--; }
       else if (pPay > 0) { kind = "passenger"; this.passengers--; this.events.pickups++; }
       else this.events.deadheads++;
