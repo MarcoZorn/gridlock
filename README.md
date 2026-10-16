@@ -1886,6 +1886,24 @@ a power law would let them. Jams here are a few cars at a
 junction waiting their turn, and they clear before they grow. No
 criticality, as with the phantom jams on the ring road.
 
+**Not car-followers.** The Intelligent Driver Model is the standard
+equation for how a driver speeds up and slows down behind another car:
+speed, gap and closing speed in, acceleration out. Fitting it to the
+shipped drivers on roads in two unseen cities (`SMOOTH=15 node
+tools/idm.mjs`, acceleration averaged over a quarter second), it explains
+nothing: its best fit does no better than a constant. Nor is it only the
+IDM's shape: a straight line through the same three numbers explains 4% of
+the variance, and 15% in the moments when a car is within 40 units ahead.
+(The search is random, so a better optimiser might find a little more; not
+the missing 85%.)
+
+These drivers do not follow cars the way the textbook says. Most of what
+sets their speed is the road: the bend ahead, the junction coming up, the
+kerb. A car ahead is one more thing to steer round, and when it is close
+they mostly brake hard (the 5th percentile of acceleration is -59 a second
+squared, five times the median braking when free) rather than keep a
+headway.
+
 **Scaling.** Real cities produce more per head the bigger they are (urban
 scaling, exponents above 1). Here, three grid sizes (79, 181 and 343 roads),
 three seeds each, days two to four, fitted on a log scale: fares grow with

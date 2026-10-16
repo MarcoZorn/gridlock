@@ -200,6 +200,7 @@ commits and pushes.
 
 ## Done
 
+- 53. IDM fit: the car-following model explains nothing; even a linear fit on the same inputs explains 4-15% (tools/idm.mjs)
 - 61. Self-organised criticality: no; jam sizes fall off exponentially, the largest 5 to 9 cars (tools/jams.mjs)
 - 114. Earthquake: a tenth of the roads closed; Turin and Barcelona shrug it off, Manhattan loses 3-9% and more each day (tools/quake.mjs)
 - 125. Reputation (`ECON.reputation`): shunning crash-prone cars does not lower crashes; crash counts carry no blame
