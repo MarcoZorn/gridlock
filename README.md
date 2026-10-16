@@ -1897,12 +1897,9 @@ the variance, and 15% in the moments when a car is within 40 units ahead.
 (The search is random, so a better optimiser might find a little more; not
 the missing 85%.)
 
-These drivers do not follow cars the way the textbook says. Most of what
-sets their speed is the road: the bend ahead, the junction coming up, the
-kerb. A car ahead is one more thing to steer round, and when it is close
-they mostly brake hard (the 5th percentile of acceleration is -59 a second
-squared, five times the median braking when free) rather than keep a
-headway.
+These drivers do not follow cars the way the textbook says. What does set
+their speed I have not measured; the likely suspects are the road itself,
+the bend and the junction coming up, which the model leaves out.
 
 **Scaling.** Real cities produce more per head the bigger they are (urban
 scaling, exponents above 1). Here, three grid sizes (79, 181 and 343 roads),
