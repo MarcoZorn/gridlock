@@ -43,6 +43,7 @@ export const ECON = {
   imitate: 0,           // share of children who copy the most successful driver's brain, not the parent's (an experiment)
   basic: 0,             // share of every fare taxed and paid back equally to every car, a basic income (an experiment)
   minFare: 0,           // no passenger fare pays less than this, a minimum wage per fare (an experiment)
+  reputationBy: 0,      // 0: by crash count; 1: by damage, which carries the blame of speed
   reputation: 0,        // passengers refuse a car that crashes this many times more often than the average car (an experiment)
   premium: 0.034,       // per second: about what the average car spends on crashes uninsured
   replan: 0,            // 1: at every junction a car re-plans the rest of its route on the traffic now (an experiment, off)
@@ -204,9 +205,11 @@ export class EcoWorld {
   // of them the less each earns there: taxis and trucks can both make a
   // living, and neither is written down anywhere as a job.
   // Reputation: crashes per tick of life, against the average car's.
+  // ECON.reputationBy = 1 counts damage instead, which grows with the car's
+  // own speed at impact: the one that ran into the other pays the most.
   trusted(d) {
     if (!ECON.reputation) return true;
-    const rate = (o) => o.crashes / Math.max(1, this.tick - o.born);
+    const rate = ECON.reputationBy ? (o) => o.damage / Math.max(1, this.tick - o.born) : (o) => o.crashes / Math.max(1, this.tick - o.born);
     let sum = 0;
     for (const o of this.cars) sum += rate(o);
     return rate(d) <= ECON.reputation * sum / this.cars.length;
