@@ -1938,6 +1938,29 @@ drivers route, with a `jam` gene near zero. In the simulator itself, forcing
 the gene to its top changed nothing (above), so the evolved city does not
 seem to be loaded like this; where it sits on the table is not measured.
 
+**Barcelona's arrows, from scratch.** A planner genome: one gene per road,
+two-way or one-way either way, searched (1+1) from a city with no arrows,
+every candidate kept strongly connected (`node tools/oneway.mjs barcelona 7`,
+1000 trips, 2000 tries). The model is the one above, per direction, with a
+one-way road giving its direction the whole width as the sim does. Total
+time on trips the search never saw, against no arrows:
+
+| busiest road | real arrows s7 / s11 | evolved s7 / s11 | evolved one-ways |
+|---|---|---|---|
+| 0.5 | 1.31 / 1.34 | 1.00 / 1.00 | 2 |
+| 2 | 2.12 / 2.46 | 0.96 / 0.97 | 27-31 |
+| 4 | 6.55 / 6.95 | 0.71 / 0.88 | 59-62 |
+
+Real Barcelona has 420 one-way roads of 643; evolution wants a few dozen,
+and only under load. Where both agree a road is one-way, they pick the same
+direction about half the time: a coin. In the sim itself (days two to five,
+the trained founders), the real arrows cost 12-19% of fares against no
+arrows, and the arrows evolved at load 2 cost 2-5%. Cut out of a city, a
+one-way grid loses the parallel streets that make it work, and these
+drivers take the shortest path without looking at traffic; what one-way
+streets buy in real life, fewer conflicts at junctions, is not what the sim
+charges for.
+
 **Scaling.** Real cities produce more per head the bigger they are (urban
 scaling, exponents above 1). Here, three grid sizes (79, 181 and 343 roads),
 three seeds each, days two to four, fitted on a log scale: fares grow with
