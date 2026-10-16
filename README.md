@@ -1676,6 +1676,21 @@ quarters of its fare has less reason to hurry or to be careful, and the
 slow and the reckless no longer go broke for it. Shared out by half, one
 seed loses a fifth of its fares and every trip is half as long again.
 
+**A minimum fare.** `--econ minFare=20` raises every passenger fare below
+20 to 20 (the mean fare is about 20). Turin, days two to six, two seeds:
+
+| floor | mean fare | cars | fares a day | Gini |
+|---|---|---|---|---|
+| none | 20.4, 20.5 | 242, 206 | 2588, 2363 | 0.35, 0.35 |
+| 10 | 19.9, 20.5 | 211, 261 | 2234, 2660 | 0.34, 0.35 |
+| 20 | 23.4, 23.6 | 255, 244 | 2329, 2408 | 0.35, 0.35 |
+
+A floor of 10 touches almost no fare. A floor of 20 pays 15% more per
+fare, and none of it shows: the same fares a day, the same Gini, a few
+more cars. Fares here are limited by passengers, not by drivers, so extra
+money per fare only feeds more cars into the same queue, and they share
+the same work.
+
 **Lights on Manhattan.** Midtown runs on traffic lights, so I gave the
 economy's Manhattan lights at every junction of three or more roads (60 of
 them) and founders raised under lights. It never got going: twelve days on
