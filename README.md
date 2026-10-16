@@ -1864,7 +1864,7 @@ Turin and Barcelona shrug it off, and by the last day carry a few percent
 more than without it, in both seeds; Manhattan loses more each day. Two
 seeds and a quake that changes everything after it make a few percent
 noise, so I would not claim a Braess effect in Turin from this. Manhattan's
-loss is clearer: its long avenues are the routes, and closing a stretch of
+loss is clearer. Why, I can only guess: its long avenues are the routes, and closing a stretch of
 one sends everyone the long way round; Turin's dense old grid of short
 streets always has another.
 
