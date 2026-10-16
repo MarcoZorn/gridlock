@@ -1888,18 +1888,32 @@ criticality, as with the phantom jams on the ring road.
 
 **Not car-followers.** The Intelligent Driver Model is the standard
 equation for how a driver speeds up and slows down behind another car:
-speed, gap and closing speed in, acceleration out. Fitting it to the
-shipped drivers on roads in two unseen cities (`SMOOTH=15 node
-tools/idm.mjs`, acceleration averaged over a quarter second), it explains
-nothing: its best fit does no better than a constant. Nor is it only the
-IDM's shape: a straight line through the same three numbers explains 4% of
-the variance, and 15% in the moments when a car is within 40 units ahead.
-(The search is random, so a better optimiser might find a little more; not
-the missing 85%.)
+speed, gap and closing speed in, acceleration out. Fitted to the shipped
+drivers on roads in two unseen cities (`node tools/idm.mjs`, acceleration
+averaged over a quarter second), with the whole mixed population on the
+road it explains nothing, and neither does anything else: a straight line
+through those three numbers plus four about the road ahead (bend,
+distance to the junction, nearest wall, offset from the centre) explains
+5%, and a nearest-neighbour predictor on all seven, 19%.
 
-These drivers do not follow cars the way the textbook says. What does set
-their speed I have not measured; the likely suspects are the road itself,
-the bend and the junction coming up, which the model leaves out.
+That turned out to be the mix, not the drivers. A hundred and twenty
+different brains react to the same moment in a hundred and twenty ways.
+Put sixty copies of one brain on the road (`ONE=1`) and it becomes
+predictable:
+
+| brain | IDM | straight line, car / road / both | nearest neighbours |
+|---|---|---|---|
+| 1 | 22% | 46% / 56% / 58% | 77% |
+| 31 | 20% | 30% / 34% / 35% | 58% |
+| 61 | -4% | 5% / 7% / 8% | 19% |
+| 91 | 12% | 24% / 27% / 29% | 53% |
+
+Each driver is mostly a function of what it sees, and the road ahead
+says as much as the car ahead. The IDM catches a fraction of it, always
+with a headway of zero: these drivers keep no time gap, they brake when
+the car is there. Brain 61 is the odd one: half its moments are spent
+within 40 units of a car ahead, in queues it makes itself, where nothing
+it sees predicts when it will move.
 
 **Scaling.** Real cities produce more per head the bigger they are (urban
 scaling, exponents above 1). Here, three grid sizes (79, 181 and 343 roads),
