@@ -1880,8 +1880,9 @@ other counted as one jam (`node tools/jams.mjs turin 7`):
 | Barcelona | 6442, 529, 57, 10, 1 | 5 |
 | Manhattan | 6822, 717, 132, 26, 13, 1 | 6 |
 
-Each size is four to ten times rarer than the one before: a steady ratio,
-which is an exponential, not a power law. Jams here are a few cars at a
+Each size is two to twelve times rarer than the one before, and a jam of
+ten cars never happened in three days: the counts fall off far faster than
+a power law would let them. Jams here are a few cars at a
 junction waiting their turn, and they clear before they grow. No
 criticality, as with the phantom jams on the ring road.
 
