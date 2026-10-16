@@ -200,6 +200,7 @@ commits and pushes.
 
 ## Done
 
+- 61. Self-organised criticality: no; jam sizes fall off exponentially, the largest 5 to 9 cars (tools/jams.mjs)
 - 114. Earthquake: a tenth of the roads closed; Turin and Barcelona shrug it off, Manhattan loses 3-9% and more each day (tools/quake.mjs)
 - 125. Reputation (`ECON.reputation`): shunning crash-prone cars does not lower crashes; crash counts carry no blame
 - 118. Old drivers: a 0.2 s reaction delay quadruples crashes; evolved drivers depend on instant reflexes (DELAY=12)

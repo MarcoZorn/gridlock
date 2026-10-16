@@ -1868,6 +1868,23 @@ loss is clearer. Why, I can only guess: its long avenues are the routes, and clo
 one sends everyone the long way round; Turin's dense old grid of short
 streets always has another.
 
+**Jams have a typical size.** If traffic organised itself to the edge of
+criticality, jams would come in every size, as many of each as a power law
+says. Every 10 s of days two to four, stopped cars within 25 units of each
+other counted as one jam (`node tools/jams.mjs turin 7`):
+
+| map | jams of 1, 2, 3, 4, 5... cars | largest |
+|---|---|---|
+| grid | 819, 160, 36, 7, 4, 2 | 6 |
+| Turin | 3981, 859, 229, 92, 27, 7, 10, 4, 2 | 9 |
+| Barcelona | 6442, 529, 57, 10, 1 | 5 |
+| Manhattan | 6822, 717, 132, 26, 13, 1 | 6 |
+
+Each size is four to ten times rarer than the one before: a steady ratio,
+which is an exponential, not a power law. Jams here are a few cars at a
+junction waiting their turn, and they clear before they grow. No
+criticality, as with the phantom jams on the ring road.
+
 **Scaling.** Real cities produce more per head the bigger they are (urban
 scaling, exponents above 1). Here, three grid sizes (79, 181 and 343 roads),
 three seeds each, days two to four, fitted on a log scale: fares grow with
