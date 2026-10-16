@@ -1691,6 +1691,25 @@ more cars. Fares here are limited by passengers, not by drivers, so extra
 money per fare only feeds more cars into the same queue, and they share
 the same work.
 
+**Drunk drivers.** A share of the shipped drivers get random noise added
+to their steering and throttle every tick, in three unseen cities with 60
+cars (`SHARE=0.3 NOISE=2 node tools/drunk.mjs`). Crashes per 1000 units
+driven:
+
+| drunk share, noise | sober cars | drunk cars |
+|---|---|---|
+| none | 4.26 | - |
+| 30%, 0.5 | 4.19 | 4.14 |
+| 30%, 2 | 4.11 | 5.74 |
+| 30%, 5 | 4.01 | 10.74 |
+| 60%, 5 | 3.81 | 10.35 |
+
+Noise of 0.5, half the full range of a control, changes nothing: at sixty
+decisions a second the car's own inertia averages it away. Heavier noise
+makes the drunk cars crash up to two and a half times as often, and the
+sober ones slightly less. The drunks hurt themselves, and spend their time
+being towed rather than in the way of anyone else.
+
 **Lights on Manhattan.** Midtown runs on traffic lights, so I gave the
 economy's Manhattan lights at every junction of three or more roads (60 of
 them) and founders raised under lights. It never got going: twelve days on
