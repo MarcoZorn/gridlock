@@ -200,6 +200,7 @@ commits and pushes.
 
 ## Done
 
+- 8. One-way planner (9, 14): from no arrows, evolution makes a few dozen roads one-way and only under load; the real arrows cost 12-19% of fares in the sim, evolved ones 2-5% (tools/oneway.mjs)
 - 4. Wardrop (54, 55): the price of anarchy is at most 1.6% on the real maps; shortest paths, as the drivers route, cost up to 2x at heavy load (tools/wardrop.mjs)
 - 53. IDM fit: per brain, the IDM explains up to 22% with zero headway; what a driver sees explains up to 77%; mixed populations look like noise (tools/idm.mjs)
 - 61. Self-organised criticality: no; jam sizes fall off exponentially, the largest 5 to 9 cars (tools/jams.mjs)
