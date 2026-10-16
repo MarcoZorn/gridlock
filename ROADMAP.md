@@ -200,6 +200,7 @@ commits and pushes.
 
 ## Done
 
+- 125. Reputation (`ECON.reputation`): shunning crash-prone cars does not lower crashes; crash counts carry no blame
 - 118. Old drivers: a 0.2 s reaction delay quadruples crashes; evolved drivers depend on instant reflexes (DELAY=12)
 - 117. Drunk drivers: noisy cars crash 3x as often; the city slows and the sober ones crash less (tools/drunk.mjs)
 - 116. Fog: half sight makes drivers faster, not slower; crashes per distance unchanged (FOG=0.5)

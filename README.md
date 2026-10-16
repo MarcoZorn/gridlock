@@ -1691,6 +1691,23 @@ more cars. Fares here are limited by passengers, not by drivers, so extra
 money per fare only feeds more cars into the same queue, and they share
 the same work.
 
+**Reputation.** With `--econ reputation=1.5`, passengers refuse any car
+that has crashed more than one and a half times as often as the average
+car; it can still carry freight. Turin, days two to six, two seeds:
+
+| passengers refuse | fares a day | crashes per car a day | Gini |
+|---|---|---|---|
+| nobody | 2588, 2363 | 188, 206 | 0.35, 0.35 |
+| over 3x the average | 2477, 2617 | 190, 230 | 0.35, 0.34 |
+| over 1.5x the average | 1752, 2512 | 162, 219 | 0.34, 0.35 |
+
+It does not make anyone drive better. Crashes per car stay where they
+were, up in one seed and down in the other, and the stricter rule cost one
+seed a third of its fares. A car's crash count does not say whose fault a
+crash was: the one hit in a pile-up is shunned as much as the one that
+caused it, so passengers punish bad luck nearly as often as bad driving,
+and evolution has little to select on.
+
 **Drunk drivers.** A share of the shipped drivers get random noise added
 to their steering and throttle every tick, in three unseen cities with 60
 cars (`SHARE=0.3 NOISE=2 node tools/drunk.mjs`). Crashes per 1000 units
