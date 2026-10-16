@@ -1848,6 +1848,26 @@ The busy roads are the avenues, and avenues have parallel avenues. What
 breaks a real city is the quiet one-way side street that is the only way
 out of its block, and no route count ranks it high.
 
+**An earthquake.** That was the map alone. With an economy on it: on the
+morning of day three a tenth of the roads close for good, at random, but
+never one that would cut the city in two (`node tools/quake.mjs turin 7`).
+Fares over days three to six against the same economy with no quake:
+
+| map | seed 7 | seed 11 | last day, seeds 7 and 11 |
+|---|---|---|---|
+| grid (8 of 79 closed) | -4.2% | | -1.5% |
+| Turin (34 of 342) | +7.8% | +2.4% | +11.3%, +5.9% |
+| Barcelona (64 of 643) | -0.3% | +2.0% | +5.2%, +5.5% |
+| Manhattan (54 of 541) | -9.3% | -2.8% | -19.3%, -10.4% |
+
+Turin and Barcelona shrug it off, and by the last day carry a few percent
+more than without it, in both seeds; Manhattan loses more each day. Two
+seeds and a quake that changes everything after it make a few percent
+noise, so I would not claim a Braess effect in Turin from this. Manhattan's
+loss is clearer: its long avenues are the routes, and closing a stretch of
+one sends everyone the long way round; Turin's dense old grid of short
+streets always has another.
+
 **Scaling.** Real cities produce more per head the bigger they are (urban
 scaling, exponents above 1). Here, three grid sizes (79, 181 and 343 roads),
 three seeds each, days two to four, fitted on a log scale: fares grow with
