@@ -42,6 +42,7 @@ export const ECON = {
   insurance: 0,         // 1: crashes cost the driver nothing; every car pays the premium instead (an experiment)
   imitate: 0,           // share of children who copy the most successful driver's brain, not the parent's (an experiment)
   basic: 0,             // share of every fare taxed and paid back equally to every car, a basic income (an experiment)
+  minFare: 0,           // no passenger fare pays less than this, a minimum wage per fare (an experiment)
   premium: 0.034,       // per second: about what the average car spends on crashes uninsured
   replan: 0,            // 1: at every junction a car re-plans the rest of its route on the traffic now (an experiment, off)
   speedLimit: 0,        // a speed camera everywhere: over this speed a car pays...
@@ -230,7 +231,7 @@ export class EcoWorld {
     } else {
       const took = Math.max(1, this.tick - j.start);
       const quick = Math.max(0, Math.min(1, j.expect / took - 0.5));
-      fare = dist * ECON.passengerRate * (1 + ECON.speedBonus * quick);
+      fare = Math.max(ECON.minFare, dist * ECON.passengerRate * (1 + ECON.speedBonus * quick));
       this.events.dropoffs++;
     }
     this.pool = (this.pool || 0) + fare * ECON.basic;
