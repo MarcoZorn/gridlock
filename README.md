@@ -1713,9 +1713,9 @@ grows with the car's own speed at impact, so the car that ran into the
 other carries more of it. Shunning cars with over 1.5 times the average
 damage: crashes per car 178 and 184 a day (against 188 and 206), but fares
 1928 and 1952 (against 2588 and 2363), and trips 66-67 s instead of 57-58.
-A little safer, a lot poorer: the shunned cars are mostly the busy ones,
-and a fast driver that crashes now and then still moved more people than
-a careful one.
+A little safer, a lot poorer. My guess, not measured: the shunned cars
+are the fast ones, and a fast driver that crashes now and then still
+moves more people than a careful one.
 
 **Drunk drivers.** A share of the shipped drivers get random noise added
 to their steering and throttle every tick, in three unseen cities with 60
