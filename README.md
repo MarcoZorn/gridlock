@@ -1717,8 +1717,8 @@ they speed up. A ray reads its distance as a share of the car's range, so
 in fog a wall 30 units off reads as the edge of sight, open road. Distance
 per tick rises from 26.3 to 31.3 at half sight and 32.9 at a quarter, and
 crashes per 1000 units stay where they were (4.26, 4.07, 4.27): more
-crashes an hour, the same per mile. Like people, they drive as fast in
-fog as they can see, and none of them was ever raised in fog.
+crashes an hour, the same per mile. Unlike people, nothing in their senses
+says the view is short, and none of them was ever raised in fog.
 
 **Lights on Manhattan.** Midtown runs on traffic lights, so I gave the
 economy's Manhattan lights at every junction of three or more roads (60 of
