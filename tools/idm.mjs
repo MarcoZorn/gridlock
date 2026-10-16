@@ -13,7 +13,9 @@ const pop = Population.fromJSON(JSON.parse(fs.readFileSync("docs/trained.json", 
 const S = [];   // [v, gap or Infinity, closing speed, acceleration]
 let x = 7; const rnd = () => ((x = (x * 1664525 + 1013904223) % 4294967296) / 4294967296);
 for (const seed of [77, 91]) {
-  const genomes = Array.from({ length: 60 }, (_, i) => pop.genomes[i % pop.genomes.length]);
+  // ONE=n: every car brain n (from 1), so differences between drivers are not
+  // mistaken for noise
+  const genomes = Array.from({ length: 60 }, (_, i) => pop.genomes[process.env.ONE ? +process.env.ONE - 1 : i % pop.genomes.length]);
   const e = new CityWorld({ seed, popSize: 60, traffic: true, density: 60 });
   e.pop.genomes = genomes; e.newGeneration();
   // SMOOTH=15: the state 15 ticks ago and the mean acceleration since, so
@@ -27,10 +29,12 @@ for (const seed of [77, 91]) {
       const h = hist.get(c);
       if (!c.alive || c.towing > 0 || c.city.junctionAt(c.x, c.y) >= 0) { h.length = 0; continue; }
       const mid = c.carRay.length >> 1, ahead = c.carRay[mid] < c.p.rayRange;
-      h.push([c.v, ahead ? c.carRay[mid] : Infinity, ahead ? c.closing[mid] * 110 : 0]);
+      const f = c.frame();
+      h.push([c.v, ahead ? c.carRay[mid] : Infinity, ahead ? c.closing[mid] * 110 : 0,
+        Math.abs(c.nextTurn()) / Math.PI, Math.max(1, f.len - f.along), Math.min(...c.wallRay) / c.p.rayRange, Math.abs(f.lateral)]);
       if (h.length > k) {
-        const [v0, gap, dv] = h.shift();
-        if (t % 3 === 0) S.push([v0, gap, dv, (c.v - v0) / (k * DT)]);
+        const [v0, gap, dv, ...road] = h.shift();
+        if (t % 3 === 0) S.push([v0, gap, dv, (c.v - v0) / (k * DT), ...road]);
       }
     }
   }
@@ -61,11 +65,36 @@ console.log(`${data.length} samples (${close} within 40 units of a car ahead); I
 // bang-bang one at the extremes
 const q = data.map((s) => s[3]).sort((a, b) => a - b), at = (f) => q[Math.floor(f * (q.length - 1))].toFixed(0);
 console.log(`acceleration percentiles 5/25/50/75/95: ${at(0.05)} ${at(0.25)} ${at(0.5)} ${at(0.75)} ${at(0.95)}`);
-// For scale, any straight line through speed, closeness (1/gap) and closing
-// speed: how much could these three numbers explain at most, linearly?
-const X = data.map(([v, g, dv]) => [1, v, g === Infinity ? 0 : 1 / Math.max(1, g), dv]), y = data.map((s) => s[3]);
-const M = X[0].map((_, i) => X[0].map((_, j) => X.reduce((a, r) => a + r[i] * r[j], 0))), b = X[0].map((_, i) => X.reduce((a, r, n) => a + r[i] * y[n], 0));
-for (let i = 0; i < 4; i++) for (let j = i + 1; j < 4; j++) { const f = M[j][i] / M[i][i]; for (let k = i; k < 4; k++) M[j][k] -= f * M[i][k]; b[j] -= f * b[i]; }
-const w = [0, 0, 0, 0]; for (let i = 3; i >= 0; i--) w[i] = (b[i] - M[i].slice(i + 1).reduce((a, m, k) => a + m * w[i + 1 + k], 0)) / M[i][i];
-const lin = y.reduce((a, yy, n) => a + (yy - X[n].reduce((s2, xx, k) => s2 + xx * w[k], 0)) ** 2, 0);
-console.log(`a straight line through the same three numbers explains ${(100 * (1 - lin / varA)).toFixed(0)}%`);
+// For scale, a straight line (least squares) through any set of features:
+// how much could they explain at most, linearly?
+const linear = (feat) => {
+  const X = data.map(feat), y = data.map((s) => s[3]), n = X[0].length;
+  const M = X[0].map((_, i) => X[0].map((_, j) => X.reduce((a, r) => a + r[i] * r[j], 0))), b = X[0].map((_, i) => X.reduce((a, r, m) => a + r[i] * y[m], 0));
+  for (let i = 0; i < n; i++) for (let j = i + 1; j < n; j++) { const f = M[j][i] / M[i][i]; for (let k = i; k < n; k++) M[j][k] -= f * M[i][k]; b[j] -= f * b[i]; }
+  const w = Array(n).fill(0); for (let i = n - 1; i >= 0; i--) w[i] = (b[i] - M[i].slice(i + 1).reduce((a, m, k) => a + m * w[i + 1 + k], 0)) / M[i][i];
+  const e = y.reduce((a, yy, m) => a + (yy - X[m].reduce((s2, xx, k) => s2 + xx * w[k], 0)) ** 2, 0);
+  return `${(100 * (1 - e / varA)).toFixed(0)}%`;
+};
+const car = ([v, g, dv]) => [1, v, g === Infinity ? 0 : 1 / Math.max(1, g), dv];
+const road = ([v, , , , turn, toEnd, wall, lat]) => [turn, turn * v, 1 / toEnd, v / toEnd, wall, lat];
+console.log(`a straight line explains: car ahead ${linear(car)}, road ahead ${linear((s) => [1, s[0], ...road(s)])}, both ${linear((s) => [...car(s), ...road(s)])}`);
+// And without assuming a shape: predict each of 3000 held-out moments by the
+// mean acceleration of its 20 nearest neighbours among the rest, on all
+// seven numbers scaled to the same spread.
+{
+  const feats = data.map(([v, g, dv, , turn, toEnd, wall, lat]) => [v, g === Infinity ? 0 : 1 / Math.max(1, g), dv, turn, 1 / toEnd, wall, lat]);
+  const n = feats[0].length, sd = Array.from({ length: n }, (_, k) => { const m = feats.reduce((a, f) => a + f[k], 0) / feats.length; return Math.sqrt(feats.reduce((a, f) => a + (f[k] - m) ** 2, 0) / feats.length) || 1; });
+  const z = feats.map((f) => f.map((x, k) => x / sd[k])), test = Math.min(3000, Math.floor(data.length / 3));
+  let e = 0, e0 = 0;
+  const trainMean = data.slice(test).reduce((a, s) => a + s[3], 0) / (data.length - test);
+  for (let i = 0; i < test; i++) {
+    const best = [];
+    for (let j = test; j < z.length; j++) {
+      let d = 0; for (let k = 0; k < n; k++) d += (z[i][k] - z[j][k]) ** 2;
+      if (best.length < 20) { best.push([d, j]); best.sort((a, b) => a[0] - b[0]); } else if (d < best[19][0]) { best[19] = [d, j]; best.sort((a, b) => a[0] - b[0]); }
+    }
+    const p = best.reduce((a, [, j]) => a + data[j][3], 0) / best.length;
+    e += (p - data[i][3]) ** 2; e0 += (trainMean - data[i][3]) ** 2;
+  }
+  console.log(`nearest neighbours on all seven explain ${(100 * (1 - e / e0)).toFixed(0)}% of held-out acceleration`);
+}
