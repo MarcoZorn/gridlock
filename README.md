@@ -1915,6 +1915,29 @@ the car is there. Brain 61 is the odd one: half its moments are spent
 within 40 units of a car ahead, in queues, where nothing
 it sees predicts when it will move.
 
+**Selfishness is cheap here.** Wardrop's equilibrium is where no driver
+can find a faster route on their own; the system optimum is where total
+travel time is lowest. The ratio of the two is the price of anarchy. On the
+real graphs with textbook road delays (BPR: a road at capacity takes 15%
+longer, at twice capacity 3.4 times as long) and 300 random fares, solved
+both ways (`node tools/wardrop.mjs turin 7`). Demand is how full the
+busiest road would be if everyone took the shortest path, 1 being its
+capacity:
+
+| busiest road | Turin s7 / s11 | Barcelona s7 | Manhattan s7 / s11 |
+|---|---|---|---|
+| selfish / optimum, at 3 | 1.015 / 1.016 | 1.008 | 1.014 / 1.015 |
+| shortest path / optimum, at 3 | 1.089 / 1.050 | 1.287 | 1.227 / 1.228 |
+| shortest path / optimum, at 6 | 1.206 / 1.188 | 2.041 | 1.520 / 1.597 |
+
+Anarchy costs at most 1.6% in any of the three cities, peaking at moderate
+load and falling back towards 1 as everything fills, as theory says it
+should. What costs a lot is not selfishness but not looking: everyone on the
+shortest path is up to twice as slow in Barcelona. That is how the evolved
+drivers route, with a `jam` gene near zero. In the simulator itself, forcing
+the gene to its top changed nothing (above), so the evolved city does not
+seem to be loaded like this; where it sits on the table is not measured.
+
 **Scaling.** Real cities produce more per head the bigger they are (urban
 scaling, exponents above 1). Here, three grid sizes (79, 181 and 343 roads),
 three seeds each, days two to four, fitted on a log scale: fares grow with
