@@ -106,6 +106,7 @@ export class EcoWorld {
     this.edits = [];   // expansions, built roads and road directions, in order, so a save can replay them
     this.congestion = ECON.congestion;   // this city's congestion charge, saved with it
     this.speedLimit = ECON.speedLimit;   // and its speed camera, 0 for none
+    this.limits = null;                  // or a camera per road, by edge id (tools/limits.mjs; not saved)
     this.freightBoom = 1;                // freight pay and demand times this: at 3 trucks can evolve
     this.finishFare = ECON.finishFare;   // a car with a fare aboard finishes it before it can go broke
     this.insurance = ECON.insurance;     // crashes paid by a pool, every car pays a premium
@@ -277,8 +278,9 @@ export class EcoWorld {
       const wear = 1 + d.dist / ECON.wearDist;
       d.cash -= d.body.upkeep * wear * DT + d.body.fuel * ECON.fuelTax * Math.abs(d.v) * DT;
       if (this.insurance) d.cash -= ECON.premium * DT;
-      if (this.speedLimit && Math.abs(d.v) > this.speedLimit) {
-        d.cash -= ECON.speedFine * (Math.abs(d.v) / this.speedLimit - 1) * DT;
+      const lim = this.limits ? this.limits[c.edgeBetween(d.route[d.seg], d.route[d.seg + 1])?.id] : this.speedLimit;
+      if (lim && Math.abs(d.v) > lim) {
+        d.cash -= ECON.speedFine * (Math.abs(d.v) / lim - 1) * DT;
         this.events.speeding = (this.events.speeding || 0) + DT;
       }
       if (this.congestion && c.load) {
