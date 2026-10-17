@@ -12,6 +12,7 @@ import { Rng } from "../src/neat.js";
 // road costs through city.load with jam = 1.
 //
 //   PAIRS=300 node tools/wardrop.mjs turin 7
+//   BRAESS=30 LOAD=3 node tools/wardrop.mjs turin 7   (Braess hunt, below)
 const [map = "turin", seed = 7] = process.argv.slice(2), pairs = +(process.env.PAIRS || 300);
 const c = new City(+seed * 31, { graph: JSON.parse(fs.readFileSync(`maps/${map}.json`, "utf8")) });
 const E = c.edges, rng = new Rng(+seed);
@@ -32,7 +33,7 @@ function load(q, cost) {
   const y = new Float64Array(E.length);
   if (cost) { c.load = new Float32Array(E.length); for (const e of E) c.load[e.id] = cost[e.id] / e.len - 1; }
   for (const t of trips) {
-    const p = cost ? c.route(t.a, t.b, -1, 1) : t.p;
+    const p = cost ? c.route(t.a, t.b, -1, 1) : c.closed.size ? c.route(t.a, t.b) : t.p;
     for (let i = 1; i < p.length; i++) y[c.edgeBetween(p[i - 1], p[i]).id] += q;
   }
   return y;
@@ -60,10 +61,36 @@ function solve(q, f, iters = +(process.env.ITERS || 60)) {
 // shortest path: flow over lanes, where 1 is the road's capacity.
 const unit = load(1, null), peak = Math.max(...E.map((e) => unit[e.id] / e.lanes));
 console.log(`${map} s${seed}, ${pairs} trips`);
+if (process.env.BRAESS) braess(+process.env.BRAESS, +(process.env.LOAD || 3));
+else table();
+
+function table() {
 console.log("busiest  shortest/opt  selfish/opt (price of anarchy)");
 for (const v of [0.5, 1, 1.5, 2, 3, 4, 6]) {
   const q = v / peak, opt = total(solve(q, marginal)), short = total(load(q, null)) / opt, self = total(solve(q, time)) / opt;
   console.log(`${String(v).padStart(7)}  ${short.toFixed(3).padStart(12)}  ${self.toFixed(3).padStart(11)}`);
   // nothing beats the optimum; if something does, the solver has not converged
   if (short < 0.998 || self < 0.998) process.exitCode = 1;
+}
+}
+
+// Braess hunting: close each of the n busiest roads at the selfish
+// equilibrium in turn, re-solve, and keep those whose closure lowers total
+// travel time. A closure that would strand a trip is skipped (the router
+// would drive the closed road anyway).
+// ponytail: exhaustive over the busiest n, not evolved; a single closure is
+// all Braess needs, pairs of closures when this finds none
+function braess(n, v) {
+  const q = v / peak, x = solve(q, time), base = total(x);
+  console.log(`busiest road ${v}, selfish total ${base.toFixed(0)}; closing the ${n} busiest, change in total:`);
+  const hits = [];
+  for (const e of E.slice().sort((a, b) => x[b.id] - x[a.id]).slice(0, n)) {
+    c.closed.add(e.id);
+    const cut = trips.some((t) => { const p = c.route(t.a, t.b); return p.some((v, i) => i && c.edgeBetween(p[i - 1], v) === e); });
+    const d = cut ? NaN : total(solve(q, time)) / base - 1;
+    c.closed.delete(e.id);
+    console.log(`  road ${String(e.id).padStart(4)}  ${e.oneway ? "one-way" : "two-way"}  lanes ${e.lanes}  len ${e.len.toFixed(0).padStart(4)}  ${cut ? "strands a trip" : (d * 100).toFixed(2) + "%"}`);
+    if (d < -0.005) hits.push(e.id);
+  }
+  console.log(`Braess roads (closing saves over 0.5%): ${hits.length ? hits.join(" ") : "none"}`);
 }
