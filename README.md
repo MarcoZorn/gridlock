@@ -150,6 +150,12 @@ node tools/osm.mjs extract.json maps/name.json "Place"   # an OpenStreetMap extr
   Under lights it never left the immigrant floor in twelve days; with
   finishing the fare and insurance it carried 4000-4500 fares a day (two
   seeds), though still 7-16% fewer than the same rules without lights.
+- **Where the speed cameras go hardly matters, only how many.** A search
+  over which of Turin's 342 roads get a 35 camera (tools/limits.mjs) settled
+  on 68. On three unseen seeds, last of two days: no cameras 6633 fares and
+  102005 crashes, evolved 5707 and 73285, the same 68 at random 5318 and
+  70413, everywhere 1890 and 13740. Searching for fares alone overfits: it
+  gained on its seed and lost 14% on the others.
 - **Insure drivers and they crash twice as often, and move a third more
   people.** Not because they learn recklessness: the reckless ones simply
   stop going broke, and speed is what passengers pay for.
