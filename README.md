@@ -1938,6 +1938,22 @@ drivers route, with a `jam` gene near zero. In the simulator itself, forcing
 the gene to its top changed nothing (above), so the evolved city does not
 seem to be loaded like this; where it sits on the table is not measured.
 
+**No Braess road among the busiest.** Same model, at the selfish
+equilibrium: close each of the busiest roads in turn, re-solve, and see
+whether total time falls (`BRAESS=30 LOAD=3 node tools/wardrop.mjs turin 7`).
+A closure that cuts some fare off from its destination is skipped.
+
+| | busiest 30 at load 3, s7 | busiest 60 at load 1.5, s11 |
+|---|---|---|
+| Turin: tested, smallest cost | 17, +9.7% | 16, +2.4% |
+| Barcelona | 6, +46% | 14, +0.65% |
+| Manhattan | 8, +36% | 5, +4.0% |
+
+Every closure made things worse. Most of the busiest roads cannot be closed
+at all without stranding someone, which on these graphs (mostly one-way)
+leaves few to test. A Braess road would more likely be a quiet shortcut than
+a busy one; this only says it is not among the busiest.
+
 **Barcelona's arrows, from scratch.** A planner genome: one gene per road,
 two-way or one-way either way, searched (1+1) from a city with no arrows,
 every candidate kept strongly connected (`node tools/oneway.mjs barcelona 7`,
