@@ -1668,6 +1668,26 @@ open-endedness, more and more kinds of thing over time, this is not it. It
 is a world with room for about six ways of making a living, and a
 constant churn of lineages taking turns at them.
 
+**Boom and bust.** A tourist season: passenger demand doubles for day
+three only (`node tools/season.mjs turin 7`). Against the same economy
+without it, cars at the end of the season's second half-day, fares carried
+in the season, and bankruptcies in the half-day after it ends:
+
+| economy | cars | fares in the season | bankruptcies after |
+|---|---|---|---|
+| Turin, seed 7 | 436 vs 204 | 4022 vs 2588 | 832 vs 551 |
+| Turin, seed 11 | 336 vs 190 | 3339 vs 2430 | 665 vs 550 |
+| Manhattan, seed 7 | 480 vs 191 | 3960 vs 2041 | 2132 vs 1314 |
+| Manhattan, seed 11 | 480 vs 206 | 3850 vs 2068 | 2717 vs 1278 |
+
+(480 is the population ceiling.) The cars breed into the boom as fast as
+they can, more than doubling, and Manhattan nearly doubles its fares. Then
+the tourists leave and the extra cars go broke: a fifth to twice as many
+bankruptcies as usual in the next half-day, and by the half-day after
+that the fleet is back to its usual size, as if the season never
+happened. Nothing in a car can see the season ending, and no lineage is
+around long enough to have seen one before.
+
 **A mass extinction.** On the morning of day three, four cars in five go
 broke at once (`node tools/extinction.mjs turin 7`). Species and cars
 before, three hours after and twelve hours after, against the same
