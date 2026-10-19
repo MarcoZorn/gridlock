@@ -1668,6 +1668,26 @@ open-endedness, more and more kinds of thing over time, this is not it. It
 is a world with room for about six ways of making a living, and a
 constant churn of lineages taking turns at them.
 
+**A mass extinction.** On the morning of day three, four cars in five go
+broke at once (`node tools/extinction.mjs turin 7`). Species and cars
+before, three hours after and twelve hours after, against the same
+economy untouched:
+
+| economy | extinction: species, cars | untouched |
+|---|---|---|
+| Turin, seed 7 | 5, 192 -> 10, 131 -> 10, 301 | 5, 192 -> 6, 124 -> 8, 303 |
+| Turin, seed 11 | 9, 190 -> 8, 84 -> 8, 218 | 9, 190 -> 9, 126 -> 8, 238 |
+| Manhattan, seed 7 | 8, 191 -> 4, 88 -> 4, 412 | 8, 191 -> 7, 172 -> 7, 428 |
+| Manhattan, seed 11 | 6, 189 -> 4, 68 -> 4, 395 | 6, 189 -> 4, 158 -> 4, 433 |
+
+The cars come back fast: four hours to the untouched size in Turin, ten in
+Manhattan, born to the survivors and to immigrants. The species do
+whatever they like. Turin seed 7 has a real radiation, five species to
+ten within three hours, and keeps them; Manhattan seed 7 loses half its
+species for good; the other two end where they would have anyway. One
+radiation in four is not a law. Which lineages happen to survive decides
+it, as it may have for the mammals.
+
 **No kin selection.** Do relatives go easier on each other? Every crash
 between two cars over days two to five, against how often relatives are
 within 40 units of each other anyway (`node tools/kin.mjs turin 7`). Kin
