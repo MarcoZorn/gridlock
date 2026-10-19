@@ -1649,7 +1649,7 @@ it. Measured across all ages at once the correlation came out negative
 families: early parents and late children earn in different cities.
 
 **No kin selection.** Do relatives go easier on each other? Every crash
-between two cars over days two to four, against how often relatives are
+between two cars over days two to five, against how often relatives are
 within 40 units of each other anyway (`node tools/kin.mjs turin 7`). Kin
 here are parent and child, or siblings:
 
@@ -1662,8 +1662,8 @@ here are parent and child, or siblings:
 
 If anything relatives crash into each other a little more than chance, in
 all four. Nothing in a driver can tell a relative from a stranger, so
-there is nothing for kin selection to act on; and two cars with nearly
-the same brain make the same mistake at the same junction.
+there is nothing for kin selection to act on. The small excess may be two
+cars with nearly the same brain making the same mistake together (a guess).
 
 **How much should a child get?** A parent pays for its child's starting
 cash. Turin, days two to six, two seeds each
