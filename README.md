@@ -1668,6 +1668,34 @@ open-endedness, more and more kinds of thing over time, this is not it. It
 is a world with room for about six ways of making a living, and a
 constant churn of lineages taking turns at them.
 
+**Every rule at once.** The rules below, side by side, each against the
+same untouched economy, Turin, days two to six, seeds 7 and 11
+(`node tools/policies.mjs`, straight from the runs' telemetry):
+
+| rule | fares a day | crashes per car | trip | Gini |
+|---|---|---|---|---|
+| basic income, a quarter | +3%, +11% | +18%, +10% | +28%, +20% | 0.31, 0.32 |
+| basic income, a half | -23%, +9% | +4%, +14% | +51%, +38% | 0.27, 0.27 |
+| minimum fare 20 | -10%, +2% | +19%, +2% | +13%, +5% | 0.35, 0.35 |
+| child starts with 26 | -14%, -12% | +13%, +1% | +8%, +5% | 0.30, 0.30 |
+| child starts with 5 | -76%, -74% | -45%, -53% | -28%, -34% | 0.48, 0.50 |
+| reputation by crashes, 1.5x | -32%, +6% | -14%, +6% | +8%, +6% | 0.34, 0.35 |
+| reputation by damage, 1.5x | -26%, -17% | -5%, -10% | +15%, +14% | 0.35, 0.34 |
+| congestion charge, all day | -14%, -22% | -19%, -21% | -27%, -31% | 0.35, 0.35 |
+| congestion charge, rush hours | -16%, -1% | -4%, -6% | -7%, -12% | 0.35, 0.35 |
+| first bankruptcy forgiven | -9%, +11% | +14%, +13% | +5%, +8% | 0.35, 0.34 |
+| licence, 1000 units | -25%, -37% | -15%, -10% | -6%, -12% | 0.37, 0.37 |
+
+baseline: fares 2588, 2363; crashes 188, 206; trip 57, 58 s; Gini 0.35, 0.35
+
+Read across the seeds, not down the table: where the two numbers disagree
+in sign, the rule did nothing measurable. Only two rules raise fares in
+both seeds, and only the quarter basic income by much. The all-day
+congestion charge is the only one that makes the city both safer and
+faster in both; it costs a seventh to a fifth of the fares. Everything
+that lowers inequality (a basic income, a bigger start in life) slows the
+trips down or shrinks the city.
+
 **Forgiving debt.** `--econ forgive=1` wipes a car's debt the first time
 it goes broke; the second time is final. Turin, days two to six, two
 seeds: fares 2355 and 2634 against 2588 and 2363 (one up, one down), the
