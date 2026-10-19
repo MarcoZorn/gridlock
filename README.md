@@ -1680,8 +1680,8 @@ economy untouched:
 | Manhattan, seed 7 | 8, 191 -> 4, 88 -> 4, 412 | 8, 191 -> 7, 172 -> 7, 428 |
 | Manhattan, seed 11 | 6, 189 -> 4, 68 -> 4, 395 | 6, 189 -> 4, 158 -> 4, 433 |
 
-The cars come back fast: four hours to the untouched size in Turin, ten in
-Manhattan, born to the survivors and to immigrants. The species do
+The cars come back fast: three to six city hours to the untouched size,
+born to the survivors and to immigrants. The species do
 whatever they like. Turin seed 7 has a real radiation, five species to
 ten within three hours, and keeps them; Manhattan seed 7 loses half its
 species for good; the other two end where they would have anyway. One
