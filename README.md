@@ -1688,8 +1688,8 @@ carry). Turin, days two to six, two seeds:
 
 A short test does nothing much. A long one does lower crashes, by a
 tenth or so in both seeds, and makes trips a little quicker, but costs a
-quarter to a third of the fares: many newborns go broke before they pass,
-earning nothing while they try. The same trade as every safety rule so
+quarter to a third of the fares and a fifth to two fifths of the fleet,
+probably because newborns earn nothing while they try (not measured). The same trade as every safety rule so
 far: a little safer, a lot poorer.
 
 **Boom and bust.** A tourist season: passenger demand doubles for day
