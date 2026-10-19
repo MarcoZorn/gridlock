@@ -200,6 +200,7 @@ commits and pushes.
 
 ## Done
 
+- 33. Open-endedness: two new species a day for 40 days but never more than 5-6 alive; turnover, not growing diversity
 - 110. Rush-hour toll (`ECON.peakToll`): between no charge and all-day, keeps more fares, still speeds trips
 - 115. Snow: no caution evolves in a ten-day winter; crashes per distance 1.1-1.7x clear and the gap widens, fares recover instead (tools/snow.mjs)
 - 48. Kin selection: none; relatives crash into each other slightly more than chance (tools/kin.mjs)

@@ -1648,6 +1648,25 @@ it. Measured across all ages at once the correlation came out negative
 (-0.08 to -0.16), but that was the economy changing over the days, not the
 families: early parents and late children earn in different cities.
 
+**Does it ever stop inventing?** Counting species in the four 40-day
+economies' telemetry: new species founded in each five days, after the
+first burst.
+
+| economy | new species per 5 days, days 5-40 | species ever | alive at the end | longest-lived |
+|---|---|---|---|---|
+| eco-mature | 3 0 19 10 15 9 13 | 129 | 6 | 13.1 days |
+| eco-none | 2 16 9 12 12 14 6 | 122 | 5 | 9.0 days |
+| eco-none-s7 | 13 15 10 15 9 13 14 | 157 | 5 | 13.6 days |
+| eco-lights | 134 26 27 10 12 0 5 | 741 | 5 | 15.5 days |
+
+(eco-lights is the economy that never got going, refounded by immigrants
+again and again.) The others found two species a day to the end, never
+hold more than five or six at once, and none lasts more than a fortnight:
+steady turnover, not growing diversity. By the usual test of
+open-endedness, more and more kinds of thing over time, this is not it. It
+is a world with room for about five ways of making a living, and a
+constant churn of lineages taking turns at them.
+
 **No kin selection.** Do relatives go easier on each other? Every crash
 between two cars over days two to five, against how often relatives are
 within 40 units of each other anyway (`node tools/kin.mjs turin 7`). Kin
