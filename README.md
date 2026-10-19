@@ -1786,6 +1786,24 @@ reflexes and drive like it: closer and later than anyone who reacts in a
 second could. With a third of the cars delayed by 0.2 s, they crash four
 times as often (16.91) and the rest a little less (4.01), as with drunks.
 
+**Snow.** From the second morning grip falls for every car: engine, brakes
+and steering all bite at half (or 0.3) of their strength, and the economy
+keeps breeding through a ten-day winter (`GRIP=0.5 DAYS=10 node
+tools/snow.mjs turin 7`). Crashes per 1000 units against the same economy
+in clear weather, on the first day of snow and the last (seed 7):
+
+| city | grip 0.5, day 2 | day 10 | grip 0.3, day 2 | day 10 |
+|---|---|---|---|---|
+| Turin | 1.07x | 1.12x | 1.19x | 1.46x |
+| Barcelona | 1.19x | 1.50x | 1.36x | 1.54x |
+| Manhattan | 1.24x | 1.15x | 1.32x | 1.72x |
+
+Caution does not evolve within a winter; the crash gap mostly widens. Cars
+are slower in snow, but only as slow as weak engines make them, and no
+slower as the days pass. What the economy does instead is make up the
+fares (by day 10, 80-102% of clear weather at half grip, 68-84% at 0.3)
+and live with the crashes, which cost a car cash but never its life.
+
 **Lights on Manhattan.** Midtown runs on traffic lights, so I gave the
 economy's Manhattan lights at every junction of three or more roads (60 of
 them) and founders raised under lights. It never got going: twelve days on
