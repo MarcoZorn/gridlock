@@ -1648,6 +1648,23 @@ it. Measured across all ages at once the correlation came out negative
 (-0.08 to -0.16), but that was the economy changing over the days, not the
 families: early parents and late children earn in different cities.
 
+**No kin selection.** Do relatives go easier on each other? Every crash
+between two cars over days two to four, against how often relatives are
+within 40 units of each other anyway (`node tools/kin.mjs turin 7`). Kin
+here are parent and child, or siblings:
+
+| economy | crashes | between kin | kin among near pairs | same species / near pairs |
+|---|---|---|---|---|
+| Turin, seed 7 | 55458 | 1.7% | 1.2% | 60.8% / 60.8% |
+| Turin, seed 11 | 53149 | 1.5% | 1.3% | 24.1% / 23.3% |
+| Manhattan, seed 7 | 46042 | 1.4% | 1.2% | 43.5% / 44.3% |
+| Manhattan, seed 11 | 44351 | 1.5% | 1.3% | 39.6% / 38.3% |
+
+If anything relatives crash into each other a little more than chance, in
+all four. Nothing in a driver can tell a relative from a stranger, so
+there is nothing for kin selection to act on; and two cars with nearly
+the same brain make the same mistake at the same junction.
+
 **How much should a child get?** A parent pays for its child's starting
 cash. Turin, days two to six, two seeds each
 (`--econ childCash=26,childCost=29`):
