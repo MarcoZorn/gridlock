@@ -1683,10 +1683,10 @@ in the season, and bankruptcies in the half-day after it ends:
 (480 is the population ceiling.) The cars breed into the boom as fast as
 they can, more than doubling, and Manhattan nearly doubles its fares. Then
 the tourists leave and the extra cars go broke: a fifth to twice as many
-bankruptcies as usual in the next half-day, and by the half-day after
-that the fleet is back to its usual size, as if the season never
-happened. Nothing in a car can see the season ending, and no lineage is
-around long enough to have seen one before.
+bankruptcies as usual in the next half-day. Three of the four fleets are
+back to their usual size by the half-day after that; Manhattan seed 7
+stays at the ceiling for another day before it falls. Nothing in a car can
+see the season ending.
 
 **A mass extinction.** On the morning of day three, four cars in five go
 broke at once (`node tools/extinction.mjs turin 7`). Species and cars
