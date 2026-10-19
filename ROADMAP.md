@@ -200,6 +200,7 @@ commits and pushes.
 
 ## Done
 
+- 121. Licences (`ECON.licence`): a long test cuts crashes a tenth and fares a quarter to a third
 - 132. Bankruptcy courts (`ECON.forgive`): a forgiven first bankruptcy changes fares and deaths not at all; crashes up a seventh
 - 138. Tourism: a day of double demand doubles the fleet, then a wave of bankruptcies; back to normal within one to two days (tools/season.mjs)
 - 45. Evolvability (in neat-from-scratch): the average mutant keeps 54% of its parent at 3 generations, 87% at 40; brains get sturdier

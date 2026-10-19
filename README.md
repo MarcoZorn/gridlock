@@ -1676,6 +1676,22 @@ and 1370). One thing moves in both seeds: crashes per car a day, 215 and
 233 against 188 and 206, a seventh more. A second chance makes the
 careless a little more common, and changes nothing else.
 
+**Driving licences.** `--econ licence=1000`: a newborn car carries no
+passengers until it has driven 1000 units without a crash (freight it may
+carry). Turin, days two to six, two seeds:
+
+| licence | cars | fares a day | crashes per car | trip |
+|---|---|---|---|---|
+| none | 242, 206 | 2588, 2363 | 188, 206 | 57-58 s |
+| 300 units | 172, 206 | 2073, 2373 | 187, 198 | 57-58 s |
+| 1000 units | 166, 126 | 1941, 1499 | 161, 184 | 51-54 s |
+
+A short test does nothing much. A long one does lower crashes, by a
+tenth or so in both seeds, and makes trips a little quicker, but costs a
+quarter to a third of the fares: many newborns go broke before they pass,
+earning nothing while they try. The same trade as every safety rule so
+far: a little safer, a lot poorer.
+
 **Boom and bust.** A tourist season: passenger demand doubles for day
 three only (`node tools/season.mjs turin 7`). Against the same economy
 without it, cars at the end of the season's second half-day, fares carried
