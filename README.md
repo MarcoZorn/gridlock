@@ -1727,9 +1727,9 @@ congestion=0.1,peakToll=1`). Turin, days two to six, two seeds:
 In between, as you would hope: the all-day charge halves the fleet and
 makes trips fast but costs up to a fifth of the fares; the rush-hour charge
 keeps more of the fares (one seed lost 16%, the other 1%) and still takes
-a few seconds off every trip. London's charge runs 7:00 to 18:00; here,
-charging only when the roads are full gets most of the speed for less of
-the cost.
+a few seconds off every trip. Most of the speed of the all-day charge it
+does not get: 51-53 s against 40-41. With two seeds that disagree this
+much, the honest reading is "somewhere in between, closer to no charge".
 
 **Reputation.** With `--econ reputation=1.5`, passengers refuse any car
 that has crashed more than one and a half times as often as the average
