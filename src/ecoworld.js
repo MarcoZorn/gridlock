@@ -47,6 +47,7 @@ export const ECON = {
   forgive: 0,           // 1: a car's first bankruptcy is forgiven, its debt wiped to zero; the second is final (an experiment)
   reputationBy: 0,      // 0: by crash count; 1: by damage, which carries the blame of speed
   reputation: 0,        // passengers refuse a car that crashes this many times more often than the average car (an experiment)
+  licence: 0,           // a car carries passengers only once it has driven this far without a crash (an experiment)
   premium: 0.034,       // per second: about what the average car spends on crashes uninsured
   replan: 0,            // 1: at every junction a car re-plans the rest of its route on the traffic now (an experiment, off)
   speedLimit: 0,        // a speed camera everywhere: over this speed a car pays...
@@ -189,6 +190,7 @@ export class EcoWorld {
       const hit = car.damage - lastDamage;
       lastDamage = car.damage;
       const cost = hit * car.p.mass * ECON.crashCost;
+      car.lastCrashDist = car.dist;
       if (!this.insurance) car.cash -= cost;   // insured: the pool pays, see the premium
       this.events.crashes++;
       this.city.addHeat("crash", car.x, car.y);
@@ -211,6 +213,11 @@ export class EcoWorld {
   // ECON.reputationBy = 1 counts damage instead, which grows with the car's
   // own speed at impact: the one that ran into the other pays the most.
   trusted(d) {
+    // A licence: a clean stretch of road, once, before the first passenger.
+    if (ECON.licence && !d.licensed) {
+      if (d.dist - (d.lastCrashDist || 0) < ECON.licence) return false;
+      d.licensed = true;
+    }
     if (!ECON.reputation) return true;
     const rate = ECON.reputationBy ? (o) => o.damage / Math.max(1, this.tick - o.born) : (o) => o.crashes / Math.max(1, this.tick - o.born);
     let sum = 0;
