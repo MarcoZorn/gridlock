@@ -200,6 +200,7 @@ commits and pushes.
 
 ## Done
 
+- 45. Evolvability (in neat-from-scratch): the average mutant keeps 54% of its parent at 3 generations, 87% at 40; brains get sturdier
 - 47. Mass extinction: cars recover in 3-6 hours; species radiate in one run in four, are lost in another (tools/extinction.mjs)
 - 33. Open-endedness: two new species a day for 40 days but about 6 alive at a time, no upward trend; turnover, not growing diversity
 - 110. Rush-hour toll (`ECON.peakToll`): between no charge and all-day, keeps more fares, still speeds trips
