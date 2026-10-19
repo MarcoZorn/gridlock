@@ -1689,10 +1689,10 @@ same untouched economy, Turin, days two to six, seeds 7 and 11
 baseline: fares 2588, 2363; crashes 188, 206; trip 57, 58 s; Gini 0.35, 0.35
 
 Read across the seeds, not down the table: where the two numbers disagree
-in sign, the rule did nothing measurable. Only two rules raise fares in
-both seeds, and only the quarter basic income by much. The all-day
-congestion charge is the only one that makes the city both safer and
-faster in both; it costs a seventh to a fifth of the fares. Everything
+in sign, the rule did nothing measurable. Only one rule raises fares in
+both seeds, the quarter basic income. Three make the city both safer and
+faster in both: the all-day congestion charge by far the most, then the
+licence and the rush-hour charge; all three cost fares. Everything
 that lowers inequality (a basic income, a bigger start in life) slows the
 trips down or shrinks the city.
 
