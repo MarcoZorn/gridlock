@@ -200,6 +200,7 @@ commits and pushes.
 
 ## Done
 
+- 132. Bankruptcy courts (`ECON.forgive`): a forgiven first bankruptcy changes fares and deaths not at all; crashes up a seventh
 - 138. Tourism: a day of double demand doubles the fleet, then a wave of bankruptcies; back to normal within one to two days (tools/season.mjs)
 - 45. Evolvability (in neat-from-scratch): the average mutant keeps 54% of its parent at 3 generations, 87% at 40; brains get sturdier
 - 47. Mass extinction: cars recover in 3-6 hours; species radiate in one run in four, are lost in another (tools/extinction.mjs)

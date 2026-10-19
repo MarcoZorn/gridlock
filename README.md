@@ -1668,6 +1668,14 @@ open-endedness, more and more kinds of thing over time, this is not it. It
 is a world with room for about six ways of making a living, and a
 constant churn of lineages taking turns at them.
 
+**Forgiving debt.** `--econ forgive=1` wipes a car's debt the first time
+it goes broke; the second time is final. Turin, days two to six, two
+seeds: fares 2355 and 2634 against 2588 and 2363 (one up, one down), the
+same Gini (0.35), the same bankruptcies a day (1343 and 1459 against 1494
+and 1370). One thing moves in both seeds: crashes per car a day, 215 and
+233 against 188 and 206, a seventh more. A second chance makes the
+careless a little more common, and changes nothing else.
+
 **Boom and bust.** A tourist season: passenger demand doubles for day
 three only (`node tools/season.mjs turin 7`). Against the same economy
 without it, cars at the end of the season's second half-day, fares carried
