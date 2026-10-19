@@ -308,6 +308,7 @@ export class EcoWorld {
     }
     if (this.crowd) this.crowd.step(DT, this.cars);
     this.events.carCrashes += collideCars(onRoad, this.hash, (a, b) => {
+      if (this.onPair) this.onPair(a, b);   // for measurements: who hit whom
       const ped = a.isPed ? a : b.isPed ? b : null;
       if (!ped) return;
       const car = ped === a ? b : a;
