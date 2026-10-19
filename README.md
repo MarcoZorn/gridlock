@@ -1660,11 +1660,12 @@ first burst.
 | eco-lights | 134 26 27 10 12 0 5 | 741 | 5 | 15.5 days |
 
 (eco-lights is the economy that never got going, refounded by immigrants
-again and again.) The others found two species a day to the end, never
-hold more than five or six at once, and none lasts more than a fortnight:
+again and again.) The others found two species a day to the end, hold six at a time on
+average (between 2 and 11, with no upward trend), and none lasts more than
+a fortnight:
 steady turnover, not growing diversity. By the usual test of
 open-endedness, more and more kinds of thing over time, this is not it. It
-is a world with room for about five ways of making a living, and a
+is a world with room for about six ways of making a living, and a
 constant churn of lineages taking turns at them.
 
 **No kin selection.** Do relatives go easier on each other? Every crash
