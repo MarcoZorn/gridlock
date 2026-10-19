@@ -1714,6 +1714,23 @@ more cars. Fares here are limited by passengers, not by drivers, so extra
 money per fare only feeds more cars into the same queue, and they share
 the same work.
 
+**A rush-hour toll.** The congestion charge only in the rush hours, when
+demand is above average, about five city hours a day (`--econ
+congestion=0.1,peakToll=1`). Turin, days two to six, two seeds:
+
+| charge | cars | fares a day | trip | crashes per car |
+|---|---|---|---|---|
+| none | 242, 206 | 2588, 2363 | 57-58 s | 188, 206 |
+| all day | 138, 105 | 2217, 1854 | 40-41 s | 153, 163 |
+| rush hours only | 165, 186 | 2178, 2337 | 51-53 s | 182, 194 |
+
+In between, as you would hope: the all-day charge halves the fleet and
+makes trips fast but costs up to a fifth of the fares; the rush-hour charge
+keeps more of the fares (one seed lost 16%, the other 1%) and still takes
+a few seconds off every trip. London's charge runs 7:00 to 18:00; here,
+charging only when the roads are full gets most of the speed for less of
+the cost.
+
 **Reputation.** With `--econ reputation=1.5`, passengers refuse any car
 that has crashed more than one and a half times as often as the average
 car; it can still carry freight. Turin, days two to six, two seeds:
