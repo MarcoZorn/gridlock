@@ -37,6 +37,7 @@ export const ECON = {
   fareQueue: 20,        // fares waiting beyond this go to another firm
   wearDist: 40000,      // upkeep doubles every this many units on the odometer
   congestion: 0,        // a charge per second, times how full the road you are on is (an experiment, off)
+  peakToll: 0,          // 1: the congestion charge applies only in the rush hours, when demand is above average (an experiment)
   fuelTax: 1,           // fuel costs this many times its price (an experiment)
   finishFare: 0,        // 1: a car with a fare aboard cannot go broke until it delivers (an experiment)
   insurance: 0,         // 1: crashes cost the driver nothing; every car pays the premium instead (an experiment)
@@ -283,7 +284,7 @@ export class EcoWorld {
         d.cash -= ECON.speedFine * (Math.abs(d.v) / lim - 1) * DT;
         this.events.speeding = (this.events.speeding || 0) + DT;
       }
-      if (this.congestion && c.load) {
+      if (this.congestion && c.load && !(ECON.peakToll && demandAt(c.time) < 1)) {
         const e = c.edgeBetween(d.route[d.seg], d.route[d.seg + 1]);
         if (e) d.cash -= this.congestion * c.load[e.id] * DT;
       }
