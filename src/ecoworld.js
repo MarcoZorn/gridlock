@@ -44,6 +44,7 @@ export const ECON = {
   imitate: 0,           // share of children who copy the most successful driver's brain, not the parent's (an experiment)
   basic: 0,             // share of every fare taxed and paid back equally to every car, a basic income (an experiment)
   minFare: 0,           // no passenger fare pays less than this, a minimum wage per fare (an experiment)
+  forgive: 0,           // 1: a car's first bankruptcy is forgiven, its debt wiped to zero; the second is final (an experiment)
   reputationBy: 0,      // 0: by crash count; 1: by damage, which carries the blame of speed
   reputation: 0,        // passengers refuse a car that crashes this many times more often than the average car (an experiment)
   premium: 0.034,       // per second: about what the average car spends on crashes uninsured
@@ -335,6 +336,7 @@ export class EcoWorld {
     // ran up debts in the thousands.
     const finishing = (d) => this.finishFare && d.job && d.job.kind && this.tick - d.job.start < 3 * d.job.expect && d.cash > -20;
     const broke = (d) => d.cash < 0 && !finishing(d);
+    if (ECON.forgive) for (const d of this.cars) if (broke(d) && !d.forgiven) { d.cash = 0; d.forgiven = true; }
     for (const d of this.cars) if (broke(d) && this.ancestry.has(d.id)) this.ancestry.get(d.id).died = this.tick;
     this.cars = this.cars.filter((d) => !broke(d));
     this.events.deaths += before - this.cars.length;
