@@ -2005,9 +2005,10 @@ fitness of 144 to 147 throughout. Evolving, by blocks of 20 generations:
 | sharing off | 161 144 140 148 149 151 121 71 94 108 | 451 468 465 474 468 500 460 350 370 413 |
 
 With sharing on, the population sits about 20 below its frozen self from
-the first block: every generation is mostly fresh mutants, and mutants
-are on average worse than their parents, a cost the frozen population
-never pays. With sharing off it holds level with the frozen one for a
+the first block. Not because its children are mutants, since the run
+without sharing has mutants too and holds level: more likely sharing
+hands offspring to small, weak species, as it was found to do from
+scratch. With sharing off it holds level with the frozen one for a
 hundred generations, then collapses around generation 140 to half its
 fitness, best drivers included, and only half recovers. One run; it looks
 like one lineage taking over and then failing, which is the risk of no
