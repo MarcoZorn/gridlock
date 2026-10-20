@@ -15,7 +15,7 @@ const [home, away] = process.argv.slice(2);
 const load = (run) => JSON.parse(fs.readFileSync(`runs/${run}/state.json`, "utf8"));
 const H = load(home), A = load(away), w = EcoWorld.fromJSON(H), rng = new Rng(3);
 const pick = (cars) => Array.from({ length: 30 }, () => cars[rng.int(cars.length)]);
-const tag = new Map(), first = { home: [], away: [] };
+const tag = new Map(), first = { home: [], away: [] }, died = new Map();
 for (const [kind, from] of [["home", H], ["away", A]]) for (const c of pick(from.cars)) {
   const d = w.spawn(Genome.fromJSON(c.brain), Body.fromJSON(c.body), ECON.startCash, null);
   tag.set(d.id, kind); first[kind].push(d);
@@ -24,10 +24,15 @@ for (let t = 0; t < DAY / DT; t++) {
   w.step();
   if (t % 60) continue;
   for (const d of w.cars) if (!tag.has(d.id) && tag.has(d.parent)) tag.set(d.id, tag.get(d.parent));
+  // when each of the sixty left the road (ancestry entries get pruned, so keep our own)
+  const now = new Set(w.cars);
+  for (const d of [...first.home, ...first.away]) if (!now.has(d) && !died.has(d)) died.set(d, w.tick);
 }
 const alive = new Set(w.cars);
 for (const kind of ["home", "away"]) {
-  const f = first[kind], rate = f.reduce((a, d) => a + d.earned / Math.max(1, (alive.has(d) ? w.tick : w.ancestry.get(d.id)?.died ?? w.tick) - d.born) * 3600, 0) / f.length;
+  const f = first[kind], rate = f.reduce((a, d) => a + d.earned / Math.max(1, (died.get(d) ?? w.tick) - d.born) * 3600, 0) / f.length;
   const family = w.cars.filter((d) => tag.get(d.id) === kind).length;
-  console.log(`${home} <- ${kind === "home" ? "its own" : away}: ${f.filter((d) => alive.has(d)).length}/30 still driving after a day, ${rate.toFixed(1)} earned an hour, family now ${family} cars of ${w.cars.length}`);
+  const hours = f.reduce((a, d) => a + ((died.get(d) ?? w.tick) - d.born) / 3600, 0);
+  const per = (k) => (f.reduce((a, d) => a + d[k], 0) / hours).toFixed(1);
+  console.log(`${home} <- ${kind === "home" ? "its own" : away}: ${f.filter((d) => alive.has(d)).length}/30 still driving after a day, ${rate.toFixed(1)} earned an hour, ${per("crashes")} crashes and ${per("trips")} trips an hour, life ${(hours / 30).toFixed(1)} h, family now ${family} cars of ${w.cars.length}`);
 }

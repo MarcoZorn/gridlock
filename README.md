@@ -1790,24 +1790,27 @@ it, as it may have for the mammals.
 six-day Manhattan economy, each with a newcomer's cash, beside thirty of
 Manhattan's own dropped in the same way; and the other way round
 (`node tools/migrate.mjs nyc-base-s7 inh-base-s7`). A day later, the cars
-their families number, and what the thirty earned an hour:
+their families number, and what the thirty earned an hour while they
+lived:
 
 | into | from | migrants' family, earned | natives' family, earned |
 |---|---|---|---|
-| Manhattan s7 | Turin s7 | 11, 2.4 | 96, 3.9 |
-| Manhattan s11 | Turin s11 | 0, 1.3 | 86, 6.1 |
-| Manhattan s11 | Turin s7 | 28, 3.3 | 95, 5.3 |
-| Turin s7 | Manhattan s7 | 44, 3.8 | 51, 3.1 |
-| Turin s11 | Manhattan s11 | 76, 4.6 | 60, 3.9 |
-| Turin s7 | Manhattan s11 | 15, 2.3 | 34, 4.3 |
+| Manhattan s7 | Turin s7 | 11, 3.9 | 96, 5.2 |
+| Manhattan s11 | Turin s11 | 0, 3.3 | 86, 7.8 |
+| Manhattan s11 | Turin s7 | 28, 3.6 | 95, 6.8 |
+| Turin s7 | Manhattan s7 | 44, 4.3 | 51, 3.7 |
+| Turin s11 | Manhattan s11 | 76, 5.0 | 60, 5.5 |
+| Turin s7 | Manhattan s11 | 15, 2.9 | 34, 4.9 |
 
 Turin's drivers fail in Manhattan every time, a third or less of the
 natives' families, once none at all. Manhattan's drivers in Turin do about
-as well as the locals, once better, once worse. One city's skills travel
-and the other's do not. Why, I have not measured: Manhattan's economy sits
-at the population ceiling of 480 cars, so newcomers there face the stiffest
-competition, and its long one-way avenues may ask for something Turin never
-taught.
+as well as the locals, once better, once worse. The natives were dropped
+in beside them with the same cash, so it is not the competition: it is the
+drivers. And not their driving, as far as crashes and trips go: in
+Manhattan the migrants crash as often (3.1 to 3.3 an hour against 3.1 to
+3.7) and finish nearly as many trips (0.8 to 0.9 an hour against 0.8 to
+1.0). They earn a third less per trip. Shorter fares, slower ones (the
+tip is for speed) or less freight; which, I have not measured.
 
 **No kin selection.** Do relatives go easier on each other? Every crash
 between two cars over days two to five, against how often relatives are
