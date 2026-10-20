@@ -1827,7 +1827,9 @@ A floor of 10 touches almost no fare. A floor of 20 pays 15% more per
 fare, and none of it shows: the same fares a day, the same Gini, a few
 more cars. Fares here are limited by passengers, not by drivers, so extra
 money per fare only feeds more cars into the same queue, and they share
-the same work.
+the same work. (With four seeds, in "Every rule at once" below, it is not
+quite nothing: crashes up a tenth and trips 7% slower in all four. More
+cars in the same queue get in each other's way.)
 
 **A rush-hour toll.** The congestion charge only in the rush hours, when
 demand is above average, about five city hours a day (`--econ
