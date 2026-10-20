@@ -48,6 +48,7 @@ export const ECON = {
   platformB: 0,         // share of passengers who book through a second platform, B; 0: one platform (an experiment)
   commissionA: 0,       // share of each passenger fare platform A keeps
   commissionB: 0,       // ...and platform B; a car works for its parent's platform, switching now and then
+  switchPlatform: 0.05, // the share of children that drive for the other platform
   reputationBy: 0,      // 0: by crash count; 1: by damage, which carries the blame of speed
   reputation: 0,        // passengers refuse a car that crashes this many times more often than the average car (an experiment)
   licence: 0,           // a car carries passengers only once it has driven this far without a crash (an experiment)
@@ -179,9 +180,9 @@ export class EcoWorld {
     d.children = 0;
     d.earned = 0;
     d.species = parent ? parent.species : -1;
-    // which platform it drives for: its parent's, one time in twenty the other
+    // which platform it drives for: its parent's, now and then the other
     // (no draw at all with one platform, so other runs keep their random stream)
-    d.platform = !ECON.platformB ? 0 : parent ? (this.rng.next() < 0.05 ? 1 - parent.platform : parent.platform) : +(this.rng.next() < 0.5);
+    d.platform = !ECON.platformB ? 0 : parent ? (this.rng.next() < ECON.switchPlatform ? 1 - parent.platform : parent.platform) : +(this.rng.next() < 0.5);
     this.newJob(d, true);
     d.onArrive = (car, here) => {
       this.pay(car);
