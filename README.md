@@ -2032,7 +2032,7 @@ the last 100:
 | 0.3 | 168, 178, 178 | 537, 546, 559 | 212, 210, 224 | 8.4, 8.5, 7.6 |
 | 0.02 | 210, 197, 180 | 617, 571, 585 | 230, 208, 223 | 7.2, 8.0, 8.4 |
 
-Better in every seed, by 25%, 11% and 1% in mean fitness and by 6 to 15%
+Better in every seed, by 25%, 11% and 1% in mean fitness and by 5 to 15%
 in the best driver, with the species count steady at 6 to 12 instead of
 flipping between 3 and 70. New populations now use 0.02. (The shipped
 drivers keep their old settings, and every result above was measured with
