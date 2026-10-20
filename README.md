@@ -1864,6 +1864,8 @@ seed a third of its fares. A car's crash count does not say whose fault a
 crash was: the one hit in a pile-up is shunned as much as the one that
 caused it, so passengers punish bad luck nearly as often as bad driving,
 and evolution has little to select on.
+(Four seeds, in "Every rule at once": crashes down 6% in three of the
+four, fares down 11%. A little, at a price.)
 
 Judging by damage instead (`reputationBy=1`) puts some blame back: damage
 grows with the car's own speed at impact, so the car that ran into the
