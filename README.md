@@ -1739,9 +1739,12 @@ B, mean of the last three days, Turin:
 
 Close, with no driver ever choosing anything: the cars on the poorer
 platform simply have fewer children. Where it falls short it falls towards
-50%, which is probably the switching children pulling both ways equally;
-seed 7 in the second setup was still climbing at the end (25% on day two,
-61% on the last half-day).
+50%, which looked like the switching children pulling both ways equally.
+It was: with one child in a hundred switching instead of one in twenty
+(`SWITCH=0.01`), the second setup settles at 59% and 62% against the 61%
+predicted. The share swings with the time of day, too, from about 50% at
+night to about 70% by evening in both seeds, but the mean sits where
+ecology puts it.
 
 **Boom and bust.** A tourist season: passenger demand doubles for day
 three only (`node tools/season.mjs turin 7`). Against the same economy
