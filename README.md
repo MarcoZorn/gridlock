@@ -2023,8 +2023,20 @@ species, too few, so it drops to 0.3; at 0.3 it finds 23, too many, so
 it goes back to 0.6, for ever. A step of 0.05 or 0.02 settles it at 0.45
 or 0.34 with 6 to 12 species. Whether that helps the drivers, one run
 each says nothing yet (mean fitness by 20 generations, 0.05: 131 144 117
-117 108; 0.02: 127 129 148 147 135; 0.3: 125 129 123 120 124). The step
-stays as it is until a run from scratch says otherwise.
+117 108; 0.02: 127 129 148 147 135; 0.3: 125 129 123 120 124). So from
+scratch, 600 generations, the last 400 in traffic, three seeds each, over
+the last 100:
+
+| step | mean fitness | best | trips | crashes per 1000 units |
+|---|---|---|---|---|
+| 0.3 | 168, 178, 178 | 537, 546, 559 | 212, 210, 224 | 8.4, 8.5, 7.6 |
+| 0.02 | 210, 197, 180 | 617, 571, 585 | 230, 208, 223 | 7.2, 8.0, 8.4 |
+
+Better in every seed, by 25%, 11% and 1% in mean fitness and by 6 to 15%
+in the best driver, with the species count steady at 6 to 12 instead of
+flipping between 3 and 70. New populations now use 0.02. (The shipped
+drivers keep their old settings, and every result above was measured with
+0.3.)
 
 **Slow reactions.** `DELAY=12` makes a car act on what it saw 12 ticks
 ago. Every car delayed, same three cities:
