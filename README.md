@@ -1985,9 +1985,15 @@ Raised in fog, they slow down, by a quarter, as the track cars did; and
 they stay slow when the fog lifts, which says they learned to drive
 slowly rather than to read the fog. They are not safer for it, per unit
 driven, though over time they crash a little less (118 against 134 per
-1000 ticks). One run each; both populations also got worse at clear-day
-driving than the shipped one (4.26, 26.3) in those 200 generations,
-which I have not looked into.
+1000 ticks). One run each. Both populations also got worse at clear-day
+driving than the shipped one (4.26, 26.3) in those 200 generations, and
+so does a third run with fitness sharing off (6.30, 20.2; the shipped
+population still carries its old settings, sharing on): their own mean
+fitness falls from about 125-160 to 108 over the 200 generations in
+every case. It is the drift already seen with wrecks above. Carrying on
+from the shipped population under these settings loses ground, fog or
+not, so the fair comparison is the fog run against its own control, as
+in the table.
 
 **Slow reactions.** `DELAY=12` makes a car act on what it saw 12 ticks
 ago. Every car delayed, same three cities:
