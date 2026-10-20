@@ -1723,6 +1723,26 @@ quarter to a third of the fares and a fifth to two fifths of the fleet,
 probably because newborns earn nothing while they try (not measured). The same trade as every safety rule so
 far: a little safer, a lot poorer.
 
+**Two platforms, and ecology's prediction.** A share of the passengers
+book through a second platform, B; each platform keeps its own commission;
+a car drives for its parent's platform, and one child in twenty switches
+(`B=0.7 CA=0.1 CB=0.4 node tools/platforms.mjs turin 7`). Ecology's ideal
+free distribution says animals spread over patches in proportion to the
+food in each, so drivers should spread in proportion to what each platform
+pays out, passenger share times one minus commission. Share of the cars on
+B, mean of the last three days, Turin:
+
+| B books, commissions A / B | predicted | seed 7 | seed 11 |
+|---|---|---|---|
+| half, 10% / 30% | 44% | 44% | 41% |
+| 70%, 10% / 40% | 61% | 50% | 58% |
+
+Close, with no driver ever choosing anything: the cars on the poorer
+platform simply have fewer children. Where it falls short it falls towards
+50%, which is probably the switching children pulling both ways equally;
+seed 7 in the second setup was still climbing at the end (25% on day two,
+61% on the last half-day).
+
 **Boom and bust.** A tourist season: passenger demand doubles for day
 three only (`node tools/season.mjs turin 7`). Against the same economy
 without it, cars at the end of the season's second half-day, fares carried

@@ -200,6 +200,7 @@ commits and pushes.
 
 ## Done
 
+- 20. Two platforms (`ECON.platformB`): drivers settle near ecology's ideal free distribution, 41-58% against 44-61% predicted (tools/platforms.mjs)
 - 121. Licences (`ECON.licence`): a long test cuts crashes a tenth and fares a quarter to a third
 - 132. Bankruptcy courts (`ECON.forgive`): a forgiven first bankruptcy changes fares and deaths not at all; crashes up a seventh
 - 138. Tourism: a day of double demand doubles the fleet, then a wave of bankruptcies; back to normal within one to two days (tools/season.mjs)
