@@ -1691,8 +1691,9 @@ way (`node tools/policies.mjs`, straight from the runs' telemetry):
 Where fewer than four seeds agree, treat the rule as doing nothing to
 that column. With four seeds some of the two-seed readings above change:
 the quarter basic income raises fares in all four (+7%) and slows every
-trip by a fifth; the minimum fare and forgiving debt both raise crashes
-in most seeds and do nothing else. Three rules make the city safer and
+trip by a fifth; the minimum fare raises crashes a tenth and slows
+trips a little in all four; forgiving debt raises crashes in three of
+four and does nothing else. Three rules make the city safer and
 faster in every seed, the all-day congestion charge most, then the
 licence and the rush-hour charge, and all three cost fares in every seed.
 Every rule that lowers inequality slows the trips down or shrinks the
