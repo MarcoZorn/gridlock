@@ -45,6 +45,7 @@ export const ECON = {
   basic: 0,             // share of every fare taxed and paid back equally to every car, a basic income (an experiment)
   minFare: 0,           // no passenger fare pays less than this, a minimum wage per fare (an experiment)
   forgive: 0,           // 1: a car's first bankruptcy is forgiven, its debt wiped to zero; the second is final (an experiment)
+  credit: 0,            // a car may run this far into debt before it counts as broke (an experiment)
   platformB: 0,         // share of passengers who book through a second platform, B; 0: one platform (an experiment)
   commissionA: 0,       // share of each passenger fare platform A keeps
   commissionB: 0,       // ...and platform B; a car works for its parent's platform, switching now and then
@@ -354,7 +355,7 @@ export class EcoWorld {
     // the limit, cars that kept getting lost with a fare aboard never died and
     // ran up debts in the thousands.
     const finishing = (d) => this.finishFare && d.job && d.job.kind && this.tick - d.job.start < 3 * d.job.expect && d.cash > -20;
-    const broke = (d) => d.cash < 0 && !finishing(d);
+    const broke = (d) => d.cash < -ECON.credit && !finishing(d);
     if (ECON.forgive) for (const d of this.cars) if (broke(d) && !d.forgiven) { d.cash = 0; d.forgiven = true; }
     for (const d of this.cars) if (broke(d) && this.ancestry.has(d.id)) this.ancestry.get(d.id).died = this.tick;
     this.cars = this.cars.filter((d) => !broke(d));
