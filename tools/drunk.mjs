@@ -10,7 +10,8 @@ import { Population } from "../src/neat.js";
 // impaired share act on what they saw 10 ticks ago (old drivers), not noise.
 //   FOG=0.5 node tools/drunk.mjs
 const share = +(process.env.SHARE || 0), noise = +(process.env.NOISE || 0.5), density = 60, fog = +(process.env.FOG || 1), delay = +(process.env.DELAY || 0);
-const pop = Population.fromJSON(JSON.parse(fs.readFileSync("docs/trained.json", "utf8")).pop);
+// POP=runs/x/state.json: any other raised population instead of the shipped one
+const pop = Population.fromJSON(JSON.parse(fs.readFileSync(process.env.POP || "docs/trained.json", "utf8")).pop);
 let x = 12345; const rnd = () => ((x = (x * 1664525 + 1013904223) % 4294967296) / 4294967296);
 const gauss = () => Math.sqrt(-2 * Math.log(rnd() + 1e-12)) * Math.cos(2 * Math.PI * rnd());
 const sum = { drunk: [0, 0], sober: [0, 0] };   // [distance, crashes]

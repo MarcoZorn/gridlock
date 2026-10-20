@@ -1970,6 +1970,25 @@ crashes per 1000 units stay where they were (4.26, 4.07, 4.27): more
 crashes an hour, the same per mile. Unlike people, nothing in their senses
 says the view is short, and none of them was ever raised in fog.
 
+So raise some in it. The shipped population, 200 more generations with
+sight halved (`--from docs/trained.json --body rayRange=60`), against 200
+more at full sight, then both tested as above:
+
+| raised | tested | crashes per 1000 units | distance per tick |
+|---|---|---|---|
+| clear | clear | 5.43 | 23.8 |
+| clear | fog | 5.31 | 25.3 |
+| fog | fog | 6.32 | 18.7 |
+| fog | clear | 7.00 | 16.2 |
+
+Raised in fog, they slow down, by a quarter, as the track cars did; and
+they stay slow when the fog lifts, which says they learned to drive
+slowly rather than to read the fog. They are not safer for it, per unit
+driven, though over time they crash a little less (118 against 134 per
+1000 ticks). One run each; both populations also got worse at clear-day
+driving than the shipped one (4.26, 26.3) in those 200 generations,
+which I have not looked into.
+
 **Slow reactions.** `DELAY=12` makes a car act on what it saw 12 ticks
 ago. Every car delayed, same three cities:
 
