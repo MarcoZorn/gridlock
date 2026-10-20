@@ -1685,6 +1685,8 @@ way (`node tools/policies.mjs`, straight from the runs' telemetry):
 | congestion charge, all day | -17% (4/4) | -20% (4/4) | -28% (4/4) | 0.35 |
 | congestion charge, rush hours | -9% (4/4) | -6% (4/4) | -11% (4/4) | 0.35 |
 | first bankruptcy forgiven | -0% (2/4) | +9% (3/4) | +2% (3/4) | 0.35 |
+| credit of 10 | +18% (4/4) | +23% (4/4) | +10% (4/4) | 0.48 |
+| credit of 30 | +26% (4/4) | +29% (4/4) | +20% (4/4) | 0.63 |
 | licence, 1000 units | -40% (4/4) | -18% (4/4) | -13% (4/4) | 0.37 |
 | no rule | 2481 | 195 | 59 s | 0.35 |
 
@@ -1698,6 +1700,14 @@ faster in every seed, the all-day congestion charge most, then the
 licence and the rush-hour charge, and all three cost fares in every seed.
 Every rule that lowers inequality slows the trips down or shrinks the
 city.
+
+**Credit.** `--econ credit=30` lets a car run 30 into debt before it
+counts as broke (a car starts with 14). In the table above: fares up a
+fifth to a quarter in all four seeds, the most of any rule, and crashes up
+as much, trips slower. The Gini jumps to 0.48 and 0.63, because it counts
+a car in debt as owning nothing and with credit many are in debt at any
+moment. Credit keeps more cars on the road, and they carry more fares,
+badly; it is the forgiveness rule again without the limit of one.
 
 **Forgiving debt.** `--econ forgive=1` wipes a car's debt the first time
 it goes broke; the second time is final. Turin, days two to six, two
