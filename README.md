@@ -1809,7 +1809,7 @@ in beside them with the same cash, so it is not the competition: it is the
 drivers. And not their driving, as far as crashes and trips go: in
 Manhattan the migrants crash as often (3.1 to 3.3 an hour against 3.1 to
 3.7) and finish nearly as many trips (0.8 to 0.9 an hour against 0.8 to
-1.0). They earn a third less per trip. Shorter fares, slower ones (the
+1.0). They earn a quarter to a half less per trip. Shorter fares, slower ones (the
 tip is for speed) or less freight; which, I have not measured.
 
 **No kin selection.** Do relatives go easier on each other? Every crash
