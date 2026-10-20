@@ -210,7 +210,7 @@ commits and pushes.
 - 115. Snow: no caution evolves in a ten-day winter; crashes per distance 1.1-1.7x clear and the gap widens, fares recover instead (tools/snow.mjs)
 - 48. Kin selection: none; relatives crash into each other slightly more than chance (tools/kin.mjs)
 - 10. Speed limits per road: evolved cameras on 68 of Turin's 342 roads cost 14% of fares for 28% fewer crashes, about what as many random ones do (tools/limits.mjs)
-- 13. Braess hunting (56): closing any of the busiest 30-60 roads at the selfish equilibrium makes total time worse, by 0.65% at least, in all three cities; most cannot be closed without stranding a fare (tools/wardrop.mjs BRAESS)
+- 13. Braess hunting (56): every closable road tried too, none saves more than 0.07%; closing any of the busiest 30-60 roads at the selfish equilibrium makes total time worse, by 0.65% at least, in all three cities; most cannot be closed without stranding a fare (tools/wardrop.mjs BRAESS)
 - 8. One-way planner (9, 14): from no arrows, evolution makes a few dozen roads one-way and only under load; the real arrows cost 12-19% of fares in the sim, evolved ones 2-5% (tools/oneway.mjs)
 - 4. Wardrop (54, 55): the price of anarchy is at most 1.6% on the real maps; shortest paths, as the drivers route, cost up to 2x at heavy load (tools/wardrop.mjs)
 - 53. IDM fit: per brain, the IDM explains up to 22% with zero headway; what a driver sees explains up to 77%; mixed populations look like noise (tools/idm.mjs)

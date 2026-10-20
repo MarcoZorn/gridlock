@@ -2131,6 +2131,19 @@ at all without stranding someone, which on these graphs (mostly one-way)
 leaves few to test. A Braess road would more likely be a quiet shortcut than
 a busy one; this only says it is not among the busiest.
 
+So every road, then (`BRAESS=1000 LOAD=3`, seed 7):
+
+| | roads | closable without stranding a fare | closing makes it worse by over 0.5% | best closure |
+|---|---|---|---|---|
+| Turin | 342 | 74 | 62 | -0.05% |
+| Barcelona | 643 | 150 | 95 | -0.05% |
+| Manhattan | 541 | 115 | 85 | -0.07% |
+
+Not one. Six closures in all three cities save anything at all, the best a
+fifteenth of a percent, which is the solver's own rounding. Four roads in
+five cannot be closed at all; of the rest most cost time and the others
+change nothing. These street plans, at this load, have no Braess road.
+
 **Barcelona's arrows, from scratch.** A planner genome: one gene per road,
 two-way or one-way either way, searched (1+1) from a city with no arrows,
 every candidate kept strongly connected (`node tools/oneway.mjs barcelona 7`,
