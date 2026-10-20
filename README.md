@@ -1669,32 +1669,34 @@ is a world with room for about six ways of making a living, and a
 constant churn of lineages taking turns at them.
 
 **Every rule at once.** The rules below, side by side, each against the
-same untouched economy, Turin, days two to six, seeds 7 and 11
-(`node tools/policies.mjs`, straight from the runs' telemetry):
+same untouched economy, Turin, days two to six, four seeds (3, 5, 7, 11).
+Each cell is the mean change, and how many of the four seeds moved that
+way (`node tools/policies.mjs`, straight from the runs' telemetry):
 
 | rule | fares a day | crashes per car | trip | Gini |
 |---|---|---|---|---|
-| basic income, a quarter | +3%, +11% | +18%, +10% | +28%, +20% | 0.31, 0.32 |
-| basic income, a half | -23%, +9% | +4%, +14% | +51%, +38% | 0.27, 0.27 |
-| minimum fare 20 | -10%, +2% | +19%, +2% | +13%, +5% | 0.35, 0.35 |
-| child starts with 26 | -14%, -12% | +13%, +1% | +8%, +5% | 0.30, 0.30 |
-| child starts with 5 | -76%, -74% | -45%, -53% | -28%, -34% | 0.48, 0.50 |
-| reputation by crashes, 1.5x | -32%, +6% | -14%, +6% | +8%, +6% | 0.34, 0.35 |
-| reputation by damage, 1.5x | -26%, -17% | -5%, -10% | +15%, +14% | 0.35, 0.34 |
-| congestion charge, all day | -14%, -22% | -19%, -21% | -27%, -31% | 0.35, 0.35 |
-| congestion charge, rush hours | -16%, -1% | -4%, -6% | -7%, -12% | 0.35, 0.35 |
-| first bankruptcy forgiven | -9%, +11% | +14%, +13% | +5%, +8% | 0.35, 0.34 |
-| licence, 1000 units | -25%, -37% | -15%, -10% | -6%, -12% | 0.37, 0.37 |
+| basic income, a quarter | +7% (4/4) | +10% (3/4) | +21% (4/4) | 0.32 |
+| basic income, a half | -3% (1/4) | +12% (4/4) | +41% (4/4) | 0.27 |
+| minimum fare 20 | -4% (3/4) | +10% (4/4) | +7% (4/4) | 0.35 |
+| child starts with 26 | -14% (4/4) | +5% (3/4) | +1% (2/4) | 0.30 |
+| child starts with 5 | -73% (4/4) | -49% (4/4) | -32% (4/4) | 0.49 |
+| reputation by crashes, 1.5x | -11% (3/4) | -6% (3/4) | +5% (4/4) | 0.35 |
+| reputation by damage, 1.5x | -27% (4/4) | -14% (4/4) | +11% (4/4) | 0.34 |
+| congestion charge, all day | -17% (4/4) | -20% (4/4) | -28% (4/4) | 0.35 |
+| congestion charge, rush hours | -9% (4/4) | -6% (4/4) | -11% (4/4) | 0.35 |
+| first bankruptcy forgiven | -0% (2/4) | +9% (3/4) | +2% (3/4) | 0.35 |
+| licence, 1000 units | -40% (4/4) | -18% (4/4) | -13% (4/4) | 0.37 |
+| no rule | 2481 | 195 | 59 s | 0.35 |
 
-baseline: fares 2588, 2363; crashes 188, 206; trip 57, 58 s; Gini 0.35, 0.35
-
-Read across the seeds, not down the table: where the two numbers disagree
-in sign, the rule did nothing measurable. Only one rule raises fares in
-both seeds, the quarter basic income. Three make the city both safer and
-faster in both: the all-day congestion charge by far the most, then the
-licence and the rush-hour charge; all three cost fares. Everything
-that lowers inequality (a basic income, a bigger start in life) slows the
-trips down or shrinks the city.
+Where fewer than four seeds agree, treat the rule as doing nothing to
+that column. With four seeds some of the two-seed readings above change:
+the quarter basic income raises fares in all four (+7%) and slows every
+trip by a fifth; the minimum fare and forgiving debt both raise crashes
+in most seeds and do nothing else. Three rules make the city safer and
+faster in every seed, the all-day congestion charge most, then the
+licence and the rush-hour charge, and all three cost fares in every seed.
+Every rule that lowers inequality slows the trips down or shrinks the
+city.
 
 **Forgiving debt.** `--econ forgive=1` wipes a car's debt the first time
 it goes broke; the second time is final. Turin, days two to six, two
