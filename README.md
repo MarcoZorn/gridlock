@@ -1995,6 +1995,24 @@ from the shipped population under these settings loses ground, fog or
 not, so the fair comparison is the fog run against its own control, as
 in the table.
 
+Why it loses ground: the same shipped drivers, re-scored for 100
+generations without evolving at all (`node tools/frozen.mjs`), hold a mean
+fitness of 144 to 147 throughout. Evolving, by blocks of 20 generations:
+
+| | mean fitness | best |
+|---|---|---|
+| sharing on (as shipped) | 125 129 123 120 124 114 106 123 117 108 | 415 442 398 409 401 416 385 391 392 401 |
+| sharing off | 161 144 140 148 149 151 121 71 94 108 | 451 468 465 474 468 500 460 350 370 413 |
+
+With sharing on, the population sits about 20 below its frozen self from
+the first block: every generation is mostly fresh mutants, and mutants
+are on average worse than their parents, a cost the frozen population
+never pays. With sharing off it holds level with the frozen one for a
+hundred generations, then collapses around generation 140 to half its
+fitness, best drivers included, and only half recovers. One run; it looks
+like one lineage taking over and then failing, which is the risk of no
+sharing, but I have not traced it.
+
 **Slow reactions.** `DELAY=12` makes a car act on what it saw 12 ticks
 ago. Every car delayed, same three cities:
 
