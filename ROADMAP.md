@@ -200,6 +200,7 @@ commits and pushes.
 
 ## Done
 
+- Found on the way: the species threshold flipped every generation (step 0.3 as big as the threshold); step 0.02 settles it and raises fitness in 3 of 3 seeds, now the default for new populations
 - 25. Credit (`ECON.credit`): an overdraft raises fares a fifth to a quarter, and crashes as much, in all four seeds
 - 136. Migration: Turin's drivers fail in Manhattan every time; Manhattan's do as well as the locals in Turin (tools/migrate.mjs)
 - 20. Two platforms (`ECON.platformB`): drivers settle at ecology's ideal free distribution, 59-62% against 61% predicted once few children switch (tools/platforms.mjs)
