@@ -2014,6 +2014,18 @@ fitness, best drivers included, and only half recovers. One run; it looks
 like one lineage taking over and then failing, which is the risk of no
 sharing, but I have not traced it.
 
+Looking for it turned up something else. The species count in these runs
+flips every generation, 23, 6, 23, 6, and in older runs from scratch too.
+The threshold that decides when two brains are different species is
+nudged by 0.3 a generation towards eight species, and in these cities
+0.3 is as big as the threshold itself: at 0.6 speciation finds 6
+species, too few, so it drops to 0.3; at 0.3 it finds 23, too many, so
+it goes back to 0.6, for ever. A step of 0.05 or 0.02 settles it at 0.45
+or 0.34 with 6 to 12 species. Whether that helps the drivers, one run
+each says nothing yet (mean fitness by 20 generations, 0.05: 131 144 117
+117 108; 0.02: 127 129 148 147 135; 0.3: 125 129 123 120 124). The step
+stays as it is until a run from scratch says otherwise.
+
 **Slow reactions.** `DELAY=12` makes a car act on what it saw 12 ticks
 ago. Every car delayed, same three cities:
 
