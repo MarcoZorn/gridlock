@@ -10,7 +10,7 @@ const rules = [
   ["minimum fare 20", "minfare-20"], ["child starts with 26", "inh-rich"], ["child starts with 5", "inh-poor"],
   ["reputation by crashes, 1.5x", "rep-1.5"], ["reputation by damage, 1.5x", "repd-1.5"],
   ["congestion charge, all day", "toll-all"], ["congestion charge, rush hours", "toll-peak"],
-  ["first bankruptcy forgiven", "forgive"], ["licence, 1000 units", "lic-1000"],
+  ["first bankruptcy forgiven", "forgive"], ["credit of 10", "credit-10"], ["credit of 30", "credit-30"], ["licence, 1000 units", "lic-1000"],
 ];
 const stats = (run) => {
   const rows = fs.readFileSync(`runs/${run}/telemetry.jsonl`, "utf8").trim().split("\n").map(JSON.parse).filter((x) => x.tick > 2 * 86400 && x.tick <= 6 * 86400);
