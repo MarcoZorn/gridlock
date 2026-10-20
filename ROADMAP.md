@@ -200,6 +200,7 @@ commits and pushes.
 
 ## Done
 
+- 136. Migration: Turin's drivers fail in Manhattan every time; Manhattan's do as well as the locals in Turin (tools/migrate.mjs)
 - 20. Two platforms (`ECON.platformB`): drivers settle at ecology's ideal free distribution, 59-62% against 61% predicted once few children switch (tools/platforms.mjs)
 - 121. Licences (`ECON.licence`): a long test cuts crashes a tenth and fares a quarter to a third
 - 132. Bankruptcy courts (`ECON.forgive`): a forgiven first bankruptcy changes fares and deaths not at all; crashes up a seventh

@@ -1786,6 +1786,28 @@ species for good; the other two end where they would have anyway. One
 radiation in four is not a law. Which lineages happen to survive decides
 it, as it may have for the mammals.
 
+**Migrants.** Thirty cars from a six-day Turin economy dropped into a
+six-day Manhattan economy, each with a newcomer's cash, beside thirty of
+Manhattan's own dropped in the same way; and the other way round
+(`node tools/migrate.mjs nyc-base-s7 inh-base-s7`). A day later, the cars
+their families number, and what the thirty earned an hour:
+
+| into | from | migrants' family, earned | natives' family, earned |
+|---|---|---|---|
+| Manhattan s7 | Turin s7 | 11, 2.4 | 96, 3.9 |
+| Manhattan s11 | Turin s11 | 0, 1.3 | 86, 6.1 |
+| Manhattan s11 | Turin s7 | 28, 3.3 | 95, 5.3 |
+| Turin s7 | Manhattan s7 | 44, 3.8 | 51, 3.1 |
+| Turin s11 | Manhattan s11 | 76, 4.6 | 60, 3.9 |
+| Turin s7 | Manhattan s11 | 15, 2.3 | 34, 4.3 |
+
+Turin's drivers fail in Manhattan every time, a third or less of the
+natives' families, once none at all. Manhattan's drivers in Turin do about
+as well as the locals, once better, once worse. One city's skills travel
+and the other's do not. Manhattan's long one-way avenues and dense traffic
+seem to ask for something Turin never taught (a guess); Turin asks for
+nothing Manhattan's drivers lack.
+
 **No kin selection.** Do relatives go easier on each other? Every crash
 between two cars over days two to five, against how often relatives are
 within 40 units of each other anyway (`node tools/kin.mjs turin 7`). Kin
