@@ -45,6 +45,9 @@ export const ECON = {
   basic: 0,             // share of every fare taxed and paid back equally to every car, a basic income (an experiment)
   minFare: 0,           // no passenger fare pays less than this, a minimum wage per fare (an experiment)
   forgive: 0,           // 1: a car's first bankruptcy is forgiven, its debt wiped to zero; the second is final (an experiment)
+  platformB: 0,         // share of passengers who book through a second platform, B; 0: one platform (an experiment)
+  commissionA: 0,       // share of each passenger fare platform A keeps
+  commissionB: 0,       // ...and platform B; a car works for its parent's platform, switching now and then
   reputationBy: 0,      // 0: by crash count; 1: by damage, which carries the blame of speed
   reputation: 0,        // passengers refuse a car that crashes this many times more often than the average car (an experiment)
   licence: 0,           // a car carries passengers only once it has driven this far without a crash (an experiment)
@@ -129,6 +132,7 @@ export class EcoWorld {
     this.events = freshEvents();
     this.crowd = pedestrians ? new Crowd(this.city, new Rng(seed * 7 + 1), pedestrians) : null;
     this.passengers = ECON.fareQueue / 2;  // fares waiting for a car
+    this.passengersB = 0;                   // ...booked through platform B, when there is one
     this.freight = ECON.fareQueue / 2;     // loads waiting for a vehicle with room
     for (let i = 0; i < startCars; i++) this.immigrate();
   }
@@ -175,6 +179,9 @@ export class EcoWorld {
     d.children = 0;
     d.earned = 0;
     d.species = parent ? parent.species : -1;
+    // which platform it drives for: its parent's, one time in twenty the other
+    // (no draw at all with one platform, so other runs keep their random stream)
+    d.platform = !ECON.platformB ? 0 : parent ? (this.rng.next() < 0.05 ? 1 - parent.platform : parent.platform) : +(this.rng.next() < 0.5);
     this.newJob(d, true);
     d.onArrive = (car, here) => {
       this.pay(car);
@@ -231,9 +238,10 @@ export class EcoWorld {
       // take whichever waiting job pays this vehicle more per unit of route
       const fLoad = Math.min(d.body.capacity, ECON.freightMax);
       const fPay = d.body.capacity >= ECON.freightMin && this.freight >= 1 ? ECON.freightRate * this.freightBoom * fLoad : 0;
-      const pPay = this.passengers >= 1 && this.trusted(d) ? ECON.passengerRate * (1 + ECON.speedBonus / 2) : 0;
+      const onB = ECON.platformB && d.platform === 1, queue = onB ? this.passengersB : this.passengers;
+      const pPay = queue >= 1 && this.trusted(d) ? ECON.passengerRate * (1 + ECON.speedBonus / 2) : 0;
       if (fPay > pPay) { kind = "freight"; load = fLoad; this.freight--; }
-      else if (pPay > 0) { kind = "passenger"; this.passengers--; this.events.pickups++; }
+      else if (pPay > 0) { kind = "passenger"; if (onB) this.passengersB--; else this.passengers--; this.events.pickups++; }
       else this.events.deadheads++;
     }
     d.job = {
@@ -255,6 +263,7 @@ export class EcoWorld {
       const took = Math.max(1, this.tick - j.start);
       const quick = Math.max(0, Math.min(1, j.expect / took - 0.5));
       fare = Math.max(ECON.minFare, dist * ECON.passengerRate * (1 + ECON.speedBonus * quick));
+      if (ECON.platformB) fare *= 1 - (d.platform === 1 ? ECON.commissionB : ECON.commissionA);
       this.events.dropoffs++;
     }
     this.pool = (this.pool || 0) + fare * ECON.basic;
@@ -272,7 +281,9 @@ export class EcoWorld {
     if (this.pool && this.cars.length) { for (const d of this.cars) d.cash += this.pool / this.cars.length; this.pool = 0; }
     if (ECON.replan && c.load) this.replanAll();
     const scale = this.scale;
-    this.passengers = Math.min(ECON.fareQueue * scale, this.passengers + ECON.demand * scale * demandAt(c.time) * DT);
+    const booked = ECON.demand * scale * demandAt(c.time) * DT, b = ECON.platformB;
+    this.passengers = Math.min(ECON.fareQueue * scale * (1 - b), this.passengers + booked * (1 - b));
+    if (b) this.passengersB = Math.min(ECON.fareQueue * scale * b, this.passengersB + booked * b);
     this.freight = Math.min(ECON.fareQueue * scale, this.freight + ECON.freightDemand * this.freightBoom * scale * freightAt(c.time) * DT);
     // everything a car can see or hit: other cars, and anyone crossing
     const onRoad = this.crowd ? this.cars.concat(this.crowd.people) : this.cars;
@@ -307,9 +318,9 @@ export class EcoWorld {
         if (keep) {
           // the fare stays aboard: dropped somewhere new, still bound for
           // where it was going, without taking another job off the queues
-          const q = [this.passengers, this.freight, this.events.pickups, this.events.deadheads], len = d.routeLen;
+          const q = [this.passengers, this.passengersB, this.freight, this.events.pickups, this.events.deadheads], len = d.routeLen;
           d.place(c.route(from, to, -1, d.body.jam), this.rng.range(0.2, 0.7));
-          [this.passengers, this.freight, this.events.pickups, this.events.deadheads] = q;
+          [this.passengers, this.passengersB, this.freight, this.events.pickups, this.events.deadheads] = q;
           d.job = job;
           d.routeLen = len;   // the fare is for the trip that was booked
         } else d.place(this.randomFare(from, -1, d.body.jam), this.rng.range(0.2, 0.7));
@@ -539,12 +550,12 @@ export class EcoWorld {
     return {
       v: 1, seed: this.seed, citySeed: this.city.seed, graph: this.graph, control: this.control, tick: this.tick, rng: this.rng.s,
       innov: this.innov.toJSON(), cfg: this.cfg, nextId: this.nextId, nextSpecies: this.nextSpecies, threshold: this.threshold,
-      passengers: this.passengers, freight: this.freight,
+      passengers: this.passengers, passengersB: this.passengersB, freight: this.freight,
       closed: [...this.city.closed], edits: this.edits, size: this.size, congestion: this.congestion, speedLimit: this.speedLimit, freightBoom: this.freightBoom, finishFare: this.finishFare, insurance: this.insurance,
       founders: this.founders ? this.founders.map((g) => g.toJSON()) : null,
       cars: this.cars.map((d) => ({
         brain: d.genome.toJSON(), body: d.body.toJSON(), cash: d.cash, id: d.id, born: d.born, parent: d.parent,
-        generation: d.generation, children: d.children, earned: d.earned, species: d.species, dist: d.dist,
+        generation: d.generation, children: d.children, earned: d.earned, species: d.species, dist: d.dist, platform: d.platform,
       })),
       species: this.species.map((s) => ({ id: s.id, brain: s.brain.toJSON(), body: s.body.toJSON(), born: s.born, size: s.size })),
       log: this.log,
@@ -571,13 +582,13 @@ export class EcoWorld {
     w.tick = j.tick; w.rng.s = j.rng; w.cfg = j.cfg;
     w.innov = Innovations.fromJSON(j.innov);
     w.nextSpecies = j.nextSpecies; w.threshold = j.threshold;
-    w.passengers = j.passengers; w.freight = j.freight;
+    w.passengers = j.passengers; w.passengersB = j.passengersB || 0; w.freight = j.freight;
     w.founders = j.founders ? j.founders.map((g) => Genome.fromJSON(g)) : null;
     w.cars = [];
     w.events = freshEvents();
     for (const c of j.cars) {
       const d = w.spawn(Genome.fromJSON(c.brain), Body.fromJSON(c.body), c.cash, null);
-      Object.assign(d, { id: c.id, born: c.born, parent: c.parent, generation: c.generation, children: c.children, earned: c.earned, species: c.species, dist: c.dist });
+      Object.assign(d, { id: c.id, born: c.born, parent: c.parent, generation: c.generation, children: c.children, earned: c.earned, species: c.species, dist: c.dist, platform: c.platform ?? 0 });
     }
     w.nextId = j.nextId;
     w.species = j.species.map((s) => ({ id: s.id, brain: Genome.fromJSON(s.brain), body: Body.fromJSON(s.body), born: s.born, size: s.size }));
