@@ -2034,7 +2034,13 @@ the last 100:
 
 Better in every seed, by 25%, 11% and 1% in mean fitness and by 5 to 15%
 in the best driver, with the species count steady at 6 to 12 instead of
-flipping between 3 and 70. New populations now use 0.02. (The shipped
+flipping between 3 and 70. New populations now use 0.02. The page's "Load trained drivers"
+now loads one of them (seed 3, `docs/trained-v2.json`): in the twelve
+unseen-city test it crashes 3.38 times per 1000 units at 33.3 a tick,
+against 4.26 at 26.3 for `docs/trained.json`, which stays for the tools
+and the economy so the numbers here still reproduce. All six fresh runs,
+0.3 or 0.02, beat the old file (3.4 to 4.2 crashes, 28.9 to 33.3 a tick):
+much of the gain is today's settings in general, not the step alone. (The shipped
 drivers keep their old settings, and every result above was measured with
 0.3.)
 
