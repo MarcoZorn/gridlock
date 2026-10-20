@@ -234,7 +234,10 @@ $("loadFile").onchange = async (e) => {
 // the saved run was doing.
 async function loadTrained() {
   let r = control !== "none" ? await fetch(`docs/trained-${control}.json`) : null;
-  if (!r || !r.ok) r = await fetch("docs/trained.json");
+  // trained-v2: raised from scratch with the settings of today (species step
+  // 0.02); fewer crashes and faster than trained.json in unseen cities (README).
+  // trained.json stays for the tools and the economy's founders.
+  if (!r || !r.ok) r = await fetch("docs/trained-v2.json");
   const j = await r.json();
   Object.assign(j, { control, traffic: j.traffic || traffic, density: params.has("density") ? density : j.density });
   if (graph) { j.opts = { ...j.opts, graph }; j.traffic = true; }
