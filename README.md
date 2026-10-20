@@ -1692,7 +1692,8 @@ way (`node tools/policies.mjs`, straight from the runs' telemetry):
 
 Where fewer than four seeds agree, treat the rule as doing nothing to
 that column. With four seeds some of the two-seed readings above change:
-the quarter basic income raises fares in all four (+7%) and slows every
+the quarter basic income raises fares in all four (+7%; only credit, below,
+raises them more) and slows every
 trip by a fifth; the minimum fare raises crashes a tenth and slows
 trips a little in all four; forgiving debt raises crashes in three of
 four and does nothing else. Three rules make the city safer and
@@ -1705,8 +1706,8 @@ city.
 counts as broke (a car starts with 14). In the table above: fares up a
 fifth to a quarter in all four seeds, the most of any rule, and crashes up
 as much, trips slower. The Gini jumps to 0.48 and 0.63, because it counts
-a car in debt as owning nothing and with credit many are in debt at any
-moment. Credit keeps more cars on the road, and they carry more fares,
+a car in debt as owning nothing, and with credit presumably many are in
+debt at any moment (not counted). Credit keeps more cars on the road, and they carry more fares,
 badly; it is the forgiveness rule again without the limit of one.
 
 **Forgiving debt.** `--econ forgive=1` wipes a car's debt the first time
