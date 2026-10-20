@@ -1828,7 +1828,7 @@ fare, and none of it shows: the same fares a day, the same Gini, a few
 more cars. Fares here are limited by passengers, not by drivers, so extra
 money per fare only feeds more cars into the same queue, and they share
 the same work. (With four seeds, in "Every rule at once" below, it is not
-quite nothing: crashes up a tenth and trips 7% slower in all four. More
+quite nothing: crashes up a tenth and trips 7% slower in all four. Presumably more
 cars in the same queue get in each other's way.)
 
 **A rush-hour toll.** The congestion charge only in the rush hours, when
