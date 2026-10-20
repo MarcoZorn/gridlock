@@ -117,6 +117,8 @@ if (fs.existsSync(statePath)) {
   world = new CityWorld({ seed, popSize: 120, density, control, graph, sharedCrossing: process.argv.includes("--shared-crossing"), memory: process.argv.includes("--memory") ? +(arg("memory", "1")) || 1 : 0, signal: process.argv.includes("--signal") });
   console.log(`new run ${dir}, seed ${seed}`);
 }
+// --threshold-step 0.02: how far the species threshold moves a generation
+if (arg("threshold-step", null)) world.pop.cfg.thresholdStep = +arg("threshold-step");
 
 // Traffic generations are waves of cars that never meet, so the waves can run
 // on separate threads; CityWorld gives each its own random stream, which
