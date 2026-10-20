@@ -1,7 +1,8 @@
 import fs from "node:fs";
 // One table for the economic rules tried on Turin, each against the same
-// baseline (runs inh-base-s7 and -s11), days two to six: change in fares a
-// day, crashes per car a day, trip time and Gini, per seed.
+// baseline (runs inh-base-s3, -s5, -s7, -s11), days two to six: the mean
+// change, seed by seed, in fares a day, crashes per car a day and trip time,
+// with how many of the four seeds moved that way; and the mean Gini.
 //
 //   node tools/policies.mjs
 const rules = [
@@ -16,12 +17,17 @@ const stats = (run) => {
   const sum = (f) => rows.reduce((a, x) => a + f(x), 0), days = 4, cars = sum((x) => x.cars) / rows.length;
   return { fares: sum((x) => x.trips) / days, crashes: sum((x) => x.crashes) / (cars * days), trip: sum((x) => x.tripTicks) / sum((x) => x.trips) / 60, gini: sum((x) => x.gini) / rows.length };
 };
-const base = { 7: stats("inh-base-s7"), 11: stats("inh-base-s11") };
-const pct = (a, b) => `${a >= b ? "+" : ""}${(100 * (a / b - 1)).toFixed(0)}%`;
+const SEEDS = [3, 5, 7, 11];
+const base = Object.fromEntries(SEEDS.map((s) => [s, stats(`inh-base-s${s}`)]));
+const change = (r, k) => {
+  const d = r.map(([x, b]) => x[k] / b[k] - 1), m = d.reduce((a, x) => a + x, 0) / d.length;
+  const same = d.filter((x) => Math.sign(x) === Math.sign(m)).length;
+  return `${m >= 0 ? "+" : ""}${(100 * m).toFixed(0)}% (${same}/${d.length})`;
+};
 console.log("| rule | fares a day | crashes per car | trip | Gini |\n|---|---|---|---|---|");
 for (const [name, prefix] of rules) {
-  const r = [7, 11].map((s) => [stats(`${prefix}-s${s}`), base[s]]);
-  const col = (k, f) => r.map(([x, b]) => f(x[k], b[k])).join(", ");
-  console.log(`| ${name} | ${col("fares", pct)} | ${col("crashes", pct)} | ${col("trip", pct)} | ${col("gini", (x) => x.toFixed(2))} |`);
+  const r = SEEDS.map((s) => [stats(`${prefix}-s${s}`), base[s]]);
+  console.log(`| ${name} | ${change(r, "fares")} | ${change(r, "crashes")} | ${change(r, "trip")} | ${(r.reduce((a, [x]) => a + x.gini, 0) / r.length).toFixed(2)} |`);
 }
-console.log(`\nbaseline: fares ${[7, 11].map((s) => base[s].fares.toFixed(0)).join(", ")}; crashes ${[7, 11].map((s) => base[s].crashes.toFixed(0)).join(", ")}; trip ${[7, 11].map((s) => base[s].trip.toFixed(0)).join(", ")} s; Gini ${[7, 11].map((s) => base[s].gini.toFixed(2)).join(", ")}`);
+const mean = (k) => SEEDS.reduce((a, s) => a + base[s][k], 0) / SEEDS.length;
+console.log(`| no rule | ${mean("fares").toFixed(0)} | ${mean("crashes").toFixed(0)} | ${mean("trip").toFixed(0)} s | ${mean("gini").toFixed(2)} |`);
