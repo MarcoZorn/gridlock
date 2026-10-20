@@ -1809,8 +1809,13 @@ in beside them with the same cash, so it is not the competition: it is the
 drivers. And not their driving, as far as crashes and trips go: in
 Manhattan the migrants crash as often (3.1 to 3.3 an hour against 3.1 to
 3.7) and finish nearly as many trips (0.8 to 0.9 an hour against 0.8 to
-1.0). They earn a quarter to a half less per trip. Shorter fares, slower ones (the
-tip is for speed) or less freight; which, I have not measured.
+1.0). What they lack is paid work. Counting only fares delivered, pooled
+over the thirty: in seed 7 the migrants carry about as many an hour (0.26
+against 0.29) but on shorter routes, so 15% less a fare (37 against 44);
+in seed 11 they carry half as many (0.24 against 0.45) at much the same
+price. None of either group carries freight. They drive as much, and earn
+less of it as fares; why one seed shows it in the price and the other in
+the count, I do not know.
 
 **No kin selection.** Do relatives go easier on each other? Every crash
 between two cars over days two to five, against how often relatives are
