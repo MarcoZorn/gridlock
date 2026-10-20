@@ -1804,9 +1804,10 @@ their families number, and what the thirty earned an hour:
 Turin's drivers fail in Manhattan every time, a third or less of the
 natives' families, once none at all. Manhattan's drivers in Turin do about
 as well as the locals, once better, once worse. One city's skills travel
-and the other's do not. Manhattan's long one-way avenues and dense traffic
-seem to ask for something Turin never taught (a guess); Turin asks for
-nothing Manhattan's drivers lack.
+and the other's do not. Why, I have not measured: Manhattan's economy sits
+at the population ceiling of 480 cars, so newcomers there face the stiffest
+competition, and its long one-way avenues may ask for something Turin never
+taught.
 
 **No kin selection.** Do relatives go easier on each other? Every crash
 between two cars over days two to five, against how often relatives are
