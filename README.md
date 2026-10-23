@@ -1668,6 +1668,22 @@ open-endedness, more and more kinds of thing over time, this is not it. It
 is a world with room for about six ways of making a living, and a
 constant churn of lineages taking turns at them.
 
+**In plain words.** `node tools/explain.mjs <run>` writes an account of
+one economy run from its telemetry alone, every number computed from day
+two against the last day. For the untouched Turin economy, seed 7:
+
+> Over 6 days the city went from 183 cars carrying 2,306 fares on day two
+> to 257 carrying 2,627 on the last day (up 14%). Each car crashed 182
+> times a day at first and 194 by the end (up 7%); 41% of the last day's
+> crashes were with another car. A trip took 54 s on day two and 57 s on
+> the last. On the last day 1,589 cars were born and 1,540 went broke,
+> with no immigrants needed; the deepest family line reached generation
+> 23. Wealth was moderately unequal, a Gini of 0.35 (0.35 on day two).
+> Evolution changed the cars' bodies most towards narrower (-0.19),
+> shorter sight (-0.10), fewer rays (-0.09), on a 0-1 scale. Moving cars
+> kept to the right 83% of the time on the last day. 9 species were alive
+> at the end.
+
 **Every rule at once.** The rules below, side by side, each against the
 same untouched economy, Turin, days two to six, four seeds (3, 5, 7, 11).
 Each cell is the mean change, and how many of the four seeds moved that

@@ -200,6 +200,7 @@ commits and pushes.
 
 ## Done
 
+- 150. The simulator explains itself: tools/explain.mjs, a plain-language account of any economy run from its telemetry
 - Found on the way: the species threshold flipped every generation (step 0.3 as big as the threshold); step 0.02 settles it and raises fitness in 3 of 3 seeds, now the default for new populations
 - 25. Credit (`ECON.credit`): an overdraft raises fares a fifth to a quarter, and crashes as much, in all four seeds
 - 136. Migration: Turin's drivers fail in Manhattan every time; Manhattan's do as well as the locals in Turin (tools/migrate.mjs)
