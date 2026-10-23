@@ -2265,6 +2265,23 @@ in Turin, in every seed. From day three on, mutation in the economy costs
 more than it finds. That is mutational load, the same thing
 `tools/frozen.mjs` found in training.
 
+A harder test: every junction switches to traffic lights on the morning
+of day three, under drivers raised without them (`node tools/rescue.mjs
+turin 7`). Fares a day, days three to eight:
+
+| economy | no lights | lights from day 3 | lights from the start |
+|---|---|---|---|
+| Turin, seed 7 | 2588 ... 2702 | 305 139 120 96 25 | 8 4 13 4 5 |
+| Turin, seed 11 | 2430 ... 2616 | 179 101 8 0 5 | 226 178 147 284 243 |
+| grid, seed 7 | 883 ... 869 | 40 32 14 49 257 | 496 535 501 527 536 |
+| grid, seed 11 | 868 ... 832 | 115 47 232 260 310 | 349 383 436 412 487 |
+
+Turin never comes back: the fleet falls to the 24-car immigrant floor the
+first day and stays there, as Manhattan did under lights. The grid comes
+back slowly, a third to two thirds of the way to an economy that had
+lights all along by day eight. Rescue happens only where an economy under
+lights can live at all, and even there it takes days.
+
 **Jams have a typical size.** If traffic organised itself to the edge of
 criticality, jams would come in every size, as many of each as a power law
 says. Every 10 s of days two to four, stopped cars within 25 units of each
