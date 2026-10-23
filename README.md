@@ -2267,7 +2267,7 @@ more than it finds. That is mutational load, the same thing
 
 A harder test: every junction switches to traffic lights on the morning
 of day three, under drivers raised without them (`node tools/rescue.mjs
-turin 7`). Fares a day, days three to eight:
+turin 7`). Fares a day, days four to eight:
 
 | economy | no lights | lights from day 3 | lights from the start |
 |---|---|---|---|
@@ -2278,8 +2278,8 @@ turin 7`). Fares a day, days three to eight:
 
 Turin never comes back: the fleet falls to the 24-car immigrant floor the
 first day and stays there, as Manhattan did under lights. The grid comes
-back slowly, a third to two thirds of the way to an economy that had
-lights all along by day eight. Rescue happens only where an economy under
+back slowly, to about half and two thirds of an economy that had lights
+all along by day eight. Rescue happens only where an economy under
 lights can live at all, and even there it takes days.
 
 **Jams have a typical size.** If traffic organised itself to the edge of
