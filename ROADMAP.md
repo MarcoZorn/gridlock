@@ -200,6 +200,7 @@ commits and pushes.
 
 ## Done
 
+- 130. Dynasties: one founder's family is the whole city within 3-6 days, in three of four runs; the coalescence of population genetics (tools/dynasty.mjs)
 - 21. Unions (`ECON.union`): refusing cheap fares dies out, within a day at a floor near the median fare (tools/unions.mjs)
 - 130. Dynasties: one family owns the whole city by day 3-6 in three of four runs (two left on day 8 in the fourth); it wins by numbers, earning no more per car (0.26-0.85x the rest) (tools/dynasty.mjs)
 - 150. The simulator explains itself: tools/explain.mjs, a plain-language account of any economy run from its telemetry
