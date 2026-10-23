@@ -200,6 +200,7 @@ commits and pushes.
 
 ## Done
 
+- 46. A living tree of life: each founder's family as stacked bands over time (docs/families.svg, tools/dynasty.mjs SVG=)
 - 44. Evolutionary rescue: none after a quake; stopping mutation on day three carries 14-35% more fares, quake or not, mutational load (tools/quake.mjs FREEZE=1)
 - 130. Dynasties: one founder's family is the whole city within 3-6 days, in three of four runs; the coalescence of population genetics (tools/dynasty.mjs)
 - 21. Unions (`ECON.union`): refusing cheap fares dies out, within a day at a floor near the median fare (tools/unions.mjs)

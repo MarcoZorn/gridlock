@@ -1878,6 +1878,9 @@ family, and follow them day by day (`DAYS=8 node tools/dynasty.mjs turin
 | Manhattan, seed 7 | 7 3 1 1 1 1 1 1 |
 | Manhattan, seed 11 | 6 4 3 2 2 1 1 1 |
 
+![Each founder's family as a share of Turin's cars over eight days: a dozen coloured bands at the start, one orange family taking the whole city by day three and a half](docs/families.svg)
+
+(`SVG=docs/families.svg`, Turin seed 7, a share every eighth of a day.)
 The question answers itself: in three of the four, within three to six
 days every car in the city descends from a single founder (the fourth is
 down to two by day eight), and the richest families of day one
