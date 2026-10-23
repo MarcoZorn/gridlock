@@ -1878,14 +1878,16 @@ family, and follow them day by day (`DAYS=8 node tools/dynasty.mjs turin
 | Manhattan, seed 7 | 7 3 1 1 1 1 1 1 |
 | Manhattan, seed 11 | 6 4 3 2 2 1 1 1 |
 
-The question answers itself: within three to six days every car in the
-city descends from a single founder, and the richest families of day one
+The question answers itself: in three of the four, within three to six
+days every car in the city descends from a single founder (the fourth is
+down to two by day eight), and the richest families of day one
 are the only families left. It is the coalescence that population
 genetics predicts for any finite population, every line but one dying
 out, here sped up by the churn of a thousand-odd bankruptcies a day.
 Being rich does not last for a car (wealth is not inherited, above), but
 being numerous does, and one family ends up being everyone. Within that
-family the richest branch on any day is as good as random.
+family, going by the mobility result above, which branch is richest on any
+day should be close to chance (not measured here).
 
 **No kin selection.** Do relatives go easier on each other? Every crash
 between two cars over days two to five, against how often relatives are
