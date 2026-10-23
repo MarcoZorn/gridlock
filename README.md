@@ -2245,6 +2245,23 @@ loss is clearer. Why, I can only guess: its long avenues are the routes, and clo
 one sends everyone the long way round; Turin's dense old grid of short
 streets always has another.
 
+**Evolutionary rescue?** Does new mutation help a city adapt to the
+quake? `FREEZE=1` stops all mutation from the morning of day three, in both
+runs (selection and crossover go on, on the brains already there). Fares
+over days four to seven, quake against no quake, four seeds (7, 11, 13, 17):
+
+| map | mutating | frozen |
+|---|---|---|
+| Manhattan | -9.3, -2.8, +2.4, -4.7% | -3.6, -1.5, -2.3, -3.6% |
+| Turin | +7.8, +2.4, +0.2, +1.2% | +2.4, -0.9, +1.6, -1.0% |
+
+No rescue: Manhattan loses about as much with mutation as without. What
+the freeze shows instead: with no quake at all, the frozen economy carries
+16 to 35% more fares than the mutating one in Manhattan and 14 to 17% more
+in Turin, in every seed. From day three on, mutation in the economy costs
+more than it finds. That is mutational load, the same thing
+`tools/frozen.mjs` found in training.
+
 **Jams have a typical size.** If traffic organised itself to the edge of
 criticality, jams would come in every size, as many of each as a power law
 says. Every 10 s of days two to four, stopped cars within 25 units of each
