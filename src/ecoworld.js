@@ -57,6 +57,7 @@ export const ECON = {
   replan: 0,            // 1: at every junction a car re-plans the rest of its route on the traffic now (an experiment, off)
   speedLimit: 0,        // a speed camera everywhere: over this speed a car pays...
   speedFine: 0.3,       // ...this much a second at double the limit, in proportion below that (an experiment, off)
+  union: 0,             // union cars refuse passenger fares that pay less than this; the card passes parent to child (an experiment)
 };
 
 // One city day is 24 minutes of simulation, a minute per hour. Demand has a
@@ -184,6 +185,8 @@ export class EcoWorld {
     // which platform it drives for: its parent's, now and then the other
     // (no draw at all with one platform, so other runs keep their random stream)
     d.platform = !ECON.platformB ? 0 : parent ? (this.rng.next() < ECON.switchPlatform ? 1 - parent.platform : parent.platform) : +(this.rng.next() < 0.5);
+    // union card: the parent's, one child in twenty the other way; half of newcomers
+    d.union = !ECON.union ? 0 : parent ? (this.rng.next() < 0.05 ? 1 - parent.union : parent.union) : +(this.rng.next() < 0.5);
     this.newJob(d, true);
     d.onArrive = (car, here) => {
       this.pay(car);
@@ -241,7 +244,8 @@ export class EcoWorld {
       const fLoad = Math.min(d.body.capacity, ECON.freightMax);
       const fPay = d.body.capacity >= ECON.freightMin && this.freight >= 1 ? ECON.freightRate * this.freightBoom * fLoad : 0;
       const onB = ECON.platformB && d.platform === 1, queue = onB ? this.passengersB : this.passengers;
-      const pPay = queue >= 1 && this.trusted(d) ? ECON.passengerRate * (1 + ECON.speedBonus / 2) : 0;
+      const cheap = d.union && d.routeLen * ECON.passengerRate < ECON.union;
+      const pPay = queue >= 1 && !cheap && this.trusted(d) ? ECON.passengerRate * (1 + ECON.speedBonus / 2) : 0;
       if (fPay > pPay) { kind = "freight"; load = fLoad; this.freight--; }
       else if (pPay > 0) { kind = "passenger"; if (onB) this.passengersB--; else this.passengers--; this.events.pickups++; }
       else this.events.deadheads++;
