@@ -1648,6 +1648,17 @@ it. Measured across all ages at once the correlation came out negative
 (-0.08 to -0.16), but that was the economy changing over the days, not the
 families: early parents and late children earn in different cities.
 
+**How long do rich families stay rich?** A family is everyone descended
+from one founder or immigrant (`DAYS=8 node tools/dynasty.mjs turin 7`,
+Turin and Manhattan, seeds 7 and 11). The five families that earned most on
+day 1 are the only ones left: they already hold 81 to 100% of the fares and
+83 to 100% of the cars that day, and the city narrows to a single family by
+day 3 (Manhattan s7), 5 (Turin s7) or 6 (Manhattan s11); Turin s11 still has
+two on day 8. Where there were rivals to compare with, the winning families
+earned less per car than the rest (0.26 to 0.85 times): rich families stay
+rich by being many, not by driving better, as the missing inheritance of
+earnings says they must.
+
 **Does it ever stop inventing?** Counting species in the four 40-day
 economies' telemetry: new species founded in each five days, after the
 first burst.
