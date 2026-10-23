@@ -1659,6 +1659,17 @@ earned less per car than the rest (0.26 to 0.85 times): rich families stay
 rich by being many, not by driving better, as the missing inheritance of
 earnings says they must.
 
+**Do unions spread?** With `ECON.union` set, a car with a union card
+refuses passenger fares that pay less than the floor and drives on empty
+instead. Half the newcomers carry a card, a child keeps its parent's, one in
+twenty switches (`FLOOR=12 node tools/unions.mjs turin 7`, six days, two
+seeds). The median fare is about 18. At floors of 4 and 6 a card refuses
+almost nothing and its share drifts anywhere from 15 to 73%. At 12 (a fifth
+of fares refused) the card falls to 3 to 8% by day 6; at 18 and 24 (half
+and three quarters) it is gone within half a day to a day, held at 1 to 7%
+only by the children who switch. Nobody benefits from a refused fare but the
+car behind, so refusing loses.
+
 **Does it ever stop inventing?** Counting species in the four 40-day
 economies' telemetry: new species founded in each five days, after the
 first burst.
