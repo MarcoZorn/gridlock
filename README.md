@@ -1470,9 +1470,17 @@ crash as if the car weighed the city's average (`crashMass=0.82`) leaves
 freight at zero in all four seeds. Taking the cost away altogether brings it
 in three. What the freight cities share is size: free crashes double the
 fleet (446-459 cars against 206-242), and the fraud cities sit at the
-480-car ceiling. My guess, not tested: with twice the cars after the same
-passengers, a car often finds no passenger waiting, and then the freight
-nobody else wanted is the only work there is, so a little cargo room pays.
+480-car ceiling. So I guessed: with twice the cars after the same
+passengers, a car often finds no passenger waiting, and then freight is the
+only work there is. The first half holds. Of the times a car looks for a
+job, it finds none waiting 19-30% of the time with no rule, 55-65% under
+flat insurance and 67-71% with crashes free. But halving the passengers
+instead (`--econ demand=0.5`, crashes priced as usual, freight as plentiful
+as before) raises that to 32-44% with 116-135 cars, and no car carries
+freight in any of the four seeds; the cargo gene ends at 0.01-0.03. Even
+two flat-insurance seeds at 63-65% carried none. Idle cars are not enough;
+whatever else cheap crashes give, perhaps letting a clumsy half-truck live
+long enough to become a van, is still a guess.
 
 **A fuel tax.** Fuel costs three times as much (`--econ fuelTax=3`), Turin,
 six days, two seeds, days two to six:
