@@ -54,6 +54,7 @@ export const ECON = {
   reputation: 0,        // passengers refuse a car that crashes this many times more often than the average car (an experiment)
   licence: 0,           // a car carries passengers only once it has driven this far without a crash (an experiment)
   premium: 0.034,       // per second: about what the average car spends on crashes uninsured
+  rated: 0,             // 1: insured cars pay the premium times their own claims rate over the average car's (an experiment)
   replan: 0,            // 1: at every junction a car re-plans the rest of its route on the traffic now (an experiment, off)
   speedLimit: 0,        // a speed camera everywhere: over this speed a car pays...
   speedFine: 0.3,       // ...this much a second at double the limit, in proportion below that (an experiment, off)
@@ -203,6 +204,7 @@ export class EcoWorld {
       lastDamage = car.damage;
       const cost = hit * car.p.mass * ECON.crashCost;
       car.lastCrashDist = car.dist;
+      car.claims = (car.claims || 0) + cost;
       if (!this.insurance) car.cash -= cost;   // insured: the pool pays, see the premium
       this.events.crashes++;
       this.city.addHeat("crash", car.x, car.y);
@@ -295,6 +297,15 @@ export class EcoWorld {
     const onRoad = this.crowd ? this.cars.concat(this.crowd.people) : this.cars;
     this.hash.rebuild(onRoad);
     if (this.tick % 30 === 0) c.measureLoad(this.cars);
+    // experience rating: claims per tick against the city's, with an hour of
+    // the average as a prior so a newcomer starts at the flat premium
+    let avg = 0;
+    if (this.insurance && ECON.rated) {
+      let claims = 0, age = 0;
+      for (const d of this.cars) { claims += d.claims || 0; age += this.tick - d.born; }
+      avg = claims / Math.max(1, age);
+    }
+    const prior = 3600;
     for (const d of this.cars) {
       const reds = d.redRuns;
       d.step(DT, this.hash);
@@ -303,7 +314,7 @@ export class EcoWorld {
       // grows with the odometer, so every car wears out in the end
       const wear = 1 + d.dist / ECON.wearDist;
       d.cash -= d.body.upkeep * wear * DT + d.body.fuel * ECON.fuelTax * Math.abs(d.v) * DT;
-      if (this.insurance) d.cash -= ECON.premium * DT;
+      if (this.insurance) d.cash -= ECON.premium * DT * (avg ? ((d.claims || 0) + avg * prior) / (this.tick - d.born + prior) / avg : 1);
       const lim = this.limits ? this.limits[c.edgeBetween(d.route[d.seg], d.route[d.seg + 1])?.id] : this.speedLimit;
       if (lim && Math.abs(d.v) > lim) {
         d.cash -= ECON.speedFine * (Math.abs(d.v) / lim - 1) * DT;
