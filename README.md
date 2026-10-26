@@ -1614,6 +1614,15 @@ six. The extra fares come only from the extra cars. Rating the premium does
 not help: a crash pays half its cost back at once, and the premium never
 catches up.
 
+A tenth again (`payout=0.1`) is barely better: fares +81% and crashes per
+car +123% (4/4 each), the city full at 480 by day one, 350 to 420 births in
+days two to six against 9200 to 9600 under plain flat insurance, and
+evolution stalled at generation 5 or 6 against 30 to 34. Crashes per car do
+creep up, 9-17% from day one to day six, but plain flat insurance creeps up
+as much (10-21%) and here almost no one is born to be selected: the cars
+crash more as they age, not because crashers win. Paying for crashes does
+not breed fraudsters; it ends breeding.
+
 **Who gets rich?** Across the cars alive at day 15 in four Turin cities
 (200 to 300 each), the correlation between how fast a car earns and each of
 its genes, or the size of its brain:
@@ -1764,6 +1773,7 @@ way (`node tools/policies.mjs`, straight from the runs' telemetry):
 | licence, 1000 units | -40% (4/4) | -18% (4/4) | -13% (4/4) | 0.37 |
 | insurance, flat | +35% (4/4) | +94% (4/4) | -35% (4/4) | 0.39 |
 | insurance, rated by own claims | +25% (4/4) | +52% (4/4) | -23% (4/4) | 0.37 |
+| insurance paying a tenth again, flat | +81% (4/4) | +123% (4/4) | -3% (3/4) | 0.38 |
 | insurance paying half again, flat | +80% (4/4) | +135% (4/4) | +40% (3/4) | 0.33 |
 | insurance paying half again, rated | +77% (4/4) | +139% (4/4) | +47% (3/4) | 0.28 |
 | no rule | 2481 | 195 | 59 s | 0.35 |
