@@ -39,6 +39,7 @@ export const ECON = {
   congestion: 0,        // a charge per second, times how full the road you are on is (an experiment, off)
   peakToll: 0,          // 1: the congestion charge applies only in the rush hours, when demand is above average (an experiment)
   fuelTax: 1,           // fuel costs this many times its price (an experiment)
+  fuelMarket: 0,        // fuel's price follows demand: times the cars on the road over this many (an experiment)
   finishFare: 0,        // 1: a car with a fare aboard cannot go broke until it delivers (an experiment)
   insurance: 0,         // 1: crashes cost the driver nothing; every car pays the premium instead (an experiment)
   imitate: 0,           // share of children who copy the most successful driver's brain, not the parent's (an experiment)
@@ -308,6 +309,7 @@ export class EcoWorld {
       avg = claims / Math.max(1, age);
     }
     const prior = 3600;
+    const fuel = ECON.fuelTax * (ECON.fuelMarket ? this.cars.length / ECON.fuelMarket : 1);
     for (const d of this.cars) {
       const reds = d.redRuns;
       d.step(DT, this.hash);
@@ -315,7 +317,7 @@ export class EcoWorld {
       // running costs: being on the road, and burning fuel to move; upkeep
       // grows with the odometer, so every car wears out in the end
       const wear = 1 + d.dist / ECON.wearDist;
-      d.cash -= d.body.upkeep * wear * DT + d.body.fuel * ECON.fuelTax * Math.abs(d.v) * DT;
+      d.cash -= d.body.upkeep * wear * DT + d.body.fuel * fuel * Math.abs(d.v) * DT;
       if (this.insurance) d.cash -= ECON.premium * DT * (avg ? ((d.claims || 0) + avg * prior) / (this.tick - d.born + prior) / avg : 1);
       const lim = this.limits ? this.limits[c.edgeBetween(d.route[d.seg], d.route[d.seg + 1])?.id] : this.speedLimit;
       if (lim && Math.abs(d.v) > lim) {
