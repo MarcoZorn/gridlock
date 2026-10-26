@@ -200,6 +200,7 @@ commits and pushes.
 
 ## Done
 
+- 102. Insurance fraud (`ECON.payout`): a claim worth even a tenth more than the repair fills the city to its ceiling and stops evolution; crashers are not selected, nothing is
 - 22. Insurers pricing by the record (`ECON.rated`): half the extra crashes of flat insurance, seven tenths of its extra fares
 - 46. A living tree of life: each founder's family as stacked bands over time (docs/families.svg, tools/dynasty.mjs SVG=)
 - 44. Evolutionary rescue: none after a quake; stopping mutation on day three carries 14-35% more fares, quake or not, mutational load (tools/quake.mjs FREEZE=1)
