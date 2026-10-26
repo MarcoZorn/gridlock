@@ -1594,6 +1594,26 @@ seven tenths of the extra fares. It sits between the two because it is the two
 mixed: a crash still costs nothing on the day, but a careless driver pays for
 it slowly, and the worst of them still go broke, only later.
 
+Then insurance fraud: a claim worth more than the repair. With
+`--econ insurance=1,payout=0.5` every crash also pays the driver half its
+cost in cash, so crashing turns a profit. Turin, four seeds, days two to six:
+
+| Turin | fares a day | crashes per car | trip |
+|---|---|---|---|
+| flat premium, paying half again | +80% (4/4) | +135% (4/4) | +40% (3/4) |
+| rated premium, paying half again | +77% (4/4) | +139% (4/4) | +47% (3/4) |
+
+No one has to learn to crash on purpose, because nothing gets the chance to
+learn. Within two or three city hours, with walls taking 80-96%
+of the crashes against 56-58% uninsured, the city is full at its ceiling of
+480 cars, and from then on almost no car dies and almost none is born: 9 to 34
+births in days two to six, against 5300 to 6100 with no rule. Evolution stops
+at generation 6 to 9 (16 to 23 with no rule) and the same cars drive on,
+crashing at the same rate each day, averaging 6200 to 11300 in cash by day
+six. The extra fares come only from the extra cars. Rating the premium does
+not help: a crash pays half its cost back at once, and the premium never
+catches up.
+
 **Who gets rich?** Across the cars alive at day 15 in four Turin cities
 (200 to 300 each), the correlation between how fast a car earns and each of
 its genes, or the size of its brain:
@@ -1744,6 +1764,8 @@ way (`node tools/policies.mjs`, straight from the runs' telemetry):
 | licence, 1000 units | -40% (4/4) | -18% (4/4) | -13% (4/4) | 0.37 |
 | insurance, flat | +35% (4/4) | +94% (4/4) | -35% (4/4) | 0.39 |
 | insurance, rated by own claims | +25% (4/4) | +52% (4/4) | -23% (4/4) | 0.37 |
+| insurance paying half again, flat | +80% (4/4) | +135% (4/4) | +40% (3/4) | 0.33 |
+| insurance paying half again, rated | +77% (4/4) | +139% (4/4) | +47% (3/4) | 0.28 |
 | no rule | 2481 | 195 | 59 s | 0.35 |
 
 Where fewer than four seeds agree, treat the rule as doing nothing to
