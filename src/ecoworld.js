@@ -43,6 +43,7 @@ export const ECON = {
   finishFare: 0,        // 1: a car with a fare aboard cannot go broke until it delivers (an experiment)
   insurance: 0,         // 1: crashes cost the driver nothing; every car pays the premium instead (an experiment)
   imitate: 0,           // share of children who copy the most successful driver's brain, not the parent's (an experiment)
+  speciesBy: 0,         // species, and so who may cross brains, by 0: brain and body; 1: body alone; 2: brain alone (an experiment)
   vote: 0,             // the drivers vote on the basic income every hour: each wants more if it earns below the average, and the share moves this much toward the majority (an experiment)
   basic: 0,             // share of every fare taxed and paid back equally to every car, a basic income (an experiment)
   minFare: 0,           // no passenger fare pays less than this, a minimum wage per fare (an experiment)
@@ -442,7 +443,8 @@ export class EcoWorld {
     for (const d of this.cars) {
       let home = null, best = Infinity;
       for (const s of this.species) {
-        const dd = distance(d.genome, s.brain, this.cfg) + 8 * d.body.distance(s.body);
+        const by = ECON.speciesBy;
+        const dd = (by === 1 ? 0 : distance(d.genome, s.brain, this.cfg)) + (by === 2 ? 0 : 8 * d.body.distance(s.body));
         if (dd < best) { best = dd; home = s; }
       }
       if (!home || best > this.threshold) {
