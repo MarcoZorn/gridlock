@@ -43,6 +43,7 @@ export const ECON = {
   finishFare: 0,        // 1: a car with a fare aboard cannot go broke until it delivers (an experiment)
   insurance: 0,         // 1: crashes cost the driver nothing; every car pays the premium instead (an experiment)
   imitate: 0,           // share of children who copy the most successful driver's brain, not the parent's (an experiment)
+  vote: 0,             // the drivers vote on the basic income every hour: each wants more if it earns below the average, and the share moves this much toward the majority (an experiment)
   basic: 0,             // share of every fare taxed and paid back equally to every car, a basic income (an experiment)
   minFare: 0,           // no passenger fare pays less than this, a minimum wage per fare (an experiment)
   forgive: 0,           // 1: a car's first bankruptcy is forgiven, its debt wiped to zero; the second is final (an experiment)
@@ -123,6 +124,7 @@ export class EcoWorld {
     this.freightBoom = 1;                // freight pay and demand times this: at 3 trucks can evolve
     this.finishFare = ECON.finishFare;   // a car with a fare aboard finishes it before it can go broke
     this.insurance = ECON.insurance;     // crashes paid by a pool, every car pays a premium
+    this.basic = ECON.basic;             // share of fares paid out as a basic income; voted on with ECON.vote
     this.city.control = control;
     this.cfg = { ...DEFAULTS, pWeight: 0.5, weightStep: 0.15 };
     this.innov = founders ? founders.innov : new Innovations(N_INPUTS + 1 + N_OUTPUTS);
@@ -288,8 +290,8 @@ export class EcoWorld {
       }
       this.events.dropoffs++;
     }
-    this.pool = (this.pool || 0) + fare * ECON.basic;
-    d.cash += fare * (1 - ECON.basic);
+    this.pool = (this.pool || 0) + fare * this.basic;
+    d.cash += fare * (1 - this.basic);
     d.earned += fare;
     this.events.trips++;
     this.events.tripTicks += this.tick - j.start;
@@ -399,6 +401,7 @@ export class EcoWorld {
 
     this.tick++;
     if (this.tick % SPECIES_EVERY === 0) { this.speciate(); this.pruneAncestry(); }
+    if (ECON.vote && this.tick % 3600 === 0) this.poll();
     if (this.tick % 600 === 0) this.record();
   }
 
@@ -484,6 +487,18 @@ export class EcoWorld {
     }
   }
 
+  // The vote: a car gains from the basic income if it earns less than the
+  // average, loses if more, so each votes its pocket. Only cars an hour old
+  // or more have a record to vote by.
+  poll() {
+    const rate = (d) => d.earned / (this.tick - d.born);
+    const voters = this.cars.filter((d) => this.tick - d.born >= 3600);
+    if (!voters.length) return;
+    const mean = voters.reduce((a, d) => a + rate(d), 0) / voters.length;
+    const up = voters.filter((d) => rate(d) < mean).length;
+    this.basic = Math.max(0, Math.min(0.9, this.basic + ECON.vote * Math.sign(up - voters.length / 2)));
+  }
+
   record() {
     const n = this.cars.length || 1;
     const traits = {};
@@ -495,6 +510,7 @@ export class EcoWorld {
       cash: this.cars.reduce((a, d) => a + d.cash, 0) / n,
       gini: gini(this.cars.map((d) => Math.max(0, d.cash))),
       maxGen: Math.max(0, ...this.cars.map((d) => d.generation)),
+      basic: this.basic,
       ...this.events,
       traits,
       species: this.species.map((s) => [s.id, s.size]),
@@ -583,7 +599,7 @@ export class EcoWorld {
       v: 1, seed: this.seed, citySeed: this.city.seed, graph: this.graph, control: this.control, tick: this.tick, rng: this.rng.s,
       innov: this.innov.toJSON(), cfg: this.cfg, nextId: this.nextId, nextSpecies: this.nextSpecies, threshold: this.threshold,
       passengers: this.passengers, passengersB: this.passengersB, freight: this.freight,
-      closed: [...this.city.closed], edits: this.edits, size: this.size, congestion: this.congestion, speedLimit: this.speedLimit, freightBoom: this.freightBoom, finishFare: this.finishFare, insurance: this.insurance,
+      closed: [...this.city.closed], edits: this.edits, size: this.size, congestion: this.congestion, speedLimit: this.speedLimit, freightBoom: this.freightBoom, finishFare: this.finishFare, insurance: this.insurance, basic: this.basic,
       founders: this.founders ? this.founders.map((g) => g.toJSON()) : null,
       cars: this.cars.map((d) => ({
         brain: d.genome.toJSON(), body: d.body.toJSON(), cash: d.cash, id: d.id, born: d.born, parent: d.parent,
@@ -610,6 +626,7 @@ export class EcoWorld {
     w.freightBoom = j.freightBoom ?? 1;
     w.finishFare = j.finishFare ?? ECON.finishFare;
     w.insurance = j.insurance ?? ECON.insurance;
+    w.basic = j.basic ?? ECON.basic;
     for (const id of j.closed || []) w.city.closed.add(id);
     w.tick = j.tick; w.rng.s = j.rng; w.cfg = j.cfg;
     w.innov = Innovations.fromJSON(j.innov);
