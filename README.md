@@ -2018,8 +2018,8 @@ others vote for less. The share moves five points toward the majority, from
 Started from none, it stays at none. In days two to six only 43-44% of the
 voters, on average, earn below the average (37-51% in any one hour): a few
 cars that are failing pull the mean down, so most cars sit above it, and
-the median voter is richer than the mean. The tax rises for an hour or two
-at the start, in two seeds to 15-20%, and is gone within four hours.
+the median voter is richer than the mean. The tax flickers in the first
+day, in two seeds up to 20-25%, and is gone for good by hour 17.
 
 Started from a quarter, it splits:
 
@@ -2035,7 +2035,7 @@ the city ran as if there had never been one. In the other two the
 majority voted it up, to the ceiling of 90% by day two, and the city
 collapsed: a car keeping a tenth of its fares cannot save enough to breed,
 so by day four every car is an immigrant (generation 0) at the floor of 24
-cars, and fares fall to a tenth of normal. Seed 3 voted its way out on day
+cars, and fares fall to a tenth of normal or less. Seed 3 voted its way out on day
 five and recovered to 165 cars by day six; seed 11 was still there at the
 end. Across the four seeds, days two to six (tools/policies.mjs): fares
 -43% (3/4). A vote by self-interest has two stable outcomes here, no tax and
