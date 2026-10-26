@@ -11,6 +11,7 @@ const rules = [
   ["reputation by crashes, 1.5x", "rep-1.5"], ["reputation by damage, 1.5x", "repd-1.5"],
   ["congestion charge, all day", "toll-all"], ["congestion charge, rush hours", "toll-peak"],
   ["first bankruptcy forgiven", "forgive"], ["credit of 10", "credit-10"], ["credit of 30", "credit-30"], ["licence, 1000 units", "lic-1000"],
+  ["insurance, flat", "ins-flat"], ["insurance, rated by own claims", "ins-rated"],
 ];
 const stats = (run) => {
   const rows = fs.readFileSync(`runs/${run}/telemetry.jsonl`, "utf8").trim().split("\n").map(JSON.parse).filter((x) => x.tick > 2 * 86400 && x.tick <= 6 * 86400);
