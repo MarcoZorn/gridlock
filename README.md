@@ -2084,7 +2084,8 @@ Safer than shunning, and free: the same fares, a little quicker, carried
 by fewer cars (146-194 on average against 206-242). Here the passenger
 judges only the ride they were on, so the car pays for its own crashes,
 not for whoever it shared a road with. But the gain is front-loaded:
-crashes per car are 9-28% below no rule on day one and within 3% of it in
+crashes per car are 1-28% below no rule on day one (15-28% in three seeds)
+and within 3% of it in
 three seeds by day six. Rating rides gives a head start, not a lasting
 change, at least within a week.
 
