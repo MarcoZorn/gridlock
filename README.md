@@ -1824,6 +1824,8 @@ way (`node tools/policies.mjs`, straight from the runs' telemetry):
 | reputation by damage, 1.5x | -27% (4/4) | -14% (4/4) | +11% (4/4) | 0.34 |
 | congestion charge, all day | -17% (4/4) | -20% (4/4) | -28% (4/4) | 0.35 |
 | congestion charge, rush hours | -9% (4/4) | -6% (4/4) | -11% (4/4) | 0.35 |
+| surge pricing, x1 | -2% (2/4) | +18% (4/4) | +2% (2/4) | 0.37 |
+| surge pricing, x3 | -13% (4/4) | +26% (4/4) | +4% (3/4) | 0.44 |
 | first bankruptcy forgiven | -0% (2/4) | +9% (3/4) | +2% (3/4) | 0.35 |
 | credit of 10 | +18% (4/4) | +23% (4/4) | +10% (4/4) | 0.48 |
 | credit of 30 | +26% (4/4) | +29% (4/4) | +20% (4/4) | 0.63 |
@@ -2170,6 +2172,30 @@ keeps more of the fares (one seed lost 16%, the other 1%) and still takes
 a few seconds off every trip. Most of the speed of the all-day charge it
 does not get: 51-53 s against 40-41. With two seeds that disagree this
 much, the honest reading is "somewhere in between, closer to no charge".
+
+**Surge pricing.** With `--econ surge=1` a passenger fare pays 1 plus how
+full the queue of waiting passengers was when the car took the job: double
+when the queue is full, as in a rush hour with too few cars. A full queue
+turns new passengers away to another firm, now counted. Turin, four seeds,
+days two to six (a rerun of no rule, identical fare for fare, gives the
+baseline count):
+
+| Turin | turned away | in the rush hours | cars | picked up a day | delivered a day | cars broke a day | crashes per car |
+|---|---|---|---|---|---|---|---|
+| no surge | 7-15% | 17-33% | 206-242 | 3392-3720 | 2363-2588 | 1324-1494 | |
+| surge x1 | 5-8% | 12-21% | 269-291 | 3658-3795 | 2347-2562 | 2091-2154 | +18% (4/4) |
+| surge x3 | 4-7% | 9-18% | 312-362 | 3699-3835 | 2008-2379 | 2748-3206 | +26% (4/4) |
+
+It does what surge pricing promises, mostly: the money brings a quarter to
+three quarters more cars, and in three seeds of four fewer passengers are
+turned away, in the rush hours 12-20% instead of 29-33% at x1 (the fourth,
+seed 7, turned few away to begin with and stays at 7-8%). And it changes
+nothing passengers want. Even with no surge, three in ten of the passengers
+picked up are never delivered, because their car goes broke on the way;
+surge makes the fleet bigger and the churn faster (40% to 130% more
+bankruptcies a day), so the extra pickups are lost the same way, and at x3
+13% fewer passengers arrive (4/4). More money per fare bought more drivers,
+and worse ones.
 
 **Reputation.** With `--econ reputation=1.5`, passengers refuse any car
 that has crashed more than one and a half times as often as the average
