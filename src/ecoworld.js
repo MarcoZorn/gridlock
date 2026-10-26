@@ -50,6 +50,7 @@ export const ECON = {
   basic: 0,             // share of every fare taxed and paid back equally to every car, a basic income (an experiment)
   minFare: 0,           // no passenger fare pays less than this, a minimum wage per fare (an experiment)
   forgive: 0,           // 1: a car's first bankruptcy is forgiven, its debt wiped to zero; the second is final (an experiment)
+  surge: 0,             // a passenger fare pays 1 + this times how full the queue of waiting passengers was at pickup (an experiment)
   interest: 0,          // a car in debt sees its debt grow by this share every city hour (an experiment, with credit)
   credit: 0,            // a car may run this far into debt before it counts as broke (an experiment)
   platformB: 0,         // share of passengers who book through a second platform, B; 0: one platform (an experiment)
@@ -250,7 +251,7 @@ export class EcoWorld {
   }
 
   newJob(d, first = false) {
-    let kind = null, load = 0;
+    let kind = null, load = 0, surge = 1;
     if (!first) {
       // take whichever waiting job pays this vehicle more per unit of route
       const fLoad = Math.min(d.body.capacity, ECON.freightMax);
@@ -259,11 +260,11 @@ export class EcoWorld {
       const cheap = d.union && d.routeLen * ECON.passengerRate < ECON.union;
       const pPay = queue >= 1 && !cheap && this.trusted(d) ? ECON.passengerRate * (1 + ECON.speedBonus / 2) : 0;
       if (fPay > pPay) { kind = "freight"; load = fLoad; this.freight--; }
-      else if (pPay > 0) { kind = "passenger"; if (onB) this.passengersB--; else this.passengers--; this.events.pickups++; }
+      else if (pPay > 0) { kind = "passenger"; surge = 1 + ECON.surge * queue / (ECON.fareQueue * this.scale * (onB ? ECON.platformB : 1 - ECON.platformB)); if (onB) this.passengersB--; else this.passengers--; this.events.pickups++; }
       else this.events.deadheads++;
     }
     d.job = {
-      kind, load,
+      kind, load, surge,
       start: this.tick,
       crashes: d.crashes,
       // how long a trip of this length takes at a sensible pace
@@ -281,7 +282,7 @@ export class EcoWorld {
     } else {
       const took = Math.max(1, this.tick - j.start);
       const quick = Math.max(0, Math.min(1, j.expect / took - 0.5));
-      fare = Math.max(ECON.minFare, dist * ECON.passengerRate * (1 + ECON.speedBonus * quick));
+      fare = Math.max(ECON.minFare, dist * ECON.passengerRate * (1 + ECON.speedBonus * quick)) * j.surge;
       if (ECON.platformB) fare *= 1 - (d.platform === 1 ? ECON.commissionB : ECON.commissionA);
       if (ECON.reviews) {
         // the share of its rides that did not crash, starting from two good ones
@@ -313,7 +314,9 @@ export class EcoWorld {
     if (ECON.replan && c.load) this.replanAll();
     const scale = this.scale;
     const booked = ECON.demand * scale * demandAt(c.time) * DT, b = ECON.platformB;
-    this.passengers = Math.min(ECON.fareQueue * scale * (1 - b), this.passengers + booked * (1 - b));
+    const room = ECON.fareQueue * scale * (1 - b);
+    this.events.lost = (this.events.lost || 0) + Math.max(0, this.passengers + booked * (1 - b) - room);
+    this.passengers = Math.min(room, this.passengers + booked * (1 - b));
     if (b) this.passengersB = Math.min(ECON.fareQueue * scale * b, this.passengersB + booked * b);
     this.freight = Math.min(ECON.fareQueue * scale, this.freight + ECON.freightDemand * this.freightBoom * scale * freightAt(c.time) * DT);
     // everything a car can see or hit: other cars, and anyone crossing
