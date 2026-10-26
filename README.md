@@ -1783,6 +1783,7 @@ way (`node tools/policies.mjs`, straight from the runs' telemetry):
 | credit of 10 | +18% (4/4) | +23% (4/4) | +10% (4/4) | 0.48 |
 | credit of 30 | +26% (4/4) | +29% (4/4) | +20% (4/4) | 0.63 |
 | licence, 1000 units | -40% (4/4) | -18% (4/4) | -13% (4/4) | 0.37 |
+| reviews, fares by clean rides | -1% (2/4) | -9% (4/4) | -5% (4/4) | 0.33 |
 | fuel price follows the fleet | +0% (1/4) | +1% (2/4) | -1% (2/4) | 0.35 |
 | insurance, flat | +35% (4/4) | +94% (4/4) | -35% (4/4) | 0.39 |
 | insurance, rated by own claims | +25% (4/4) | +52% (4/4) | -23% (4/4) | 0.37 |
@@ -2067,6 +2068,25 @@ damage: crashes per car 178 and 184 a day (against 188 and 206), but fares
 A little safer, a lot poorer. My guess, not measured: the shunned cars
 are the fast ones, and a fast driver that crashes now and then still
 moves more people than a careful one.
+
+Reviews, a star rating that sets the fare instead of a door that shuts
+(`--econ reviews=1`): a passenger whose ride did not crash gives it five
+stars, and a car's fare is the share of its rides that went cleanly over
+the city's average share, every car starting from two good rides. Turin,
+four seeds, days two to six, against no rule (tools/policies.mjs):
+
+| Turin | fares a day | crashes per car | trip | Gini |
+|---|---|---|---|---|
+| reputation by crashes, 1.5x | -11% (3/4) | -6% (3/4) | +5% (4/4) | 0.35 |
+| reviews | -1% (2/4) | -9% (4/4) | -5% (4/4) | 0.33 |
+
+Safer than shunning, and free: the same fares, a little quicker, carried
+by fewer cars (146-194 on average against 206-242). Here the passenger
+judges only the ride they were on, so the car pays for its own crashes,
+not for whoever it shared a road with. But the gain is front-loaded:
+crashes per car are 9-28% below no rule on day one and within 3% of it in
+three seeds by day six. Rating rides gives a head start, not a lasting
+change, at least within a week.
 
 **Drunk drivers.** A share of the shipped drivers get random noise added
 to their steering and throttle every tick, in three unseen cities with 60
