@@ -1747,6 +1747,19 @@ open-endedness, more and more kinds of thing over time, this is not it. It
 is a world with room for about six ways of making a living, and a
 constant churn of lineages taking turns at them.
 
+Species here are labels with one job: a child's brain is crossed only with
+a car of its own species. They are drawn by brain and body distance
+together. Drawn by body alone (`--econ speciesBy=1`), so that cars in the
+same kind of vehicle breed together whatever they drive like, or by brain
+alone (`speciesBy=2`), Turin, four seeds, days two to six against both
+(tools/policies.mjs): fares -2% and -1%, crashes +3% and +2%, trips +2% and
++1%, none of it in all four seeds. Species alive at a time: 5.2-6.3 by body,
+5.8-7.6 by brain, 4.3-8.3 by both. The spread of every body gene among the
+cars alive on day six stays where it was (cargo, the gene a truck would need,
+0.03-0.06 under all three). There is no body niche to keep apart: no car in
+any of these eight runs, or the four without the rule, carried freight. Who
+counts as kin changes nothing when every car does the same job.
+
 **In plain words.** `node tools/explain.mjs <run>` writes an account of
 one economy run from its telemetry alone, every number computed from day
 two against the last day. For the untouched Turin economy, seed 7:
@@ -1783,6 +1796,8 @@ way (`node tools/policies.mjs`, straight from the runs' telemetry):
 | credit of 10 | +18% (4/4) | +23% (4/4) | +10% (4/4) | 0.48 |
 | credit of 30 | +26% (4/4) | +29% (4/4) | +20% (4/4) | 0.63 |
 | licence, 1000 units | -40% (4/4) | -18% (4/4) | -13% (4/4) | 0.37 |
+| species by body alone | -2% (1/4) | +3% (3/4) | +2% (3/4) | 0.35 |
+| species by brain alone | -1% (2/4) | +2% (3/4) | +1% (2/4) | 0.35 |
 | basic income voted, from none | +0% (2/4) | +3% (3/4) | -0% (2/4) | 0.35 |
 | basic income voted, from a quarter | -43% (3/4) | -16% (3/4) | +10% (3/4) | 0.31 |
 | reviews, fares by clean rides | -1% (2/4) | -9% (4/4) | -5% (4/4) | 0.33 |
