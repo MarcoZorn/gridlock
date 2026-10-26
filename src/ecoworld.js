@@ -53,6 +53,7 @@ export const ECON = {
   switchPlatform: 0.05, // the share of children that drive for the other platform
   reputationBy: 0,      // 0: by crash count; 1: by damage, which carries the blame of speed
   reputation: 0,        // passengers refuse a car that crashes this many times more often than the average car (an experiment)
+  reviews: 0,           // 1: passengers rate the ride, five stars if it did not crash; a fare pays the car's rating over the city's (an experiment)
   licence: 0,           // a car carries passengers only once it has driven this far without a crash (an experiment)
   premium: 0.034,       // per second: about what the average car spends on crashes uninsured
   payout: 0,            // insured: a crash also pays the driver this share of its cost in cash, a claim worth more than the repair (an experiment)
@@ -258,6 +259,7 @@ export class EcoWorld {
     d.job = {
       kind, load,
       start: this.tick,
+      crashes: d.crashes,
       // how long a trip of this length takes at a sensible pace
       expect: d.routeLen / 45 / DT,
     };
@@ -275,6 +277,15 @@ export class EcoWorld {
       const quick = Math.max(0, Math.min(1, j.expect / took - 0.5));
       fare = Math.max(ECON.minFare, dist * ECON.passengerRate * (1 + ECON.speedBonus * quick));
       if (ECON.platformB) fare *= 1 - (d.platform === 1 ? ECON.commissionB : ECON.commissionA);
+      if (ECON.reviews) {
+        // the share of its rides that did not crash, starting from two good ones
+        const stars = (o) => ((o.clean || 0) + 2) / ((o.rides || 0) + 2);
+        let sum = 0;
+        for (const o of this.cars) sum += stars(o);
+        fare *= stars(d) / (sum / this.cars.length);
+        d.rides = (d.rides || 0) + 1;
+        if (d.crashes === j.crashes) d.clean = (d.clean || 0) + 1;
+      }
       this.events.dropoffs++;
     }
     this.pool = (this.pool || 0) + fare * ECON.basic;
