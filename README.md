@@ -1827,6 +1827,8 @@ way (`node tools/policies.mjs`, straight from the runs' telemetry):
 | first bankruptcy forgiven | -0% (2/4) | +9% (3/4) | +2% (3/4) | 0.35 |
 | credit of 10 | +18% (4/4) | +23% (4/4) | +10% (4/4) | 0.48 |
 | credit of 30 | +26% (4/4) | +29% (4/4) | +20% (4/4) | 0.63 |
+| credit of 30, 10% an hour | +27% (4/4) | +28% (4/4) | +13% (4/4) | 0.62 |
+| credit of 30, doubling hourly | +21% (4/4) | +24% (4/4) | +8% (4/4) | 0.54 |
 | licence, 1000 units | -40% (4/4) | -18% (4/4) | -13% (4/4) | 0.37 |
 | crashes charged at a fixed mass | -1% (2/4) | +7% (4/4) | -1% (2/4) | 0.35 |
 | crashes free | +51% (4/4) | +102% (4/4) | -28% (4/4) | 0.48 |
@@ -1864,6 +1866,26 @@ as much, trips slower. The Gini jumps to 0.48 and 0.63, because it counts
 a car in debt as owning nothing, and with credit presumably many are in
 debt at any moment (not counted). Credit keeps more cars on the road, and they carry more fares,
 badly; it is the forgiveness rule again without the limit of one.
+
+Counted now (a rerun of the same four seeds, identical fare for fare, with
+the share in debt logged): 41-44% of the cars are in debt at any moment,
+days two to six. Then interest (`--econ credit=30,interest=0.1`): a debt
+grows by a tenth every city hour, or doubles (`interest=1`). Turin, four
+seeds, against no rule:
+
+| credit of 30 | fares a day | crashes per car | trip | Gini | in debt | deaths a day |
+|---|---|---|---|---|---|---|
+| no interest | +26% (4/4) | +29% (4/4) | +20% (4/4) | 0.63 | 41-44% | 578-708 |
+| 10% an hour | +27% (4/4) | +28% (4/4) | +13% (4/4) | 0.62 | 40% | 728-807 |
+| doubling hourly | +21% (4/4) | +24% (4/4) | +8% (4/4) | 0.54 | 29-31% | 905-988 |
+
+Interest works the way a lender would hope and not much more: debt that
+doubles every hour pushes a car through its limit sooner, so about half
+again as many cars go broke a day and fewer sit in debt; credit's extra
+crashes shrink by a sixth and its slower trips by three fifths. But the cheapest money in the
+city, credit at no interest, still beats none at all, and even the dearest
+credit keeps most of its extra fares. A tenth an hour hardly bites, only
+on trip time.
 
 **Forgiving debt.** `--econ forgive=1` wipes a car's debt the first time
 it goes broke; the second time is final. Turin, days two to six, two
