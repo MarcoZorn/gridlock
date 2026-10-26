@@ -200,6 +200,7 @@ commits and pushes.
 
 ## Done
 
+- 30. Freight niches: Turin evolves vans at normal freight prices only when crashes stop costing the driver (insurance, fraud, free crashes); not because trucks pay more per crash (crashMass), more likely because the fleet doubles
 - 28, 131. Owners and fleets (`ECON.owner`): children paying half their fares to a living parent keep owners alive with up to 49 children, slow evolution to half the generations and cost 13% of fares; no richer rich
 - 34. Speciation by body niche (`ECON.speciesBy`): by body, by brain or both, no difference; Turin has no freight, so no body niche to keep apart
 - 23. Taxes by vote (`ECON.vote`): drivers voting their pocket keep a basic income at zero; started at a quarter, two cities vote it away and two vote it to the 90% ceiling and collapse
