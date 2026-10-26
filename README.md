@@ -1796,6 +1796,8 @@ way (`node tools/policies.mjs`, straight from the runs' telemetry):
 | credit of 10 | +18% (4/4) | +23% (4/4) | +10% (4/4) | 0.48 |
 | credit of 30 | +26% (4/4) | +29% (4/4) | +20% (4/4) | 0.63 |
 | licence, 1000 units | -40% (4/4) | -18% (4/4) | -13% (4/4) | 0.37 |
+| owners, a quarter from each child | +1% (3/4) | +6% (4/4) | -3% (2/4) | 0.35 |
+| owners, half from each child | -13% (3/4) | -6% (4/4) | -11% (4/4) | 0.37 |
 | species by body alone | -2% (1/4) | +3% (3/4) | +2% (3/4) | 0.35 |
 | species by brain alone | -1% (2/4) | +2% (3/4) | +1% (2/4) | 0.35 |
 | basic income voted, from none | +0% (2/4) | +3% (3/4) | -0% (2/4) | 0.35 |
@@ -2006,6 +2008,28 @@ because the few survivors hold everything. Twice the default makes the
 city fairer and smaller: each child costs its parent 29 instead of 16, so
 fewer are born, and 12-14% fewer fares are carried. The default
 sits between the two, and a generous start buys equality with output.
+
+**Owners and fleets.** With `--econ owner=0.5` a child pays half of every
+fare to its parent for as long as the parent is alive: a car that breeds
+becomes the owner of a fleet. Turin, four seeds, days two to six, against
+no rule (tools/policies.mjs), and the cars alive on day six:
+
+| child pays the parent | fares a day | crashes per car | trip | Gini | cars whose parent is alive | most children of one car | generations |
+|---|---|---|---|---|---|---|---|
+| nothing | | | | 0.35 | 59-69% | 3-7 | 16-23 |
+| a quarter | +1% (3/4) | +6% (4/4) | -3% (2/4) | 0.35 | 81-86% | 13-17 | 11-17 |
+| a half | -13% (3/4) | -6% (4/4) | -11% (4/4) | 0.37 | 96-98% | 19-49 | 7-9 |
+
+Rent keeps owners alive: a car with children to pay it does not go broke,
+so the old stay on the road, at half nearly every car's parent is still
+driving, and the biggest owner has 19 to 49 children at once. But it does
+not make the rich richer: the richest tenth of the cars holds 22-25% of the
+cash under all three, and the Gini barely moves. What it slows is
+evolution. Births a day hardly change (1221-1556 at half against
+1325-1516), but they come from the same long-lived owners, so the city
+reaches generation 7 to 9 in six days instead of 16 to 23, and at half it
+carries 13% fewer fares. A world of landlords is not more unequal here,
+only older.
 
 **A basic income.** `--econ basic=0.25` takes a quarter of every fare and
 pays it back, every tick, in equal shares to every car on the road. Turin,
