@@ -496,6 +496,7 @@ export class EcoWorld {
     if (!voters.length) return;
     const mean = voters.reduce((a, d) => a + rate(d), 0) / voters.length;
     const up = voters.filter((d) => rate(d) < mean).length;
+    this.events.yes = up / voters.length;
     this.basic = Math.max(0, Math.min(0.9, this.basic + ECON.vote * Math.sign(up - voters.length / 2)));
   }
 
