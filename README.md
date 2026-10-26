@@ -1450,6 +1450,30 @@ once freight was being carried. The eco page has the triple rate as a
 (120 cars, the ceiling, against 27 to 60), because freight is money the
 small-car cities leave on the table.
 
+Turin finds trucks at normal freight prices after all, by the back door:
+when crashes stop costing the driver. Freight's share of the fares carried
+in days two to six, four seeds each (the same runs as the rules below):
+
+| Turin | freight share, by seed | cargo gene, day six |
+|---|---|---|
+| no rule | 0 / 0 / 0 / 0% | 0.03-0.05 |
+| insurance, flat | 0 / 10.1 / 8.9 / 0% | 0.03-0.13 |
+| insurance, rated by own claims | 0 / 0 / 0.7 / 0% | 0.02-0.03 |
+| insurance paying a tenth again | 0.1 / 17.2 / 14.4 / 16.4% | 0.10-0.48 |
+| insurance paying half again | 10.4 / 16.9 / 14.3 / 16.7% | 0.13-0.53 |
+| crashes charged at a fixed mass | 0 / 0 / 0 / 0% | 0.02-0.04 |
+| crashes free (`crashCost=0`) | 0 / 11.7 / 10.6 / 6.9% | 0.04-0.11 |
+
+A crash costs in proportion to the car's mass, and a truck is heavy, so my
+first guess was that crash prices keep trucks out. Wrong: charging every
+crash as if the car weighed the city's average (`crashMass=0.82`) leaves
+freight at zero in all four seeds. Taking the cost away altogether brings it
+in three. What the freight cities share is size: free crashes double the
+fleet (446-459 cars against 206-242), and the fraud cities sit at the
+480-car ceiling. My guess, not tested: with twice the cars after the same
+passengers, a car often finds no passenger waiting, and then the freight
+nobody else wanted is the only work there is, so a little cargo room pays.
+
 **A fuel tax.** Fuel costs three times as much (`--econ fuelTax=3`), Turin,
 six days, two seeds, days two to six:
 
@@ -1796,6 +1820,8 @@ way (`node tools/policies.mjs`, straight from the runs' telemetry):
 | credit of 10 | +18% (4/4) | +23% (4/4) | +10% (4/4) | 0.48 |
 | credit of 30 | +26% (4/4) | +29% (4/4) | +20% (4/4) | 0.63 |
 | licence, 1000 units | -40% (4/4) | -18% (4/4) | -13% (4/4) | 0.37 |
+| crashes charged at a fixed mass | -1% (2/4) | +7% (4/4) | -1% (2/4) | 0.35 |
+| crashes free | +51% (4/4) | +102% (4/4) | -28% (4/4) | 0.48 |
 | owners, a quarter from each child | +1% (3/4) | +6% (4/4) | -3% (2/4) | 0.35 |
 | owners, half from each child | -13% (3/4) | -6% (4/4) | -11% (4/4) | 0.37 |
 | species by body alone | -2% (1/4) | +3% (3/4) | +2% (3/4) | 0.35 |
