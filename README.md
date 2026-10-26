@@ -2016,13 +2016,13 @@ no rule (tools/policies.mjs), and the cars alive on day six:
 
 | child pays the parent | fares a day | crashes per car | trip | Gini | cars whose parent is alive | most children of one car | generations |
 |---|---|---|---|---|---|---|---|
-| nothing | | | | 0.35 | 59-69% | 3-7 | 16-23 |
+| nothing | - | - | - | 0.35 | 59-69% | 3-7 | 16-23 |
 | a quarter | +1% (3/4) | +6% (4/4) | -3% (2/4) | 0.35 | 81-86% | 13-17 | 11-17 |
 | a half | -13% (3/4) | -6% (4/4) | -11% (4/4) | 0.37 | 96-98% | 19-49 | 7-9 |
 
-Rent keeps owners alive: a car with children to pay it does not go broke,
-so the old stay on the road, at half nearly every car's parent is still
-driving, and the biggest owner has 19 to 49 children at once. But it does
+Rent keeps owners on the road (presumably by keeping them out of
+bankruptcy; not measured car by car): at half nearly every car's parent is
+still driving, and the biggest owner has 19 to 49 children at once. But it does
 not make the rich richer: the richest tenth of the cars holds 22-25% of the
 cash under all three, and the Gini barely moves. What it slows is
 evolution. Births a day hardly change (1221-1556 at half against
