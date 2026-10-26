@@ -54,6 +54,7 @@ export const ECON = {
   reputation: 0,        // passengers refuse a car that crashes this many times more often than the average car (an experiment)
   licence: 0,           // a car carries passengers only once it has driven this far without a crash (an experiment)
   premium: 0.034,       // per second: about what the average car spends on crashes uninsured
+  payout: 0,            // insured: a crash also pays the driver this share of its cost in cash, a claim worth more than the repair (an experiment)
   rated: 0,             // 1: insured cars pay the premium times their own claims rate over the average car's (an experiment)
   replan: 0,            // 1: at every junction a car re-plans the rest of its route on the traffic now (an experiment, off)
   speedLimit: 0,        // a speed camera everywhere: over this speed a car pays...
@@ -206,6 +207,7 @@ export class EcoWorld {
       car.lastCrashDist = car.dist;
       car.claims = (car.claims || 0) + cost;
       if (!this.insurance) car.cash -= cost;   // insured: the pool pays, see the premium
+      else car.cash += cost * ECON.payout;
       this.events.crashes++;
       this.city.addHeat("crash", car.x, car.y);
     };
