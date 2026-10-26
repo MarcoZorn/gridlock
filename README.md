@@ -1466,6 +1466,18 @@ bankruptcies. Trips get faster, as under the congestion charge, but only
 because the streets empty: after two weeks the charge still moved 93% of the
 fares, this tax moves 40% of them after six days.
 
+A fuel price that follows demand instead (`--econ fuelMarket=220`): fuel
+costs its price times the cars on the road over 220, the average fleet with
+no rule, so it is dear when the city is crowded and cheap when it is empty.
+Turin, four seeds, days two to six, against no rule (tools/policies.mjs):
+fares +0%, crashes +1%, trip time -1%, Gini 0.35, none of them moving the
+same way in more than two seeds. The average price came out at 0.91 to 1.01.
+What it does do is damp the fleet a little: the number of cars swings less
+through the day in all four seeds (standard deviation 50-65 against 60-78),
+and the busiest moment holds fewer cars in three of them (294-379 against
+315-388). Fuel tripled loses three quarters of the city; fuel that tracks
+the crowd costs it nothing and buys a slightly steadier fleet.
+
 **Double fares.** Every tax above shrank the city, so what does money do?
 Passenger fares doubled (`--econ passengerRate=0.024`), Turin, six days, two
 seeds, days two to six:
@@ -1771,6 +1783,7 @@ way (`node tools/policies.mjs`, straight from the runs' telemetry):
 | credit of 10 | +18% (4/4) | +23% (4/4) | +10% (4/4) | 0.48 |
 | credit of 30 | +26% (4/4) | +29% (4/4) | +20% (4/4) | 0.63 |
 | licence, 1000 units | -40% (4/4) | -18% (4/4) | -13% (4/4) | 0.37 |
+| fuel price follows the fleet | +0% (1/4) | +1% (2/4) | -1% (2/4) | 0.35 |
 | insurance, flat | +35% (4/4) | +94% (4/4) | -35% (4/4) | 0.39 |
 | insurance, rated by own claims | +25% (4/4) | +52% (4/4) | -23% (4/4) | 0.37 |
 | insurance paying a tenth again, flat | +81% (4/4) | +123% (4/4) | -3% (3/4) | 0.38 |
