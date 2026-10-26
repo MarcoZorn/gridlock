@@ -200,6 +200,7 @@ commits and pushes.
 
 ## Done
 
+- 126. Reviews (`ECON.reviews`): fares by the share of clean rides cut crashes 9% at no cost in fares, unlike shunning; the gap closes within a week
 - 109. Fuel prices that follow demand (`ECON.fuelMarket`): no change in fares, crashes or Gini; the fleet swings a little less through the day
 - 102. Insurance fraud (`ECON.payout`): a claim worth even a tenth more than the repair fills the city to its ceiling and stops evolution; crashers are not selected, nothing is
 - 22. Insurers pricing by the record (`ECON.rated`): half the extra crashes of flat insurance, seven tenths of its extra fares
