@@ -200,6 +200,7 @@ commits and pushes.
 
 ## Done
 
+- 34. Speciation by body niche (`ECON.speciesBy`): by body, by brain or both, no difference; Turin has no freight, so no body niche to keep apart
 - 23. Taxes by vote (`ECON.vote`): drivers voting their pocket keep a basic income at zero; started at a quarter, two cities vote it away and two vote it to the 90% ceiling and collapse
 - 126. Reviews (`ECON.reviews`): fares by the share of clean rides cut crashes 9% at no cost in fares, unlike shunning; the gap closes within a week
 - 109. Fuel prices that follow demand (`ECON.fuelMarket`): no change in fares, crashes or Gini; the fleet swings a little less through the day
