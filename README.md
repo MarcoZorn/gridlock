@@ -1578,6 +1578,22 @@ pedestrian could fail to find a road with room to cross and end up with no
 road at all, which crashed the run. Fixed.) The eco page has it as
 "Insurance" ([try it on Turin](https://marcozorn.github.io/gridlock/eco.html?map=turin&insure=1)).
 
+Real insurers do not charge everyone the same: they price by the driver's
+record. With `--econ insurance=1,rated=1` each car pays the premium times its
+own claims per second over the city's, starting from an hour at the average
+so a newcomer pays the flat rate. Turin, four seeds, days two to six, against
+no insurance (tools/policies.mjs):
+
+| Turin | fares a day | crashes per car | trip |
+|---|---|---|---|
+| flat premium | +35% (4/4) | +94% (4/4) | -35% (4/4) |
+| rated premium | +25% (4/4) | +52% (4/4) | -23% (4/4) |
+
+Pricing the record takes back about half the extra crashes and keeps about
+seven tenths of the extra fares. It sits between the two because it is the two
+mixed: a crash still costs nothing on the day, but a careless driver pays for
+it slowly, and the worst of them still go broke, only later.
+
 **Who gets rich?** Across the cars alive at day 15 in four Turin cities
 (200 to 300 each), the correlation between how fast a car earns and each of
 its genes, or the size of its brain:
@@ -1726,6 +1742,8 @@ way (`node tools/policies.mjs`, straight from the runs' telemetry):
 | credit of 10 | +18% (4/4) | +23% (4/4) | +10% (4/4) | 0.48 |
 | credit of 30 | +26% (4/4) | +29% (4/4) | +20% (4/4) | 0.63 |
 | licence, 1000 units | -40% (4/4) | -18% (4/4) | -13% (4/4) | 0.37 |
+| insurance, flat | +35% (4/4) | +94% (4/4) | -35% (4/4) | 0.39 |
+| insurance, rated by own claims | +25% (4/4) | +52% (4/4) | -23% (4/4) | 0.37 |
 | no rule | 2481 | 195 | 59 s | 0.35 |
 
 Where fewer than four seeds agree, treat the rule as doing nothing to
