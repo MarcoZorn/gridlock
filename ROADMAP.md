@@ -200,6 +200,7 @@ commits and pushes.
 
 ## Done
 
+- 19. Surge pricing (`ECON.surge`): a quarter to three quarters more cars and fewer passengers turned away (3/4), but no more delivered (13% fewer at x3): the extra pickups die with their bankrupt drivers
 - 133. Interest (`ECON.interest`): debt doubling hourly sends half again as many cars broke and trims credit's extra crashes and slow trips, but keeps most of its extra fares; 10% an hour hardly bites
 - 30. Freight niches: Turin evolves vans at normal freight prices only when crashes stop costing the driver (insurance, fraud, free crashes); not because trucks pay more per crash (crashMass), more likely because the fleet doubles
 - 28, 131. Owners and fleets (`ECON.owner`): children paying half their fares to a living parent keep owners alive with up to 49 children, slow evolution to half the generations and cost 13% of fares; no richer rich
