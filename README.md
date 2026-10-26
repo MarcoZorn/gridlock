@@ -1783,6 +1783,8 @@ way (`node tools/policies.mjs`, straight from the runs' telemetry):
 | credit of 10 | +18% (4/4) | +23% (4/4) | +10% (4/4) | 0.48 |
 | credit of 30 | +26% (4/4) | +29% (4/4) | +20% (4/4) | 0.63 |
 | licence, 1000 units | -40% (4/4) | -18% (4/4) | -13% (4/4) | 0.37 |
+| basic income voted, from none | +0% (2/4) | +3% (3/4) | -0% (2/4) | 0.35 |
+| basic income voted, from a quarter | -43% (3/4) | -16% (3/4) | +10% (3/4) | 0.31 |
 | reviews, fares by clean rides | -1% (2/4) | -9% (4/4) | -5% (4/4) | 0.33 |
 | fuel price follows the fleet | +0% (1/4) | +1% (2/4) | -1% (2/4) | 0.35 |
 | insurance, flat | +35% (4/4) | +94% (4/4) | -35% (4/4) | 0.39 |
@@ -2006,6 +2008,39 @@ a quarter longer, and the drivers crash more. A car that keeps only three
 quarters of its fare has less reason to hurry or to be careful, and the
 slow and the reckless no longer go broke for it. Shared out by half, one
 seed loses a fifth of its fares and every trip is half as long again.
+
+Then let the drivers choose. With `--econ vote=0.05` the cars vote every
+city hour, and each votes its pocket: a car that has earned less per second
+than the average voter gains from a basic income, so it votes for more; the
+others vote for less. The share moves five points toward the majority, from
+0 to at most 90%. Only cars an hour old or more vote. Turin, four seeds:
+
+Started from none, it stays at none. In days two to six only 43-44% of the
+voters, on average, earn below the average (37-51% in any one hour): a few
+cars that are failing pull the mean down, so most cars sit above it, and
+the median voter is richer than the mean. The tax rises for an hour or two
+at the start, in two seeds to 15-20%, and is gone within four hours.
+
+Started from a quarter, it splits:
+
+| Turin, from a quarter | day 1 | day 2 | day 3 | day 4 | day 5 | day 6 |
+|---|---|---|---|---|---|---|
+| seed 3, share | 0.67 | 0.90 | 0.90 | 0.90 | 0.56 | 0.22 |
+| seed 3, cars | 126 | 59 | 41 | 25 | 44 | 165 |
+| seed 11, share | 0.63 | 0.90 | 0.90 | 0.87 | 0.90 | 0.88 |
+| seed 11, cars | 113 | 58 | 35 | 24 | 25 | 24 |
+
+In two seeds the majority voted it to zero within 29-33 hours, after which
+the city ran as if there had never been one. In the other two the
+majority voted it up, to the ceiling of 90% by day two, and the city
+collapsed: a car keeping a tenth of its fares cannot save enough to breed,
+so by day four every car is an immigrant (generation 0) at the floor of 24
+cars, and fares fall to a tenth of normal. Seed 3 voted its way out on day
+five and recovered to 165 cars by day six; seed 11 was still there at the
+end. Across the four seeds, days two to six (tools/policies.mjs): fares
+-43% (3/4). A vote by self-interest has two stable outcomes here, no tax and
+the most tax allowed, and which one a city lands in depends on the first
+day.
 
 **A minimum fare.** `--econ minFare=20` raises every passenger fare below
 20 to 20 (the mean fare is about 20). Turin, days two to six, two seeds:
