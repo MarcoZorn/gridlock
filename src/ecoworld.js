@@ -27,6 +27,7 @@ export const ECON = {
   freightMin: 2,        // a vehicle needs this much room to take freight at all
   freightMax: 10,       // the biggest load a single job ever has
   crashCost: 9,         // per (impact share)^2 per unit of mass
+  crashMass: 0,         // if set, every crash is charged as if the car had this mass, so heavy vehicles pay no more (an experiment)
   towFee: 3,            // for a car that got lost and had to be fetched
   pedestrianFine: 3,    // on top of the crash itself, for hitting someone on foot
   redFine: 2,
@@ -209,7 +210,7 @@ export class EcoWorld {
     d.onCrash = (car) => {
       const hit = car.damage - lastDamage;
       lastDamage = car.damage;
-      const cost = hit * car.p.mass * ECON.crashCost;
+      const cost = hit * (ECON.crashMass || car.p.mass) * ECON.crashCost;
       car.lastCrashDist = car.dist;
       car.claims = (car.claims || 0) + cost;
       if (!this.insurance) car.cash -= cost;   // insured: the pool pays, see the premium
