@@ -43,6 +43,7 @@ export const ECON = {
   finishFare: 0,        // 1: a car with a fare aboard cannot go broke until it delivers (an experiment)
   insurance: 0,         // 1: crashes cost the driver nothing; every car pays the premium instead (an experiment)
   imitate: 0,           // share of children who copy the most successful driver's brain, not the parent's (an experiment)
+  owner: 0,             // a child pays this share of its fares to its parent while the parent lives: owners and their fleets (an experiment)
   speciesBy: 0,         // species, and so who may cross brains, by 0: brain and body; 1: body alone; 2: brain alone (an experiment)
   vote: 0,             // the drivers vote on the basic income every hour: each wants more if it earns below the average, and the share moves this much toward the majority (an experiment)
   basic: 0,             // share of every fare taxed and paid back equally to every car, a basic income (an experiment)
@@ -292,7 +293,10 @@ export class EcoWorld {
       this.events.dropoffs++;
     }
     this.pool = (this.pool || 0) + fare * this.basic;
-    d.cash += fare * (1 - this.basic);
+    let kept = fare * (1 - this.basic);
+    const owner = ECON.owner && this.cars.find((o) => o.id === d.parent);
+    if (owner) { owner.cash += kept * ECON.owner; kept *= 1 - ECON.owner; }
+    d.cash += kept;
     d.earned += fare;
     this.events.trips++;
     this.events.tripTicks += this.tick - j.start;
