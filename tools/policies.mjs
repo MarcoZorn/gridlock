@@ -12,7 +12,7 @@ const rules = [
   ["congestion charge, all day", "toll-all"], ["congestion charge, rush hours", "toll-peak"],
   ["first bankruptcy forgiven", "forgive"], ["credit of 10", "credit-10"], ["credit of 30", "credit-30"], ["licence, 1000 units", "lic-1000"],
   ["insurance, flat", "ins-flat"], ["insurance, rated by own claims", "ins-rated"],
-  ["insurance paying a tenth again, flat", "fraud10-flat"], ["insurance paying half again, flat", "fraud-flat"], ["insurance paying half again, rated", "fraud-rated"],
+  ["fuel price follows the fleet", "fuelmkt"], ["insurance paying a tenth again, flat", "fraud10-flat"], ["insurance paying half again, flat", "fraud-flat"], ["insurance paying half again, rated", "fraud-rated"],
 ];
 const stats = (run) => {
   const rows = fs.readFileSync(`runs/${run}/telemetry.jsonl`, "utf8").trim().split("\n").map(JSON.parse).filter((x) => x.tick > 2 * 86400 && x.tick <= 6 * 86400);
