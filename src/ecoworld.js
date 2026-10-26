@@ -50,6 +50,7 @@ export const ECON = {
   basic: 0,             // share of every fare taxed and paid back equally to every car, a basic income (an experiment)
   minFare: 0,           // no passenger fare pays less than this, a minimum wage per fare (an experiment)
   forgive: 0,           // 1: a car's first bankruptcy is forgiven, its debt wiped to zero; the second is final (an experiment)
+  interest: 0,          // a car in debt sees its debt grow by this share every city hour (an experiment, with credit)
   credit: 0,            // a car may run this far into debt before it counts as broke (an experiment)
   platformB: 0,         // share of passengers who book through a second platform, B; 0: one platform (an experiment)
   commissionA: 0,       // share of each passenger fare platform A keeps
@@ -328,6 +329,7 @@ export class EcoWorld {
       avg = claims / Math.max(1, age);
     }
     const prior = 3600;
+    const interest = (1 + ECON.interest) ** (1 / 3600);   // per tick: a city hour is 3600
     const fuel = ECON.fuelTax * (ECON.fuelMarket ? this.cars.length / ECON.fuelMarket : 1);
     for (const d of this.cars) {
       const reds = d.redRuns;
@@ -338,6 +340,7 @@ export class EcoWorld {
       const wear = 1 + d.dist / ECON.wearDist;
       d.cash -= d.body.upkeep * wear * DT + d.body.fuel * fuel * Math.abs(d.v) * DT;
       if (this.insurance) d.cash -= ECON.premium * DT * (avg ? ((d.claims || 0) + avg * prior) / (this.tick - d.born + prior) / avg : 1);
+      if (d.cash < 0) d.cash *= interest;
       const lim = this.limits ? this.limits[c.edgeBetween(d.route[d.seg], d.route[d.seg + 1])?.id] : this.speedLimit;
       if (lim && Math.abs(d.v) > lim) {
         d.cash -= ECON.speedFine * (Math.abs(d.v) / lim - 1) * DT;
@@ -517,6 +520,7 @@ export class EcoWorld {
       cars: this.cars.length,
       cash: this.cars.reduce((a, d) => a + d.cash, 0) / n,
       gini: gini(this.cars.map((d) => Math.max(0, d.cash))),
+      inDebt: this.cars.filter((d) => d.cash < 0).length / n,
       maxGen: Math.max(0, ...this.cars.map((d) => d.generation)),
       basic: this.basic,
       ...this.events,
