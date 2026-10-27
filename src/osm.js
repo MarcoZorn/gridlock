@@ -32,7 +32,8 @@ export function osmToGraph(els, name = "OpenStreetMap extract") {
   // one entry per pair of junctions: [a, b, lanes, oneway], a to b in the
   // direction of travel when one-way; two ways drawn over the same pair in
   // opposite directions make a two-way road
-  const edges = new Map();
+  const edges = new Map(), kmh = new Map();   // pair key -> posted limit, km/h
+  const speedOf = (t) => { const m = /^(\d+)\s*(mph)?$/.exec(t.maxspeed || ""); return m ? +m[1] * (m[2] ? 1.609 : 1) : 0; };
   for (const w of ways) {
     const per = w.tags.lanes ? Math.max(1, Math.min(2, Math.ceil(+w.tags.lanes / 2))) : LANES[w.tags.highway];
     const dir = direction(w.tags);
@@ -42,6 +43,7 @@ export function osmToGraph(els, name = "OpenStreetMap extract") {
       if (a === b) continue;
       if (dir < 0) [a, b] = [b, a];
       const key = a < b ? `${a}-${b}` : `${b}-${a}`, old = edges.get(key);
+      if (speedOf(w.tags)) kmh.set(key, Math.max(kmh.get(key) || 0, speedOf(w.tags)));
       const lanes = Math.max(per, old?.[2] || 0);
       if (!old) edges.set(key, dir ? [a, b, lanes, 1] : [Math.min(a, b), Math.max(a, b), lanes, 0]);
       else if (!dir || !old[3] || old[0] !== a) edges.set(key, [old[0], old[1], lanes, 0]);
@@ -98,12 +100,16 @@ export function osmToGraph(els, name = "OpenStreetMap extract") {
   const nodes = [];
   pts.forEach((p, i) => { if (keep[i]) { idx.set(i, nodes.length); nodes.push(p); } });
   const minX = Math.min(...nodes.map((p) => p[0])), minY = Math.min(...nodes.map((p) => p[1]));
+  const kept = [...edges.entries()].filter(([, [a, b]]) => keep[a] && keep[b]);
   const map = {
     name,
     attribution: "Map data © OpenStreetMap contributors, ODbL",
     nodes: nodes.map(([x, y]) => [Math.round(x - minX + MARGIN), Math.round(y - minY + MARGIN)]),
-    edges: [...edges.values()].filter(([a, b]) => keep[a] && keep[b]).map(([a, b, l, one]) => (one ? [idx.get(a), idx.get(b), l, 1] : [idx.get(a), idx.get(b), l])),
+    edges: kept.map(([, [a, b, l, one]]) => (one ? [idx.get(a), idx.get(b), l, 1] : [idx.get(a), idx.get(b), l])),
   };
+  // posted speed limits (maxspeed), km/h, by index into map.edges
+  const limits = kept.map(([key], i) => [i, Math.round(kmh.get(key) || 0)]).filter(([, v]) => v);
+  if (limits.length) map.maxspeed = limits;
   // Traffic signals (highway=traffic_signals) usually sit on the approach, a
   // few metres before the junction: each goes to the nearest junction of
   // three or more roads within SIGNAL units, if there is one.
