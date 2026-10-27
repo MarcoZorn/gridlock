@@ -650,6 +650,17 @@ and trips as slow as with no lights at all, as if they had learned to wait
 at every junction, lit or not (a reading, not checked). (Manhattan's real signals are nearly all its junctions, so its
 lights result above stands as it was.)
 
+The maps carry posted speed limits now too (`maxspeed`): Turin's centre is
+a 30 km/h zone, 305 of its 342 roads; Barcelona's run from 10 to 50 km/h,
+Midtown's are mostly 25 mph. `--real-limits` puts a camera on every road at
+its posted limit, fining as the speed camera above does. At 0.4 m a unit,
+30 km/h is 21 units a second, where the camera above sat at 35, about
+50 km/h. In Turin, four seeds, the economy never starts: 24 cars, the
+immigrant floor, every day of six, and 98% fewer fares (tools/policies.mjs).
+A camera at 50 km/h everywhere already cost a third of the fares; these
+drivers live by speed, and a real city's limits enforced to the letter
+leave them nothing to live on.
+
 ![A junction under traffic lights, drivers raised for 3000 generations with them](docs/lights.gif)
 
 **The price of a red light.** With the four-second bug fixed, drivers under
@@ -1978,6 +1989,7 @@ way (`node tools/policies.mjs`, straight from the runs' telemetry):
 | fare market, price-shy passengers (k=1) | -1% (2/4) | +1% (2/4) | -2% (3/4) | 0.35 |
 | fare market, very price-shy (k=4) | -0% (2/4) | +2% (2/4) | -1% (3/4) | 0.34 |
 | mates chosen by earnings | +2% (2/4) | +8% (4/4) | -6% (4/4) | 0.35 |
+| Turin's real speed limits, 30 km/h | -98% (4/4) | -64% (4/4) | -14% (2/4) | 0.33 |
 | lights at every junction | -98% (4/4) | -49% (4/4) | -44% (4/4) | 0.32 |
 | lights at the real signals only | -47% (4/4) | -29% (4/4) | -24% (4/4) | 0.35 |
 | lights at the real signals, drivers raised under lights | -61% (4/4) | -30% (4/4) | -1% (3/4) | 0.34 |
