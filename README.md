@@ -960,6 +960,14 @@ upkeep.
 
 ![Morning rush in the ecosystem, cars coloured by species, the richest car's route in blue](docs/eco.gif)
 
+A whole day can be recorded without a browser: `node tools/timelapse.mjs
+runs/inh-base-s7/state.json docs/day.gif` runs a saved economy on for one
+city day and draws a frame every ten city minutes, every car a dot in its
+species' colour (rsvg-convert and ffmpeg make the GIF). Turin, seed 7, day
+seven, midnight to midnight in twelve seconds:
+
+![A day in Turin's economy, seed 7: cars as dots coloured by species, the fleet swelling into the morning and evening rush](docs/day.gif)
+
 **What came out:** a city whose population follows the clock, from about 24
 cars at night to 60-70 in the evening rush. In the runs with vans, they rise
 to about twenty during business hours and collapse to one or two at night,
