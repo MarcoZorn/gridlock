@@ -200,6 +200,7 @@ commits and pushes.
 
 ## Done
 
+- 140. A train line: half the longest quarter of fares end at the nearer station; 1-17% more fares, 6-10% cheaper each, drivers' money -9% to +10% (tools/train.mjs)
 - 18. A fare market (`ECON.market`): heritable asking prices never rise toward a monopoly's; with very price-shy passengers the mean sits 5-12% below the going rate, mutation trimmed only on the dear side, not undercutting; fares unchanged
 - 149. A city grown by a branching rule (tools/lsystem.mjs, maps/grown.json): carries a tenth more fares per unit of demand than Turin, trips quicker; evolved afterwards, arrows only fit their training trips (0.2% on unseen ones) and no street is worth closing
 - 137. Brain drain: the top tenth of earners leaving every day changes fares by -5% to +5% (tools/drain.mjs); earnings are not inherited, so losing the best costs nothing
