@@ -107,6 +107,7 @@ if (fs.existsSync(statePath)) {
   // a population raised elsewhere, moved to this run's map and settings
   const j = JSON.parse(fs.readFileSync(from, "utf8"));
   j.opts = { ...j.opts, graph };
+  if (process.argv.includes("--control")) j.control = control;   // or the source run's would silently win
   world = CityWorld.fromJSON(j);
   world.history = [];
   // without fitness sharing a species' offspring follow its total fitness,
