@@ -51,6 +51,7 @@ export const ECON = {
   basic: 0,             // share of every fare taxed and paid back equally to every car, a basic income (an experiment)
   minFare: 0,           // no passenger fare pays less than this, a minimum wage per fare (an experiment)
   forgive: 0,           // 1: a car's first bankruptcy is forgiven, its debt wiped to zero; the second is final (an experiment)
+  emergency: 0,         // share of passengers who are emergencies: three times the fare if delivered within the expected time, nothing if late (an experiment)
   market: 0,            // a fare market: each car asks its own price (a gene, passed on); a passenger takes it with chance exp(-market * (price - 1)), else waits for the next car (an experiment)
   choosy: 0,            // 1: a parent crosses its brain with the best earner per hour of its species, not a random one (an experiment)
   hgt: 0,               // chance that two cars crashing into each other swap genes: each connection both brains have takes the other's weight half the time (an experiment)
@@ -257,7 +258,7 @@ export class EcoWorld {
   }
 
   newJob(d, first = false) {
-    let kind = null, load = 0, surge = 1;
+    let kind = null, load = 0, surge = 1, urgent = false;
     if (!first) {
       // take whichever waiting job pays this vehicle more per unit of route
       const fLoad = Math.min(d.body.capacity, ECON.freightMax);
@@ -267,11 +268,11 @@ export class EcoWorld {
       const takes = !ECON.market || this.rng.next() < Math.exp(-ECON.market * (d.price - 1));
       const pPay = queue >= 1 && !cheap && takes && this.trusted(d) ? ECON.passengerRate * (1 + ECON.speedBonus / 2) * d.price : 0;
       if (fPay > pPay) { kind = "freight"; load = fLoad; this.freight--; }
-      else if (pPay > 0) { kind = "passenger"; surge = 1 + ECON.surge * queue / (ECON.fareQueue * this.scale * (onB ? ECON.platformB : 1 - ECON.platformB)); if (onB) this.passengersB--; else this.passengers--; this.events.pickups++; }
+      else if (pPay > 0) { kind = "passenger"; urgent = ECON.emergency > 0 && this.rng.next() < ECON.emergency; surge = 1 + ECON.surge * queue / (ECON.fareQueue * this.scale * (onB ? ECON.platformB : 1 - ECON.platformB)); if (onB) this.passengersB--; else this.passengers--; this.events.pickups++; }
       else this.events.deadheads++;
     }
     d.job = {
-      kind, load, surge,
+      kind, load, surge, urgent,
       start: this.tick,
       crashes: d.crashes,
       // how long a trip of this length takes at a sensible pace
@@ -291,6 +292,7 @@ export class EcoWorld {
       const quick = Math.max(0, Math.min(1, j.expect / took - 0.5));
       fare = Math.max(ECON.minFare, dist * ECON.passengerRate * (1 + ECON.speedBonus * quick)) * j.surge * (ECON.market ? d.price : 1);
       if (ECON.platformB) fare *= 1 - (d.platform === 1 ? ECON.commissionB : ECON.commissionA);
+      if (j.urgent) { const inTime = took <= j.expect; fare *= inTime ? 3 : 0; this.events.urgent = (this.events.urgent || 0) + 1; if (inTime) this.events.saved = (this.events.saved || 0) + 1; }
       if (ECON.reviews) {
         // the share of its rides that did not crash, starting from two good ones
         const stars = (o) => ((o.clean || 0) + 2) / ((o.rides || 0) + 2);
