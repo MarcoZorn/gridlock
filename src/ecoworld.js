@@ -51,7 +51,6 @@ export const ECON = {
   minFare: 0,           // no passenger fare pays less than this, a minimum wage per fare (an experiment)
   forgive: 0,           // 1: a car's first bankruptcy is forgiven, its debt wiped to zero; the second is final (an experiment)
   hgt: 0,               // chance that two cars crashing into each other swap genes: each connection both brains have takes the other's weight half the time (an experiment)
-  hgtOnce: 0,           // 1: a car swaps at most once a second, once per crash rather than every tick the two touch
   surge: 0,             // a passenger fare pays 1 + this times how full the queue of waiting passengers was at pickup (an experiment)
   interest: 0,          // a car in debt sees its debt grow by this share every city hour (an experiment, with credit)
   credit: 0,            // a car may run this far into debt before it counts as broke (an experiment)
@@ -452,10 +451,6 @@ export class EcoWorld {
   // living brains, here the two in a crash, not parent to child. Only
   // connections both have can be swapped, the same rule crossover follows.
   swapGenes(a, b) {
-    if (ECON.hgtOnce) {
-      if (this.tick - (a.swapped ?? -1e9) < 60 || this.tick - (b.swapped ?? -1e9) < 60) return;
-      a.swapped = b.swapped = this.tick;
-    }
     for (const [innov, ca] of a.genome.conns) {
       const cb = b.genome.conns.get(innov);
       if (!cb) continue;
