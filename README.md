@@ -2078,9 +2078,16 @@ leave Turin for good (`node tools/drain.mjs turin 7`). Fares over days two
 to six against the same city keeping them: -1%, +3%, -5%, +5% (seeds 3, 5,
 7, 11), and on day six +0% to +5% in all four. Losing a tenth of the top
 every day costs nothing, which fits what social mobility found above: a
-car's earnings are not passed to its children, and my guess (not tested)
-is that the top earners on any day are lucky more than good, so the city
-loses only luck.
+car's earnings are not passed to its children, and they do not even last
+from one hour to the next. Among the cars alive through two consecutive
+city hours of day three, how much a car earned in one hour against the
+next has a rank correlation of -0.14 to -0.19 (four seeds), and of the top
+tenth in one hour only 4-8% are in the top tenth the next, below the 10%
+of chance: a fare pays only at the drop-off, so a good hour is mostly one
+in which a long fare happened to end. Few cars last long enough to be
+anything else; of those alive at dawn on day three, 4-8% are alive a day
+later. The leavers are the cars whose fares happened to pay that day, and
+the city loses only that.
 
 **Migrants.** Thirty cars from a six-day Turin economy dropped into a
 six-day Manhattan economy, each with a newcomer's cash, beside thirty of
