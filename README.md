@@ -1933,6 +1933,7 @@ way (`node tools/policies.mjs`, straight from the runs' telemetry):
 | reputation by damage, 1.5x | -27% (4/4) | -14% (4/4) | +11% (4/4) | 0.34 |
 | congestion charge, all day | -17% (4/4) | -20% (4/4) | -28% (4/4) | 0.35 |
 | congestion charge, rush hours | -9% (4/4) | -6% (4/4) | -11% (4/4) | 0.35 |
+| a fifth of passengers emergencies | -4% (3/4) | -7% (3/4) | -11% (4/4) | 0.35 |
 | fare market, price-shy passengers (k=1) | -1% (2/4) | +1% (2/4) | -2% (3/4) | 0.35 |
 | fare market, very price-shy (k=4) | -0% (2/4) | +2% (2/4) | -1% (3/4) | 0.34 |
 | mates chosen by earnings | +2% (2/4) | +8% (4/4) | -6% (4/4) | 0.35 |
@@ -2487,6 +2488,29 @@ surge makes the fleet bigger and the churn faster (40% to 130% more
 bankruptcies a day), so the extra pickups are lost the same way, and at x3
 13% fewer passengers arrive (4/4). More money per fare bought more drivers,
 and worse ones.
+
+**Emergencies.** With `--econ emergency=0.2` a fifth of passengers are
+emergencies: three times the fare if delivered within the time the route
+should take at a brisk pace (its length over 45 a second), nothing at all if
+late. Ambulance work, where only speed pays. Share of emergencies delivered
+in time, by day, Turin, four seeds:
+
+| seed | day 1 | day 2 | day 3 | day 4 | day 5 | day 6 |
+|---|---|---|---|---|---|---|
+| 3 | 20% | 8% | 5% | 5% | 6% | 4% |
+| 5 | 18% | 14% | 9% | 11% | 10% | 15% |
+| 7 | 19% | 12% | 10% | 11% | 8% | 8% |
+| 11 | 23% | 10% | 13% | 5% | 4% | 4% |
+
+Selection does not make better ambulances; the share in time falls, from a
+fifth on the first day, when the streets are nearly empty, to 4-15% as the
+fleet doubles and fills them (64-113 cars on day one, 183-221 on day six).
+Over days two to six trips are 11% quicker than with no emergencies (4/4)
+and crashes per car 7% fewer (3/4), in a city a little smaller (183-221
+cars on day six against 208-257), which my guess, not tested, is why: a
+city that loses most of a fifth of its pay keeps fewer cars, and fewer cars
+drive faster. Being fast enough to save a life is mostly the traffic's
+doing, not the driver's.
 
 **Reputation.** With `--econ reputation=1.5`, passengers refuse any car
 that has crashed more than one and a half times as often as the average
