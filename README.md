@@ -2084,6 +2084,26 @@ also counts the money (identical fares in a rerun): an average fare pays
 city earns close to what it did over days 2-6 (+8%, 0%, -3%, -13% by seed)
 on fewer fares. The long haul pays for its length, and no more than that.
 
+**A train line.** The other way round: two stations, at the junctions
+nearest a quarter and three quarters of the way across, and half of the
+long fares (over 2000 units, the longest quarter on Turin) taken by train,
+so the taxi carries those passengers only to the station nearer their start
+(`node tools/train.mjs turin 7`): about one fare in eight turned into a
+short one. Turin, four seeds, days two to six, against the same city
+without it:
+
+| Turin | fares | money earned | per fare | mean trip |
+|---|---|---|---|---|
+| seed 3 | +17% | +10% | 18.9 vs 20.1 | 49 vs 59 s |
+| seed 5 | +9% | -2% | 18.1 vs 20.1 | 57 vs 58 s |
+| seed 7 | +1% | -9% | 18.2 vs 20.3 | 56 vs 56 s |
+| seed 11 | +15% | +6% | 18.9 vs 20.5 | 50 vs 58 s |
+
+More fares, shorter and cheaper, 6-10% less a fare; the drivers earn about
+what they did, from 9% less to 10% more. The station runs are short and the
+queue refills, so the same fleet moves more passengers, a few of them only
+to the train.
+
 **A mass extinction.** On the morning of day three, four cars in five go
 broke at once (`node tools/extinction.mjs turin 7`). Species and cars
 before, three hours after and twelve hours after, against the same
