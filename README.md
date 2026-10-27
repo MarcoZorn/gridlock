@@ -2288,6 +2288,27 @@ third of the cars very drunk), and slower traffic is safer traffic.
 (A first version of this table only made the first of each city's two
 waves of cars drunk; this one makes them all.)
 
+**Road rage.** Now the noise comes from the road: a car that has just
+crashed drives with noise of 2 on its steering and throttle for a while
+(`RAGE=300 node tools/rage.mjs`, 300 ticks is five seconds), same three
+cities. Does one crash lead to the next? The test is the first-crash rate,
+crashes per 1000 units of cars that had not crashed yet, which a raging
+car's own extra crashes cannot touch:
+
+| rage after a crash | crashes per 1000 units | first crashes per 1000 units | distance driven raging |
+|---|---|---|---|
+| none | 4.26 | 3.46 | 0% |
+| 1 s | 4.26 | 3.46 | 0% |
+| 5 s | 4.80 | 3.36 | 29% |
+| 15 s | 5.00 | 3.24 | 64% |
+
+It does not spread. The raging cars crash more themselves, an eighth to a
+sixth more crashes in all, but the cars that have not crashed yet crash a
+little less, as the sober ones did beside the drunk. A second of rage
+changes nothing at all, because a car that has just crashed spends longer
+than that recovering before it drives again (my reading; the distance it
+drives raging is nil).
+
 **Fog.** `FOG=0.5` halves every car's sight. The drivers do not slow down;
 they speed up. A ray reads its distance as a share of the car's range, so
 in fog a wall 30 units off reads as the edge of sight, open road. Distance
