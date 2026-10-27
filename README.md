@@ -2007,6 +2007,27 @@ sends some broke, so at 20:00 the fleet is 12-17% smaller than without the
 match and through the evening 7-12% smaller. Per car the evening is only
 0-8% safer.
 
+**An airport.** All day, every day, a tenth of new fares go to one
+junction, the one farthest from the middle of the map, paid by distance
+like any other, so they are the long ones (`SHARE=0.1 node
+tools/airport.mjs turin 7`). Turin, four seeds, against the same city
+without it:
+
+| Turin | fares, day one | fares, days 2-6 | fares, day six | crashes per car, day six |
+|---|---|---|---|---|
+| seed 3 | -23% | -7% | +6% | +18% |
+| seed 5 | -45% | -12% | -11% | -8% |
+| seed 7 | -32% | -19% | -13% | +10% |
+| seed 11 | -29% | -0% | -3% | +5% |
+
+Fewer fares, as there must be when one in ten is a long haul to the edge,
+and the first day hardest, a quarter to almost half fewer (why the first
+day more than the rest, I have not measured). By day six two seeds are
+back within a few percent. Mean trips and the Gini do not move clearly
+(trips 57-64 s against 57-61, Gini 0.37-0.40 against 0.36-0.40). The tool
+counts fares, not money, so whether the airport run pays the drivers who
+take it, the way it does in real cities, is not measured here.
+
 **A mass extinction.** On the morning of day three, four cars in five go
 broke at once (`node tools/extinction.mjs turin 7`). Species and cars
 before, three hours after and twelve hours after, against the same
