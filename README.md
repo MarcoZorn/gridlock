@@ -2227,6 +2227,32 @@ price. None of either group carries freight. They drive as much, and earn
 less of it as fares; why one seed shows it in the price and the other in
 the count, I do not know.
 
+**Dialects: driving on the other side.** The four Turin economies picked
+sides on their own: on day six seeds 3 and 11 keep left (25% and 33% of
+cars on the right), seeds 5 and 7 right (82% and 83%). Thirty cars from one
+dropped into another with the migrants tool, beside thirty natives, a day
+later:
+
+| into | from | migrants: earned an hour, crashes an hour, family | natives |
+|---|---|---|---|
+| s11, left | s7, right | 7.8, 7.0, 143 | 4.3, 7.2, 27 |
+| s3, left | s5, right | 5.5, 7.2, 79 | 4.4, 6.5, 42 |
+| s5, right | s3, left | 4.1, 7.6, 16 | 3.0, 6.6, 29 |
+| s7, right | s11, left | 4.4, 7.8, 16 | 3.0, 6.7, 25 |
+| s5, right | s7, right | 3.3, 6.8, 34 | 2.6, 6.1, 14 |
+| s3, left | s11, left | 4.9, 6.7, 39 | 4.3, 6.1, 26 |
+
+No accent to speak of. Migrants earn more an hour than natives in all six,
+the wrong side or not, and crash a little more in all but one, the same
+side or not (0.6 to 1.1 an hour more, against 0.6 to 0.7 for the same-side
+controls). Families split one way: the left-keeping cars dropped into the
+right-keeping cities are the only migrants whose families end smaller than
+the natives' (16 against 29 and 25); right-keepers do better than the
+natives on either side. One run of each pair, so this is a hint, not a
+result: whatever keeping to one side is in these brains, it does not stop
+a car making a living on the other.
+
+
 **One family takes the city.** How long do rich families stay rich?
 Count everyone descended from each founding car (or immigrant) as one
 family, and follow them day by day (`DAYS=8 node tools/dynasty.mjs turin
