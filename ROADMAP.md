@@ -200,6 +200,7 @@ commits and pushes.
 
 ## Done
 
+- 38. Plastic brains (in neat-from-scratch): a heritable Hebbian rate per connection never helps; on hard tracks it takes half again to nearly three times as many generations
 - 124. Road rage: noise for 5-15 s after a crash adds 13-17% crashes, all the raging cars' own; cars yet to crash crash 3-6% less, nothing spreads (tools/rage.mjs)
 - 113. A football match: half the fares to one junction for two hours costs a sixth of them, a third in the hour after the whistle, back within 5-7% by 20:00 (tools/match.mjs)
 - 19. Surge pricing (`ECON.surge`): a quarter to three quarters more cars and fewer passengers turned away (3/4), but no more delivered (13% fewer at x3): the extra pickups die with their bankrupt drivers
