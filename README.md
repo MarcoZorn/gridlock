@@ -2088,12 +2088,11 @@ two to six, against no rule (tools/policies.mjs):
 | at a fifth of contacts | -23% (4/4) | -3% (2/4) | -10% (4/4) | 144-183 | 1978-2620 |
 | at every contact | -46% (4/4) | -14% (4/4) | -15% (4/4) | 64-127 | 3327-6840 |
 
-It is all cost. A contact lasts several ticks and each one counts, so two
-cars in one crash may swap many times over (the swaps a day equal the
-car-on-car contacts at every contact), and a working brain with half its
-shared weights taken from a stranger's presumably mostly stops working (not
-measured car by car): the fleet shrinks by an eighth to over two thirds,
-and fares with it. Crossover does the same mixing between two parents chosen by
+It is all cost. Each swap is one crash: a car that hits another is pulled
+apart from it at once, and allowing a car at most one swap a second changes
+not a single fare. A working brain with half its shared weights taken from
+a stranger's presumably mostly stops working (not measured car by car):
+the fleet shrinks by an eighth to over two thirds, and fares with it. Crossover does the same mixing between two parents chosen by
 earnings and of the same species, and is used in only three births in ten;
 a crash chooses neither. Species counts do not move (5.3-7.5 against
 4.3-8.3).
