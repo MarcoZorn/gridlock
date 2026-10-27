@@ -1824,6 +1824,7 @@ way (`node tools/policies.mjs`, straight from the runs' telemetry):
 | reputation by damage, 1.5x | -27% (4/4) | -14% (4/4) | +11% (4/4) | 0.34 |
 | congestion charge, all day | -17% (4/4) | -20% (4/4) | -28% (4/4) | 0.35 |
 | congestion charge, rush hours | -9% (4/4) | -6% (4/4) | -11% (4/4) | 0.35 |
+| mates chosen by earnings | +2% (2/4) | +8% (4/4) | -6% (4/4) | 0.35 |
 | genes swapped in a fifth of car crashes | -23% (4/4) | -3% (2/4) | -10% (4/4) | 0.35 |
 | genes swapped in every car crash | -46% (4/4) | -14% (4/4) | -15% (4/4) | 0.34 |
 | surge pricing, x1 | -2% (2/4) | +18% (4/4) | +2% (2/4) | 0.37 |
@@ -2494,6 +2495,17 @@ parent's body: culture alongside genes. Turin, days two to six: 2690 and
 2691 fares a day against 2588 and 2363, trips 53 s against 57-58, crashes
 per car a little higher (209 and 214 against 188 and 206). A modest gain,
 in both seeds.
+
+Choosing whom to breed with is the genetic version of the same thing. A
+child's brain is crossed with a mate's in three births in ten, the mate
+picked at random from the solvent cars of the parent's species. With
+`--econ choosy=1` the parent picks the best earner per hour of its species
+instead. Turin, four seeds, days two to six, against no rule
+(tools/policies.mjs): fares +2% (2 of 4 seeds), crashes per car +8% (4/4),
+trips 6% quicker (4/4), Gini unchanged at 0.35. The same small trade as
+copying the best driver: a little faster, a little rougher, hardly more
+fares. The best earners here are the fast ones, and choosing them breeds
+speed, crashes included.
 
 **How many roads can a city lose?** Close road segments at random, one at
 a time, and measure what share of the city can still reach, and be reached
