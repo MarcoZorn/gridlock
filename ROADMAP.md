@@ -200,6 +200,7 @@ commits and pushes.
 
 ## Done
 
+- 49. Group selection between cities: replacing the worst of four Turin cities with a copy of the best every day carries 1.3% more fares over five days, one run (tools/groups.mjs)
 - 41. Memory (in neat-from-scratch): the last outputs fed back as inputs win as many seeds as they lose on hard tracks and add a long tail (35.6 generations against 24.3); nothing here needs remembering
 - 42. Evolving the fitness function (in neat-from-scratch): an outer loop over the score's three weights finds nothing better in twelve tries; every change slows NEAT by a fifth to three times
 - 35. Sexual selection (`ECON.choosy`): crossing with the best earner of the species, not a random mate, makes trips 6% quicker and crashes 8% more common, fares about the same
