@@ -1956,6 +1956,26 @@ back to their usual size by the half-day after that; Manhattan seed 7
 stays at the ceiling for another day before it falls. Nothing in a car can
 see the season ending.
 
+**A football match.** On day three from 17:00 to 19:00, half of all new
+fares go to one junction, the stadium, the one nearest the middle of the
+map (`SHARE=0.5 node tools/match.mjs turin 7`). Against the same city with
+no match, four seeds, Turin:
+
+| Turin | fares, 17-19 | fares, 19-20 | fares, 20-24 | crashes, 20-24 | most cars standing near the stadium |
+|---|---|---|---|---|---|
+| seed 3 | -18% | -34% | -4% | -14% | 22 vs 9 |
+| seed 5 | -11% | -19% | -0% | -7% | 17 vs 10 |
+| seed 7 | -16% | -35% | +7% | -15% | 17 vs 6 |
+| seed 11 | -17% | -23% | -5% | -18% | 27 vs 16 |
+
+The match costs a sixth of the fares while it lasts, and the worst hour is
+the one after the final whistle, a fifth to a third of the fares gone: the
+cars that carried the crowd in are now all in one place, two to three times
+as many of them standing still around the stadium at the peak, and each
+has to pick up its next fare from there. By 20:00 the city is back to
+within 5-7% of normal. The evening after is calmer too, 7-18% fewer crashes
+in all four, a thing I did not expect and have not explained.
+
 **A mass extinction.** On the morning of day three, four cars in five go
 broke at once (`node tools/extinction.mjs turin 7`). Species and cars
 before, three hours after and twelve hours after, against the same
