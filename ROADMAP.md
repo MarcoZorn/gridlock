@@ -200,6 +200,7 @@ commits and pushes.
 
 ## Done
 
+- 113. A football match: half the fares to one junction for two hours costs a sixth of them, a third in the hour after the whistle, back within 5-7% by 20:00 (tools/match.mjs)
 - 19. Surge pricing (`ECON.surge`): a quarter to three quarters more cars and fewer passengers turned away (3/4), but no more delivered (13% fewer at x3): the extra pickups die with their bankrupt drivers
 - 133. Interest (`ECON.interest`): debt doubling hourly sends half again as many cars broke and trims credit's extra crashes and slow trips, but keeps most of its extra fares; 10% an hour hardly bites
 - 30. Freight niches: Turin evolves vans at normal freight prices only when crashes stop costing the driver (insurance, fraud, free crashes); not because trucks pay more per crash (crashMass), more likely because the fleet doubles
