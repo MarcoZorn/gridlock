@@ -1407,6 +1407,31 @@ shows up where I expected it in the first place: with as many cars on the
 road again, trips take 40% longer than without the camera, and the city
 moves 30% fewer fares for 13% fewer crashes per car.
 
+**Police that learn.** Cameras that stay put are a fixed hazard; police
+move to where the speeders are. With `tools/police.mjs`, 68 cameras at 35
+(the number the search above settled on) either stay on 68 random roads or
+patrol: every city hour they move to the 68 roads with the most speeding in
+the hour before. Turin, four seeds, day six:
+
+| Turin, day six | cars | fares | speeding, s per car | fined, s per car | crashes per car |
+|---|---|---|---|---|---|
+| no cameras | 208-257 | 2386-2673 | 483-521 | 0 | 176-207 |
+| 68 that stay put | 213-235 | 2333-2565 | 455-500 | 79-100 | 187-222 |
+| 68 that patrol | 104-129 | 1459-1667 | 375-498 | 244-338 | 124-170 |
+
+Cameras that stay put catch about a fifth of the speeding and change
+little. Patrolling ones catch two thirds of it, every day, and the fines
+crush the city: 26 to 42 cars on day one, and still half the fleet and
+three fifths of the fares on day six. Speeding per car does fall faster
+under the patrol, to 53-91% of day one's by day six against 76-83% with no
+cameras, so the drivers are giving ground. But there is no chase, as far
+as these numbers show: the cameras catch the same two thirds from the first
+day to the last, so the speeding never moves somewhere they are not. My
+reading: a driver cannot see a camera or remember a road, so it has nothing
+to evade with, and all evolution can do is drive slower everywhere, while
+bankruptcy does most of the work. A Red Queen needs the prey to be
+able to run.
+
 **What it takes to evolve a truck.** Every economy so far bred small cars
 with no cargo room: freight pays by the load, but a big hull costs fuel,
 upkeep and top speed on every trip, loaded or not. With freight paying three
