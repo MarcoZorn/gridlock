@@ -73,6 +73,13 @@ if (process.argv.includes("--eco")) {
     eco = new EcoWorld({ seed, control, founders, graph, size: arg("size", "small"), pedestrians: +arg("pedestrians", 0), realSignals: process.argv.includes("--real-signals") });
     console.log(`new ecosystem ${dir}, seed ${seed}${f ? `, founders from ${f}` : ""}`);
   }
+  // --real-limits: a speed camera on every road at its posted OpenStreetMap
+  // limit (km/h to units a second at 0.4 m a unit); limits are not saved, so
+  // this is applied again on every resume
+  if (process.argv.includes("--real-limits") && graph?.maxspeed) {
+    eco.limits = Array(eco.city.edges.length).fill(0);
+    for (const [i, kmh] of graph.maxspeed) eco.limits[i] = kmh / 3.6 / 0.4;
+  }
   let written = eco.log.length;
   while (!stop && eco.tick < days * TICKS_PER_DAY) {
     eco.step();
