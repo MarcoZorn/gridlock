@@ -200,6 +200,7 @@ commits and pushes.
 
 ## Done
 
+- 141. Airports: a tenth of fares to the farthest junction costs a quarter to half the fares on day one, 0-19% over days 2-6 (tools/airport.mjs)
 - 43. Red Queen, police and speeders: cameras that move hourly to the speeding catch two thirds of it and halve the city for six days; drivers slow down by attrition, there is nothing to evade (tools/police.mjs)
 - 49. Group selection between cities: replacing the worst of four Turin cities with a copy of the best every day carries 1.3% more fares over five days, one run (tools/groups.mjs)
 - 41. Memory (in neat-from-scratch): the last outputs fed back as inputs win as many seeds as they lose on hard tracks and add a long tail (35.6 generations against 24.3); nothing here needs remembering
