@@ -200,6 +200,7 @@ commits and pushes.
 
 ## Done
 
+- 40. Brains that evolve their own sensors (in neat-from-scratch): ray angles and range as genes take a third off the generations on hard tracks (15.9 against 24.3, 16 seeds), no single best design
 - 50. Horizontal gene transfer in crashes (`ECON.hgt`): swapping weights with whoever you hit breaks working brains; fares fall 23-46%, the fleet by an eighth to over two thirds
 - 37. Lamarckian learning (in neat-from-scratch): passing the Hebbian weights a car learned on to its children is no better, at the small rate worse (54.5 generations against 35.0 on hard tracks)
 - 38. Plastic brains (in neat-from-scratch): a heritable Hebbian rate per connection never helps; on hard tracks it takes half again to nearly three times as many generations
