@@ -200,6 +200,7 @@ commits and pushes.
 
 ## Done
 
+- 35. Sexual selection (`ECON.choosy`): crossing with the best earner of the species, not a random mate, makes trips 6% quicker and crashes 8% more common, fares about the same
 - 40. Brains that evolve their own sensors (in neat-from-scratch): ray angles and range as genes take a third off the generations on hard tracks (15.9 against 24.3, 16 seeds), no single best design
 - 50. Horizontal gene transfer in crashes (`ECON.hgt`): swapping weights with whoever you hit breaks working brains; fares fall 23-46%, the fleet by an eighth to over two thirds
 - 37. Lamarckian learning (in neat-from-scratch): passing the Hebbian weights a car learned on to its children is no better, at the small rate worse (54.5 generations against 35.0 on hard tracks)
