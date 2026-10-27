@@ -200,6 +200,7 @@ commits and pushes.
 
 ## Done
 
+- 137. Brain drain: the top tenth of earners leaving every day changes fares by -5% to +5% (tools/drain.mjs); earnings are not inherited, so losing the best costs nothing
 - 134, 135. A central bank (`ECON.print`): money from nothing, as much as a basic income pays, becomes two fifths to three quarters more cars, not wealth; same fares, trips a third slower; the inflation is in cars
 - 141. Airports: a tenth of fares to the farthest junction costs a quarter to half the fares on day one, 0-19% over days 2-6 (tools/airport.mjs)
 - 43. Red Queen, police and speeders: cameras that move hourly to the speeding catch two thirds of it and halve the city for six days; drivers slow down by attrition, there is nothing to evade (tools/police.mjs)
