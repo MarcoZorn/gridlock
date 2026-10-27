@@ -1970,7 +1970,7 @@ no match, four seeds, Turin:
 
 The match costs a sixth of the fares while it lasts, and the worst hour is
 the one after the final whistle, a fifth to a third of the fares gone: the
-cars that carried the crowd in are now all in one place, two to three times
+cars that carried the crowd in are now all in one place, 1.7 to 2.8 times
 as many of them standing still around the stadium at the peak, and each
 has to pick up its next fare from there. By 20:00 the city is back to
 within 5-7% of normal. The evening after is calmer too, 7-18% fewer crashes
