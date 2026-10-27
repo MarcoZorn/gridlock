@@ -1854,6 +1854,16 @@ it. Measured across all ages at once the correlation came out negative
 (-0.08 to -0.16), but that was the economy changing over the days, not the
 families: early parents and late children earn in different cities.
 
+What a child gets from its parent, gene by gene (`node tools/braindiff.mjs
+runs/inh-base-s7/state.json`, or with a car's id for that one car): across
+the 151 parent-child pairs both alive at the end of the Turin seed-7 run, a
+child's brain differs from its parent's in about 88 weights, moved by 0.32
+on average, while its wiring hardly changes, 0.3 connections gained, 0.7
+switched on or off, a new node in one child in twenty; and 3.5 of its 8
+body genes differ. No child is an exact copy. The parent's driving reaches
+the child as a brain nudged everywhere at once, and its earnings, as above,
+not at all.
+
 **How long do rich families stay rich?** A family is everyone descended
 from one founder or immigrant (`DAYS=8 node tools/dynasty.mjs turin 7`,
 Turin and Manhattan, seeds 7 and 11). The five families that earned most on
