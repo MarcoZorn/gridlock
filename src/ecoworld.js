@@ -51,6 +51,7 @@ export const ECON = {
   basic: 0,             // share of every fare taxed and paid back equally to every car, a basic income (an experiment)
   minFare: 0,           // no passenger fare pays less than this, a minimum wage per fare (an experiment)
   forgive: 0,           // 1: a car's first bankruptcy is forgiven, its debt wiped to zero; the second is final (an experiment)
+  market: 0,            // a fare market: each car asks its own price (a gene, passed on); a passenger takes it with chance exp(-market * (price - 1)), else waits for the next car (an experiment)
   choosy: 0,            // 1: a parent crosses its brain with the best earner per hour of its species, not a random one (an experiment)
   hgt: 0,               // chance that two cars crashing into each other swap genes: each connection both brains have takes the other's weight half the time (an experiment)
   surge: 0,             // a passenger fare pays 1 + this times how full the queue of waiting passengers was at pickup (an experiment)
@@ -201,6 +202,8 @@ export class EcoWorld {
     d.platform = !ECON.platformB ? 0 : parent ? (this.rng.next() < ECON.switchPlatform ? 1 - parent.platform : parent.platform) : +(this.rng.next() < 0.5);
     // union card: the parent's, one child in twenty the other way; half of newcomers
     d.union = !ECON.union ? 0 : parent ? (this.rng.next() < 0.05 ? 1 - parent.union : parent.union) : +(this.rng.next() < 0.5);
+    // its asking price: the parent's, a little off; newcomers ask the going rate, give or take
+    d.price = !ECON.market ? 1 : parent ? parent.price * Math.exp(this.rng.normal() * 0.05) : Math.exp(this.rng.normal() * 0.1);
     this.newJob(d, true);
     d.onArrive = (car, here) => {
       this.pay(car);
@@ -261,7 +264,8 @@ export class EcoWorld {
       const fPay = d.body.capacity >= ECON.freightMin && this.freight >= 1 ? ECON.freightRate * this.freightBoom * fLoad : 0;
       const onB = ECON.platformB && d.platform === 1, queue = onB ? this.passengersB : this.passengers;
       const cheap = d.union && d.routeLen * ECON.passengerRate < ECON.union;
-      const pPay = queue >= 1 && !cheap && this.trusted(d) ? ECON.passengerRate * (1 + ECON.speedBonus / 2) : 0;
+      const takes = !ECON.market || this.rng.next() < Math.exp(-ECON.market * (d.price - 1));
+      const pPay = queue >= 1 && !cheap && takes && this.trusted(d) ? ECON.passengerRate * (1 + ECON.speedBonus / 2) * d.price : 0;
       if (fPay > pPay) { kind = "freight"; load = fLoad; this.freight--; }
       else if (pPay > 0) { kind = "passenger"; surge = 1 + ECON.surge * queue / (ECON.fareQueue * this.scale * (onB ? ECON.platformB : 1 - ECON.platformB)); if (onB) this.passengersB--; else this.passengers--; this.events.pickups++; }
       else this.events.deadheads++;
@@ -285,7 +289,7 @@ export class EcoWorld {
     } else {
       const took = Math.max(1, this.tick - j.start);
       const quick = Math.max(0, Math.min(1, j.expect / took - 0.5));
-      fare = Math.max(ECON.minFare, dist * ECON.passengerRate * (1 + ECON.speedBonus * quick)) * j.surge;
+      fare = Math.max(ECON.minFare, dist * ECON.passengerRate * (1 + ECON.speedBonus * quick)) * j.surge * (ECON.market ? d.price : 1);
       if (ECON.platformB) fare *= 1 - (d.platform === 1 ? ECON.commissionB : ECON.commissionA);
       if (ECON.reviews) {
         // the share of its rides that did not crash, starting from two good ones
@@ -541,6 +545,7 @@ export class EcoWorld {
       cars: this.cars.length,
       cash: this.cars.reduce((a, d) => a + d.cash, 0) / n,
       gini: gini(this.cars.map((d) => Math.max(0, d.cash))),
+      ...(ECON.market ? { price: this.cars.reduce((a, d) => a + d.price, 0) / n } : {}),
       inDebt: this.cars.filter((d) => d.cash < 0).length / n,
       maxGen: Math.max(0, ...this.cars.map((d) => d.generation)),
       basic: this.basic,
@@ -636,7 +641,7 @@ export class EcoWorld {
       founders: this.founders ? this.founders.map((g) => g.toJSON()) : null,
       cars: this.cars.map((d) => ({
         brain: d.genome.toJSON(), body: d.body.toJSON(), cash: d.cash, id: d.id, born: d.born, parent: d.parent,
-        generation: d.generation, children: d.children, earned: d.earned, species: d.species, dist: d.dist, platform: d.platform,
+        generation: d.generation, children: d.children, earned: d.earned, species: d.species, dist: d.dist, platform: d.platform, price: d.price,
       })),
       species: this.species.map((s) => ({ id: s.id, brain: s.brain.toJSON(), body: s.body.toJSON(), born: s.born, size: s.size })),
       log: this.log,
@@ -670,7 +675,7 @@ export class EcoWorld {
     w.events = freshEvents();
     for (const c of j.cars) {
       const d = w.spawn(Genome.fromJSON(c.brain), Body.fromJSON(c.body), c.cash, null);
-      Object.assign(d, { id: c.id, born: c.born, parent: c.parent, generation: c.generation, children: c.children, earned: c.earned, species: c.species, dist: c.dist, platform: c.platform ?? 0 });
+      Object.assign(d, { id: c.id, born: c.born, parent: c.parent, generation: c.generation, children: c.children, earned: c.earned, species: c.species, dist: c.dist, platform: c.platform ?? 0, price: c.price ?? 1 });
     }
     w.nextId = j.nextId;
     w.species = j.species.map((s) => ({ id: s.id, brain: Genome.fromJSON(s.brain), body: Body.fromJSON(s.body), born: s.born, size: s.size }));
