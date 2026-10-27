@@ -2072,6 +2072,16 @@ measured: a city's fares on one day say little about the next, so there is
 little for selection between cities to grip, and what makes a city carry
 more is mostly what its cars do, which selection already acts on directly.
 
+**Brain drain.** What if the best drivers leave? At the end of every day
+the tenth of the cars that earned most per hour of life (14 to 27 of them)
+leave Turin for good (`node tools/drain.mjs turin 7`). Fares over days two
+to six against the same city keeping them: -1%, +3%, -5%, +5% (seeds 3, 5,
+7, 11), and on day six +0% to +5% in all four. Losing a tenth of the top
+every day costs nothing, which fits what social mobility found above: a
+car's earnings are not passed to its children, and my guess (not tested)
+is that the top earners on any day are lucky more than good, so the city
+loses only luck.
+
 **Migrants.** Thirty cars from a six-day Turin economy dropped into a
 six-day Manhattan economy, each with a newcomer's cash, beside thirty of
 Manhattan's own dropped in the same way; and the other way round
