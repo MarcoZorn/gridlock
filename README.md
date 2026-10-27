@@ -692,6 +692,27 @@ So timing does matter, a lot, just not in any pattern I knew to try. The
 green wave assumed cars going straight at an even speed; whatever the search
 found fits how these drivers actually move.
 
+**Which junctions need a light?** Not when it turns green, but whether it is
+there at all: one gene per junction, light or none (a junction without one
+is always green), the same (1+1) search from lights everywhere, the
+lights-raised drivers fixed, 60 tries, judged on four generations of traffic
+it never saw (`node tools/lightswhere.mjs 91`; `W=1` counts each crash
+against a trip):
+
+| city | lights everywhere | no lights | evolved for trips | evolved, crashes counted |
+|---|---|---|---|---|
+| 77 | 340 trips, 2368 crashes | 384, 1916 | 376, 2316 (29 of 39 lit) | 328, 2020 (26 lit) |
+| 91 | 280, 2796 | 324, 2444 | 344, 2540 (28 of 42) | 316, 2336 (26) |
+| 105 | 344, 2488 | 408, 1856 | 428, 2368 (28 of 35) | 404, 2140 (25) |
+
+No lights at all beats lights everywhere on both counts, 12-19% more trips
+and 13-25% fewer crashes, even for drivers raised under lights. The search
+heads the same way, taking out a quarter to two fifths of them in 60 tries,
+and in two cities of three its mix carries 5-6% more trips than no lights;
+but always with more crashes than no lights (4-28%), and counting crashes
+it never does better than taking them all away. If a light helps anywhere
+here, it is by moving traffic, not by keeping it safe.
+
 **The crossroads.** Junction conflicts are diluted in a whole city, so I
 built an arena that is nothing but the question: one junction, four arms, a
 ring road joining their ends so there are no dead ends, and every fare
