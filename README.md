@@ -2362,13 +2362,17 @@ Mean asking price each day, Turin, four seeds:
 | very price-shy (`market=4`) | 0.95-0.98 | 0.90-0.93 | 0.89-0.94 | 0.88-0.96 | 0.90-0.94 | 0.92-0.95 |
 
 Nobody learns to charge more. With price-shy passengers the asking price
-wanders around the going rate; with very price-shy ones it falls 5-12%
-below it within two days, cars undercutting each other to where no
-passenger refuses at all (any price under 1 is always taken), Bertrand's
-competition by evolution, and stays there. Fares carried,
-crashes and trips do not move (within 2% either way, tools/policies.mjs).
-Six days is only 20 to 27 generations at a few percent a step, so the
-prices may still be drifting; the direction, at least, is clear.
+wanders around the going rate; with very price-shy ones the mean falls
+5-12% below it within two days and stays there. That looks like cars
+undercutting each other, but it is not: any price under 1 is always taken,
+so asking 0.9 wins no passenger that 1.0 would lose, and earns a tenth
+less. It is mutation and selection out of balance. Children's prices
+scatter both ways; above 1 the very price-shy refuse them, a cost that
+grows fast, below 1 they only earn a little less. So the high side is
+trimmed and the low side is not: on day six only 10-27% of cars ask more
+than 1 (median 0.92-0.96), against 33-72% with price-shy passengers. Fares
+carried, crashes and trips do not move (within 2% either way,
+tools/policies.mjs).
 
 **A minimum fare.** `--econ minFare=20` raises every passenger fare below
 20 to 20 (the mean fare is about 20). Turin, days two to six, two seeds:
