@@ -705,9 +705,9 @@ against a trip):
 | 91 | 280, 2796 | 324, 2444 | 344, 2540 (28 of 42) | 316, 2336 (26) |
 | 105 | 344, 2488 | 408, 1856 | 428, 2368 (28 of 35) | 404, 2140 (25) |
 
-No lights at all beats lights everywhere on both counts, 12-19% more trips
+No lights at all beats lights everywhere on both counts, 13-19% more trips
 and 13-25% fewer crashes, even for drivers raised under lights. The search
-heads the same way, taking out a quarter to two fifths of them in 60 tries,
+heads the same way, taking out a fifth to two fifths of them in 60 tries,
 and in two cities of three its mix carries 5-6% more trips than no lights;
 but always with more crashes than no lights (4-28%), and counting crashes
 it never does better than taking them all away. If a light helps anywhere
