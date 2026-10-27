@@ -2,7 +2,7 @@
 // into a gridlock road graph. Shared by tools/osm.mjs and the eco page.
 // See tools/osm.mjs for what it keeps and why.
 
-const M_PER_UNIT = 0.4, MERGE = 12, MARGIN = 40;
+const M_PER_UNIT = 0.4, MERGE = 12, MARGIN = 40, SIGNAL = 60;   // 60 units is 24 m
 const LANES = { primary: 2, secondary: 2, tertiary: 1, residential: 1, unclassified: 1, living_street: 1 };
 
 export function osmToGraph(els, name = "OpenStreetMap extract") {
@@ -104,5 +104,19 @@ export function osmToGraph(els, name = "OpenStreetMap extract") {
     nodes: nodes.map(([x, y]) => [Math.round(x - minX + MARGIN), Math.round(y - minY + MARGIN)]),
     edges: [...edges.values()].filter(([a, b]) => keep[a] && keep[b]).map(([a, b, l, one]) => (one ? [idx.get(a), idx.get(b), l, 1] : [idx.get(a), idx.get(b), l])),
   };
+  // Traffic signals (highway=traffic_signals) usually sit on the approach, a
+  // few metres before the junction: each goes to the nearest junction of
+  // three or more roads within SIGNAL units, if there is one.
+  const deg = new Map();
+  for (const [a, b] of map.edges) { deg.set(a, (deg.get(a) || 0) + 1); deg.set(b, (deg.get(b) || 0) + 1); }
+  const signals = new Set();
+  for (const e of els) {
+    if (e.type !== "node" || e.tags?.highway !== "traffic_signals") continue;
+    const [x, y] = project(e), sx = x - minX + MARGIN, sy = y - minY + MARGIN;
+    let best = -1, d0 = SIGNAL;
+    map.nodes.forEach(([nx, ny], i) => { const d = Math.hypot(nx - sx, ny - sy); if ((deg.get(i) || 0) >= 3 && d < d0) { d0 = d; best = i; } });
+    if (best >= 0) signals.add(best);
+  }
+  if (signals.size) map.signals = [...signals].sort((a, b) => a - b);
   return { map, opened };
 }
