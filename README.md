@@ -966,7 +966,7 @@ city day and draws a frame every ten city minutes, every car a dot in its
 species' colour (rsvg-convert and ffmpeg make the GIF). Turin, seed 7, day
 seven, midnight to midnight in twelve seconds:
 
-![A day in Turin's economy, seed 7: cars as dots coloured by species, the fleet swelling into the morning and evening rush](docs/day.gif)
+![A day in Turin's economy, seed 7: cars as dots coloured by species, clock and car count below](docs/day.gif)
 
 **What came out:** a city whose population follows the clock, from about 24
 cars at night to 60-70 in the evening rush. In the runs with vans, they rise
