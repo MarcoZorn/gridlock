@@ -1220,7 +1220,7 @@ town.
 
 ![A city grown by a branching rule, seed 7](docs/grown.png)
 
-Its economy (`--map grown`), four seeds, days two to six, against Turin.
+Its economy (`--map grown`, or [on the eco page](https://marcozorn.github.io/gridlock/eco.html?map=grown)), four seeds, days two to six, against Turin.
 Demand grows with the amount of road, and the grown city has three
 quarters of Turin's (a scale of 3.03 against 4), so fares are also given
 per unit of demand:
