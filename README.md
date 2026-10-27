@@ -1824,6 +1824,8 @@ way (`node tools/policies.mjs`, straight from the runs' telemetry):
 | reputation by damage, 1.5x | -27% (4/4) | -14% (4/4) | +11% (4/4) | 0.34 |
 | congestion charge, all day | -17% (4/4) | -20% (4/4) | -28% (4/4) | 0.35 |
 | congestion charge, rush hours | -9% (4/4) | -6% (4/4) | -11% (4/4) | 0.35 |
+| genes swapped in a fifth of car crashes | -23% (4/4) | -3% (2/4) | -10% (4/4) | 0.35 |
+| genes swapped in every car crash | -46% (4/4) | -14% (4/4) | -15% (4/4) | 0.34 |
 | surge pricing, x1 | -2% (2/4) | +18% (4/4) | +2% (2/4) | 0.37 |
 | surge pricing, x3 | -13% (4/4) | +26% (4/4) | +4% (3/4) | 0.44 |
 | first bankruptcy forgiven | -0% (2/4) | +9% (3/4) | +2% (3/4) | 0.35 |
@@ -2072,6 +2074,28 @@ If anything relatives crash into each other a little more than chance, in
 all four. Nothing in a driver can tell a relative from a stranger, so
 there is nothing for kin selection to act on. The small excess may be two
 cars with nearly the same brain making the same mistake together (a guess).
+
+**Genes passed in a crash.** Bacteria swap genes sideways, cell to cell,
+not only parent to child. Here the contact is a crash: with `--econ
+hgt=1`, every time two cars touch, each connection both brains have takes
+the other's weight half the time, in the living brains, so both drive the
+new way at once and their children inherit it. Turin, four seeds, days
+two to six, against no rule (tools/policies.mjs):
+
+| genes swapped | fares a day | crashes per car | trip | cars | swaps a day |
+|---|---|---|---|---|---|
+| never | - | - | - | 206-242 | 0 |
+| at a fifth of contacts | -23% (4/4) | -3% (2/4) | -10% (4/4) | 144-183 | 1978-2620 |
+| at every contact | -46% (4/4) | -14% (4/4) | -15% (4/4) | 64-127 | 3327-6840 |
+
+It is all cost. A contact lasts several ticks and each one counts, so two
+cars in one crash may swap many times over, and a working brain with half
+its shared weights taken from a stranger's mostly stops working: the cars
+that swap go broke, the fleet shrinks by a fifth to two thirds, and fares
+with it. Crossover does the same mixing between two parents chosen by
+earnings and of the same species, and is used in only three births in ten;
+a crash chooses neither. Species counts do not move (5.3-7.5 against
+4.3-8.3).
 
 **How much should a child get?** A parent pays for its child's starting
 cash. Turin, days two to six, two seeds each
