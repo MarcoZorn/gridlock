@@ -50,6 +50,7 @@ export const ECON = {
   basic: 0,             // share of every fare taxed and paid back equally to every car, a basic income (an experiment)
   minFare: 0,           // no passenger fare pays less than this, a minimum wage per fare (an experiment)
   forgive: 0,           // 1: a car's first bankruptcy is forgiven, its debt wiped to zero; the second is final (an experiment)
+  hgt: 0,               // chance that two cars crashing into each other swap genes: each connection both brains have takes the other's weight half the time (an experiment)
   surge: 0,             // a passenger fare pays 1 + this times how full the queue of waiting passengers was at pickup (an experiment)
   interest: 0,          // a car in debt sees its debt grow by this share every city hour (an experiment, with credit)
   credit: 0,            // a car may run this far into debt before it counts as broke (an experiment)
@@ -376,7 +377,7 @@ export class EcoWorld {
     this.events.carCrashes += collideCars(onRoad, this.hash, (a, b) => {
       if (this.onPair) this.onPair(a, b);   // for measurements: who hit whom
       const ped = a.isPed ? a : b.isPed ? b : null;
-      if (!ped) return;
+      if (!ped) { if (ECON.hgt && this.rng.next() < ECON.hgt) this.swapGenes(a, b); return; }
       const car = ped === a ? b : a;
       car.cash -= ECON.pedestrianFine;
       this.events.pedHits++;
@@ -444,6 +445,19 @@ export class EcoWorld {
     mutate(brain, this.innov, this.rng, this.cfg);
     const child = this.spawn(brain, parent.body.mutate(this.rng), ECON.childCash, parent);
     return child;
+  }
+
+  // Horizontal gene transfer, as bacteria do it: genes pass between two
+  // living brains, here the two in a crash, not parent to child. Only
+  // connections both have can be swapped, the same rule crossover follows.
+  swapGenes(a, b) {
+    for (const [innov, ca] of a.genome.conns) {
+      const cb = b.genome.conns.get(innov);
+      if (!cb) continue;
+      if (this.rng.next() < 0.5) [ca.w, cb.w] = [cb.w, ca.w];
+    }
+    a.genome.dirty(); b.genome.dirty();
+    this.events.swaps = (this.events.swaps || 0) + 1;
   }
 
   // Species are labels, nothing more: no fitness sharing, no culling. Brain
