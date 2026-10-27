@@ -2026,9 +2026,9 @@ day more than the rest, I have not measured). By day six two seeds are
 back within a few percent. Mean trips and the Gini do not move clearly
 (trips 57-64 s against 57-61, Gini 0.37-0.40 against 0.36-0.40). The tool
 also counts the money (identical fares in a rerun): an average fare pays
-21.7-22.3 with the airport against 20.1-20.5 without, 8-11% more, so the
-city earns about what it did over days 2-6 (+8%, 0%, -3%, -13%) on fewer
-fares. The long haul pays for its length, and no more than that.
+21.7-22.3 with the airport against 20.1-20.5 without, 7-11% more, so the
+city earns close to what it did over days 2-6 (+8%, 0%, -3%, -13% by seed)
+on fewer fares. The long haul pays for its length, and no more than that.
 
 **A mass extinction.** On the morning of day three, four cars in five go
 broke at once (`node tools/extinction.mjs turin 7`). Species and cars
