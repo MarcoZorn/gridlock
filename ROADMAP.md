@@ -200,6 +200,7 @@ commits and pushes.
 
 ## Done
 
+- 18. A fare market (`ECON.market`): heritable asking prices never rise toward a monopoly's; with price-shy passengers they undercut to 5-12% below the going rate in two days, fares unchanged
 - 149. A city grown by a branching rule (tools/lsystem.mjs, maps/grown.json): carries a tenth more fares per unit of demand than Turin, trips quicker; evolved afterwards, arrows only fit their training trips (0.2% on unseen ones) and no street is worth closing
 - 137. Brain drain: the top tenth of earners leaving every day changes fares by -5% to +5% (tools/drain.mjs); earnings are not inherited, so losing the best costs nothing
 - 134, 135. A central bank (`ECON.print`): money from nothing, as much as a basic income pays, becomes two fifths to three quarters more cars, not wealth; same fares, trips a third slower; the inflation is in cars
