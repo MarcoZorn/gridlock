@@ -200,6 +200,7 @@ commits and pushes.
 
 ## Done
 
+- 37. Lamarckian learning (in neat-from-scratch): passing the Hebbian weights a car learned on to its children is no better, at the small rate worse (54.5 generations against 35.0 on hard tracks)
 - 38. Plastic brains (in neat-from-scratch): a heritable Hebbian rate per connection never helps; on hard tracks it takes half again to nearly three times as many generations
 - 124. Road rage: noise for 5-15 s after a crash adds 13-17% crashes, all the raging cars' own; cars yet to crash crash 3-6% less, nothing spreads (tools/rage.mjs)
 - 113. A football match: half the fares to one junction for two hours costs a sixth of them, a third in the hour after the whistle, back within 5-7% by 20:00 (tools/match.mjs)
