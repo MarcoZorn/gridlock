@@ -1866,6 +1866,7 @@ way (`node tools/policies.mjs`, straight from the runs' telemetry):
 | owners, half from each child | -13% (3/4) | -6% (4/4) | -11% (4/4) | 0.37 |
 | species by body alone | -2% (1/4) | +3% (3/4) | +2% (3/4) | 0.35 |
 | species by brain alone | -1% (2/4) | +2% (3/4) | +1% (2/4) | 0.35 |
+| money printed, as much as basic income pays | +7% (3/4) | +22% (4/4) | +32% (4/4) | 0.35 |
 | basic income voted, from none | +0% (2/4) | +3% (3/4) | -0% (2/4) | 0.35 |
 | basic income voted, from a quarter | -43% (3/4) | -16% (3/4) | +10% (3/4) | 0.31 |
 | reviews, fares by clean rides | -1% (2/4) | -9% (4/4) | -5% (4/4) | 0.33 |
@@ -2255,6 +2256,27 @@ end. Across the four seeds, days two to six (tools/policies.mjs): fares
 -43% (3/4). A vote by self-interest has two stable outcomes here, no tax and
 the most tax allowed, and which one a city lands in depends on the first
 day.
+
+**A central bank.** A basic income moves money from the cars that earn to
+all of them. What if it came from nowhere? With `--econ print=0.0369` every
+car is paid 0.0369 a second by nobody, what the quarter basic income paid
+each car on average. Turin, four seeds, days two to six, against no rule
+(tools/policies.mjs):
+
+| Turin | fares a day | crashes per car | trip | Gini | cars | cash per car | bankrupt a day |
+|---|---|---|---|---|---|---|---|
+| no rule | - | - | - | 0.35 | 206-242 | 13 | 1324-1494 |
+| basic income, a quarter | +7% (4/4) | +10% (3/4) | +21% (4/4) | 0.32 | 242-252 | 14-15 | 837-851 |
+| money printed, as much | +7% (3/4) | +22% (4/4) | +32% (4/4) | 0.35 | 337-401 | 14-16 | 1267-1417 |
+
+The same fares either way, but printed money becomes cars, not wealth. Cash
+per car stays where it was, 14-16; what grows is the fleet, by half to
+three quarters, because a car breeds when it has saved enough and printing
+lets every car save. Taxing the fares keeps the fleet small and keeps cars
+alive (a third fewer bankruptcies); printing breeds as many deaths as no
+rule at all, in a city half as full again, with trips a third slower and a
+fifth more crashes per car, and does nothing for equality. Inflation here
+is in the number of cars.
 
 **A minimum fare.** `--econ minFare=20` raises every passenger fare below
 20 to 20 (the mean fare is about 20). Turin, days two to six, two seeds:
