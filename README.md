@@ -610,7 +610,10 @@ with nothing at the junctions, never more than 53 cars, whether the
 founders are the shipped drivers or ones raised 300 more generations with
 roundabouts on the generated cities. A roundabout here is an island in the
 middle of every junction of three roads or more, and Turin's are close
-together and irregular; why they hurt this much I have not looked into.
+together and irregular. It is not islands crowding each other: only 3 of
+Turin's 49 sit within a car's length of another, and leaving those three
+out changes nothing (0.45 trips a minute, 21.6 crashes per km). Why they
+hurt this much I have not found.
 
 ![A junction under traffic lights, drivers raised for 3000 generations with them](docs/lights.gif)
 
