@@ -2509,8 +2509,8 @@ Over days two to six trips are 11% quicker than with no emergencies (4/4)
 and crashes per car 7% fewer (3/4), in a city a little smaller (183-221
 cars on day six against 208-257), which my guess, not tested, is why: a
 city that loses most of a fifth of its pay keeps fewer cars, and fewer cars
-drive faster. Being fast enough to save a life is mostly the traffic's
-doing, not the driver's.
+drive faster. Getting there in time looks more like the traffic's doing
+than the driver's, though I have not separated the two.
 
 **Reputation.** With `--econ reputation=1.5`, passengers refuse any car
 that has crashed more than one and a half times as often as the average
