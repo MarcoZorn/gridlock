@@ -602,6 +602,16 @@ without signals score better under lights (1.4 trips a minute) than the
 lights-raised ones (0.6), and run 6.5 reds each against 2.6. They are not
 better drivers, they just never learned that red means anything.
 
+On a real map roundabouts are worse still. The shipped drivers on Turin
+for five generations: 0.83 trips a minute and 7.6 crashes per km without
+roundabouts, 0.45 and 22.6 with them. In the economy the city never gets
+going: 34 to 206 fares a day over six days (four seeds) against about 2400
+with nothing at the junctions, never more than 53 cars, whether the
+founders are the shipped drivers or ones raised 300 more generations with
+roundabouts on the generated cities. A roundabout here is an island in the
+middle of every junction of three roads or more, and Turin's are close
+together and irregular; why they hurt this much I have not looked into.
+
 ![A junction under traffic lights, drivers raised for 3000 generations with them](docs/lights.gif)
 
 **The price of a red light.** With the four-second bug fixed, drivers under
