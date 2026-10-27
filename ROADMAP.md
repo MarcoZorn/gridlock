@@ -200,6 +200,7 @@ commits and pushes.
 
 ## Done
 
+- 15. Control per junction, lights (tools/lightswhere.mjs): no lights beats lights everywhere, 12-19% more trips and 13-25% fewer crashes; an evolved mix adds 5-6% trips in two cities of three at the price of crashes. Roundabouts per junction not done (they fail on real maps)
 - 140. A train line: half the longest quarter of fares end at the nearer station; 1-17% more fares, 6-10% cheaper each, drivers' money -9% to +10% (tools/train.mjs)
 - 18. A fare market (`ECON.market`): heritable asking prices never rise toward a monopoly's; with very price-shy passengers the mean sits 5-12% below the going rate, mutation trimmed only on the dear side, not undercutting; fares unchanged
 - 149. A city grown by a branching rule (tools/lsystem.mjs, maps/grown.json): carries a tenth more fares per unit of demand than Turin, trips quicker; evolved afterwards, arrows only fit their training trips (0.2% on unseen ones) and no street is worth closing
