@@ -200,6 +200,7 @@ commits and pushes.
 
 ## Done
 
+- 80. Brain diff (tools/braindiff.mjs): a child differs from its parent in about 88 weights, by 0.32 on average, and hardly ever in wiring
 - 77. A time-lapse recorder: tools/timelapse.mjs draws a city day from any checkpoint into a GIF, headless (docs/day.gif)
 - 5, 63. Dialects, driving on the other side: Turin seeds keep left or right; migrants from the other side earn more than natives like any migrant, only left-keepers in right-keeping cities leave smaller families (one run each, tools/migrate.mjs)
 - 39. HyperNEAT, smallest form (in neat-from-scratch): a CPPN draws the driver's weights from ray angles; slower to learn (6.4 generations against 3.9), as good on unseen tracks, and given nine rays after training on five it laps a little more (7.1 of 12 against 6.1)
