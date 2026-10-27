@@ -2260,7 +2260,10 @@ three quarters more cars, and in three seeds of four fewer passengers are
 turned away, in the rush hours 12-20% instead of 29-33% at x1 (the fourth,
 seed 7, turned few away to begin with and stays at 7-8%). And it changes
 nothing passengers want. Even with no surge, three in ten of the passengers
-picked up are never delivered, because their car goes broke on the way;
+picked up are never delivered: about three in four of those go down with
+a car that goes broke on the way, the rest when a car that got lost is
+towed and handed a new fare (Turin seed 7, days 2-3: 7104 picked up, 4871
+delivered, 1618 lost with a bankrupt car, 596 to a tow);
 surge makes the fleet bigger and the churn faster (40% to 130% more
 bankruptcies a day), so the extra pickups are lost the same way, and at x3
 13% fewer passengers arrive (4/4). More money per fare bought more drivers,
