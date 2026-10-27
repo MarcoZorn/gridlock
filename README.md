@@ -1209,6 +1209,35 @@ browser to draw a thousand cars.
 
 ![Midtown Manhattan, one-way streets and all: the highlighted route goes round the block](docs/manhattan.png)
 
+**A grown city.** Not drawn and not mapped: `node tools/lsystem.mjs 7 >
+maps/grown.json` grows streets by a branching rule in the spirit of an
+L-system. Four roads leave a central square; each grows a block at a time,
+mostly straight, now and then sprouting a side street at about a right
+angle, and stops at the edge, before crossing another street, or on
+reaching a junction near its end, which closes a block. Seed 7 gives 185
+junctions and 239 two-way streets, most junctions three-way, like an old
+town.
+
+![A city grown by a branching rule, seed 7](docs/grown.png)
+
+Its economy (`--map grown`), four seeds, days two to six, against Turin.
+Demand grows with the amount of road, and the grown city has three
+quarters of Turin's (a scale of 3.03 against 4), so fares are also given
+per unit of demand:
+
+| | fares a day | per unit of demand | cars | crashes per car a day | trip |
+|---|---|---|---|---|---|
+| Turin | 2363-2588 | 591-647 | 206-242 | 179-206 | 57-60 s |
+| grown | 2007-2187 | 662-722 | 188-211 | 159-173 | 48-52 s |
+
+For the demand it has, the grown city carries a tenth more, with quicker
+trips and fewer crashes per car, from drivers raised on generated grids.
+Its streets are long and fairly straight (133 units on average against
+Turin's 53, whose streets are cut by every bend), closer to the grids the
+drivers learned on; that would be my guess at why, not tested. The roadmap
+also asks for the grown city to be evolved after it is grown; that part is
+not done.
+
 Map data © [OpenStreetMap](https://www.openstreetmap.org/copyright) contributors, ODbL.
 
 **One-way streets.** Most of these streets are one-way: 184 of the 196
