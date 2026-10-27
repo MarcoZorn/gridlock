@@ -1900,6 +1900,8 @@ way (`node tools/policies.mjs`, straight from the runs' telemetry):
 | reputation by damage, 1.5x | -27% (4/4) | -14% (4/4) | +11% (4/4) | 0.34 |
 | congestion charge, all day | -17% (4/4) | -20% (4/4) | -28% (4/4) | 0.35 |
 | congestion charge, rush hours | -9% (4/4) | -6% (4/4) | -11% (4/4) | 0.35 |
+| fare market, price-shy passengers (k=1) | -1% (2/4) | +1% (2/4) | -2% (3/4) | 0.35 |
+| fare market, very price-shy (k=4) | -0% (2/4) | +2% (2/4) | -1% (3/4) | 0.34 |
 | mates chosen by earnings | +2% (2/4) | +8% (4/4) | -6% (4/4) | 0.35 |
 | genes swapped in a fifth of car crashes | -23% (4/4) | -3% (2/4) | -10% (4/4) | 0.35 |
 | genes swapped in every car crash | -46% (4/4) | -14% (4/4) | -15% (4/4) | 0.34 |
@@ -2345,6 +2347,27 @@ the fares keeps the fleet small and keeps cars alive (two fifths fewer
 bankruptcies); printing has as many as no rule at all, in a city that much
 fuller, with trips a third slower and a fifth more crashes per car, and
 does nothing for equality. Inflation here is in the number of cars.
+
+**A fare market.** Every price so far was set by the rules. With `--econ
+market=1` each car asks its own price, a gene passed to its children a
+little off (newcomers ask about the going rate), and is paid its fare times
+that price; a waiting passenger takes the car with chance exp(-(price - 1)),
+and one who declines waits for the next car. A car alone would do best
+asking twice the going rate; here the passenger it loses goes to a rival.
+Mean asking price each day, Turin, four seeds:
+
+| passengers | day 1 | day 2 | day 3 | day 4 | day 5 | day 6 |
+|---|---|---|---|---|---|---|
+| price-shy (`market=1`) | 1.01-1.06 | 0.98-1.07 | 0.97-1.06 | 0.95-1.05 | 0.96-1.03 | 0.96-1.07 |
+| very price-shy (`market=4`) | 0.95-0.98 | 0.90-0.93 | 0.89-0.94 | 0.88-0.96 | 0.90-0.94 | 0.92-0.95 |
+
+Nobody learns to charge more. With price-shy passengers the asking price
+wanders around the going rate; with very price-shy ones it falls 5-12%
+below it within two days, cars undercutting each other until a refusal is
+rare, Bertrand's competition by evolution, and stays there. Fares carried,
+crashes and trips do not move (within 2% either way, tools/policies.mjs).
+Six days is only some twenty generations at a few percent a step, so the
+prices may still be drifting; the direction, at least, is clear.
 
 **A minimum fare.** `--econ minFare=20` raises every passenger fare below
 20 to 20 (the mean fare is about 20). Turin, days two to six, two seeds:
