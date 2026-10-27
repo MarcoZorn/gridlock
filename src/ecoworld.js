@@ -47,6 +47,7 @@ export const ECON = {
   owner: 0,             // a child pays this share of its fares to its parent while the parent lives: owners and their fleets (an experiment)
   speciesBy: 0,         // species, and so who may cross brains, by 0: brain and body; 1: body alone; 2: brain alone (an experiment)
   vote: 0,             // the drivers vote on the basic income every hour: each wants more if it earns below the average, and the share moves this much toward the majority (an experiment)
+  print: 0,             // money from nothing: every car is paid this much a second by a central bank (an experiment)
   basic: 0,             // share of every fare taxed and paid back equally to every car, a basic income (an experiment)
   minFare: 0,           // no passenger fare pays less than this, a minimum wage per fare (an experiment)
   forgive: 0,           // 1: a car's first bankruptcy is forgiven, its debt wiped to zero; the second is final (an experiment)
@@ -346,6 +347,7 @@ export class EcoWorld {
       d.cash -= d.body.upkeep * wear * DT + d.body.fuel * fuel * Math.abs(d.v) * DT;
       if (this.insurance) d.cash -= ECON.premium * DT * (avg ? ((d.claims || 0) + avg * prior) / (this.tick - d.born + prior) / avg : 1);
       if (d.cash < 0) d.cash *= interest;
+      d.cash += ECON.print * DT;
       const lim = this.limits ? this.limits[c.edgeBetween(d.route[d.seg], d.route[d.seg + 1])?.id] : this.speedLimit;
       if (lim && Math.abs(d.v) > lim) {
         d.cash -= ECON.speedFine * (Math.abs(d.v) / lim - 1) * DT;
