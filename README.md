@@ -627,6 +627,25 @@ Turin's 49 sit within a car's length of another, and leaving those three
 out changes nothing (0.45 trips a minute, 21.6 crashes per km). Why they
 hurt this much I have not found.
 
+Lights on a real map have the same problem, and real maps say where the
+lights actually are. `tools/osm.mjs` now puts each OpenStreetMap traffic
+signal on the nearest junction of three or more roads within 24 m (12 of
+Turin's 49 such junctions, 38 of Barcelona's 80, 58 of Manhattan's 60), and
+`--real-signals` lights only those. Turin's economy, four seeds, days two
+to six, against no lights (tools/policies.mjs):
+
+| Turin | fares a day | crashes per car | trip | cars |
+|---|---|---|---|---|
+| lights at every junction | -98% (4/4) | -49% (4/4) | -44% (4/4) | 24 (the immigrant floor) |
+| lights at the real 12 | -47% (4/4) | -29% (4/4) | -24% (4/4) | 47-108 |
+| no lights | - | - | - | 206-242 |
+
+Lights everywhere, as these runs had them before, never let Turin's economy
+start. Its real signals are a quarter of that, and the city lives, but on
+half the fares; these drivers were raised without lights, and every light
+still costs. (Manhattan's real signals are nearly all its junctions, so its
+lights result above stands as it was.)
+
 ![A junction under traffic lights, drivers raised for 3000 generations with them](docs/lights.gif)
 
 **The price of a red light.** With the four-second bug fixed, drivers under
@@ -1955,6 +1974,8 @@ way (`node tools/policies.mjs`, straight from the runs' telemetry):
 | fare market, price-shy passengers (k=1) | -1% (2/4) | +1% (2/4) | -2% (3/4) | 0.35 |
 | fare market, very price-shy (k=4) | -0% (2/4) | +2% (2/4) | -1% (3/4) | 0.34 |
 | mates chosen by earnings | +2% (2/4) | +8% (4/4) | -6% (4/4) | 0.35 |
+| lights at every junction | -98% (4/4) | -49% (4/4) | -44% (4/4) | 0.32 |
+| lights at the real signals only | -47% (4/4) | -29% (4/4) | -24% (4/4) | 0.35 |
 | genes swapped in a fifth of car crashes | -23% (4/4) | -3% (2/4) | -10% (4/4) | 0.35 |
 | genes swapped in every car crash | -46% (4/4) | -14% (4/4) | -15% (4/4) | 0.34 |
 | surge pricing, x1 | -2% (2/4) | +18% (4/4) | +2% (2/4) | 0.37 |
