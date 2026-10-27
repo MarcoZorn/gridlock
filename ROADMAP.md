@@ -200,6 +200,7 @@ commits and pushes.
 
 ## Done
 
+- 66 (signals). Real traffic signals from OpenStreetMap (`--real-signals`): Turin's 12 real lights halve its fares, lights at all 49 junctions stop its economy; one-way and lanes were already read, speed limits are not
 - 80. Brain diff (tools/braindiff.mjs): a child differs from its parent in about 88 weights, by 0.32 on average, and hardly ever in wiring
 - 77. A time-lapse recorder: tools/timelapse.mjs draws a city day from any checkpoint into a GIF, headless (docs/day.gif)
 - 5, 63. Dialects, driving on the other side: Turin seeds keep left or right; migrants from the other side earn more than natives like any migrant, only left-keepers in right-keeping cities leave smaller families (one run each, tools/migrate.mjs)
