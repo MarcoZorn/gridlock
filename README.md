@@ -159,6 +159,18 @@ node tools/osm.mjs extract.json maps/name.json "Place"   # an OpenStreetMap extr
 - **Insure drivers and they crash twice as often, and move a third more
   people.** Not because they learn recklessness: the reckless ones simply
   stop going broke, and speed is what passengers pay for.
+- **Pay drivers to crash and evolution stops.** An insurer whose claims pay
+  more than the repair fills the city to its ceiling within hours; from then
+  on almost no car dies and none is born, at generation 6 to 9.
+- **Money from nowhere becomes cars, not wealth.** Printed money, as much as
+  a basic income pays, leaves each car's cash where it was and grows the
+  fleet by two fifths to three quarters, trips a third slower.
+- **Losing the best earners costs nothing.** A car's earnings do not last
+  from one hour to the next (rank correlation -0.14 to -0.19), so the top
+  tenth leaving every day changes fares by -5% to +5%.
+- **Police that chase speeding halve the city, and nothing evolves to
+  evade them.** Cameras moved hourly to where the speeding is catch two
+  thirds of it from the first day to the last.
 
 ### Evolving them
 
