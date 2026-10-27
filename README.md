@@ -2270,13 +2270,13 @@ each car on average. Turin, four seeds, days two to six, against no rule
 | money printed, as much | +7% (3/4) | +22% (4/4) | +32% (4/4) | 0.35 | 337-401 | 14-16 | 1267-1417 |
 
 The same fares either way, but printed money becomes cars, not wealth. Cash
-per car stays where it was, 14-16; what grows is the fleet, by half to
-three quarters, because a car breeds when it has saved enough and printing
-lets every car save. Taxing the fares keeps the fleet small and keeps cars
-alive (a third fewer bankruptcies); printing breeds as many deaths as no
-rule at all, in a city half as full again, with trips a third slower and a
-fifth more crashes per car, and does nothing for equality. Inflation here
-is in the number of cars.
+per car stays where it was, 14-16; what grows is the fleet, by two fifths
+to three quarters, presumably because a car breeds once it has saved
+enough and printing lets every car save (not measured car by car). Taxing
+the fares keeps the fleet small and keeps cars alive (two fifths fewer
+bankruptcies); printing has as many as no rule at all, in a city that much
+fuller, with trips a third slower and a fifth more crashes per car, and
+does nothing for equality. Inflation here is in the number of cars.
 
 **A minimum fare.** `--econ minFare=20` raises every passenger fare below
 20 to 20 (the mean fare is about 20). Turin, days two to six, two seeds:
