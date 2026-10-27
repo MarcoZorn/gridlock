@@ -2002,6 +2002,27 @@ species for good; the other two end where they would have anyway. One
 radiation in four is not a law. Which lineages happen to survive decides
 it, as it may have for the mammals.
 
+**Group selection.** Selection here acts on cars. What if it acted on
+whole cities? Four Turin economies run side by side (`node tools/groups.mjs
+turin`), and at the end of each day the one that carried the fewest fares
+is thrown away and replaced by a copy of the one that carried the most,
+with fresh random numbers. Without the copying these are the four cities
+of the policy table (the tool counts a few fares a day fewer than the
+telemetry, missing those in the tick a telemetry row is written, 1440
+against 1443 on day one). Fares a day, all four cities together:
+
+| | day 2 | day 3 | day 4 | day 5 | day 6 | days 2-6 |
+|---|---|---|---|---|---|---|
+| four separate cities | 8635 | 9410 | 9949 | 10146 | 10193 | 48333 |
+| worst replaced by best, daily | 8594 | 9712 | 9727 | 10240 | 10706 | 48979 |
+
+A little more, 1.3% over five days and 5% on the last, from one run, so
+it may be luck. The copied city is not always good for long: the day-two
+winner, city 0 (seed 3), was the one replaced on day five. My reading, not
+measured: a city's fares on one day say little about the next, so there is
+little for selection between cities to grip, and what makes a city carry
+more is mostly what its cars do, which selection already acts on directly.
+
 **Migrants.** Thirty cars from a six-day Turin economy dropped into a
 six-day Manhattan economy, each with a newcomer's cash, beside thirty of
 Manhattan's own dropped in the same way; and the other way round
