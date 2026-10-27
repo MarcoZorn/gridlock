@@ -121,11 +121,12 @@ export class EcoWorld {
   // roads (see pedestrians.js); 0 leaves the city to the cars.
   //
   // `graph` is a real street map (see tools/osm.mjs) instead of a generated city.
-  constructor({ seed = 1, citySeed = seed, control = "none", startCars = 50, founders = null, pedestrians = 0, graph = null, size = "small" } = {}) {
+  constructor({ seed = 1, citySeed = seed, control = "none", startCars = 50, founders = null, pedestrians = 0, graph = null, size = "small", realSignals = false } = {}) {
     this.seed = seed;
     this.rng = new Rng(seed * 104729 + 7);
     this.size = SIZES[size] ? size : "small";
-    this.city = new City(citySeed, { graph, ...(graph ? {} : SIZES[this.size]) });
+    this.realSignals = realSignals;
+    this.city = new City(citySeed, { graph, realSignals, ...(graph ? {} : SIZES[this.size]) });
     this.graph = graph;
     this.edits = [];   // expansions, built roads and road directions, in order, so a save can replay them
     this.congestion = ECON.congestion;   // this city's congestion charge, saved with it
@@ -640,7 +641,7 @@ export class EcoWorld {
       v: 1, seed: this.seed, citySeed: this.city.seed, graph: this.graph, control: this.control, tick: this.tick, rng: this.rng.s,
       innov: this.innov.toJSON(), cfg: this.cfg, nextId: this.nextId, nextSpecies: this.nextSpecies, threshold: this.threshold,
       passengers: this.passengers, passengersB: this.passengersB, freight: this.freight,
-      closed: [...this.city.closed], edits: this.edits, size: this.size, congestion: this.congestion, speedLimit: this.speedLimit, freightBoom: this.freightBoom, finishFare: this.finishFare, insurance: this.insurance, basic: this.basic,
+      closed: [...this.city.closed], edits: this.edits, size: this.size, congestion: this.congestion, speedLimit: this.speedLimit, freightBoom: this.freightBoom, finishFare: this.finishFare, insurance: this.insurance, basic: this.basic, realSignals: this.realSignals,
       founders: this.founders ? this.founders.map((g) => g.toJSON()) : null,
       cars: this.cars.map((d) => ({
         brain: d.genome.toJSON(), body: d.body.toJSON(), cash: d.cash, id: d.id, born: d.born, parent: d.parent,
@@ -654,7 +655,7 @@ export class EcoWorld {
   }
 
   static fromJSON(j) {
-    const w = new EcoWorld({ seed: j.seed, citySeed: j.citySeed, control: j.control, startCars: 0, graph: j.graph || null, size: j.size });
+    const w = new EcoWorld({ seed: j.seed, citySeed: j.citySeed, control: j.control, startCars: 0, graph: j.graph || null, size: j.size, realSignals: !!j.realSignals });
     for (const [a, b, lanes] of j.added || []) w.city.addRoad(a, b, lanes);   // saves from before the edit log
     for (const [kind, x, y, lanes] of j.edits || []) {
       if (kind === "grow") w.grow(x);

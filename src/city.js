@@ -15,7 +15,7 @@ const CELL = 4;
 export class City {
   // Pass `graph` ({ nodes: [[x, y]], edges: [[a, b, lanes, oneway?]] }, as written by
   // tools/osm.mjs) to build a real place instead of a generated one.
-  constructor(seed = 1, { cols = 9, rows = 6, spacing = 150, jitter = 0.22, prune = 0.18, graph = null } = {}) {
+  constructor(seed = 1, { cols = 9, rows = 6, spacing = 150, jitter = 0.22, prune = 0.18, graph = null, realSignals = false } = {}) {
     const rng = new Rng(seed * 2246822519 + 3);
     this.seed = seed;
     if (graph) this.fromGraph(graph);
@@ -31,6 +31,12 @@ export class City {
     this.time = 0;
     for (const n of this.nodes) {
       if (n.edges.length >= 3) this.setupLight(n, rng.range(0, LIGHT.cycle));
+    }
+    // realSignals: on a real map, lights only where OpenStreetMap has traffic
+    // signals (graph.signals, from tools/osm.mjs); the rest are always green
+    if (realSignals && graph?.signals) {
+      const lit = new Set(graph.signals);
+      for (const n of this.nodes) if (!lit.has(n.id)) n.light = null;
     }
     this.closed = new Set();   // edge ids closed to routing by the editor
   }

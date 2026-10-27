@@ -70,7 +70,7 @@ if (process.argv.includes("--eco")) {
   } else {
     const f = arg("founders", null);
     const founders = f ? Population.fromJSON(JSON.parse(fs.readFileSync(f, "utf8")).pop) : null;
-    eco = new EcoWorld({ seed, control, founders, graph, size: arg("size", "small"), pedestrians: +arg("pedestrians", 0) });
+    eco = new EcoWorld({ seed, control, founders, graph, size: arg("size", "small"), pedestrians: +arg("pedestrians", 0), realSignals: process.argv.includes("--real-signals") });
     console.log(`new ecosystem ${dir}, seed ${seed}${f ? `, founders from ${f}` : ""}`);
   }
   let written = eco.log.length;
