@@ -200,6 +200,7 @@ commits and pushes.
 
 ## Done
 
+- 39. HyperNEAT, smallest form (in neat-from-scratch): a CPPN draws the driver's weights from ray angles; slower to learn (6.4 generations against 3.9), as good on unseen tracks, and given nine rays after training on five it laps a little more (7.1 of 12 against 6.1)
 - 123. Emergencies (`ECON.emergency`): triple pay for in-time delivery breeds no better ambulances; the share in time falls from a fifth to 4-15% as the fleet doubles
 - 15. Control per junction, lights (tools/lightswhere.mjs): no lights beats lights everywhere, 13-19% more trips and 13-25% fewer crashes; an evolved mix adds 5-6% trips in two cities of three at the price of crashes. Roundabouts per junction not done (they fail on real maps)
 - 140. A train line: half the longest quarter of fares end at the nearer station; 1-17% more fares, 6-10% cheaper each, drivers' money -9% to +10% (tools/train.mjs)
