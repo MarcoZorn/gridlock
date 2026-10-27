@@ -50,6 +50,7 @@ export const ECON = {
   basic: 0,             // share of every fare taxed and paid back equally to every car, a basic income (an experiment)
   minFare: 0,           // no passenger fare pays less than this, a minimum wage per fare (an experiment)
   forgive: 0,           // 1: a car's first bankruptcy is forgiven, its debt wiped to zero; the second is final (an experiment)
+  choosy: 0,            // 1: a parent crosses its brain with the best earner per hour of its species, not a random one (an experiment)
   hgt: 0,               // chance that two cars crashing into each other swap genes: each connection both brains have takes the other's weight half the time (an experiment)
   surge: 0,             // a passenger fare pays 1 + this times how full the queue of waiting passengers was at pickup (an experiment)
   interest: 0,          // a car in debt sees its debt grow by this share every city hour (an experiment, with credit)
@@ -425,7 +426,8 @@ export class EcoWorld {
     let brain;
     const mates = this.cars.filter((o) => o !== parent && o.cash > ECON.startCash && o.species === parent.species);
     if (mates.length && this.rng.next() < 0.3) {
-      const m = this.rng.pick(mates);
+      const rate = (o) => o.earned / Math.max(1, this.tick - o.born);
+      const m = ECON.choosy ? mates.reduce((a, b) => (rate(b) > rate(a) ? b : a)) : this.rng.pick(mates);
       parent.genome.fitness = parent.earned; m.genome.fitness = m.earned;
       brain = crossover(parent.genome, m.genome, this.rng, this.cfg);
     } else brain = parent.genome.clone();
