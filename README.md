@@ -2363,10 +2363,11 @@ Mean asking price each day, Turin, four seeds:
 
 Nobody learns to charge more. With price-shy passengers the asking price
 wanders around the going rate; with very price-shy ones it falls 5-12%
-below it within two days, cars undercutting each other until a refusal is
-rare, Bertrand's competition by evolution, and stays there. Fares carried,
+below it within two days, cars undercutting each other to where no
+passenger refuses at all (any price under 1 is always taken), Bertrand's
+competition by evolution, and stays there. Fares carried,
 crashes and trips do not move (within 2% either way, tools/policies.mjs).
-Six days is only some twenty generations at a few percent a step, so the
+Six days is only 20 to 27 generations at a few percent a step, so the
 prices may still be drifting; the direction, at least, is clear.
 
 **A minimum fare.** `--econ minFare=20` raises every passenger fare below
