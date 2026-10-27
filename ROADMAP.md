@@ -200,6 +200,7 @@ commits and pushes.
 
 ## Done
 
+- 77. A time-lapse recorder: tools/timelapse.mjs draws a city day from any checkpoint into a GIF, headless (docs/day.gif)
 - 5, 63. Dialects, driving on the other side: Turin seeds keep left or right; migrants from the other side earn more than natives like any migrant, only left-keepers in right-keeping cities leave smaller families (one run each, tools/migrate.mjs)
 - 39. HyperNEAT, smallest form (in neat-from-scratch): a CPPN draws the driver's weights from ray angles; slower to learn (6.4 generations against 3.9), as good on unseen tracks, and given nine rays after training on five it laps a little more (7.1 of 12 against 6.1)
 - 123. Emergencies (`ECON.emergency`): triple pay for in-time delivery breeds no better ambulances; the share in time falls from a fifth to 4-15% as the fleet doubles
