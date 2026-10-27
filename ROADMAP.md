@@ -200,6 +200,7 @@ commits and pushes.
 
 ## Done
 
+- 41. Memory (in neat-from-scratch): the last outputs fed back as inputs win as many seeds as they lose on hard tracks and add a long tail (35.6 generations against 24.3); nothing here needs remembering
 - 42. Evolving the fitness function (in neat-from-scratch): an outer loop over the score's three weights finds nothing better in twelve tries; every change slows NEAT by a fifth to three times
 - 35. Sexual selection (`ECON.choosy`): crossing with the best earner of the species, not a random mate, makes trips 6% quicker and crashes 8% more common, fares about the same
 - 40. Brains that evolve their own sensors (in neat-from-scratch): ray angles and range as genes take a third off the generations on hard tracks (15.9 against 24.3, 16 seeds), no single best design
