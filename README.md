@@ -2509,8 +2509,12 @@ Over days two to six trips are 11% quicker than with no emergencies (4/4)
 and crashes per car 7% fewer (3/4), in a city a little smaller (183-221
 cars on day six against 208-257), which my guess, not tested, is why: a
 city that loses most of a fifth of its pay keeps fewer cars, and fewer cars
-drive faster. Getting there in time looks more like the traffic's doing
-than the driver's, though I have not separated the two.
+drive faster. And the fall is the traffic's doing: in the same four cities
+with no emergencies at all (a rerun, identical fare for fare, now counting
+every passenger who would have been in time), the share in time falls the
+same way, from 13-21% on day one to 3-8% on day six. Emergencies end a
+little better than that, 4-15%, so the triple fare may select for speed a
+little, but the streets filling up swamps it.
 
 **Reputation.** With `--econ reputation=1.5`, passengers refuse any car
 that has crashed more than one and a half times as often as the average
