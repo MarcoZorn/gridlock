@@ -1234,9 +1234,18 @@ For the demand it has, the grown city carries a tenth more, with quicker
 trips and fewer crashes per car, from drivers raised on generated grids.
 Its streets are long and fairly straight (133 units on average against
 Turin's 53, whose streets are cut by every bend), closer to the grids the
-drivers learned on; that would be my guess at why, not tested. The roadmap
-also asks for the grown city to be evolved after it is grown; that part is
-not done.
+drivers learned on; that would be my guess at why, not tested.
+
+Then evolve it, with the planners used on the real maps. Arrows (`node
+tools/oneway.mjs grown 7`): the search makes 26 of its streets one-way and
+cuts 7% off the travel time of the trips it was trained on, but 0.2% off
+trips it never saw, so it learned those trips, not the city. Closing a
+street (`BRAESS=30 LOAD=3 node tools/wardrop.mjs grown 7`): none of the 30
+busiest saves more than 0.5% when closed; the grown city has no Braess road
+either. Selfish routing costs it a little more than the real maps, up to
+3.8% over the best possible at heavy load against at most 1.6%. A city
+grown by a simple rule turns out about as hard to improve by rearranging
+its streets as a real one.
 
 Map data © [OpenStreetMap](https://www.openstreetmap.org/copyright) contributors, ODbL.
 
