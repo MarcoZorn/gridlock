@@ -200,6 +200,7 @@ commits and pushes.
 
 ## Done
 
+- 149. A city grown by a branching rule (tools/lsystem.mjs, maps/grown.json): carries a tenth more fares per unit of demand than Turin, trips quicker; evolving it afterwards not done
 - 137. Brain drain: the top tenth of earners leaving every day changes fares by -5% to +5% (tools/drain.mjs); earnings are not inherited, so losing the best costs nothing
 - 134, 135. A central bank (`ECON.print`): money from nothing, as much as a basic income pays, becomes two fifths to three quarters more cars, not wealth; same fares, trips a third slower; the inflation is in cars
 - 141. Airports: a tenth of fares to the farthest junction costs a quarter to half the fares on day one, 0-19% over days 2-6 (tools/airport.mjs)
