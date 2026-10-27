@@ -51,7 +51,9 @@ function fitCam() {
 
 function reset(seed) {
   // founded by drivers raised under this junction control, if there are any
-  world = new EcoWorld({ seed, control, founders: founders[control] || founders.none || null, graph, size });
+  // ?signals=real: on a real map, lights only where OpenStreetMap has traffic signals
+  const realSignals = new URLSearchParams(location.search).get("signals") === "real";
+  world = new EcoWorld({ seed, control, founders: founders[control] || founders.none || null, graph, size, realSignals });
   selected = null;
   $("peds-on").dataset.on = false;
   $("charge").dataset.on = false;
