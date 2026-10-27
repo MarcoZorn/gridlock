@@ -2504,8 +2504,8 @@ instead. Turin, four seeds, days two to six, against no rule
 (tools/policies.mjs): fares +2% (2 of 4 seeds), crashes per car +8% (4/4),
 trips 6% quicker (4/4), Gini unchanged at 0.35. The same small trade as
 copying the best driver: a little faster, a little rougher, hardly more
-fares. The best earners here are the fast ones, and choosing them breeds
-speed, crashes included.
+fares. Presumably the best earners are the fast ones, since passengers tip
+for speed, and choosing them breeds speed, crashes included.
 
 **How many roads can a city lose?** Close road segments at random, one at
 a time, and measure what share of the city can still reach, and be reached
