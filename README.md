@@ -638,12 +638,15 @@ to six, against no lights (tools/policies.mjs):
 |---|---|---|---|---|
 | lights at every junction | -98% (4/4) | -49% (4/4) | -44% (4/4) | 24 (the immigrant floor) |
 | lights at the real 12 | -47% (4/4) | -29% (4/4) | -24% (4/4) | 47-108 |
+| the real 12, drivers raised under lights | -61% (4/4) | -30% (4/4) | -1% (3/4) | 42-81 |
 | no lights | - | - | - | 206-242 |
 
 Lights everywhere, as these runs had them before, never let Turin's economy
 start. Its real signals are a quarter of that, and the city lives, but on
 half the fares; these drivers were raised without lights, and every light
-still costs. (Manhattan's real signals are nearly all its junctions, so its
+still costs. Drivers raised under lights do worse, not better: fewer fares
+and trips as slow as with no lights at all, as if they had learned to wait
+at every junction, lit or not (a reading, not checked). (Manhattan's real signals are nearly all its junctions, so its
 lights result above stands as it was.)
 
 ![A junction under traffic lights, drivers raised for 3000 generations with them](docs/lights.gif)
@@ -1976,6 +1979,7 @@ way (`node tools/policies.mjs`, straight from the runs' telemetry):
 | mates chosen by earnings | +2% (2/4) | +8% (4/4) | -6% (4/4) | 0.35 |
 | lights at every junction | -98% (4/4) | -49% (4/4) | -44% (4/4) | 0.32 |
 | lights at the real signals only | -47% (4/4) | -29% (4/4) | -24% (4/4) | 0.35 |
+| lights at the real signals, drivers raised under lights | -61% (4/4) | -30% (4/4) | -1% (3/4) | 0.34 |
 | genes swapped in a fifth of car crashes | -23% (4/4) | -3% (2/4) | -10% (4/4) | 0.35 |
 | genes swapped in every car crash | -46% (4/4) | -14% (4/4) | -15% (4/4) | 0.34 |
 | surge pricing, x1 | -2% (2/4) | +18% (4/4) | +2% (2/4) | 0.37 |
