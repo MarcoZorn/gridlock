@@ -292,6 +292,7 @@ export class EcoWorld {
       const quick = Math.max(0, Math.min(1, j.expect / took - 0.5));
       fare = Math.max(ECON.minFare, dist * ECON.passengerRate * (1 + ECON.speedBonus * quick)) * j.surge * (ECON.market ? d.price : 1);
       if (ECON.platformB) fare *= 1 - (d.platform === 1 ? ECON.commissionB : ECON.commissionA);
+      if (took <= j.expect) this.events.onTime = (this.events.onTime || 0) + 1;   // any passenger, in the time an emergency gets
       if (j.urgent) { const inTime = took <= j.expect; fare *= inTime ? 3 : 0; this.events.urgent = (this.events.urgent || 0) + 1; if (inTime) this.events.saved = (this.events.saved || 0) + 1; }
       if (ECON.reviews) {
         // the share of its rides that did not crash, starting from two good ones
