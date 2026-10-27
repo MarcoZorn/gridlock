@@ -1974,7 +1974,10 @@ cars that carried the crowd in are now all in one place, 1.7 to 2.8 times
 as many of them standing still around the stadium at the peak, and each
 has to pick up its next fare from there. By 20:00 the city is back to
 within 5-7% of normal. The evening after is calmer too, 7-18% fewer crashes
-in all four, a thing I did not expect and have not explained.
+in all four, mostly because there are fewer cars to crash: the lost hour
+sends some broke, so at 20:00 the fleet is 12-17% smaller than without the
+match and through the evening 7-12% smaller. Per car the evening is only
+0-8% safer.
 
 **A mass extinction.** On the morning of day three, four cars in five go
 broke at once (`node tools/extinction.mjs turin 7`). Species and cars
