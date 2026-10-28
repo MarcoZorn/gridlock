@@ -38,8 +38,17 @@ export const BODY = {
 // what evolution does about it). Off means the input reads as empty road.
 export const SENSES = { cars: true, walls: true };
 
-const ANGLES = Array.from({ length: N_RAYS }, (_, i) => -BODY.fov / 2 + (BODY.fov * i) / (N_RAYS - 1));
-export const rayAngles = () => ANGLES;
+// The fan follows BODY.fov, so --body fov=... changes it; a full circle
+// spaces the rays evenly round instead of putting two on the same bearing.
+let ANGLES = null, fanFor = null;
+export const rayAngles = () => {
+  if (fanFor !== BODY.fov) {
+    const full = BODY.fov >= 2 * Math.PI - 1e-9;
+    ANGLES = Array.from({ length: N_RAYS }, (_, i) => (full ? -Math.PI + (2 * Math.PI * i) / N_RAYS : -BODY.fov / 2 + (BODY.fov * i) / (N_RAYS - 1)));
+    fanFor = BODY.fov;
+  }
+  return ANGLES;
+};
 
 const wrap = (a) => Math.atan2(Math.sin(a), Math.cos(a));
 
@@ -143,9 +152,9 @@ export class Driver {
   }
 
   sense(hash) {
-    const c = this.city, R = this.p.rayRange;
+    const c = this.city, R = this.p.rayRange, A = rayAngles();
     for (let i = 0; i < N_RAYS; i++) {
-      const ang = this.a + ANGLES[i];
+      const ang = this.a + A[i];
       const cx = Math.cos(ang), cy = Math.sin(ang);
       this.dx[i] = cx; this.dy[i] = cy;
       let d = 0, hit = R;
