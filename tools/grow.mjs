@@ -12,7 +12,7 @@ import { segDist } from "../src/city.js";
 // the real maps is already at its cap, so building does not add passengers.
 // Each day: fares, mean seconds per fare, and streets built so far.
 //
-//   ROADS=3 node tools/grow.mjs turin 7
+//   ROADS=3 node tools/grow.mjs turin 7     (ARMS=demand for one arm)
 const [map = "turin", seed = 7] = process.argv.slice(2), roads = +(process.env.ROADS || 3), days = +(process.env.DAYS || 6);
 const founders = Population.fromJSON(JSON.parse(fs.readFileSync("docs/trained.json", "utf8")).pop);
 const perDay = DAY / DT;
@@ -56,7 +56,7 @@ function candidates(c) {
   }
   return out;
 }
-for (const arm of ["none", "random", "demand"]) {
+for (const arm of (process.env.ARMS || "none,random,demand").split(",")) {
   const w = new EcoWorld({ seed: +seed, founders, graph: JSON.parse(fs.readFileSync(`maps/${map}.json`, "utf8")) });
   const c = w.city, rng = new Rng(+seed + 99);
   let fares = [];
