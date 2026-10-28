@@ -200,6 +200,7 @@ commits and pushes.
 
 ## Done
 
+- 108. Electric cars (`ECON.ev`): a third of the fuel against unpaid trips to four chargers; electric takes 58-96% of the fleet within days
 - 104. Carpooling (`ECON.carpool`): one passenger in six shares a ride, as many arrive as before, carried by a slightly smaller fleet
 - 84. A leaderboard of seeds (neat-from-scratch README, `?seed=N&hard=1`): the same code takes 6 to 51 generations on the hard tracks by seed alone
 - 143, 144. Rivers and bridges (tools/river.mjs): a river crossed by two bridges costs 1-3% of fares; closing one costs nothing in two cities of three, 7% in the third
