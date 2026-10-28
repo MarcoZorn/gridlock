@@ -200,6 +200,7 @@ commits and pushes.
 
 ## Done
 
+- 100. Evolve the physics until the drivers stop crashing (tools/physics.mjs): a quarter fewer crashes and more trips, always by turning 3.4-4 times as sharply; they crash for want of steering, not brakes
 - 66. Real traffic signals from OpenStreetMap (`--real-signals`): Turin's 12 real lights halve its fares, lights at all 49 junctions stop its economy; one-way and lanes were already read; posted speed limits too (`--real-limits`), and Turin's 30 km/h zone, enforced by cameras, never lets its economy start
 - 80. Brain diff (tools/braindiff.mjs): a child differs from its parent in about 88 weights, by 0.32 on average, and hardly ever in wiring
 - 77. A time-lapse recorder: tools/timelapse.mjs draws a city day from any checkpoint into a GIF, headless (docs/day.gif)
