@@ -200,6 +200,7 @@ commits and pushes.
 
 ## Done
 
+- 107. Circling for work instead of parking (`ECON.cruise`): a heritable short-hop habit wins one city, loses two, rises and falls in the fourth; fares about the same
 - 79. Crash replay from the drivers' senses (tools/crashes.mjs): 56% of cars in a car-on-car crash saw the other half a second before and were already braking; 44% never had it in sight
 - 78. A lineage explorer (tools/lineage.mjs): any car's ancestors back to its founder; the line of Turin's highest generation runs through cars that lived 20 hours and had 14 children each
 - 112. School runs (tools/school.mjs): four fares in ten to two schools twice a day changes whole days by -10% to +5%; no sign of a city learning its timetable
