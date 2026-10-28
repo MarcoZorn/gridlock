@@ -1968,8 +1968,8 @@ on day one. They lived 20.4 hours and had 14.2 children each, on average,
 in a city where only 4-8% of cars alive at a dawn are alive a day later:
 the lines that last run through the few long-lived, prolific cars. Its
 species label changes seven times along the way (21, 33, 40, 33, 40, 33,
-53, 33), more the threshold's moving than the line's; the species are
-labels drawn afresh every 600 ticks.
+53, 33), presumably more the threshold moving than the line changing; the
+species are labels drawn afresh every 600 ticks.
 
 **How long do rich families stay rich?** A family is everyone descended
 from one founder or immigrant (`DAYS=8 node tools/dynasty.mjs turin 7`,
