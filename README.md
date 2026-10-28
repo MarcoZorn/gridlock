@@ -484,6 +484,27 @@ A car senses, and nothing more:
 
 It never sees its position, the map, or other cars as anything but ray hits.
 
+**The physics, evolved instead.** Everything above the drivers is fixed by
+hand: how hard a car accelerates, brakes and turns, its drag and top speed.
+Turn the search round (`node tools/physics.mjs 91`): keep the shipped
+drivers as they are and let a (1+1) search change the world, each of those
+five by a factor between a quarter and four, keeping a change when crashes
+per 1000 units fall and trips stay above nine tenths. Sixty tries, three
+cities, then four generations of traffic the search never saw:
+
+| city | evolved physics | as built | evolved |
+|---|---|---|---|
+| 77 | accel x4.0, brake x1.2, drag x0.5, top speed x1.1, turning x4.0 | 760 trips, 3.16 crashes per 1000 | 884, 2.36 |
+| 91 | accel x1.2, brake x0.8, drag x1.4, top speed x1.2, turning x3.4 | 660, 3.69 | 792, 2.74 |
+| 105 | accel x2.7, brake x1.2, drag x2.4, top speed x1.6, turning x3.5 | 748, 3.46 | 1088, 2.47 |
+
+A quarter fewer crashes and a sixth to nearly half more trips, and in all
+three the same answer first: cars that turn three and a half to four times
+as sharply. These drivers do not crash for want of brakes but for want of
+steering; they were raised in cars that cannot quite make the corners they
+aim for. (A caveat: a car's sense of its own speed is read against the top
+speed, so changing that also rescales what it feels.)
+
 ## Devlog
 
 ### Week 1: streets
