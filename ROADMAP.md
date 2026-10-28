@@ -200,6 +200,7 @@ commits and pushes.
 
 ## Done
 
+- 112. School runs (tools/school.mjs): four fares in ten to two schools twice a day changes whole days by -10% to +5%; no sign of a city learning its timetable
 - 108. Electric cars (`ECON.ev`): a third of the fuel against unpaid trips to four chargers; electric takes 58-96% of the fleet within days
 - 104. Carpooling (`ECON.carpool`): one passenger in six shares a ride, as many arrive as before, carried by a slightly smaller fleet
 - 84. A leaderboard of seeds (neat-from-scratch README, `?seed=N&hard=1`): the same code takes 6 to 51 generations on the hard tracks by seed alone
