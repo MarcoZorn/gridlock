@@ -2092,6 +2092,7 @@ way (`node tools/policies.mjs`, straight from the runs' telemetry):
 | reputation by damage, 1.5x | -27% (4/4) | -14% (4/4) | +11% (4/4) | 0.34 |
 | congestion charge, all day | -17% (4/4) | -20% (4/4) | -28% (4/4) | 0.35 |
 | congestion charge, rush hours | -9% (4/4) | -6% (4/4) | -11% (4/4) | 0.35 |
+| cruising habit evolves | +3% (3/4) | +6% (4/4) | -2% (1/4) | 0.35 |
 | electric cars, 6000-unit battery | +2% (3/4) | +9% (3/4) | +4% (3/4) | 0.34 |
 | carpooling, three pickups in ten | +2% (2/4) | +1% (2/4) | -4% (3/4) | 0.36 |
 | a fifth of passengers emergencies | -4% (3/4) | -7% (3/4) | -11% (4/4) | 0.35 |
@@ -2717,6 +2718,27 @@ four, tools/policies.mjs) and the fleet is a little smaller. The same
 passengers are carried by fewer cars, earning less in three seeds of four
 (-2% to -17%) and 9% more in the fourth: in a city
 whose fares are limited by passengers, sharing saves cars, not riders.
+
+**Circling for work.** Real taxis without a fare park at a rank or circle
+the block; these drive off to a random junction, empty, and look again on
+arrival. With `--econ cruise=1` a car inherits a habit (one child in
+twenty switches, half of newcomers have each): short hops, round the
+corner to the next junction whenever nothing is waiting, so it looks again
+sooner and burns less on the way; or the long empty drive as before. Share
+of short-hoppers by day, Turin, four seeds:
+
+| seed | day 1 | day 2 | day 3 | day 4 | day 5 | day 6 |
+|---|---|---|---|---|---|---|
+| 3 | 31% | 18% | 25% | 16% | 25% | 22% |
+| 5 | 56% | 52% | 45% | 29% | 20% | 26% |
+| 7 | 45% | 66% | 69% | 77% | 81% | 73% |
+| 11 | 63% | 65% | 75% | 56% | 44% | 37% |
+
+Neither habit wins: short hops take over one city, lose two, and rise and
+fall in the fourth. Fares +3% (three seeds of four) and crashes per car +6%
+(four of four, tools/policies.mjs). Waiting nearby or wandering far seem to
+pay about the same when a fare can appear anywhere; a rank would need
+demand that gathers somewhere (a guess).
 
 **Emergencies.** With `--econ emergency=0.2` a fifth of passengers are
 emergencies: three times the fare if delivered within the time the route
