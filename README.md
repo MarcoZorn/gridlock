@@ -2946,6 +2946,25 @@ loss is clearer. Why, I can only guess: its long avenues are the routes, and clo
 one sends everyone the long way round; Turin's dense old grid of short
 streets always has another.
 
+**A river.** A medium generated city cut down the middle: every road that
+crosses the line closed except two, spread along it, the bridges (closed
+to routing; `node tools/river.mjs 7`). Then on day four one bridge closes.
+Fares over days two to six, three cities:
+
+| city | no river | river, two bridges | after one closes, days 4-6, against keeping both |
+|---|---|---|---|
+| 7 | 8879 | 8786 (-1%) | +1% |
+| 11 | 9200 | 9111 (-1%) | +1% |
+| 13 | 9102 | 8847 (-3%) | -7% |
+
+A river with two bridges costs one to three percent of the fares, and
+losing one of the two costs nothing in two cities of three. Fares go to
+random places, so about half of them cross; but a detour to the other
+bridge in a city this size is short, and the queue of waiting passengers,
+not the time on the road, is what limits the fares here (the same reason a
+quake hardly touches Turin). City 13 is the exception, and I have not
+looked at why.
+
 **Evolutionary rescue?** Does new mutation help a city adapt to the
 quake? `FREEZE=1` stops all mutation from the morning of day three, in both
 runs (selection and crossover go on, on the brains already there). Fares
