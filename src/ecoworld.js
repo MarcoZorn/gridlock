@@ -51,7 +51,7 @@ export const ECON = {
   basic: 0,             // share of every fare taxed and paid back equally to every car, a basic income (an experiment)
   minFare: 0,           // no passenger fare pays less than this, a minimum wage per fare (an experiment)
   forgive: 0,           // 1: a car's first bankruptcy is forgiven, its debt wiped to zero; the second is final (an experiment)
-  rank: 0,              // share of passengers who wait at the station (the junction nearest the middle) and only a car that gets there can take (an experiment)
+  rank: 0,              // share of passengers who wait at the station (the junction nearest the middle) and only a car that gets there can take; rank-goers drive there, empty, whenever someone waits (an experiment)
   cruise: 0,            // 1: a car with nothing waiting drives on to a neighbouring junction if its gene says so (short hops), else to a random one as usual (an experiment)
   ev: 0,                // electric cars: a battery this many units of driving long; a car low on charge drives, unpaid, to the nearest of four chargers (an experiment)
   evFuel: 0.33,         // an electric car's fuel cost, as a share of a petrol car's
@@ -214,7 +214,7 @@ export class EcoWorld {
     d.charge = ECON.ev;
     // short hops when idle, or long deadheads: the parent's, one child in twenty the other way; half of newcomers
     d.hops = !ECON.cruise ? 0 : parent ? (this.rng.next() < 0.05 ? 1 - parent.hops : parent.hops) : +(this.rng.next() < 0.5);
-    // goes to the station when idle, or wanders: the parent's, one child in twenty the other way; half of newcomers
+    // goes to the station whenever someone waits there, or ignores it: the parent's, one child in twenty the other way; half of newcomers
     d.ranker = !ECON.rank ? 0 : parent ? (this.rng.next() < 0.05 ? 1 - parent.ranker : parent.ranker) : +(this.rng.next() < 0.5);
     // its asking price: the parent's, a little off; newcomers ask the going rate, give or take
     d.price = !ECON.market ? 1 : parent ? parent.price * Math.exp(this.rng.normal() * 0.05) : Math.exp(this.rng.normal() * 0.1);
@@ -238,7 +238,7 @@ export class EcoWorld {
           const back = car.route[car.route.length - 2], ways = this.city.nodes[here].edges.map((e) => this.city.other(e, here)).filter((m) => m !== back);
           if (ways.length) return this.city.route(here, this.rng.pick(ways), back, car.body.jam);
         }
-        else if (car.ranker && this.passengers < 1 && this.freight < 1 && here !== st) {
+        else if (car.ranker && this.stationQ >= 1 && here !== st) {   // people at the rank: go and fetch one
           const r = this.city.route(here, st, car.route[car.route.length - 2], car.body.jam);
           if (r) return r;
         }
