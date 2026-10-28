@@ -200,6 +200,7 @@ commits and pushes.
 
 ## Done
 
+- 79. Crash replay from the drivers' senses (tools/crashes.mjs): 56% of cars in a car-on-car crash saw the other half a second before and were already braking; 44% never had it in sight
 - 78. A lineage explorer (tools/lineage.mjs): any car's ancestors back to its founder; the line of Turin's highest generation runs through cars that lived 20 hours and had 14 children each
 - 112. School runs (tools/school.mjs): four fares in ten to two schools twice a day changes whole days by -10% to +5%; no sign of a city learning its timetable
 - 108. Electric cars (`ECON.ev`): a third of the fuel against unpaid trips to four chargers; electric takes 58-96% of the fleet within days
