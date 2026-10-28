@@ -2849,6 +2849,29 @@ the ride is left worth almost nothing to the passenger. The drivers get the
 surplus, and it turns into cars: three of four cities fill to the cap, and
 carry 8-27% fewer fares with twice the fleet.
 
+**A stock market of lineages.** A share in a family pays, each hour, the
+family's fares per living car. Founders' families make a dull market: by
+day two or three one or two of them are the whole city, and every portfolio
+is the index. So the market re-lists at every dawn: each car alive then is
+a stock for the day, its children born that day part of it. Investors only
+watch. Each hour a portfolio of ten is bought on the hour before and paid by
+the hour after, against the index, every car alike (tools/stocks.mjs). Days
+two to six:
+
+| city | momentum (last hour's best) | contrarian (last hour's worst) | size (biggest) |
+|---|---|---|---|
+| Turin s3 | -7%, beats it 25% of hours | +20%, 84% | -3%, 42% |
+| Turin s5 | -6%, 33% | +21%, 84% | -1%, 43% |
+| Turin s7 | -9%, 32% | +22%, 82% | -2%, 40% |
+| Turin s11 | -6%, 29% | +22%, 83% | -3%, 43% |
+| Barcelona s7 | -9%, 25% | +20%, 83% | -6%, 39% |
+
+Buy the losers: last hour's worst pay a fifth more than the index the hour
+after, in five cities of five, four hours in five. The market is mean
+reverting, not trending, and size buys nothing. Most likely because a fare
+is paid at the drop-off: a car that earned nothing last hour is part way
+through one (a guess, not measured).
+
 **Emergencies.** With `--econ emergency=0.2` a fifth of passengers are
 emergencies: three times the fare if delivered within the time the route
 should take at a brisk pace (its length over 45 a second), nothing at all if
