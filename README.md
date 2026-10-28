@@ -2215,6 +2215,27 @@ sends some broke, so at 20:00 the fleet is 12-17% smaller than without the
 match and through the evening 7-12% smaller. Per car the evening is only
 0-8% safer.
 
+**School runs.** The same crowd every day: from 7:30 to 8:30 and from 15:00
+to 16:00, four fares in ten go to one of two schools, a third and two
+thirds of the way across the map (`node tools/school.mjs turin 7`). Turin,
+four seeds, fares in the two school hours against the same city without
+schools:
+
+| seed | day 2 | day 3 | day 4 | day 5 | day 6 | whole days 2-6 |
+|---|---|---|---|---|---|---|
+| 3 | -12% | +14% | +1% | +1% | +14% | -6% |
+| 5 | +21% | +12% | +17% | +6% | +6% | +4% |
+| 7 | -18% | -18% | -24% | +1% | -11% | -10% |
+| 11 | +41% | +29% | +4% | +6% | +27% | +5% |
+
+Twice-daily crowds cost far less than one match did; school-hour fares
+move either way by seed, and whole days change by -10% to +5%. Nothing
+here looks like a city learning its timetable: no seed's school hours
+improve steadily from day two to day six. The schools are near the middle
+of the map, where the trips are short and the cars already are, unlike a
+stadium at its centre with half of all fares at once (a reading, not
+measured).
+
 **An airport.** All day, every day, a tenth of new fares go to one
 junction, the one farthest from the middle of the map, paid by distance
 like any other, so they are the long ones (`SHARE=0.1 node
