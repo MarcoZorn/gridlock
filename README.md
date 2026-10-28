@@ -1687,6 +1687,26 @@ and the busiest moment holds fewer cars in three of them (294-379 against
 315-388). Fuel tripled loses three quarters of the city; fuel that tracks
 the crowd costs it nothing and buys a slightly steadier fleet.
 
+**Electric cars.** With `--econ ev=6000` a car is electric or not, passed
+to its children (one in twenty switches; half of newcomers are electric).
+An electric car pays a third of the fuel, but its battery lasts 6000 units
+of driving, about four fares, and once below a quarter its next trip is an
+unpaid run to the nearest of four chargers. Share of the fleet that is
+electric, by day, Turin, four seeds:
+
+| seed | day 1 | day 2 | day 3 | day 4 | day 5 | day 6 |
+|---|---|---|---|---|---|---|
+| 3 | 73% | 92% | 92% | 91% | 92% | 88% |
+| 5 | 77% | 89% | 93% | 93% | 90% | 96% |
+| 7 | 65% | 88% | 86% | 72% | 76% | 84% |
+| 11 | 58% | 80% | 87% | 74% | 66% | 58% |
+
+Range anxiety loses to the fuel bill: within a day the electric cars are
+most of the fleet, 560 to 830 trips a day to a charger notwithstanding.
+In seed 11 the petrol cars come back to near half by day six, which I have
+not looked into. For the city it is nearly a wash, fares +2% and crashes
+per car +9% (three seeds of four each, tools/policies.mjs).
+
 **Double fares.** Every tax above shrank the city, so what does money do?
 Passenger fares doubled (`--econ passengerRate=0.024`), Turin, six days, two
 seeds, days two to six:
@@ -2011,6 +2031,7 @@ way (`node tools/policies.mjs`, straight from the runs' telemetry):
 | reputation by damage, 1.5x | -27% (4/4) | -14% (4/4) | +11% (4/4) | 0.34 |
 | congestion charge, all day | -17% (4/4) | -20% (4/4) | -28% (4/4) | 0.35 |
 | congestion charge, rush hours | -9% (4/4) | -6% (4/4) | -11% (4/4) | 0.35 |
+| electric cars, 6000-unit battery | +2% (3/4) | +9% (3/4) | +4% (3/4) | 0.34 |
 | carpooling, three pickups in ten | +2% (2/4) | +1% (2/4) | -4% (3/4) | 0.36 |
 | a fifth of passengers emergencies | -4% (3/4) | -7% (3/4) | -11% (4/4) | 0.35 |
 | fare market, price-shy passengers (k=1) | -1% (2/4) | +1% (2/4) | -2% (3/4) | 0.35 |
