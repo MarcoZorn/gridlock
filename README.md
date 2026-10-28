@@ -2827,6 +2827,28 @@ hold all four, at 5-9% hit, and the cars' fares stay a tenth to two fifths
 of the flipped one. Why the flip makes fares is not measured here; fewer
 people on the road to brake for, or to pay fines for, is a guess.
 
+**Tipping, evolved by the passengers.** Every passenger carries a tip, a
+share of the fare paid on top, starting at 15%, in a pool of a thousand. A
+car picking up looks at up to five of those waiting: blind, it takes the
+first; when tips are seen, the best tipper. A ride is worth twice its fare
+to a passenger, so it keeps 1 - tip; every two hours the pool is redrawn
+from those served, by that, with small mutations (tools/tips.mjs). Day six,
+Turin:
+
+| seed | tip, blind | tip, seen | fares | money earned | cars |
+|---|---|---|---|---|---|
+| 3 | 6% | 95% | -17% | +43% | 227 to 480 |
+| 5 | 6% | 95% | -10% | +56% | 215 to 480 |
+| 7 | 6% | 95% | -8% | +57% | 182 to 480 |
+| 11 | 6% | 96% | -27% | +28% | 266 to 336 |
+
+Blind, tipping dies out to what mutation keeps alive. Seen, it runs away
+within two days to nearly the whole fare: a passenger who tips less than the
+others waiting is not picked, so being chosen beats keeping the money, and
+the ride is left worth almost nothing to the passenger. The drivers get the
+surplus, and it turns into cars: three of four cities fill to the cap, and
+carry 8-27% fewer fares with twice the fleet.
+
 **Emergencies.** With `--econ emergency=0.2` a fifth of passengers are
 emergencies: three times the fare if delivered within the time the route
 should take at a brisk pace (its length over 45 a second), nothing at all if
