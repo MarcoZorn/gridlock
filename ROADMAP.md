@@ -200,6 +200,7 @@ commits and pushes.
 
 ## Done
 
+- 139. Gentrification (tools/gentrify.mjs): a district pulling two thirds of fares by day six costs drivers 6-22% of their money in every city; a fifth of the fares too where it is a small corner (Turin, 4/4), more but shorter fares where it is a third of the city
 - 142, 11. A taxi rank (`ECON.rank`): three passengers in ten wait at the station; a heritable rank-going habit takes 9-19% of pickups there but never the fleet, and fares fall 18%
 - 107. Circling for work instead of parking (`ECON.cruise`): a heritable short-hop habit wins one city, loses two, rises and falls in the fourth; fares about the same
 - 79. Crash replay from the drivers' senses (tools/crashes.mjs): 56% of cars in a car-on-car crash saw the other half a second before and were already braking; 44% never had it in sight
