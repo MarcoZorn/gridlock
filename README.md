@@ -2783,6 +2783,25 @@ Turin, a fifth of the fares go too; where it is a third of the city, more
 fares are carried, but shorter, so each pays less. The fleet does not
 shrink with the money: about as many cars live on smaller fares.
 
+**A city that grows where fares detour.** Every night three new streets are
+built, each the short link (60-260 long, crossing nothing) between two
+junctions that would have cut the most distance off the day's actual fares.
+Against three a night placed at random among the same candidates, and
+against building nothing (tools/grow.mjs). Real maps are at the demand cap,
+so new streets bring no new passengers. Days four to six, fifteen streets
+built by day six, Turin:
+
+| seed | fares, demand-placed | fares, random | seconds a fare: none / random / demand |
+|---|---|---|---|
+| 3 | +15% | +6% | 61 / 57 / 52 |
+| 5 | +10% | -1% | 60 / 60 / 56 |
+| 7 | +7% | -2% | 57 / 53 / 50 |
+| 11 | +14% | +1% | 58 / 57 / 48 |
+
+Streets where the fares want them carry 7-15% more fares, four of four,
+9-12% more than the same number placed at random, which do about nothing.
+Fares get 4-10 seconds shorter. Fifteen streets is 4% more road on 342.
+
 **Emergencies.** With `--econ emergency=0.2` a fifth of passengers are
 emergencies: three times the fare if delivered within the time the route
 should take at a brisk pace (its length over 45 a second), nothing at all if
