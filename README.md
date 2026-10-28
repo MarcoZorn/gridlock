@@ -2763,6 +2763,26 @@ shrinks in three; it never takes the fleet, though the station is always
 full. Every station fare costs an empty drive to the middle first, so a
 habit that serves the queue need not pay the car that has it (a guess).
 
+**Gentrification.** One quarter of the map, the north-east, pulls more of
+the city's fares every day: as a destination it weighs 1.6 times more each
+day than the day before, while demand stays the same, so by day six two
+thirds to four fifths of fares go there (tools/gentrify.mjs). Day six,
+against the same city with no pull:
+
+| city | district | into it, day 6 | fares | money earned | cars |
+|---|---|---|---|---|---|
+| Turin s3 | 57 of 320 junctions | 65% | -28% | -22% | +18% |
+| Turin s5 | | 65% | -22% | -15% | -4% |
+| Turin s7 | | 64% | -22% | -15% | -6% |
+| Turin s11 | | 64% | -21% | -15% | +7% |
+| Barcelona s7 | 180 of 587 | 81% | +19% | -12% | 0% |
+| Manhattan s7 | 117 of 500 | 75% | +9% | -6% | +11% |
+
+Drivers earn less everywhere. Where the district is a small corner, as in
+Turin, a fifth of the fares go too; where it is a third of the city, more
+fares are carried, but shorter, so each pays less. The fleet does not
+shrink with the money: about as many cars live on smaller fares.
+
 **Emergencies.** With `--econ emergency=0.2` a fifth of passengers are
 emergencies: three times the fare if delivered within the time the route
 should take at a brisk pace (its length over 45 a second), nothing at all if
