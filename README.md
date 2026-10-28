@@ -500,8 +500,14 @@ cities, then four generations of traffic the search never saw:
 
 A quarter fewer crashes and a sixth to nearly half more trips, and in all
 three the same answer first: cars that turn three and a half to four times
-as sharply. My reading: these drivers crash for want of steering more than
-of brakes, raised in cars that cannot quite make the corners they aim for. (A caveat: a car's sense of its own speed is read against the top
+as sharply. Sharper steering alone (`ONLY=turnRate=3.5`, the rest as
+built) does about half of it: crashes 7-18% fewer, against 25-29% with the
+whole evolved set, and trips no more than before (-3% to +6%). The extra
+trips come from the rest, more acceleration and top speed in two cities of
+three, and the rest of the safety too. My reading: these drivers crash
+partly for want of steering, raised in cars that cannot quite make the
+corners they aim for, and partly for want of the power to get out of each
+other's way. (A caveat: a car's sense of its own speed is read against the top
 speed, so changing that also rescales what it feels.)
 
 ## Devlog
