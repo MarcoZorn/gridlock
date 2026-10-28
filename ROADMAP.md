@@ -200,6 +200,7 @@ commits and pushes.
 
 ## Done
 
+- 104. Carpooling (`ECON.carpool`): one passenger in six shares a ride, as many arrive as before, carried by a slightly smaller fleet
 - 84. A leaderboard of seeds (neat-from-scratch README, `?seed=N&hard=1`): the same code takes 6 to 51 generations on the hard tracks by seed alone
 - 143, 144. Rivers and bridges (tools/river.mjs): a river crossed by two bridges costs 1-3% of fares; closing one costs nothing in two cities of three, 7% in the third
 - 100. Evolve the physics until the drivers stop crashing (tools/physics.mjs): a quarter fewer crashes and more trips, always by turning 3.4-4 times as sharply; they crash for want of steering, not brakes
