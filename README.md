@@ -1960,6 +1960,17 @@ body genes differ. No child is an exact copy. The parent's driving reaches
 the child as a brain nudged everywhere at once, and its earnings, as above,
 not at all.
 
+Any car's line, back to its founder (`node tools/lineage.mjs
+runs/inh-base-s7/state.json [car id]`; with no id, the car of the highest
+generation). In Turin seed 7 at the end of day six that is car 8171,
+generation 23, whose 23 ancestors go back to founder 44, born at midnight
+on day one. They lived 20.4 hours and had 14.2 children each, on average,
+in a city where only 4-8% of cars alive at a dawn are alive a day later:
+the lines that last run through the few long-lived, prolific cars. Its
+species label changes seven times along the way (21, 33, 40, 33, 40, 33,
+53, 33), more the threshold's moving than the line's; the species are
+labels drawn afresh every 600 ticks.
+
 **How long do rich families stay rich?** A family is everyone descended
 from one founder or immigrant (`DAYS=8 node tools/dynasty.mjs turin 7`,
 Turin and Manhattan, seeds 7 and 11). The five families that earned most on
