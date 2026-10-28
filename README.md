@@ -358,6 +358,30 @@ learn to wait. The shipped drivers, 300 more generations with `wrecks=1`
 They do wait more, a quarter more, where the control does not move at all.
 It is small, one run each, and both runs drift down in trips (the shipped
 drivers were raised under older settings), so it is a hint, not a result.
+
+In real units, a unit being 0.4 m and the two test cities 11.7 km of lane
+between them, with flow from density times speed (tools/fundamental.mjs
+prints both):
+
+| cars at once | cars per lane-km | km/h | cars an hour per lane | wrecks stay 10 s: km/h, cars an hour |
+|---|---|---|---|---|
+| 10 | 0.9 | 51 | 43 | |
+| 40 | 3.4 | 44 | 149 | 20, 67 |
+| 120 | 10.2 | 35 | 357 | 11, 115 |
+| 480 | 41 | 24 | 965 | 5, 218 |
+| 1440 | 123 | 17 | 2066 | 3, 423 |
+
+Against the textbook diagram that the NGSIM freeway recordings (I-80,
+US-101) are usually fitted with: flow peaks at about 2,000 cars an hour a
+lane near 25-30 cars a lane-km and is zero by about 130-150, a car every 7
+m, standing. (Quoted figures, not fitted here to NGSIM's own data.) The
+evolved drivers are at city speeds from the start, 50 km/h on empty roads,
+and slower than real freeway traffic at every density; but at 123 cars a
+lane-km, real jam density, they still move 2,066 cars an hour a lane at 17
+km/h, a real freeway's capacity in a real standstill. Possible only because
+half of them are ghosts being towed. With wrecks that stay, the speeds are
+of the right kind for a jam, 3 km/h, but flow still creeps up with density;
+what falls is trips, which counts only what gets somewhere.
 From scratch with today's settings (400 generations, the last 200 in traffic,
 three seeds each), the hint mostly goes: waiting over the last 50 generations
 5.0% with wrecks against 4.3% without, one seed of three the other way, and a
