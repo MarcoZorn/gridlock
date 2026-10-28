@@ -2805,6 +2805,28 @@ nothing, and fares get 4-10 seconds shorter. Fifteen streets is 4% more
 road on 342. Barcelona's grid, 643 roads, gains 10% in fares but no time
 per fare.
 
+**Crossings where pedestrians die.** Forty pedestrians cross Turin's roads
+(see above). A crossing here is a slow zone, a speed camera at 35 on its
+road; every night ten more go on the roads where most people were hit that
+day, against ten a night on random roads, and against none
+(tools/zebra.mjs). Day six, fifty placed, people hit per crossing made, and
+fares:
+
+| seed | none | random | where they died |
+|---|---|---|---|
+| 3 | 27%, 2008 | 24%, 1769 | 9%, 757 |
+| 5 | 47%, 2422 | 45%, 2293 | 7%, 380 |
+| 7 | 18%, 1219 | 36%, 2009 | 6%, 433 |
+| 11 | 35%, 2140 | 5%, 334 | 5%, 250 |
+
+Without crossings every city flips, on day four to six: crossings made fall
+from about 9,000 a day to 2,000-6,500, a fifth to half of the people
+crossing are hit, and fares jump two to five times; the cars take the streets.
+Random crossings hold one city of four back; crossings where people died
+hold all four, at 5-9% hit, and the cars' fares stay a tenth to two fifths
+of the flipped one. Why the flip makes fares is not measured here; fewer
+people on the road to brake for, or to pay fines for, is a guess.
+
 **Emergencies.** With `--econ emergency=0.2` a fifth of passengers are
 emergencies: three times the fare if delivered within the time the route
 should take at a brisk pace (its length over 45 a second), nothing at all if
