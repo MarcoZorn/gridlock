@@ -251,6 +251,28 @@ run into it.
 generation page "Blind to cars" and "Blind to walls" do it live, and
 evolution carries on with the sense gone.
 
+**A crash, from inside.** Every car's senses and controls kept for its last
+half second; at each car-on-car crash, look back (`node tools/crashes.mjs`,
+the shipped drivers in three unseen cities, 60 cars at a time). Of 1486
+cars in such crashes, 56% had another car in its rays half a second
+before, and those were already giving way: throttle 0.05 on average,
+against 0.43 for the ones that saw nothing, and 78% were braking in the
+last fifth of a second. The other 44% were hit by, or ran into, a car that
+was not in any ray half a second before, coming from outside a sight that
+covers about 200 degrees ahead; a third of all of them were in a junction.
+One replayed, every fifth tick of the last half second (nearest car as a
+share of sight, then throttle):
+
+| car | -0.42 s | -0.33 s | -0.25 s | -0.17 s | -0.08 s | 0 |
+|---|---|---|---|---|---|---|
+| A | 0.28, 0.56 | 0.24, 0.29 | none, 0.22 | none, 0.20 | 0.10, -1.00 | 0.03, -0.95 |
+| B | none, 0.03 | none, 0.17 | none, -0.12 | none, 0.31 | 0.07, 0.59 | 0.03, -0.03 |
+
+Car A saw B, eased off, lost it as B swung out of its rays, and braked
+hard when it came back; B, at nearly three times A's speed, saw A only in
+the last tenth of a second, from the side. Most crashes here are not
+recklessness but something arriving faster than the senses can report it.
+
 ## The city that cannot gridlock
 
 Real traffic has a fundamental diagram: as cars are added, flow rises, peaks
