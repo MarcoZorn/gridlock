@@ -1,6 +1,8 @@
 import fs from "node:fs";
 import { CityWorld } from "../src/cityworld.js";
 import { Population } from "../src/neat.js";
+import { BODY } from "../src/driver.js";
+if (process.env.FOV) BODY.fov = +process.env.FOV;
 // Crashes replayed from the drivers' own senses: the shipped drivers in
 // unseen cities with traffic, each car's senses and controls kept for its
 // last LOOK ticks. At every car-on-car crash, for both cars: did any ray see
@@ -10,7 +12,8 @@ import { Population } from "../src/neat.js";
 // tick by tick.
 //
 //   LOOK=30 node tools/crashes.mjs            (half a second at 60 ticks a second)
-const LOOK = +(process.env.LOOK || 30), pop = Population.fromJSON(JSON.parse(fs.readFileSync("docs/trained.json", "utf8")).pop);
+//   POP=runs/x/state.json FOV=6.2832 ...     (another population, another field of view)
+const LOOK = +(process.env.LOOK || 30), pop = Population.fromJSON(JSON.parse(fs.readFileSync(process.env.POP || "docs/trained.json", "utf8")).pop);
 const hist = new Map();   // car -> ring of { seen, closing, v, throttle }
 const rows = [];
 let first = null;
