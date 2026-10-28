@@ -2797,10 +2797,13 @@ built by day six, Turin:
 | 5 | +10% | -1% | 60 / 60 / 56 |
 | 7 | +7% | -2% | 57 / 53 / 50 |
 | 11 | +14% | +1% | 58 / 57 / 48 |
+| Barcelona 7 | +10% | 0% | 58 / 58 / 58 |
 
-Streets where the fares want them carry 7-15% more fares, four of four,
-9-12% more than the same number placed at random, which do about nothing.
-Fares get 4-10 seconds shorter. Fifteen streets is 4% more road on 342.
+Streets where the fares want them carry 7-15% more fares in Turin, four of
+four, 9-12% more than the same number placed at random, which do about
+nothing, and fares get 4-10 seconds shorter. Fifteen streets is 4% more
+road on 342. Barcelona's grid, 643 roads, gains 10% in fares but no time
+per fare.
 
 **Emergencies.** With `--econ emergency=0.2` a fifth of passengers are
 emergencies: three times the fare if delivered within the time the route
