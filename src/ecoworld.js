@@ -51,6 +51,7 @@ export const ECON = {
   basic: 0,             // share of every fare taxed and paid back equally to every car, a basic income (an experiment)
   minFare: 0,           // no passenger fare pays less than this, a minimum wage per fare (an experiment)
   forgive: 0,           // 1: a car's first bankruptcy is forgiven, its debt wiped to zero; the second is final (an experiment)
+  rank: 0,              // share of passengers who wait at the station (the junction nearest the middle) and only a car that gets there can take (an experiment)
   cruise: 0,            // 1: a car with nothing waiting drives on to a neighbouring junction if its gene says so (short hops), else to a random one as usual (an experiment)
   ev: 0,                // electric cars: a battery this many units of driving long; a car low on charge drives, unpaid, to the nearest of four chargers (an experiment)
   evFuel: 0.33,         // an electric car's fuel cost, as a share of a petrol car's
@@ -213,6 +214,8 @@ export class EcoWorld {
     d.charge = ECON.ev;
     // short hops when idle, or long deadheads: the parent's, one child in twenty the other way; half of newcomers
     d.hops = !ECON.cruise ? 0 : parent ? (this.rng.next() < 0.05 ? 1 - parent.hops : parent.hops) : +(this.rng.next() < 0.5);
+    // goes to the station when idle, or wanders: the parent's, one child in twenty the other way; half of newcomers
+    d.ranker = !ECON.rank ? 0 : parent ? (this.rng.next() < 0.05 ? 1 - parent.ranker : parent.ranker) : +(this.rng.next() < 0.5);
     // its asking price: the parent's, a little off; newcomers ask the going rate, give or take
     d.price = !ECON.market ? 1 : parent ? parent.price * Math.exp(this.rng.normal() * 0.05) : Math.exp(this.rng.normal() * 0.1);
     this.newJob(d, true);
@@ -225,6 +228,19 @@ export class EcoWorld {
           const ch = this.chargers().reduce((b, k) => (Math.hypot(this.city.nodes[k].x - this.city.nodes[here].x, this.city.nodes[k].y - this.city.nodes[here].y) < Math.hypot(this.city.nodes[b].x - this.city.nodes[here].x, this.city.nodes[b].y - this.city.nodes[here].y) ? k : b));
           if (ch !== here) { car.toCharger = true; return this.city.route(here, ch, car.route[car.route.length - 2], car.body.jam); }
           car.charge = ECON.ev;
+        }
+      }
+      if (ECON.rank) {
+        const st = this.station();
+        if (here === st && this.stationQ >= 1) { car.fromStation = true; this.stationQ--; }
+        else if (car.ranker && here === st && this.passengers < 1 && this.freight < 1) {
+          // nobody at the rank yet: round the block and back
+          const back = car.route[car.route.length - 2], ways = this.city.nodes[here].edges.map((e) => this.city.other(e, here)).filter((m) => m !== back);
+          if (ways.length) return this.city.route(here, this.rng.pick(ways), back, car.body.jam);
+        }
+        else if (car.ranker && this.passengers < 1 && this.freight < 1 && here !== st) {
+          const r = this.city.route(here, st, car.route[car.route.length - 2], car.body.jam);
+          if (r) return r;
         }
       }
       // nothing waiting and a short-hop car: just round the corner, to look again sooner
@@ -283,7 +299,10 @@ export class EcoWorld {
 
   newJob(d, first = false) {
     let kind = null, load = 0, surge = 1, urgent = false, shared = false;
-    if (!first && !d.toCharger) {
+    if (d.fromStation) {
+      d.fromStation = false;
+      kind = "passenger"; this.events.pickups++; this.events.fromStation = (this.events.fromStation || 0) + 1;
+    } else if (!first && !d.toCharger) {
       // take whichever waiting job pays this vehicle more per unit of route
       const fLoad = Math.min(d.body.capacity, ECON.freightMax);
       const fPay = d.body.capacity >= ECON.freightMin && this.freight >= 1 ? ECON.freightRate * this.freightBoom * fLoad : 0;
@@ -351,7 +370,9 @@ export class EcoWorld {
     const booked = ECON.demand * scale * demandAt(c.time) * DT, b = ECON.platformB;
     const room = ECON.fareQueue * scale * (1 - b);
     this.events.lost = (this.events.lost || 0) + Math.max(0, this.passengers + booked * (1 - b) - room);
-    this.passengers = Math.min(room, this.passengers + booked * (1 - b));
+    const atStation = ECON.rank ? booked * (1 - b) * ECON.rank : 0;
+    this.passengers = Math.min(room, this.passengers + booked * (1 - b) - atStation);
+    if (ECON.rank) this.stationQ = Math.min(room, (this.stationQ || 0) + atStation);
     if (b) this.passengersB = Math.min(ECON.fareQueue * scale * b, this.passengersB + booked * b);
     this.freight = Math.min(ECON.fareQueue * scale, this.freight + ECON.freightDemand * this.freightBoom * scale * freightAt(c.time) * DT);
     // everything a car can see or hit: other cars, and anyone crossing
@@ -552,6 +573,13 @@ export class EcoWorld {
     }
   }
 
+  // The station: the junction nearest the middle of the map.
+  station() {
+    if (this._station !== undefined) return this._station;
+    const c = this.city, mx = c.nodes.reduce((a, n) => a + n.x, 0) / c.nodes.length, my = c.nodes.reduce((a, n) => a + n.y, 0) / c.nodes.length;
+    return (this._station = c.nodes.reduce((b, n, i) => (Math.hypot(n.x - mx, n.y - my) < Math.hypot(c.nodes[b].x - mx, c.nodes[b].y - my) ? i : b), 0));
+  }
+
   // Four chargers, the junctions nearest the middles of the city's quarters.
   chargers() {
     if (this._chargers) return this._chargers;
@@ -584,6 +612,7 @@ export class EcoWorld {
       cars: this.cars.length,
       cash: this.cars.reduce((a, d) => a + d.cash, 0) / n,
       gini: gini(this.cars.map((d) => Math.max(0, d.cash))),
+      ...(ECON.rank ? { rankers: this.cars.filter((d) => d.ranker).length / n, stationQ: this.stationQ } : {}),
       ...(ECON.cruise ? { hops: this.cars.filter((d) => d.hops).length / n } : {}),
       ...(ECON.ev ? { electric: this.cars.filter((d) => d.electric).length / n } : {}),
       ...(ECON.market ? { price: this.cars.reduce((a, d) => a + d.price, 0) / n } : {}),
