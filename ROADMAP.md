@@ -200,6 +200,7 @@ commits and pushes.
 
 ## Done
 
+- 31. A stock market of lineages (tools/stocks.mjs): re-listed at dawn, last hour's worst-paying cars pay a fifth more than the index the hour after (5/5 cities), last hour's best 6-9% less; mean reversion, no momentum
 - 29. Tipping evolved by passengers (tools/tips.mjs): blind drivers, tips die out (6%); drivers who pick the best tipper, tips run away to 95% of the fare in two days, the fleet doubles to the cap and carries 8-27% fewer fares
 - 16. Crossings where pedestrians die (tools/zebra.mjs): every Turin city without crossings flips to the cars by day six, a fifth to half of crossers hit; fifty slow zones where people died hold all four at 5-9%, for a tenth to two fifths of the fares
 - 12. A city that grows where fares detour (tools/grow.mjs): three streets a night where the day's fares would have saved most distance carry 7-15% more fares in Turin (4/4), random streets about nothing
