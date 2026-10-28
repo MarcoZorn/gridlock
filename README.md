@@ -500,9 +500,8 @@ cities, then four generations of traffic the search never saw:
 
 A quarter fewer crashes and a sixth to nearly half more trips, and in all
 three the same answer first: cars that turn three and a half to four times
-as sharply. These drivers do not crash for want of brakes but for want of
-steering; they were raised in cars that cannot quite make the corners they
-aim for. (A caveat: a car's sense of its own speed is read against the top
+as sharply. My reading: these drivers crash for want of steering more than
+of brakes, raised in cars that cannot quite make the corners they aim for. (A caveat: a car's sense of its own speed is read against the top
 speed, so changing that also rescales what it feels.)
 
 ## Devlog
