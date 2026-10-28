@@ -1707,6 +1707,21 @@ In seed 11 the petrol cars come back to near half by day six, which I have
 not looked into. For the city it is nearly a wash, fares +2% and crashes
 per car +9% (three seeds of four each, tools/policies.mjs).
 
+The tipping point is the battery. Electric share on day six, the same four
+seeds, against the range:
+
+| battery | about a charge every | electric on day six |
+|---|---|---|
+| 6000 units | four fares | 58-96% |
+| 2000 units | fare and a half | 6-21% |
+| 1000 units | fare | 4-10% |
+
+At 2000 units the petrol cars win back the city in every seed, and at 1000
+electric cars barely last beyond the newcomers who bring them in. Somewhere
+between two and four fares to a charge, an unpaid run to the charger stops
+being worth the cheap fuel. (The electric remnant is mostly newcomers, half
+of whom arrive electric, and the one child in twenty who switches.)
+
 **Double fares.** Every tax above shrank the city, so what does money do?
 Passenger fares doubled (`--econ passengerRate=0.024`), Turin, six days, two
 seeds, days two to six:
