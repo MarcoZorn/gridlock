@@ -2011,6 +2011,7 @@ way (`node tools/policies.mjs`, straight from the runs' telemetry):
 | reputation by damage, 1.5x | -27% (4/4) | -14% (4/4) | +11% (4/4) | 0.34 |
 | congestion charge, all day | -17% (4/4) | -20% (4/4) | -28% (4/4) | 0.35 |
 | congestion charge, rush hours | -9% (4/4) | -6% (4/4) | -11% (4/4) | 0.35 |
+| carpooling, three pickups in ten | +2% (2/4) | +1% (2/4) | -4% (3/4) | 0.36 |
 | a fifth of passengers emergencies | -4% (3/4) | -7% (3/4) | -11% (4/4) | 0.35 |
 | fare market, price-shy passengers (k=1) | -1% (2/4) | +1% (2/4) | -2% (3/4) | 0.35 |
 | fare market, very price-shy (k=4) | -0% (2/4) | +2% (2/4) | -1% (3/4) | 0.34 |
@@ -2596,6 +2597,22 @@ surge makes the fleet bigger and the churn faster (40% to 130% more
 bankruptcies a day), so the extra pickups are lost the same way, and at x3
 13% fewer passengers arrive (4/4). More money per fare bought more drivers,
 and worse ones.
+
+**Carpooling.** With `--econ carpool=0.3`, when a car picks up a passenger
+and another is waiting, three times in ten the second rides along, going
+roughly the same way (the route is the first one's), and the two pay 1.6
+fares between them. Turin, four seeds, days two to six:
+
+| Turin | passengers delivered a day | of them pooled | turned away a day | cars | money earned a day |
+|---|---|---|---|---|---|
+| no carpooling | 2363-2588 | 0 | 275-603 | 206-242 | 48259-52739 |
+| carpooling | 2372-2658 | 390-438 | 90-389 | 190-229 | 44006-52665 |
+
+About one passenger in six now shares a ride, and fewer are turned away
+in three seeds of four; but as many arrive as before (+2%, two seeds of
+four, tools/policies.mjs) and the fleet is a little smaller. The same
+passengers are carried by fewer cars earning a little less: in a city
+whose fares are limited by passengers, sharing saves cars, not riders.
 
 **Emergencies.** With `--econ emergency=0.2` a fifth of passengers are
 emergencies: three times the fare if delivered within the time the route
