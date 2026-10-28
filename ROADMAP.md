@@ -200,6 +200,7 @@ commits and pushes.
 
 ## Done
 
+- 143, 144. Rivers and bridges (tools/river.mjs): a river crossed by two bridges costs 1-3% of fares; closing one costs nothing in two cities of three, 7% in the third
 - 100. Evolve the physics until the drivers stop crashing (tools/physics.mjs): a quarter fewer crashes and more trips, always by turning 3.4-4 times as sharply; they crash for want of steering, not brakes
 - 66. Real traffic signals from OpenStreetMap (`--real-signals`): Turin's 12 real lights halve its fares, lights at all 49 junctions stop its economy; one-way and lanes were already read; posted speed limits too (`--real-limits`), and Turin's 30 km/h zone, enforced by cameras, never lets its economy start
 - 80. Brain diff (tools/braindiff.mjs): a child differs from its parent in about 88 weights, by 0.32 on average, and hardly ever in wiring
