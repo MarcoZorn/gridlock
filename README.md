@@ -269,9 +269,9 @@ share of sight, then throttle):
 | B | none, 0.03 | none, 0.17 | none, -0.12 | none, 0.31 | 0.07, 0.59 | 0.03, -0.03 |
 
 Car A saw B, eased off, lost it as B swung out of its rays, and braked
-hard when it came back; B, at nearly three times A's speed, saw A only in
-the last tenth of a second, from the side. Most crashes here are not
-recklessness but something arriving faster than the senses can report it.
+hard when it came back; B, at more than twice A's speed, saw A only in
+the last tenth of a second. Many crashes here look less like recklessness
+than like something arriving faster than the senses can report it.
 
 ## The city that cannot gridlock
 
