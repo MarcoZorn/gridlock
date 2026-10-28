@@ -200,6 +200,7 @@ commits and pushes.
 
 ## Done
 
+- 16. Crossings where pedestrians die (tools/zebra.mjs): every Turin city without crossings flips to the cars by day six, a fifth to half of crossers hit; fifty slow zones where people died hold all four at 5-9%, for a tenth to two fifths of the fares
 - 12. A city that grows where fares detour (tools/grow.mjs): three streets a night where the day's fares would have saved most distance carry 7-15% more fares in Turin (4/4), random streets about nothing
 - 139. Gentrification (tools/gentrify.mjs): a district pulling two thirds of fares by day six costs drivers 6-22% of their money in every city; a fifth of the fares too where it is a small corner (Turin, 4/4), more but shorter fares where it is a third of the city
 - 142, 11. A taxi rank (`ECON.rank`): three passengers in ten wait at the station; a heritable rank-going habit takes 9-19% of pickups there but never the fleet, and fares fall 18%
