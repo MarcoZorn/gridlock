@@ -51,6 +51,8 @@ export const ECON = {
   basic: 0,             // share of every fare taxed and paid back equally to every car, a basic income (an experiment)
   minFare: 0,           // no passenger fare pays less than this, a minimum wage per fare (an experiment)
   forgive: 0,           // 1: a car's first bankruptcy is forgiven, its debt wiped to zero; the second is final (an experiment)
+  ev: 0,                // electric cars: a battery this many units of driving long; a car low on charge drives, unpaid, to the nearest of four chargers (an experiment)
+  evFuel: 0.33,         // an electric car's fuel cost, as a share of a petrol car's
   carpool: 0,           // chance a second waiting passenger going roughly the same way rides along, paying 60% of the fare (an experiment)
   emergency: 0,         // share of passengers who are emergencies: three times the fare if delivered within the expected time, nothing if late (an experiment)
   market: 0,            // a fare market: each car asks its own price (a gene, passed on); a passenger takes it with chance exp(-market * (price - 1)), else waits for the next car (an experiment)
@@ -205,11 +207,23 @@ export class EcoWorld {
     d.platform = !ECON.platformB ? 0 : parent ? (this.rng.next() < ECON.switchPlatform ? 1 - parent.platform : parent.platform) : +(this.rng.next() < 0.5);
     // union card: the parent's, one child in twenty the other way; half of newcomers
     d.union = !ECON.union ? 0 : parent ? (this.rng.next() < 0.05 ? 1 - parent.union : parent.union) : +(this.rng.next() < 0.5);
+    // electric or not: the parent's, one child in twenty the other way; half of newcomers
+    d.electric = !ECON.ev ? 0 : parent ? (this.rng.next() < 0.05 ? 1 - parent.electric : parent.electric) : +(this.rng.next() < 0.5);
+    d.charge = ECON.ev;
     // its asking price: the parent's, a little off; newcomers ask the going rate, give or take
     d.price = !ECON.market ? 1 : parent ? parent.price * Math.exp(this.rng.normal() * 0.05) : Math.exp(this.rng.normal() * 0.1);
     this.newJob(d, true);
     d.onArrive = (car, here) => {
       this.pay(car);
+      if (car.electric) {
+        if (car.toCharger) { car.toCharger = false; car.charge = ECON.ev; this.events.charged = (this.events.charged || 0) + 1; }
+        else if (car.charge < ECON.ev / 4) {
+          // low: the next trip is to the nearest charger, and carries nothing
+          const ch = this.chargers().reduce((b, k) => (Math.hypot(this.city.nodes[k].x - this.city.nodes[here].x, this.city.nodes[k].y - this.city.nodes[here].y) < Math.hypot(this.city.nodes[b].x - this.city.nodes[here].x, this.city.nodes[b].y - this.city.nodes[here].y) ? k : b));
+          if (ch !== here) { car.toCharger = true; return this.city.route(here, ch, car.route[car.route.length - 2], car.body.jam); }
+          car.charge = ECON.ev;
+        }
+      }
       const next = this.randomFare(here, car.route[car.route.length - 2], car.body.jam);
       return next;
     };
@@ -261,7 +275,7 @@ export class EcoWorld {
 
   newJob(d, first = false) {
     let kind = null, load = 0, surge = 1, urgent = false, shared = false;
-    if (!first) {
+    if (!first && !d.toCharger) {
       // take whichever waiting job pays this vehicle more per unit of route
       const fLoad = Math.min(d.body.capacity, ECON.freightMax);
       const fPay = d.body.capacity >= ECON.freightMin && this.freight >= 1 ? ECON.freightRate * this.freightBoom * fLoad : 0;
@@ -354,7 +368,8 @@ export class EcoWorld {
       // running costs: being on the road, and burning fuel to move; upkeep
       // grows with the odometer, so every car wears out in the end
       const wear = 1 + d.dist / ECON.wearDist;
-      d.cash -= d.body.upkeep * wear * DT + d.body.fuel * fuel * Math.abs(d.v) * DT;
+      d.cash -= d.body.upkeep * wear * DT + d.body.fuel * fuel * (d.electric ? ECON.evFuel : 1) * Math.abs(d.v) * DT;
+      if (d.electric) d.charge -= Math.abs(d.v) * DT;
       if (this.insurance) d.cash -= ECON.premium * DT * (avg ? ((d.claims || 0) + avg * prior) / (this.tick - d.born + prior) / avg : 1);
       if (d.cash < 0) d.cash *= interest;
       d.cash += ECON.print * DT;
@@ -372,6 +387,7 @@ export class EcoWorld {
         // fetched and dropped somewhere new, at a price
         d.cash -= ECON.towFee;
         d.lost = false;
+        d.toCharger = false;   // towed: the trip to the charger is off
         const from = this.rng.int(c.nodes.length);
         const job = d.job, to = d.route[d.route.length - 1];
         const keep = this.finishFare && job && job.kind && from !== to;
@@ -528,6 +544,15 @@ export class EcoWorld {
     }
   }
 
+  // Four chargers, the junctions nearest the middles of the city's quarters.
+  chargers() {
+    if (this._chargers) return this._chargers;
+    const c = this.city, xs = c.nodes.map((n) => n.x), ys = c.nodes.map((n) => n.y);
+    const [x0, x1, y0, y1] = [Math.min(...xs), Math.max(...xs), Math.min(...ys), Math.max(...ys)];
+    const near = (x, y) => c.nodes.reduce((b, n, i) => (Math.hypot(n.x - x, n.y - y) < Math.hypot(c.nodes[b].x - x, c.nodes[b].y - y) ? i : b), 0);
+    return (this._chargers = [[0.25, 0.25], [0.75, 0.25], [0.25, 0.75], [0.75, 0.75]].map(([fx, fy]) => near(x0 + fx * (x1 - x0), y0 + fy * (y1 - y0))));
+  }
+
   // The vote: a car gains from the basic income if it earns less than the
   // average, loses if more, so each votes its pocket. Only cars an hour old
   // or more have a record to vote by.
@@ -551,6 +576,7 @@ export class EcoWorld {
       cars: this.cars.length,
       cash: this.cars.reduce((a, d) => a + d.cash, 0) / n,
       gini: gini(this.cars.map((d) => Math.max(0, d.cash))),
+      ...(ECON.ev ? { electric: this.cars.filter((d) => d.electric).length / n } : {}),
       ...(ECON.market ? { price: this.cars.reduce((a, d) => a + d.price, 0) / n } : {}),
       inDebt: this.cars.filter((d) => d.cash < 0).length / n,
       maxGen: Math.max(0, ...this.cars.map((d) => d.generation)),
