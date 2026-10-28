@@ -273,6 +273,18 @@ hard when it came back; B, at more than twice A's speed, saw A only in
 the last tenth of a second. Many crashes here look less like recklessness
 than like something arriving faster than the senses can report it.
 
+So give them eyes behind. The fan of five rays now follows `--body fov=`;
+a full circle spaces them every 72 degrees instead of 50. The shipped
+drivers raised 300 more generations either way, then replayed in the same
+unseen traffic: with the usual 198 degrees, 1430 cars in car-on-car
+crashes, 44% of them with the other car in sight half a second before;
+with a full circle, 942, a third fewer, but only 31% saw it coming.
+Crashes per km in the last 50 training generations: 18.0 against 15.8, at
+the same throughput. Seeing all round prevents more crashes than it lets
+the drivers see, which looks odd; five rays spread round a circle leave
+wider gaps ahead, so the crashes that remain come through those (a
+reading, not measured).
+
 ## The city that cannot gridlock
 
 Real traffic has a fundamental diagram: as cars are added, flow rises, peaks
