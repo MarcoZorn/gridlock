@@ -2960,10 +2960,9 @@ Fares over days two to six, three cities:
 A river with two bridges costs one to three percent of the fares, and
 losing one of the two costs nothing in two cities of three. Fares go to
 random places, so about half of them cross; but a detour to the other
-bridge in a city this size is short, and the queue of waiting passengers,
-not the time on the road, is what limits the fares here (the same reason a
-quake hardly touches Turin). City 13 is the exception, and I have not
-looked at why.
+bridge in a city this size is short. My guess, not tested, is that the
+queue of waiting passengers limits the fares more than time on the road
+does. City 13 is the exception, and I have not looked at why.
 
 **Evolutionary rescue?** Does new mutation help a city adapt to the
 quake? `FREEZE=1` stops all mutation from the morning of day three, in both
