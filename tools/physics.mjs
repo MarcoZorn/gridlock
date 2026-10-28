@@ -11,6 +11,7 @@ import { Population, Rng } from "../src/neat.js";
 // traffic the search never saw.
 //
 //   ITERS=60 node tools/physics.mjs 91
+//   ONLY=turnRate=3.5 node tools/physics.mjs 91    (no search: just these factors)
 const seed = +(process.argv[2] || 91), iters = +(process.env.ITERS || 60);
 const pop = Population.fromJSON(JSON.parse(fs.readFileSync("docs/trained.json", "utf8")).pop);
 const KNOBS = ["accel", "brake", "drag", "maxSpeed", "turnRate"], base = Object.fromEntries(KNOBS.map((k) => [k, BODY[k]]));
@@ -24,14 +25,21 @@ const run = (f, gen) => {
   KNOBS.forEach((k) => (BODY[k] = base[k]));
   return { trips, crashes, dist, rate: (1000 * crashes) / Math.max(1, dist) };
 };
-const rng = new Rng(seed), one = KNOBS.map(() => 1), start = run(one, 0);
+const test = (f) => [1, 2, 3, 4].map((g) => run(f, g)).reduce((a, r) => ({ trips: a.trips + r.trips, crashes: a.crashes + r.crashes, dist: a.dist + r.dist }), { trips: 0, crashes: 0, dist: 0 });
+const fmt = (r) => `${r.trips} trips, ${((1000 * r.crashes) / r.dist).toFixed(2)} crashes per 1000 units`;
+const one = KNOBS.map(() => 1);
+if (process.env.ONLY) {
+  const set = Object.fromEntries(process.env.ONLY.split(",").map((kv) => kv.split("=")));
+  const f = KNOBS.map((k) => +(set[k] || 1));
+  console.log(`city ${seed} unseen traffic: as built ${fmt(test(one))}; ${process.env.ONLY} ${fmt(test(f))}`);
+  process.exit(0);
+}
+const rng = new Rng(seed), start = run(one, 0);
 let best = one.slice(), bestR = start;
 for (let it = 0; it < iters; it++) {
   const cand = best.map((x) => (rng.next() < 0.4 ? Math.max(0.25, Math.min(4, x * Math.exp(rng.normal() * 0.3))) : x));
   const r = run(cand, 0);
   if (r.trips >= 0.9 * start.trips && r.rate <= bestR.rate) { best = cand; bestR = r; }
 }
-const test = (f) => [1, 2, 3, 4].map((g) => run(f, g)).reduce((a, r) => ({ trips: a.trips + r.trips, crashes: a.crashes + r.crashes, dist: a.dist + r.dist }), { trips: 0, crashes: 0, dist: 0 });
-const fmt = (r) => `${r.trips} trips, ${((1000 * r.crashes) / r.dist).toFixed(2)} crashes per 1000 units`;
 console.log(`city ${seed}: evolved physics ${KNOBS.map((k, i) => `${k} x${best[i].toFixed(2)}`).join(", ")}`);
 console.log(`unseen traffic: as built ${fmt(test(one))}; evolved ${fmt(test(best))}`);
