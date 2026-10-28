@@ -51,6 +51,7 @@ export const ECON = {
   basic: 0,             // share of every fare taxed and paid back equally to every car, a basic income (an experiment)
   minFare: 0,           // no passenger fare pays less than this, a minimum wage per fare (an experiment)
   forgive: 0,           // 1: a car's first bankruptcy is forgiven, its debt wiped to zero; the second is final (an experiment)
+  cruise: 0,            // 1: a car with nothing waiting drives on to a neighbouring junction if its gene says so (short hops), else to a random one as usual (an experiment)
   ev: 0,                // electric cars: a battery this many units of driving long; a car low on charge drives, unpaid, to the nearest of four chargers (an experiment)
   evFuel: 0.33,         // an electric car's fuel cost, as a share of a petrol car's
   carpool: 0,           // chance a second waiting passenger going roughly the same way rides along, paying 60% of the fare (an experiment)
@@ -210,6 +211,8 @@ export class EcoWorld {
     // electric or not: the parent's, one child in twenty the other way; half of newcomers
     d.electric = !ECON.ev ? 0 : parent ? (this.rng.next() < 0.05 ? 1 - parent.electric : parent.electric) : +(this.rng.next() < 0.5);
     d.charge = ECON.ev;
+    // short hops when idle, or long deadheads: the parent's, one child in twenty the other way; half of newcomers
+    d.hops = !ECON.cruise ? 0 : parent ? (this.rng.next() < 0.05 ? 1 - parent.hops : parent.hops) : +(this.rng.next() < 0.5);
     // its asking price: the parent's, a little off; newcomers ask the going rate, give or take
     d.price = !ECON.market ? 1 : parent ? parent.price * Math.exp(this.rng.normal() * 0.05) : Math.exp(this.rng.normal() * 0.1);
     this.newJob(d, true);
@@ -223,6 +226,11 @@ export class EcoWorld {
           if (ch !== here) { car.toCharger = true; return this.city.route(here, ch, car.route[car.route.length - 2], car.body.jam); }
           car.charge = ECON.ev;
         }
+      }
+      // nothing waiting and a short-hop car: just round the corner, to look again sooner
+      if (car.hops && this.passengers < 1 && this.freight < 1) {
+        const back = car.route[car.route.length - 2], ways = this.city.nodes[here].edges.map((e) => this.city.other(e, here)).filter((m) => m !== back);
+        if (ways.length) { this.events.hops = (this.events.hops || 0) + 1; return this.city.route(here, this.rng.pick(ways), back, car.body.jam); }
       }
       const next = this.randomFare(here, car.route[car.route.length - 2], car.body.jam);
       return next;
@@ -576,6 +584,7 @@ export class EcoWorld {
       cars: this.cars.length,
       cash: this.cars.reduce((a, d) => a + d.cash, 0) / n,
       gini: gini(this.cars.map((d) => Math.max(0, d.cash))),
+      ...(ECON.cruise ? { hops: this.cars.filter((d) => d.hops).length / n } : {}),
       ...(ECON.ev ? { electric: this.cars.filter((d) => d.electric).length / n } : {}),
       ...(ECON.market ? { price: this.cars.reduce((a, d) => a + d.price, 0) / n } : {}),
       inDebt: this.cars.filter((d) => d.cash < 0).length / n,
