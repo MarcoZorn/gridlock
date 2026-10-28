@@ -2611,7 +2611,8 @@ fares between them. Turin, four seeds, days two to six:
 About one passenger in six now shares a ride, and fewer are turned away
 in three seeds of four; but as many arrive as before (+2%, two seeds of
 four, tools/policies.mjs) and the fleet is a little smaller. The same
-passengers are carried by fewer cars earning a little less: in a city
+passengers are carried by fewer cars, earning less in three seeds of four
+(-2% to -17%) and 9% more in the fourth: in a city
 whose fares are limited by passengers, sharing saves cars, not riders.
 
 **Emergencies.** With `--econ emergency=0.2` a fifth of passengers are
