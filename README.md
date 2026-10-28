@@ -1719,8 +1719,9 @@ seeds, against the range:
 At 2000 units the petrol cars win back the city in every seed, and at 1000
 electric cars barely last beyond the newcomers who bring them in. Somewhere
 between two and four fares to a charge, an unpaid run to the charger stops
-being worth the cheap fuel. (The electric remnant is mostly newcomers, half
-of whom arrive electric, and the one child in twenty who switches.)
+being worth the cheap fuel. (The electric remnant is presumably the
+newcomers, half of whom arrive electric, and the one child in twenty who
+switches; not counted.)
 
 **Double fares.** Every tax above shrank the city, so what does money do?
 Passenger fares doubled (`--econ passengerRate=0.024`), Turin, six days, two
