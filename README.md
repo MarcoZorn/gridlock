@@ -2730,6 +2730,31 @@ found in one city, carries half again to nearly twice the fares in all four
 it never saw. Two searches, each of ten generations and one city, so which
 rules win is the finding, not their exact values.
 
+**A black market.** The platform takes a fifth of every fare. A car may
+carry a habit of taking its fares off the books: no cut, but each such fare
+is caught with some probability and fined 50. Children inherit the habit
+(one in twenty switches) and a newcomer has it one time in ten, so with no
+selection at all about 5-10% of the city would be black (tools/blackmarket.mjs).
+A fare is worth about 26, the cut about 5, so the fine expected per black
+fare is 2.5, 5 and 10 at a catch rate of 5%, 10% and 20%. Share of black
+cars, Turin, day six:
+
+| seed | caught 5% | 10% | 20% |
+|---|---|---|---|
+| 3 | 26% | 11% | 4% |
+| 5 | 41% | 12% | 8% |
+| 7 | 22% | 3% | 0% |
+| 11 | 21% | 12% | 2% |
+
+Evolution finds the break-even. Where a black fare pays (2.5 expected
+against 5 saved) the habit grows to two to eight times its floor in every
+city; at a fair bet (5 against 5) it sits about where mutation puts it; and
+where it does not pay (10 against 5) it falls below. It never takes over,
+even where it pays: earnings are hardly inherited here (social mobility,
+above), and one fine of 50 costs three children's worth at once (16 each),
+so a black car that is unlucky early never breeds (my reading). Fares are no different across the three, 2,422-2,821 on day
+six.
+
 **A central bank.** A basic income moves money from the cars that earn to
 all of them. What if it came from nowhere? With `--econ print=0.0369` every
 car is paid 0.0369 a second by nobody, what the quarter basic income paid
