@@ -200,6 +200,7 @@ commits and pushes.
 
 ## Done
 
+- 86. Taught first, then evolved (in neat-from-scratch): brains fitted by least squares to a demonstrator's recorded steering reach three laps in a row on hard tracks in 6.4 generations against 24.3 (13 of 16 seeds faster); a flat-out older champion teaches worse
 - 85. Edit a brain by hand: click a neuron in the brain panel to mute it, scroll to scale it; the car gets its own copy, children inherit the edit
 - 82. A notebook page (notebook.html): any experiment as the body of an async function, run in a worker with the simulator in scope, output logged, code kept in the link
 - 83. Shareable links with all knobs: ?econ= carries every economy constant that differs from the default, ?peds=1 the pedestrians; Copy link writes them, junk is ignored
