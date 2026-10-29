@@ -78,6 +78,7 @@ export const ECON = {
   speedLimit: 0,        // a speed camera everywhere: over this speed a car pays...
   speedFine: 0.3,       // ...this much a second at double the limit, in proportion below that (an experiment, off)
   union: 0,             // union cars refuse passenger fares that pay less than this; the card passes parent to child (an experiment)
+  crashMate: 0,         // 1: a car may only have a child after hitting another car, and the child is a cross of the two (tools/crashmate.mjs)
 };
 
 // Every economy knob in a link: the ones that differ from the defaults, as
@@ -447,15 +448,16 @@ export class EcoWorld {
     this.events.carCrashes += collideCars(onRoad, this.hash, (a, b) => {
       if (this.onPair) this.onPair(a, b);   // for measurements: who hit whom
       const ped = a.isPed ? a : b.isPed ? b : null;
-      if (!ped) { if (ECON.hgt && this.rng.next() < ECON.hgt) this.swapGenes(a, b); return; }
+      if (!ped) { if (ECON.crashMate) { a.mate = b; b.mate = a; } if (ECON.hgt && this.rng.next() < ECON.hgt) this.swapGenes(a, b); return; }
       const car = ped === a ? b : a;
       car.cash -= ECON.pedestrianFine;
       this.events.pedHits++;
     });
 
     // births and deaths, after everyone has moved
-    const born = [];
+    const born = [], living = ECON.crashMate ? new Set(this.cars) : null;
     for (const d of this.cars) {
+      if (living && !living.has(d.mate)) continue;   // nobody hit yet, or they are gone
       if (d.cash >= ECON.birthCash && this.cars.length + born.length < ECON.maxCars * this.scale) {
         d.cash -= ECON.childCost;
         d.children++;
@@ -494,7 +496,12 @@ export class EcoWorld {
   birth(parent) {
     let brain;
     const mates = this.cars.filter((o) => o !== parent && o.cash > ECON.startCash && o.species === parent.species);
-    if (mates.length && this.rng.next() < 0.3) {
+    if (ECON.crashMate && parent.mate) {
+      // the one it hit is the other parent; the next child needs another crash
+      parent.genome.fitness = parent.earned; parent.mate.genome.fitness = parent.mate.earned;
+      brain = crossover(parent.genome, parent.mate.genome, this.rng, this.cfg);
+      parent.mate = null;
+    } else if (mates.length && this.rng.next() < 0.3) {
       const rate = (o) => o.earned / Math.max(1, this.tick - o.born);
       const m = ECON.choosy ? mates.reduce((a, b) => (rate(b) > rate(a) ? b : a)) : this.rng.pick(mates);
       parent.genome.fitness = parent.earned; m.genome.fitness = m.earned;

@@ -400,6 +400,20 @@ import { editNeuron } from "./src/netview.js";
   console.log("ok  a brain edited by hand");
 }
 
+{
+  // sex only on crashing: every parent has hit a car that is still alive
+  const birthCash = ECON.birthCash;
+  ECON.crashMate = 1; ECON.birthCash = ECON.startCash + 1;   // births come early
+  const w = new EcoWorld({ seed: 3, founders: Population.fromJSON(JSON.parse(fs.readFileSync("docs/trained.json", "utf8")).pop) });
+  const birth = w.birth.bind(w);
+  let births = 0, unmated = 0;
+  w.birth = (p) => { births++; if (!p.mate || !w.cars.includes(p.mate)) unmated++; const c = birth(p); assert(!p.mate, "a crash is good for one child"); return c; };
+  for (let t = 0; t < 6000; t++) w.step();
+  ECON.crashMate = 0; ECON.birthCash = birthCash;
+  assert(births > 0 && unmated === 0, `${births} births, ${unmated} without a crash partner`);
+  console.log("ok  sex only on crashing");
+}
+
 assert(gini([1, 1, 1, 1]) === 0 && Math.abs(gini([0, 0, 0, 1]) - 0.75) < 1e-9, "gini: equal is 0, one of four holding everything is 0.75");
 console.log("ok  inequality measured");
 
