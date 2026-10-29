@@ -1207,6 +1207,12 @@ The ecosystem page can load the first of these cities as it was on day 40
   car's speed is the pitch of a low hum, the nearest car it sees a second
   tone, louder the closer and panned to its side, a crash a thud and a fare
   a two-note chime. With Drive, enough to steer by ear, or to try.
+- **Tracing a neuron.** On both city pages the brain lights up with what
+  the car feels right now, each neuron as bright as it is driven, and the
+  one under the mouse is traced: its value and the three connections into
+  it pushing hardest. Here a car's throttle sits near zero, a car ahead
+  pushing it up (+3.44) and one to the far right and a hidden neuron
+  pulling it down. ![Tracing the throttle neuron](docs/trace.png)
 - **Drawing big cities.** The roads are rendered once into an offscreen
   canvas and only redrawn when the view or the map changes; a large city went
   from 40 frames a second to the display's full rate.
