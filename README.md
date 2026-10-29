@@ -38,6 +38,8 @@ step: serve the folder and open it.
 - `LIVE.md`: tables and charts from the long headless runs.
 - URL options: `?seed=7`, `?size=small|medium|large`, `?control=none|lights|roundabouts`,
   on the eco page the rules `?charge=1&camera=1&boom=1&finish=1&insure=1`,
+  `?peds=1`, and any economy knob as `?econ=rank=0.3,carpool=0.15` (the
+  names `--econ` takes; Copy link writes every one that is not the default),
   `?map=crossroads|turin|barcelona|manhattan|grown`, `?signals=real` (lights only at a real map's
   OpenStreetMap signals), and on the generation page `?traffic=1&density=20`.
 
