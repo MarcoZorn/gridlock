@@ -200,6 +200,7 @@ commits and pushes.
 
 ## Done
 
+- 99. Drivers vote on the rules (tools/referendum.mjs): by their own earnings under each, they vote in speed cameras that cost 39-84% of fares in 4 of 4 Turin cities, and lights that starve the city in 2 of 4; the first night's answer locks in
 - 97. Yield to emergencies (tools/yield.mjs): a fine for being ahead of a car with an emergency raises the share in time from 4-15% to 46-56% by day six, with 24-45% fewer cars and 29-55% fewer crashes, for 5-19% of the fares
 - 95. Roads that wear out (tools/wear.mjs): by day six 106-149 repairs a day in Turin, and fares change by +2% to -7%; traffic does not spread out
 - 94. Pedestrians who buy a car (tools/promote.mjs): two hundred a day become newcomer cars; the cars' takeover comes later in three Turin seeds of four, earlier in one; the crowd crosses no worse for losing its best
