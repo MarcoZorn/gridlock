@@ -2434,10 +2434,10 @@ bus half the time, and the taxi is handed another fare instead
 | 7 | 728 | -3% | +25% | 192 / 257 | 2.19 / 2.23 |
 | 11 | 717 | -5% | +24% | 202 / 217 | 2.76 / 2.58 |
 
-The buses take a quarter of the trips that would have been taxi fares and
-the taxis barely miss them, 2-10% fewer fares and about as many taxis,
-because the queue is never empty: the taxi handed someone else had someone
-else to hand it. The city moves a seventh to more than a quarter more
+The buses take a fifth to a quarter of the trips, and the taxis barely
+miss them, 2-10% fewer fares and about as many taxis. Most likely because
+there is always someone else waiting, so the taxi handed another fare
+seldom waits for one (my reading; the queue was not measured). The city moves a seventh to more than a quarter more
 people. A bus here has no seats to fill, though: a rider is counted when
 the trip goes to the bus, not when a bus picks anyone up, so this is the
 taxis' side of the story, not a timetable's.
