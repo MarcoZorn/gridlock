@@ -1203,6 +1203,10 @@ The ecosystem page can load the first of these cities as it was on day 40
   was held when Drive was pressed. The car's fares, crashes and children
   are still the economy's, so you can try to make a living among the
   evolved drivers. One person at a time; nothing over a network.
+- **Sound.** The city by ear, for anyone who cannot watch it: the followed
+  car's speed is the pitch of a low hum, the nearest car it sees a second
+  tone, louder the closer and panned to its side, a crash a thud and a fare
+  a two-note chime. With Drive, enough to steer by ear, or to try.
 - **Drawing big cities.** The roads are rendered once into an offscreen
   canvas and only redrawn when the view or the map changes; a large city went
   from 40 frames a second to the display's full rate.
