@@ -2723,8 +2723,8 @@ found, two days on four Turin cities it never saw, against no rules:
 | seed 101 | minimum fare 10 | 191/171, 170/200, 167/166, 171/210 | +10%, 0%, -14%, +23% |
 | seed 202 | minimum fare 20, insurance | 191/188, 170/226, 167/187, 171/185 | +51%, +84%, +74%, +73% |
 
-Survival never picks a camera, lights or a charge: every one of them was
-tried and lost cars. It picks the rules that put money in drivers' pockets,
+Survival never kept a camera, lights or a charge (which candidates were
+tried was not logged). It picks the rules that put money in drivers' pockets,
 a floor under the fare and crashes paid by a pool, and the second code,
 found in one city, carries half again to nearly twice the fares in all four
 it never saw. Two searches, each of ten generations and one city, so which
