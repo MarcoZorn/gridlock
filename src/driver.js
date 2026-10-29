@@ -245,6 +245,8 @@ export class Driver {
     this.genome.activate(this.inputs, this.out);
     if (this.signal) this.indicator = Math.max(-1, Math.min(1, this.out[N_OUTPUTS]));
     for (let m = 0; m < this.memory.length; m++) this.memory[m] = this.out[N_OUTPUTS + this.signal + m];
+    // a person at the wheel (eco page, Drive): their steer and throttle win
+    if (this.pilot) this.pilot(this.out);
     const steer = this.out[0], throttle = this.out[1];
 
     const p = this.p;

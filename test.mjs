@@ -349,6 +349,18 @@ import { Crowd, PED } from "./src/pedestrians.js";
   console.log("ok  pedestrians on a real map always find a road to cross");
 }
 
+{
+  // a person at the wheel: the pilot's steer and throttle replace the brain's
+  const w = new EcoWorld({ seed: 2, startCars: 5 });
+  const d = w.cars[0];
+  for (let t = 0; t < 120; t++) w.step();
+  d.pilot = (out) => { out[0] = 0; out[1] = -1; };
+  for (let t = 0; t < 120; t++) w.step();
+  assert(!w.cars.includes(d) || d.v <= 0, "a pilot braking hard stops the car (and backs it up)");
+  assert(d.out[1] === -1, "the pilot's throttle is what the car used");
+  console.log("ok  a pilot takes the wheel");
+}
+
 assert(gini([1, 1, 1, 1]) === 0 && Math.abs(gini([0, 0, 0, 1]) - 0.75) < 1e-9, "gini: equal is 0, one of four holding everything is 0.75");
 console.log("ok  inequality measured");
 
