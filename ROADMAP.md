@@ -200,6 +200,7 @@ commits and pushes.
 
 ## Done
 
+- 103. A black market (tools/blackmarket.mjs): fares off the books grow to 21-41% of cars where the expected fine is half the platform's cut, sit at the mutation floor at break-even, fall below it where enforcement is doubled
 - 101. The traffic code evolved by survival (tools/code.mjs): never kept cameras, lights or charges; a minimum fare and insurance, which in four unseen Turin cities carries 51-84% more fares
 - 99. Drivers vote on the rules (tools/referendum.mjs): by their own earnings under each, they vote in speed cameras that cost 39-84% of fares in 4 of 4 Turin cities, and lights that starve the city in 2 of 4; the first night's answer locks in
 - 97. Yield to emergencies (tools/yield.mjs): a fine for being ahead of a car with an emergency raises the share in time from 4-15% to 46-56% by day six, with 24-45% fewer cars and 29-55% fewer crashes, for 5-19% of the fares
