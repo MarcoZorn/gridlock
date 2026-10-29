@@ -200,6 +200,8 @@ commits and pushes.
 
 ## Done
 
+- 96. Seasons that move (tools/migrate-demand.mjs): the fleet follows a quarter in season the same day, carried by its own fares; a big quarter in season adds 10-13% fares, the small north-east corner costs 12-17%
+- 90, 147. Mars (GRIP=0.38 FROM=0 tools/snow.mjs): a quarter to under half of Earth's fares on day one, two thirds to nine tenths by day six, by breeding; crashes 1.2-1.5x Earth's by then
 - 88. Sex only on crashing (`ECON.crashMate`, tools/crashmate.mjs): births 1-26% fewer, fares 9-25% fewer; two Turin seeds of four crash 25% and 37% more by day six, two the same
 - 87. Cars that build roads (tools/builders.mjs): a car with a child's worth of money buys the shortcut its last route lacked; 41-52 private streets give Turin 6-20% more fares, as much as a planner's 15, three quarters built in two days
 - 86. Taught first, then evolved (in neat-from-scratch): brains fitted by least squares to a demonstrator's recorded steering reach three laps in a row on hard tracks in 6.4 generations against 24.3 (13 of 16 seeds faster); a flat-out older champion teaches worse
