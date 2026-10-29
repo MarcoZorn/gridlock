@@ -237,6 +237,7 @@ function draw() {
   directorCut(performance.now());
   if (!cam.fitted) fitCam();
   if (selected && !world.cars.includes(selected)) selected = null;
+  if (driven && !world.cars.includes(driven)) { driven = null; $("drive").dataset.on = false; }
   const focus = selected || world.richest();
   if (follow && focus) { cam.x += (focus.x - cam.x) * 0.15; cam.y += (focus.y - cam.y) * 0.15; }
 
@@ -370,6 +371,35 @@ $("director").onclick = (e) => {
   e.target.dataset.on = director;
   nextCut = 0;
   if (!director) { follow = false; $("follow").dataset.on = false; selected = null; }
+};
+// Take the wheel: the selected (or richest) car steers by the keys, or by
+// tilting a phone (left-right steers, top away from you goes, toward you
+// brakes, from how it was held when Drive was pressed). Its fares, crashes
+// and children are still the economy's.
+const keys = new Set();
+// registered before the shortcuts, so while driving D and S steer, not toggle
+window.addEventListener("keydown", (e) => { if (driven && /^(arrow|[wasd]$)/i.test(e.key)) { keys.add(e.key.toLowerCase()); e.preventDefault(); e.stopImmediatePropagation(); } });
+window.addEventListener("keyup", (e) => keys.delete(e.key.toLowerCase()));
+let driven = null, tilt = null, tilt0 = null;
+const onTilt = (e) => { if (e.gamma == null) return; tilt0 ??= e.beta; tilt = { steer: e.gamma / 30, go: (tilt0 - e.beta) / 25 }; };
+const clamp = (x) => Math.max(-1, Math.min(1, x));
+const pilot = (out) => {
+  const k = (...n) => n.some((x) => keys.has(x));
+  let steer = (k("arrowright", "d") ? 1 : 0) - (k("arrowleft", "a") ? 1 : 0), go = (k("arrowup", "w") ? 1 : 0) - (k("arrowdown", "s") ? 1 : 0);
+  if (tilt && !steer && !go) { steer = tilt.steer; go = tilt.go; }
+  out[0] = clamp(steer); out[1] = clamp(go);
+};
+$("drive").onclick = async (e) => {
+  if (driven) { driven.pilot = null; driven = null; e.target.dataset.on = false; return; }
+  driven = selected || world.richest();
+  if (!driven) return;
+  driven.pilot = pilot;
+  selected = driven; follow = true; $("follow").dataset.on = true; cam.k = Math.max(cam.k, 3);
+  e.target.dataset.on = true;
+  // iOS asks first, and only from a tap
+  if (window.DeviceOrientationEvent?.requestPermission) { try { await DeviceOrientationEvent.requestPermission(); } catch {} }
+  tilt0 = null;
+  window.addEventListener("deviceorientation", onTilt);
 };
 $("colour").onclick = (e) => {
   colourBy = colourBy === "species" ? "job" : "species";
