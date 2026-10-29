@@ -200,6 +200,7 @@ commits and pushes.
 
 ## Done
 
+- 73, 74 (one person). Drive (eco page): take the wheel of any car with the keys or by tilting a phone, among the evolved drivers; not multiplayer over a network
 - 69. Against the posted speed limits (tools/calibrate.mjs): fares take 0.74-0.80 of the time at the limit in Turin, 0.55-0.58 in Barcelona and Manhattan, by day four; the evolved drivers speed, sim time needs stretching by at least 1.3-1.8 to be real
 - 68. Real rain (tools/rain.mjs, docs/turin-rain.json): a real Turin fortnight, wet days at grip 0.8 and a quarter more bookings carry 9-17% more fares with 14-24% more crashes per distance, no richer drivers; dry days back to normal
 - 64. Collective intelligence (tools/collective.mjs): of what crowding costs, the share drivers win back by seeing each other is 0% to -27%; blind to other cars they make 4-46% more trips from 40 cars up, with wrecks too
