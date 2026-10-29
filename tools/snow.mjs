@@ -9,8 +9,10 @@ import { Population } from "../src/neat.js";
 // against the same economy with no snow.
 //
 //   GRIP=0.5 DAYS=8 node tools/snow.mjs turin 7
+// FROM=0 starts the low grip at the first tick: GRIP=0.38 FROM=0 is Mars,
+// tyres that grip in proportion to gravity, 0.38 of Earth's.
 const [map = "turin", seed = 7] = process.argv.slice(2);
-const grip = +(process.env.GRIP || 0.5), days = +(process.env.DAYS || 8), snowDay = 1, perDay = DAY / DT;
+const grip = +(process.env.GRIP || 0.5), days = +(process.env.DAYS || 8), snowDay = +(process.env.FROM ?? 1), perDay = DAY / DT;
 const founders = Population.fromJSON(JSON.parse(fs.readFileSync("docs/trained.json", "utf8")).pop);
 const graph = () => (map === "grid" ? null : JSON.parse(fs.readFileSync(`maps/${map}.json`, "utf8")));
 const icy = (d) => { d.p = { ...d.p, accel: d.p.accel * grip, brake: d.p.brake * grip, turnRate: d.p.turnRate * grip }; };
