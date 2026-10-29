@@ -2706,7 +2706,8 @@ The drivers vote in cameras that cost them 39-84% of their fares, in every
 city, and lights that starve the city outright in two of four. Whatever
 wins in the first night stays: once a rule is in force nobody earns under
 the other regime again, cars born since have no record of it and do not
-vote, and the old record is a few quiet night hours against a busy present.
+vote, and the old record is a few quiet night hours against a busy present
+(my reading, not tested).
 A vote on experience alone locks in its first answer, right or wrong.
 
 **A central bank.** A basic income moves money from the cars that earn to
