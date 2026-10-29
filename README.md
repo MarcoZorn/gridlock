@@ -2961,6 +2961,26 @@ sampled routes change, and those by 5% more length. Ants need trails
 because they start lost; these drivers already know the shortest way, so
 the trail the colony lays is the map they were following.
 
+**Roads that wear out.** A city that remembers its traffic: every road wears
+by the distance driven on it, and once it has carried five times what the
+average road carries in a day it closes for two hours of repair and comes
+back as new (day one, with no wear, sets the scale; tools/wear.mjs). Turin,
+against roads that never wear:
+
+| seed | repairs, day 2 / day 6 | fares, days 4-6 | seconds a fare, day 6 |
+|---|---|---|---|
+| 3 | 33 / 116 | +2% | 60 / 60 |
+| 5 | 31 / 117 | -7% | 66 / 58 |
+| 7 | 41 / 149 | -5% | 60 / 57 |
+| 11 | 26 / 106 | -4% | 63 / 61 |
+
+Repairs climb every day as the fleet grows, to a hundred or more by day six,
+a third of Turin's roads shut for two hours each. The city hardly notices:
+fares +2% to -7%, a few seconds a fare. Traffic does not spread out (the
+Gini of distance per road moves from 0.65 to 0.63); the busiest roads stay
+the busiest, closing and reopening in turn, and the detours round them are
+short. Turin has the redundancy to wear out a third of its streets a day.
+
 **Sex only on crashing.** With `--econ crashMate=1` a car may have a child
 only after it has hit another car still alive, and the child is a cross of
 the two; a crash costs what it always did and is good for one child
