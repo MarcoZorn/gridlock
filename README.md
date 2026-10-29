@@ -3002,6 +3002,29 @@ hold all four, at 5-9% hit, and the cars' fares stay a tenth to two fifths
 of the flipped one. Why the flip makes fares is not measured here; fewer
 people on the road to brake for, or to pay fines for, is a guess.
 
+**Pedestrians who buy a car.** A pedestrian's wealth is the crossings it has
+survived; at twenty it buys a car and leaves the crowd, joining the economy
+as a newcomer with a founder's brain and a newcomer's cash, since walking
+teaches nothing about driving (tools/promote.mjs). About two hundred a day
+do, at first. Day the city flips to the cars (people hit per 100 crossings
+past 15), and day six, against pedestrians who stay on foot:
+
+| seed | flips, stay / buy | hit per 100 on day 6 | cars | fares |
+|---|---|---|---|---|
+| 3 | day 6 / not by 6 | 27.4 / 14.9 | 156 / 88 | 2008 / 1056 |
+| 5 | day 3 / not by 6 | 47.4 / 9.8 | 204 / 45 | 2422 / 626 |
+| 7 | day 6 / day 4 | 18.3 / 38.6 | 158 / 189 | 1219 / 2390 |
+| 11 | day 4 / day 6 | 35.1 / 16.2 | 198 / 114 | 2140 / 1314 |
+
+More cars come in, and the cars' takeover comes later in three cities of
+four, earlier in one. The newcomers mostly go broke within the day, on a
+newcomer's cash with a brain one mutation from a founder's, and while
+hundreds of them a day share out the fares no lineage gets rich enough
+to breed (my reading; the newcomers' own earnings were not followed). In the
+fourth, seed 7, the extra cars are what tips it, two days early. The
+crowd itself does not get worse at crossing for losing its best: until the
+flip the hit rate is the same, 6-15 per hundred, either way.
+
 **Tipping, evolved by the passengers.** Every passenger carries a tip, a
 share of the fare paid on top, starting at 15%, in a pool of a thousand. A
 car picking up looks at up to five of those waiting: blind, it takes the
