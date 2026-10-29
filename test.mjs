@@ -11,7 +11,7 @@ import { Track } from "./src/track.js";
 import { City } from "./src/city.js";
 import { SpatialHash } from "./src/spatial.js";
 import { CityWorld } from "./src/cityworld.js";
-import { EcoWorld, ECON, gini } from "./src/ecoworld.js";
+import { EcoWorld, ECON, gini, econParam, applyEcon } from "./src/ecoworld.js";
 import { Body } from "./src/body.js";
 import { Crowd, PED } from "./src/pedestrians.js";
 
@@ -368,6 +368,20 @@ import { Crowd, PED } from "./src/pedestrians.js";
   const { buf, slot } = g._net;
   assert(g.outIds.every((id, k) => buf[slot.get(id)] === out[k]), "a neuron's live value is what the brain output");
   console.log("ok  live neuron values");
+}
+
+{
+  // every economy knob survives a link; junk in a link is ignored
+  const keep = { ...ECON };
+  assert(econParam() === "", "a default economy needs no econ parameter");
+  applyEcon("rank=0.3,ev=40,nonsense=5,carpool=abc,surge=");
+  assert(ECON.rank === 0.3 && ECON.ev === 40 && !("nonsense" in ECON) && ECON.carpool === keep.carpool && ECON.surge === keep.surge, "known numbers set, the rest ignored");
+  const link = econParam();
+  Object.assign(ECON, keep);
+  applyEcon(link);
+  assert(ECON.rank === 0.3 && ECON.ev === 40 && econParam() === link, "a link puts the same economy back");
+  Object.assign(ECON, keep);
+  console.log("ok  economy knobs in a link");
 }
 
 assert(gini([1, 1, 1, 1]) === 0 && Math.abs(gini([0, 0, 0, 1]) - 0.75) < 1e-9, "gini: equal is 0, one of four holding everything is 0.75");

@@ -80,6 +80,18 @@ export const ECON = {
   union: 0,             // union cars refuse passenger fares that pay less than this; the card passes parent to child (an experiment)
 };
 
+// Every economy knob in a link: the ones that differ from the defaults, as
+// "rank=0.3,ev=40", and back. Unknown names and non-numbers are ignored, so a
+// stale or hand-edited link still opens.
+const ECON0 = { ...ECON };
+export const econParam = () => Object.keys(ECON0).filter((k) => ECON[k] !== ECON0[k]).map((k) => `${k}=${ECON[k]}`).join(",");
+export function applyEcon(s) {
+  for (const kv of (s || "").split(",")) {
+    const [k, v] = kv.split("=");
+    if (k in ECON0 && v !== "" && Number.isFinite(+v)) ECON[k] = +v;
+  }
+}
+
 // One city day is 24 minutes of simulation, a minute per hour. Demand has a
 // morning and an evening peak and a quiet night.
 export const DAY = 24 * 60;
