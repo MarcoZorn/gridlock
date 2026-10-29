@@ -2914,8 +2914,8 @@ the two; a crash costs what it always did and is good for one child
 
 (usual / crashMate.) Crashes are common enough here that needing one is a
 small hurdle: births fall 1-26%, and fares with them, 9-25%. Whether it
-breeds crashers depends on the city: by day six two of four crash a quarter
-to a third more per distance than under the usual rule, the other two the
+breeds crashers depends on the city: by day six two of four crash 25% and
+37% more per distance than under the usual rule, the other two the
 same. A rule that pays for crashing in children is a rule that can, not
 must, select for it.
 
