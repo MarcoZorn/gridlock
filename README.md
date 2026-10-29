@@ -2688,6 +2688,27 @@ end. Across the four seeds, days two to six (tools/policies.mjs): fares
 the most tax allowed, and which one a city lands in depends on the first
 day.
 
+Now the rules themselves. One rule at a time, speed cameras at 35 everywhere
+or traffic lights at every junction of three roads or more: the first four
+hours try it off and on in turn, an hour each, so the cars have a record of
+both; then every two hours each car an hour old votes for whichever regime
+has paid it more per hour, by its own earnings, and the majority rules
+(tools/referendum.mjs). Turin, days four to six, against the rule held off:
+
+| seed | cameras: in force from day 2 | fares, voted / always on | lights: in force from day 2 | fares, voted / always on |
+|---|---|---|---|---|
+| 3 | 100% | -45% / -79% | 100% | -100% / -100% |
+| 5 | 100% | -84% / -78% | 0% | -4% / -100% |
+| 7 | 100% | -39% / -39% | 0% | -9% / -100% |
+| 11 | 100% | -62% / -53% | 100% | -91% / -93% |
+
+The drivers vote in cameras that cost them 39-84% of their fares, in every
+city, and lights that starve the city outright in two of four. Whatever
+wins in the first night stays: once a rule is in force nobody earns under
+the other regime again, cars born since have no record of it and do not
+vote, and the old record is a few quiet night hours against a busy present.
+A vote on experience alone locks in its first answer, right or wrong.
+
 **A central bank.** A basic income moves money from the cars that earn to
 all of them. What if it came from nowhere? With `--econ print=0.0369` every
 car is paid 0.0369 a second by nobody, what the quarter basic income paid
