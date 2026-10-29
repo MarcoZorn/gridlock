@@ -3,7 +3,7 @@ import { CityWorld } from "./cityworld.js";
 import { SIZES } from "./ecoworld.js";
 import { BODY, SENSES } from "./driver.js";
 import { fitCanvas, panZoom, announceToggles, shortcuts, busiestCar, cityLayer, drawHeat, drawSenses, drawLights, drawRoute, drawRays, drawCar } from "./render.js";
-import { drawNetwork } from "./netview.js";
+import { drawNetwork, neuronAt, editNeuron } from "./netview.js";
 import { drawSparkline } from "./sparkline.js";
 
 const $ = (id) => document.getElementById(id);
@@ -20,6 +20,20 @@ const brain = $("brain"), bctx = brain.getContext("2d");
 let brainMouse = null;
 brain.addEventListener("mousemove", (e) => { const r = brain.getBoundingClientRect(); brainMouse = { x: e.clientX - r.left, y: e.clientY - r.top }; });
 brain.addEventListener("mouseleave", () => (brainMouse = null));
+// edit by hand: click a neuron to mute it, scroll to turn it up or down. The
+// first edit gives the car its own copy of the brain, so no other car (nor
+// the population it came from) is touched; its children inherit the edit.
+let brainFocus = null;
+const editFocus = (e, op) => {
+  const d = brainFocus, r = brain.getBoundingClientRect();
+  const id = d && neuronAt(d.genome, brain.clientWidth, brain.clientHeight, { x: e.clientX - r.left, y: e.clientY - r.top });
+  if (id === null || id === undefined) return false;
+  if (!d.handEdited) { d.genome = d.genome.clone(); d.handEdited = true; }
+  editNeuron(d.genome, id, op);
+  return true;
+};
+brain.addEventListener("click", (e) => editFocus(e, "mute"));
+brain.addEventListener("wheel", (e) => { if (editFocus(e, e.deltaY < 0 ? "up" : "down")) e.preventDefault(); }, { passive: false });
 const spark = $("spark"), sctx = spark.getContext("2d");
 const senses = $("senses");
 
@@ -96,6 +110,7 @@ function draw() {
   }
   vctx.restore();
 
+  brainFocus = focus;
   drawNetwork(bctx, focus ? focus.genome : null, brain.clientWidth, brain.clientHeight, focus ? { inputs: focus.inputs, mouse: brainMouse } : null);
   drawSparkline(sctx, world.history, spark.clientWidth, spark.clientHeight);
   drawSenses(senses, focus && focus.alive ? focus : null);

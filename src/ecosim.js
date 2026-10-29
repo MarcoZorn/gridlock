@@ -4,7 +4,7 @@ import { Population, Rng } from "./neat.js";
 import { Crowd } from "./pedestrians.js";
 import { osmToGraph } from "./osm.js";
 import { fitCanvas, panZoom, announceToggles, shortcuts, busiestCar, cityLayer, drawHeat, drawClosures, drawLights, drawRoute, drawRays, drawCar, speciesColour } from "./render.js";
-import { drawNetwork } from "./netview.js";
+import { drawNetwork, neuronAt, editNeuron } from "./netview.js";
 import { rayAngles } from "./driver.js";
 
 const $ = (id) => document.getElementById(id);
@@ -21,6 +21,20 @@ const brain = $("brain"), bctx = brain.getContext("2d");
 let brainMouse = null;
 brain.addEventListener("mousemove", (e) => { const r = brain.getBoundingClientRect(); brainMouse = { x: e.clientX - r.left, y: e.clientY - r.top }; });
 brain.addEventListener("mouseleave", () => (brainMouse = null));
+// edit by hand: click a neuron to mute it, scroll to turn it up or down. The
+// first edit gives the car its own copy of the brain, so no other car (nor
+// the population it came from) is touched; its children inherit the edit.
+let brainFocus = null;
+const editFocus = (e, op) => {
+  const d = brainFocus, r = brain.getBoundingClientRect();
+  const id = d && neuronAt(d.genome, brain.clientWidth, brain.clientHeight, { x: e.clientX - r.left, y: e.clientY - r.top });
+  if (id === null || id === undefined) return false;
+  if (!d.handEdited) { d.genome = d.genome.clone(); d.handEdited = true; }
+  editNeuron(d.genome, id, op);
+  return true;
+};
+brain.addEventListener("click", (e) => editFocus(e, "mute"));
+brain.addEventListener("wheel", (e) => { if (editFocus(e, e.deltaY < 0 ? "up" : "down")) e.preventDefault(); }, { passive: false });
 const spc = $("species"), sctx = spc.getContext("2d");
 const sdc = $("sides"), sdctx = sdc.getContext("2d");
 const fac = $("fares"), factx = fac.getContext("2d");
@@ -285,6 +299,7 @@ function draw() {
     vctx.restore();
   }
 
+  brainFocus = focus;
   drawNetwork(bctx, focus ? focus.genome : null, brain.clientWidth, brain.clientHeight, focus ? { inputs: focus.inputs, mouse: brainMouse } : null);
   drawSpecies();
   drawSides();
