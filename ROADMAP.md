@@ -20,15 +20,18 @@ earlier list of 150 ideas, and which were tried, is in
 ## Study 1: when is a monopoly decided? (now)
 
 In the economy one founder's family always ends up owning the city. Rewind
-to each morning and replay 32 times with fresh noise; plot the share of
+to an earlier hour and replay 32 times with fresh noise; plot the share of
 replays the same family wins against the day rewound to. Replaying the
 tape (Blount, Borland and Lenski 2008), applied to wealth concentration in
 an evolving market.
 
-1. Validation: days 1 and 5 on Turin, seed 7, plus the same with mutation
-   frozen after the rewind (`tools/replay.mjs`). If day 5 is not clearly
-   above day 1, there is no curve to find: drop it and move to Study 2.
-2. The full curve, every day, on Turin seed 7.
+1. The curve on Turin, seed 7: rewound to every third city hour of day 0,
+   when the winner goes from one founder among fifty to over half the cars,
+   plus the same with mutation frozen after the rewind (`tools/replay.mjs`).
+   Rewinding by whole days was too coarse: the winner already holds half
+   the city by the end of day 0. If the curve is flat, drop the study and
+   move to Study 2.
+2. A second seed, to see whether the decision always falls this early.
 3. The trivial explanation to beat: "the biggest family stays biggest".
    Compare each day's win rate with the family's share that morning; the
    finding is only interesting if the outcome is decided before the share
