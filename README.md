@@ -2878,6 +2878,28 @@ nothing, and fares get 4-10 seconds shorter. Fifteen streets is 4% more
 road on 342. Barcelona's grid, 643 roads, gains 10% in fares but no time
 per fare.
 
+**Cars that build roads.** No planner this time. After a fare, a car with
+a child's worth of money (34) looks back along the route it just drove for
+the street that would have cut most off it, among the same candidates;
+if the cut is longer than the street, it pays 0.05 a unit of length, about
+10 for a block, and the street is built, open to all (tools/builders.mjs).
+Turin, against no building:
+
+| seed | streets built, day 1 / 2 / 3-6 | spent | fares, days 4-6 |
+|---|---|---|---|
+| 3 | 22 / 15 / 11 | $417 | +20% |
+| 5 | 25 / 5 / 11 | $375 | +9% |
+| 7 | 20 / 17 / 11 | $401 | +6% |
+| 11 | 27 / 12 / 13 | $468 | +18% |
+
+Every city gets better by its drivers' private shortcuts, 6-20% more fares,
+as much as the planner who placed streets where all the fares wanted them
+(7-15%), but with about three times as many streets, 41-52 against 15.
+Building is a rush: three quarters of it in the first two days, while the
+routes are long and the gaps obvious, then a street every few hours once the
+shortcuts that pay for themselves are taken. Each car built for its own
+route; the city got the roads anyway.
+
 **Crossings where pedestrians die.** Forty pedestrians cross Turin's roads
 (see above). A crossing here is a slow zone, a speed camera at 35 on its
 road; every night ten more go on the roads where most people were hit that
