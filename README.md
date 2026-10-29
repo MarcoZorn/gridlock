@@ -1197,6 +1197,12 @@ The ecosystem page can load the first of these cities as it was on day 40
   whichever car has the most traffic around it and follows it, brain and
   senses on screen. Left alone, it is the quickest way to see what drivers
   actually do when they meet.
+- **Drive.** On the economy page, take the wheel of the selected car (or
+  the richest): arrow keys or WASD, or tilt a phone, left and right to
+  steer, top away from you to go and toward you to brake, from however it
+  was held when Drive was pressed. The car's fares, crashes and children
+  are still the economy's, so you can try to make a living among the
+  evolved drivers. One person at a time; nothing over a network.
 - **Drawing big cities.** The roads are rendered once into an offscreen
   canvas and only redrawn when the view or the map changes; a large city went
   from 40 frames a second to the display's full rate.
