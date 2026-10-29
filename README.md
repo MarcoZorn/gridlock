@@ -2442,6 +2442,23 @@ people. A bus here has no seats to fill, though: a rider is counted when
 the trip goes to the bus, not when a bus picks anyone up, so this is the
 taxis' side of the story, not a timetable's.
 
+Night buses only: riders from ten at night to six in the morning, the line
+the same (`NIGHT=1`; the buses still drive it by day, empty). Days four to
+six, against no buses:
+
+| seed | night riders a day | taxi fares | everyone carried | all-day buses, everyone carried |
+|---|---|---|---|---|
+| 3 | 193 | +6% | +14% | +28% |
+| 5 | 185 | -5% | +2% | +14% |
+| 7 | 183 | -6% | +1% | +25% |
+| 11 | 212 | 0% | +9% | +24% |
+
+About a quarter of the all-day riders, from the 17% of the day's bookings
+made at night (why more than their share is not measured), and the taxis
+do not notice them: -6% to +6% in fares, about as many
+taxis. The night line adds 1-14% to the people moved, the day line 14-28%;
+the taxi economy is the same either way.
+
 **A mass extinction.** On the morning of day three, four cars in five go
 broke at once (`node tools/extinction.mjs turin 7`). Species and cars
 before, three hours after and twelve hours after, against the same
