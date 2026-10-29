@@ -200,6 +200,7 @@ commits and pushes.
 
 ## Done
 
+- 85. Edit a brain by hand: click a neuron in the brain panel to mute it, scroll to scale it; the car gets its own copy, children inherit the edit
 - 82. A notebook page (notebook.html): any experiment as the body of an async function, run in a worker with the simulator in scope, output logged, code kept in the link
 - 83. Shareable links with all knobs: ?econ= carries every economy constant that differs from the default, ?peds=1 the pedestrians; Copy link writes them, junk is ignored
 - 81. Live neuron tracing: neurons lit by their live value on both city pages, hover one for its value and the three inputs pushing it hardest
