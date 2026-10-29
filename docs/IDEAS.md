@@ -200,6 +200,7 @@ commits and pushes.
 
 ## Done
 
+- 119. Learner drivers (tools/learner.mjs): children nudged toward the best earner's steering and throttle close 40% of the gap; fares -9% to +14% in four Turin seeds, crashes -8% to +1%, no better than copying its brain outright (a hint, four seeds)
 - 111. Night buses only (NIGHT=1 tools/buses.mjs): about 190 riders a night, taxi fares -6% to +6%, the city carries 1-14% more against 14-28% for all-day buses
 - 105. Buses (tools/buses.mjs): six city-run buses on a fixed line take about 700 trips a day; taxi fares fall only 2-10%, so the city carries 14-28% more people
 - 103. A black market (tools/blackmarket.mjs): fares off the books grow to 21-41% of cars where the expected fine is half the platform's cut, sit at the mutation floor at break-even, fall below it where enforcement is doubled
