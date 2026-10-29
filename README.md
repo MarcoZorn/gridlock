@@ -3152,6 +3152,24 @@ slower as the days pass. What the economy does instead is make up the
 fares (by day 10, 80-102% of clear weather at half grip, 68-84% at 0.3)
 and live with the crashes, which cost a car cash but never its life.
 
+**Real rain.** A real fortnight of Turin's weather, 15-28 May 2025, seven
+days with a millimetre or more (Open-Meteo, docs/turin-rain.json), one sim
+day to a real one. On a wet day grip falls to 0.8 and passengers book a
+quarter more fares; on a dry day both come back (tools/rain.mjs). Against
+the same city always dry, days two to fourteen:
+
+| seed | wet days: fares | crashes per 1000 units | money per car | dry days: fares | crashes |
+|---|---|---|---|---|---|
+| 3 | +9% | +14% | 0% | -1% | +1% |
+| 5 | +15% | +24% | -5% | +1% | +8% |
+| 7 | +17% | +16% | +4% | +2% | -6% |
+| 11 | +15% | +16% | 0% | 0% | +2% |
+
+Rain is a busy day: 9-17% more fares, a third to two thirds of the extra
+bookings carried, and 14-24% more crashes on the same distance. The drivers
+are no richer for it; more cars share the work, as with every boom here.
+The next dry day is an ordinary one, and nothing carries over.
+
 **Lights on Manhattan.** Midtown runs on traffic lights, so I gave the
 economy's Manhattan lights at every junction of three or more roads (60 of
 them) and founders raised under lights. It never got going: twelve days on
