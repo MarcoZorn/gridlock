@@ -3936,3 +3936,21 @@ distance; if they learned it, the repair bill did.
 - [primordial](https://github.com/MarcoZorn/primordial), for "stay solvent" as the only rule
 
 MIT.
+
+### Claim C2, confirmed: the congestion charge at twenty seeds
+
+The first claim re-tested with `tools/trial.mjs`: an all-day congestion
+charge of 0.1 on Turin against no charge, twenty fresh paired seeds
+(101-120), days two to six, with 95% bootstrap intervals:
+
+| measure | change | interval | seeds |
+|---|---|---|---|
+| fares a day | -17.8% | -20.5 to -15.1% | 20 down |
+| crashes per car a day | -24.0% | -27.0 to -21.0% | 20 down |
+| trip time | -29.0% | -30.6 to -27.4% | 20 down |
+| cars | -44.8% | -47.1 to -42.5% | 20 down |
+| Gini | +0.005 | +0.004 to +0.006 | 20 up |
+
+Every seed moved the same way on every measure, and all three predictions
+written before the run held. The four-seed reading (fares -17%, crashes
+-20%, trips -28%) was right; now it has error bars.
