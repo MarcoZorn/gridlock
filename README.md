@@ -2900,6 +2900,25 @@ routes are long and the gaps obvious, then a street every few hours once the
 shortcuts that pay for themselves are taken. Each car built for its own
 route; the city got the roads anyway.
 
+**Sex only on crashing.** With `--econ crashMate=1` a car may have a child
+only after it has hit another car still alive, and the child is a cross of
+the two; a crash costs what it always did and is good for one child
+(tools/crashmate.mjs). Turin, against the usual rule:
+
+| seed | fares, days 4-6 | births, days 4-6 | car crashes per 1000 units, day 1 | day 6 |
+|---|---|---|---|---|
+| 3 | -9% | -1% | 1.54 / 1.57 | 2.14 / 2.67 |
+| 5 | -20% | -17% | 1.42 / 1.39 | 2.60 / 2.64 |
+| 7 | -25% | -26% | 1.35 / 1.60 | 2.23 / 3.05 |
+| 11 | -9% | -6% | 1.88 / 1.26 | 2.58 / 2.56 |
+
+(usual / crashMate.) Crashes are common enough here that needing one is a
+small hurdle: births fall 1-26%, and fares with them, 9-25%. Whether it
+breeds crashers depends on the city: by day six two of four crash a quarter
+to a third more per distance than under the usual rule, the other two the
+same. A rule that pays for crashing in children is a rule that can, not
+must, select for it.
+
 **Crossings where pedestrians die.** Forty pedestrians cross Turin's roads
 (see above). A crossing here is a slow zone, a speed camera at 35 on its
 road; every night ten more go on the roads where most people were hit that
