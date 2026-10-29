@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Gridlock: notebook</title>
+<meta name="description" content="Run any gridlock experiment in the browser: the simulator in scope, your code, its output.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 16 16%27%3E%3Crect width=%2716%27 height=%2716%27 rx=%273%27 fill=%27%2314161c%27/%3E%3Cpath d=%27M2 8h12M8 2v12%27 stroke=%27%23ff8a5c%27 stroke-width=%273%27/%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css">
+<style>
+  .nb { max-width: 980px; margin: 0 auto; padding: 0 16px 40px; }
+  .nb textarea { width: 100%; min-height: 340px; font: 13px/1.5 ui-monospace, monospace; background: #14161c; color: #e6e6e6; border: 1px solid #2a2e38; border-radius: 6px; padding: 10px; box-sizing: border-box; tab-size: 2; }
+  .nb pre { min-height: 120px; background: #0e1014; border: 1px solid #2a2e38; border-radius: 6px; padding: 10px; white-space: pre-wrap; font: 12px/1.5 ui-monospace, monospace; }
+  .nb .bar { display: flex; gap: 8px; align-items: center; margin: 8px 0; }
+  .nb .err { color: #ff8a7a; }
+</style>
+</head>
+<body>
+<header>
+<nav class="views">
+  <a href="index.html">Generations</a>
+  <a href="eco.html">No fitness function</a>
+  <a href="notebook.html" aria-current="page">Notebook</a>
+  <a href="https://github.com/MarcoZorn/gridlock">Code</a>
+</nav>
+  <h1>Grid<span>lock</span>: notebook</h1>
+  <p>
+    Write an experiment, run it here. The code is the body of an async function, run off the page in a worker,
+    with the simulator in scope: <code>EcoWorld</code>, <code>CityWorld</code>, <code>ECON</code>, <code>BODY</code>,
+    <code>DAY</code>, <code>DT</code>, <code>Population</code>, <code>Rng</code>, <code>gini</code>, and
+    <code>await map("turin")</code>, <code>await founders()</code> (the trained drivers), <code>log(...)</code>.
+    Anything in tools/ that does not write files ports over almost line for line. <code>ECON</code> goes back to
+    the defaults after every run. The code is kept in the link, so a link is the experiment.
+  </p>
+</header>
+<main class="nb">
+  <textarea id="code" spellcheck="false" aria-label="Experiment code"></textarea>
+  <div class="bar">
+    <button id="run">Run</button>
+    <button id="stop" disabled>Stop</button>
+    <button id="share">Copy link</button>
+    <span id="status"></span>
+  </div>
+  <pre id="out" aria-live="polite"></pre>
+</main>
+<script type="module">
+const $ = (id) => document.getElementById(id);
+const example = `// A taxi rank (ECON.rank) against none: Turin's first day, six hours at a time
+const graph = await map("turin"), pop = await founders();
+const quarter = DAY / DT / 4;
+for (const rank of [0, 0.3]) {
+  ECON.rank = rank;
+  const w = new EcoWorld({ seed: 7, founders: pop, graph });
+  const fares = [];
+  for (let q = 0; q < 4; q++) {
+    let n = 0;
+    for (let t = 0; t < quarter; t++) {
+      // w.events is reset now and then inside step(): count what each step adds
+      const f = w.events.trips;
+      w.step();
+      n += w.events.trips >= f ? w.events.trips - f : w.events.trips;
+    }
+    fares.push(n);
+  }
+  log(\`rank \${rank}: fares by six hours \${fares.join(" ")}, \${w.cars.length} cars\`);
+}`;
+const q = new URLSearchParams(location.search);
+$("code").value = q.get("code") ?? localStorage.getItem("gridlock-notebook") ?? example;
+let worker = null, t0 = 0;
+const done = (msg) => { worker?.terminate(); worker = null; $("run").disabled = false; $("stop").disabled = true; $("status").textContent = msg; };
+const print = (s, cls) => { const line = document.createElement("div"); line.textContent = s; if (cls) line.className = cls; $("out").append(line); };
+$("run").onclick = () => {
+  localStorage.setItem("gridlock-notebook", $("code").value);
+  $("out").textContent = "";
+  worker = new Worker(new URL("src/nbworker.js", location.href), { type: "module" });
+  worker.onmessage = (e) => {
+    if (e.data.log !== undefined) print(e.data.log);
+    if (e.data.error) { print(e.data.error, "err"); done("failed"); }
+    if (e.data.done) done(`done in ${((performance.now() - t0) / 1000).toFixed(1)} s`);
+  };
+  worker.onerror = (e) => { print(e.message || "the worker failed to start", "err"); done("failed"); };
+  t0 = performance.now();
+  worker.postMessage({ code: $("code").value });
+  $("run").disabled = true; $("stop").disabled = false; $("status").textContent = "running…";
+};
+$("stop").onclick = () => done("stopped");
+$("share").onclick = async () => {
+  const u = new URL(location.href);
+  u.searchParams.set("code", $("code").value);
+  history.replaceState(null, "", u);
+  try { await navigator.clipboard.writeText(u.href); $("status").textContent = "link copied"; }
+  catch { $("status").textContent = "copy the address bar"; }
+};
+// Ctrl/Cmd+Enter runs
+$("code").addEventListener("keydown", (e) => { if (e.key === "Enter" && (e.ctrlKey || e.metaKey) && !worker) { e.preventDefault(); $("run").click(); } });
+</script>
+</body>
+</html>
