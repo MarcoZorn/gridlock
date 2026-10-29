@@ -2419,6 +2419,29 @@ what they did, from 9% less to 10% more. The station runs are short and the
 queue refills, so the same fleet moves more passengers, a few of them only
 to the train.
 
+**Buses.** On the road this time: six buses shuttle for ever between the
+same two places, driven by founders' brains, taking up road and crashing
+like anyone, but paid by the city, so they never earn, breed or go broke
+(one lost to crashes is replaced). A passenger whose start and end both lie
+within 300 units of the line, about half of Turin's junctions, takes the
+bus half the time, and the taxi is handed another fare instead
+(tools/buses.mjs). Days four to six, against no buses:
+
+| seed | bus riders a day | taxi fares | everyone carried | taxis, day 6 | car crashes per 1000 units, day 6 |
+|---|---|---|---|---|---|
+| 3 | 702 | -2% | +28% | 238 / 194 | 2.53 / 2.14 |
+| 5 | 629 | -10% | +14% | 239 / 218 | 3.04 / 2.60 |
+| 7 | 728 | -3% | +25% | 192 / 257 | 2.19 / 2.23 |
+| 11 | 717 | -5% | +24% | 202 / 217 | 2.76 / 2.58 |
+
+The buses take a quarter of the trips that would have been taxi fares and
+the taxis barely miss them, 2-10% fewer fares and about as many taxis,
+because the queue is never empty: the taxi handed someone else had someone
+else to hand it. The city moves a seventh to more than a quarter more
+people. A bus here has no seats to fill, though: a rider is counted when
+the trip goes to the bus, not when a bus picks anyone up, so this is the
+taxis' side of the story, not a timetable's.
+
 **A mass extinction.** On the morning of day three, four cars in five go
 broke at once (`node tools/extinction.mjs turin 7`). Species and cars
 before, three hours after and twelve hours after, against the same
