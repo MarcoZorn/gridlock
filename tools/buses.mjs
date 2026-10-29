@@ -16,10 +16,15 @@ import { Driver } from "../src/driver.js";
 //   BUSES=6 SHARE=0.5 REACH=300 node tools/buses.mjs turin 7
 const [map = "turin", seed = 7] = process.argv.slice(2), days = +(process.env.DAYS || 6);
 const nBus = +(process.env.BUSES || 6), share = +(process.env.SHARE || 0.5), reach = +(process.env.REACH || 300);
+// NIGHT=1: night buses only, riders from 22:00 to 06:00 (the buses still
+// drive the line by day, empty)
+const night = !!process.env.NIGHT, isNight = () => { const h = (w0.tick % perDayTicks) / (perDayTicks / 24); return h >= 22 || h < 6; };
+let w0 = null;
 const founders = Population.fromJSON(JSON.parse(fs.readFileSync("docs/trained.json", "utf8")).pop);
-const perDay = DAY / DT;
+const perDay = DAY / DT, perDayTicks = perDay;
 for (const on of [false, true]) {
   const w = new EcoWorld({ seed: +seed, founders, graph: JSON.parse(fs.readFileSync(`maps/${map}.json`, "utf8")) });
+  w0 = w;
   const c = w.city, xs = c.nodes.map((n) => n.x), ys = c.nodes.map((n) => n.y);
   const x0 = Math.min(...xs), x1 = Math.max(...xs), my = (Math.min(...ys) + Math.max(...ys)) / 2;
   const nearest = (x, y) => c.nodes.reduce((b, n, i) => (Math.hypot(n.x - x, n.y - y) < Math.hypot(c.nodes[b].x - x, c.nodes[b].y - y) ? i : b), 0);
@@ -45,7 +50,7 @@ for (const on of [false, true]) {
     w.randomFare = (here, came, jam) => {
       for (let tries = 0; tries < 20; tries++) {
         const route = fare(here, came, jam);
-        if (!route || !near.has(route[0]) || !near.has(route.at(-1)) || rand() >= share) return route;
+        if (!route || !near.has(route[0]) || !near.has(route.at(-1)) || (night && !isNight()) || rand() >= share) return route;
         riders++;   // this one took the bus; the taxi is handed someone else
       }
       return fare(here, came, jam);
@@ -69,5 +74,5 @@ for (const on of [false, true]) {
     const alive = [...buses].filter((b) => w.cars.includes(b)).length;
     out.push(`${fares} r${riders} ${w.cars.length - alive}t ${(1000 * hits / dist).toFixed(2)}${on ? ` +${replaced}b` : ""}`);
   }
-  console.log(`${map} s${seed} ${on ? "buses" : "none "}: ${out.join(" | ")}`);
+  console.log(`${map} s${seed} ${on ? (night ? "night" : "buses") : "none "}: ${out.join(" | ")}`);
 }
