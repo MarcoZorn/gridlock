@@ -3167,7 +3167,8 @@ the same city always dry, days two to fourteen:
 
 Rain is a busy day: 9-17% more fares, a third to two thirds of the extra
 bookings carried, and 14-24% more crashes on the same distance. The drivers
-are no richer for it; more cars share the work, as with every boom here.
+are no richer for it, per car; more cars sharing the work, as in other booms
+here, is the likely reason (the fleet was not counted).
 The next dry day is an ordinary one, and nothing carries over.
 
 **Lights on Manhattan.** Midtown runs on traffic lights, so I gave the
