@@ -200,6 +200,7 @@ commits and pushes.
 
 ## Done
 
+- 94. Pedestrians who buy a car (tools/promote.mjs): two hundred a day become newcomer cars; the cars' takeover comes later in three Turin seeds of four, earlier in one; the crowd crosses no worse for losing its best
 - 93. Venice (maps/venice.json, ?map=venice): boats on the canals round the Rialto carry 2-23% fewer fares than Turin, a fifth longer each, and grow engines 16-31% smaller
 - 91. Ants against cars (tools/ants.mjs): routes by pheromone change fares by -6% to +4% and never concentrate traffic (Gini 0.64-0.66); the marked roads are the shortest paths already, 14 routes of 400 change
 - 96. Seasons that move (tools/migrate-demand.mjs): the fleet follows a quarter in season the same day, carried by its own fares; a big quarter in season adds 10-13% fares, the small north-east corner costs 12-17%
