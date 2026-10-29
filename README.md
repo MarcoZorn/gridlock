@@ -1217,6 +1217,12 @@ The ecosystem page can load the first of these cities as it was on day 40
   it pushing hardest. Here a car's throttle sits near zero, a car ahead
   pushing it up (+3.44) and one to the far right and a hidden neuron
   pulling it down. ![Tracing the throttle neuron](docs/trace.png)
+- **Editing a brain by hand.** Click a neuron to mute it (its outgoing
+  connections cut; click again to put them back), scroll over it to turn
+  it up or down a tenth at a time. The car gets its own copy of the brain
+  at the first edit, so nothing else changes; on the economy page its
+  children inherit what you did. Mute a car's sense of the car on its left
+  and watch what it does at the next junction.
 - **Drawing big cities.** The roads are rendered once into an offscreen
   canvas and only redrawn when the view or the map changes; a large city went
   from 40 frames a second to the display's full rate.
