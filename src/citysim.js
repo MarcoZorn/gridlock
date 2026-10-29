@@ -16,6 +16,10 @@ const $ = (id) => document.getElementById(id);
 }
 const view = $("view"), vctx = view.getContext("2d");
 const brain = $("brain"), bctx = brain.getContext("2d");
+// hover a neuron to trace it (netview.js)
+let brainMouse = null;
+brain.addEventListener("mousemove", (e) => { const r = brain.getBoundingClientRect(); brainMouse = { x: e.clientX - r.left, y: e.clientY - r.top }; });
+brain.addEventListener("mouseleave", () => (brainMouse = null));
 const spark = $("spark"), sctx = spark.getContext("2d");
 const senses = $("senses");
 
@@ -92,7 +96,7 @@ function draw() {
   }
   vctx.restore();
 
-  drawNetwork(bctx, focus ? focus.genome : null, brain.clientWidth, brain.clientHeight);
+  drawNetwork(bctx, focus ? focus.genome : null, brain.clientWidth, brain.clientHeight, focus ? { inputs: focus.inputs, mouse: brainMouse } : null);
   drawSparkline(sctx, world.history, spark.clientWidth, spark.clientHeight);
   drawSenses(senses, focus && focus.alive ? focus : null);
 

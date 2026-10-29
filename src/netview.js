@@ -1,7 +1,14 @@
 // Draws the leader's brain. This is the part people actually stare at: you can
 // watch a connection appear, and a few generations later watch the car start
-// using it.
-export function drawNetwork(ctx, g, w, h) {
+// using it. With `live` ({ inputs, mouse }) the neurons light up with what the
+// car is feeling right now, and the one under the mouse is traced: its value,
+// and the three connections into it that are pushing hardest.
+const RAY = ["far left", "left", "ahead", "right", "far right"];
+const NAMES = [...RAY.flatMap((r) => [`wall ${r}`, `car ${r}`, `closing ${r}`]), "own speed", "heading error", "sideways", "junction", "next turn", "light"];
+const OUT = ["steer", "throttle"];
+const scratch = new Float64Array(8);
+
+export function drawNetwork(ctx, g, w, h, live = null) {
   ctx.clearRect(0, 0, w, h);
   if (!g) return;
 
@@ -23,10 +30,28 @@ export function drawNetwork(ctx, g, w, h) {
     });
   }
 
+  // live values: re-run the brain on the car's last inputs (same inputs, same
+  // values, so the car's own state is untouched)
+  let val = null;
+  if (live?.inputs) {
+    g.activate(live.inputs, scratch);
+    const { buf, slot } = g._net;
+    val = (id) => buf[slot.get(id) ?? buf.length - 1];
+  }
+  let hover = null;
+  if (live?.mouse) {
+    let best = 9;
+    for (const [id, p] of pos) { const d = Math.hypot(p.x - live.mouse.x, p.y - live.mouse.y); if (d < best) { best = d; hover = id; } }
+  }
+
+  const into = [];
   for (const c of g.conns.values()) {
     if (!c.on) continue;
     const a = pos.get(c.inId), b = pos.get(c.outId);
     if (!a || !b) continue;
+    const lit = hover === null || c.outId === hover || c.inId === hover;
+    if (c.outId === hover) into.push(c);
+    ctx.globalAlpha = lit ? 1 : 0.12;
     ctx.strokeStyle = c.w >= 0 ? "rgba(90,200,160,0.75)" : "rgba(232,110,100,0.75)";
     ctx.lineWidth = Math.min(3, 0.4 + Math.abs(c.w) * 0.5);
     ctx.beginPath();
@@ -37,12 +62,40 @@ export function drawNetwork(ctx, g, w, h) {
     ctx.quadraticCurveTo(mx, my, b.x, b.y);
     ctx.stroke();
   }
+  ctx.globalAlpha = 1;
 
   const colour = { input: "#6ea8ff", bias: "#8b7cf6", hidden: "#e8c46a", output: "#ff8a5c" };
-  for (const [, p] of pos) {
+  for (const [id, p] of pos) {
     ctx.beginPath();
     ctx.arc(p.x, p.y, p.kind === "hidden" ? 4 : 5.5, 0, Math.PI * 2);
     ctx.fillStyle = colour[p.kind] || "#999";
+    // dim when quiet, full when the neuron is driving hard either way
+    ctx.globalAlpha = val ? 0.25 + 0.75 * Math.min(1, Math.abs(val(id))) : 1;
     ctx.fill();
+    ctx.globalAlpha = 1;
+    if (id === hover) { ctx.strokeStyle = "#fff"; ctx.lineWidth = 1.5; ctx.stroke(); }
   }
+
+  if (hover === null) return;
+  const name = (id) => {
+    const n = g.nodes.get(id);
+    if (n.kind === "input") return NAMES[id] || `input ${id}`;
+    if (n.kind === "bias") return "bias";
+    if (n.kind === "output") { const k = g.outIds.indexOf(id); return OUT[k] || `out ${k}`; }
+    return `hidden ${id}`;
+  };
+  const lines = [val ? `${name(hover)} ${val(hover).toFixed(2)}` : name(hover)];
+  if (val) {
+    into.sort((a, b) => Math.abs(b.w * val(b.inId)) - Math.abs(a.w * val(a.inId)));
+    for (const c of into.slice(0, 3)) { const x = c.w * val(c.inId); lines.push(`${x >= 0 ? "+" : ""}${x.toFixed(2)} from ${name(c.inId)}`); }
+  }
+  const p = pos.get(hover);
+  ctx.font = "11px system-ui, sans-serif";
+  const tw = Math.max(...lines.map((l) => ctx.measureText(l).width)) + 10, th = lines.length * 14 + 6;
+  // beside the neuron, on whichever side has room, never over it
+  const bx = p.x + 10 + tw <= w ? p.x + 10 : Math.max(2, p.x - 10 - tw), by = Math.min(h - th - 2, Math.max(2, p.y - th / 2));
+  ctx.fillStyle = "rgba(10,12,16,0.88)";
+  ctx.fillRect(bx, by, tw, th);
+  ctx.fillStyle = "#e6e6e6";
+  lines.forEach((l, i) => ctx.fillText(l, bx + 5, by + 15 + i * 14));
 }
