@@ -42,7 +42,7 @@ step: serve the folder and open it.
   on the eco page the rules `?charge=1&camera=1&boom=1&finish=1&insure=1`,
   `?peds=1`, and any economy knob as `?econ=rank=0.3,carpool=0.15` (the
   names `--econ` takes; Copy link writes every one that is not the default),
-  `?map=crossroads|turin|barcelona|manhattan|grown`, `?signals=real` (lights only at a real map's
+  `?map=crossroads|turin|barcelona|manhattan|grown|venice`, `?signals=real` (lights only at a real map's
   OpenStreetMap signals), and on the generation page `?traffic=1&density=20`.
 
 ```
@@ -1427,6 +1427,26 @@ junctions and 239 two-way streets, most junctions three-way, like an old
 town.
 
 ![A city grown by a branching rule, seed 7](docs/grown.png)
+
+**Venice.** Boats on the canals round the Rialto: OpenStreetMap's
+`waterway=canal` ways, read as one-lane streets by the same converter, give
+500 junctions and 513 stretches of canal, the bends of the canals included
+(`maps/venice.json`, `?map=venice`). The boats are cars, same physics, no
+current and no drift; the founders were raised on streets. Days two to six,
+against Turin on the same seeds (`node headless.mjs --eco --map venice`, then
+tools/ecocmp.mjs):
+
+| seed | fares a day, Venice / Turin | seconds a fare | engine gene |
+|---|---|---|---|
+| 3 | 1854 / 2412 | 74 / 60 | 0.41 / 0.51 |
+| 5 | 2315 / 2562 | 72 / 59 | 0.33 / 0.48 |
+| 7 | 2036 / 2588 | 70 / 57 | 0.42 / 0.50 |
+| 11 | 2326 / 2363 | 70 / 58 | 0.33 / 0.40 |
+
+A living from the first day, 2-23% fewer fares than Turin and a fifth longer
+each, the canals winding and narrow; crashes per car the same. The boats
+grow smaller engines in every seed, 16-31% smaller: there is no
+straight to use one on (a guess at why).
 
 Its economy (`--map grown`, or [on the eco page](https://marcozorn.github.io/gridlock/eco.html?map=grown)), four seeds, days two to six, against Turin.
 Demand grows with the amount of road, and the grown city has three
