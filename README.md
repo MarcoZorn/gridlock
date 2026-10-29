@@ -3169,6 +3169,31 @@ Rain is a busy day: 9-17% more fares, a third to two thirds of the extra
 bookings carried, and 14-24% more crashes on the same distance. The drivers
 are no richer for it, per car; more cars sharing the work, as in other booms
 here, is the likely reason (the fleet was not counted).
+
+**Against the speed limits.** Calibrating against real travel times needs
+somewhere to start, and the maps carry one: the posted limits from
+OpenStreetMap (30 km/h on nearly all of Turin's centre; 10-50 in Barcelona;
+25 mph in Manhattan, 10 on a few streets). Every fare is timed against the
+time its route would take at the limit on each road, a unit being 0.4 m
+(tools/calibrate.mjs). Day four:
+
+| city | fare time / time at the limit, median | mean | fares faster than the limit allows |
+|---|---|---|---|
+| Turin s3 | 0.78 | 0.85 | 78% |
+| Turin s5 | 0.80 | 0.86 | 76% |
+| Turin s7 | 0.74 | 0.79 | 82% |
+| Turin s11 | 0.75 | 0.81 | 81% |
+| Barcelona s7 | 0.55 | 0.58 | 94% |
+| Manhattan s7 | 0.58 | 0.62 | 97% |
+
+Real traffic in a city centre takes longer than its limits allow, junctions
+and lights and other cars included; these drivers take less, a quarter
+less in Turin and nearly half in Barcelona and Manhattan, speeding on
+average junctions and all. Traffic slows them down day by day (Turin's
+median was 0.60-0.67 on day one), but not to the limit. So against the
+real cities these are fast drivers: to put the sim's clock on real time,
+its trips would have to be stretched by at least 1.3 in Turin and 1.8 in
+the others, more by however much real congestion adds.
 The next dry day is an ordinary one, and nothing carries over.
 
 **Lights on Manhattan.** Midtown runs on traffic lights, so I gave the
