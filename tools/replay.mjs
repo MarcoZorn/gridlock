@@ -10,7 +10,8 @@ import { Population, Rng } from "../src/neat.js";
 // replayed REPS times with fresh noise. The share of replays the same
 // family wins says from when its takeover was already decided.
 //
-//   REPS=32 DAYS=8 node tools/replay.mjs turin 7 [1,5]       (snapshot days, default all)
+//   REPS=32 DAYS=8 node tools/replay.mjs turin 7 [3,12]      (snapshot hours, default all)
+//   EVERY=3 SPAN=48: a snapshot every 3 city hours over the first 48
 //   FREEZE=1 ...   the same with mutation switched off after the rewind (the null)
 //   one replay:    node tools/replay.mjs one <snapshot.json> <seed>
 const perDay = DAY / DT, freeze = !!process.env.FREEZE;
@@ -41,7 +42,9 @@ if (process.argv[2] === "one") {
 
 const [map = "turin", seed = 7, which] = process.argv.slice(2);
 const days = +(process.env.DAYS || 8), reps = +(process.env.REPS || 32);
-const dir = `tmp/replay/${map}-s${seed}-d${days}`;
+const every = +(process.env.EVERY || 3), span = +(process.env.SPAN || 48), perHour = perDay / 24;
+const hours = Array.from({ length: Math.floor(span / every) }, (_, k) => k * every);
+const dir = `tmp/replay/${map}-s${seed}-d${days}-e${every}`;
 fs.mkdirSync(dir, { recursive: true });
 
 // 1. the original run, with a snapshot (and the family of every car) each morning
@@ -52,24 +55,25 @@ if (!fs.existsSync(`${dir}/end.json`)) {
   for (const d of w.cars) family.set(d.id, d.id);
   track(w, family);
   const shares = [];
-  for (let day = 0; day < days; day++) {
-    fs.writeFileSync(`${dir}/day${day}.json`, JSON.stringify({ world: w.toJSON(), family: [...family], days }));
-    for (let t = 0; t < perDay; t++) w.step();
+  for (const h of hours) {
+    while (w.tick < h * perHour) w.step();
+    fs.writeFileSync(`${dir}/h${h}.json`, JSON.stringify({ world: w.toJSON(), family: [...family], days }));
     shares.push(winnerShare(w, family));
   }
+  while (w.tick < days * perDay) w.step();
   const end = winnerShare(w, family);
-  // how big the eventual winner was each evening, by its share of the cars
+  // how big the eventual winner was at each snapshot, by its share of the cars
   const path = shares.map((s) => +((s.count.get(end.family) || 0) / [...s.count.values()].reduce((a, b) => a + b, 0)).toFixed(3));
   fs.writeFileSync(`${dir}/end.json`, JSON.stringify({ winner: end.family, share: end.share, path }));
-  for (let day = 0; day < days; day++) {
-    const f = `${dir}/day${day}.json`, j = JSON.parse(fs.readFileSync(f, "utf8"));
+  for (const h of hours) {
+    const f = `${dir}/h${h}.json`, j = JSON.parse(fs.readFileSync(f, "utf8"));
     j.winner = end.family; fs.writeFileSync(f, JSON.stringify(j));
   }
 }
 const end = JSON.parse(fs.readFileSync(`${dir}/end.json`, "utf8"));
 
 // 2. the replays, many at once
-const snapDays = which ? which.split(",").map(Number) : Array.from({ length: days }, (_, d) => d);
+const snapDays = which ? which.split(",").map(Number) : hours;
 const tag = freeze ? "frozen" : "evolving", out = `${dir}/replays-${tag}.jsonl`;
 const have = fs.existsSync(out) ? fs.readFileSync(out, "utf8").trim().split("\n").filter(Boolean).map(JSON.parse) : [];
 const key = (d, s) => `${d}:${s}`, seen = new Set(have.map((r) => key(r.day, r.seed)));
@@ -79,7 +83,7 @@ let next = 0;
 await Promise.all(Array.from({ length: Math.max(1, Math.min(jobs.length, os.cpus().length - 2)) }, async () => {
   while (next < jobs.length) {
     const [d, s] = jobs[next++];
-    const txt = await new Promise((ok) => { let o = ""; const p = spawn("node", ["tools/replay.mjs", "one", `${dir}/day${d}.json`, String(s)], { env: process.env }); p.stdout.on("data", (b) => (o += b)); p.on("exit", () => ok(o)); });
+    const txt = await new Promise((ok) => { let o = ""; const p = spawn("node", ["tools/replay.mjs", "one", `${dir}/h${d}.json`, String(s)], { env: process.env }); p.stdout.on("data", (b) => (o += b)); p.on("exit", () => ok(o)); });
     try { fs.appendFileSync(out, JSON.stringify({ day: d, seed: s, ...JSON.parse(txt) }) + "\n"); } catch { /* a failed replay is just missing */ }
   }
 }));
@@ -87,12 +91,12 @@ await Promise.all(Array.from({ length: Math.max(1, Math.min(jobs.length, os.cpus
 // 3. P(the original winner wins again), per snapshot day, with a Wilson interval
 const all = fs.readFileSync(out, "utf8").trim().split("\n").map(JSON.parse);
 const wilson = (k, n) => { const z = 1.96, p = k / n, c = (p + z * z / (2 * n)) / (1 + z * z / n), h = (z / (1 + z * z / n)) * Math.sqrt(p * (1 - p) / n + z * z / (4 * n * n)); return [c - h, c + h]; };
-console.log(`${map} s${seed}, ${days} days, ${tag}: the winner (family ${end.winner}) ends with ${(100 * end.share).toFixed(0)}% of the cars; its share each evening ${end.path.map((x) => (100 * x).toFixed(0) + "%").join(" ")}`);
-console.log("rewound to the morning of | replays the winner wins (>50% of cars) | 95% interval | winner's share that morning | same-noise control");
+console.log(`${map} s${seed}, ${days} days, ${tag}: the winner (family ${end.winner}) ends with ${(100 * end.share).toFixed(0)}% of the cars; its share at each snapshot (hours ${hours.join(" ")}) ${end.path.map((x) => (100 * x).toFixed(0) + "%").join(" ")}`);
+console.log("rewound to hour | replays the winner wins (>50% of cars) | 95% interval | winner's share then | same-noise control");
 for (const d of snapDays) {
   const r = all.filter((x) => x.day === d && x.seed > 0), ctl = all.find((x) => x.day === d && x.seed === 0);
   if (!r.length) continue;
   const k = r.filter((x) => x.won / x.cars > 0.5).length, [lo, hi] = wilson(k, r.length);
-  const before = d === 0 ? "-" : (100 * end.path[d - 1]).toFixed(0) + "%";
-  console.log(`day ${d} | ${k}/${r.length} | ${(100 * lo).toFixed(0)}-${(100 * hi).toFixed(0)}% | ${before} | ${ctl ? (ctl.won / ctl.cars > 0.5 ? "wins" : "loses") + ` (${(100 * ctl.won / ctl.cars).toFixed(0)}%)` : "-"}`);
+  const before = (100 * end.path[hours.indexOf(d)]).toFixed(0) + "%";
+  console.log(`hour ${d} | ${k}/${r.length} | ${(100 * lo).toFixed(0)}-${(100 * hi).toFixed(0)}% | ${before} | ${ctl ? (ctl.won / ctl.cars > 0.5 ? "wins" : "loses") + ` (${(100 * ctl.won / ctl.cars).toFixed(0)}%)` : "-"}`);
 }
