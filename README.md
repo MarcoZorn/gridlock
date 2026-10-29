@@ -91,12 +91,12 @@ re-tests them (see *How sure*, below).
 
 **Rules and prices**
 - **Every safety rule has the same price: a little safer, a lot poorer.**
-  Confirmed at twenty seeds for the all-day congestion charge: 45% fewer
-  cars, crashes per car down 24% (95% interval 21-27%), trips 29% faster,
-  fares down 18% (15-21%), in every seed.
   An all-day congestion charge, licences and a rush-hour toll make the city
-  safer and faster in every seed tried, and all of them cost fares. Rules
-  that lower inequality slow the trips or shrink the city.
+  safer and faster in every seed tried, and all of them cost fares. For the
+  charge this now holds at twenty seeds: 45% fewer cars, crashes per car
+  down 24% (95% interval 21-27%), trips 29% faster, fares down 18%
+  (15-21%), in every seed. Rules that lower inequality slow the trips or
+  shrink the city.
 - **Rules about failure matter more than rules about driving.** Letting a
   broke taxi finish its ride and pooling crash costs nearly doubled fares
   (4768 a day against 2476), more than any change to the drivers.
