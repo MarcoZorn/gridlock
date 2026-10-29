@@ -200,6 +200,7 @@ commits and pushes.
 
 ## Done
 
+- 93. Venice (maps/venice.json, ?map=venice): boats on the canals round the Rialto carry 2-23% fewer fares than Turin, a fifth longer each, and grow engines 16-31% smaller
 - 91. Ants against cars (tools/ants.mjs): routes by pheromone change fares by -6% to +4% and never concentrate traffic (Gini 0.64-0.66); the marked roads are the shortest paths already, 14 routes of 400 change
 - 96. Seasons that move (tools/migrate-demand.mjs): the fleet follows a quarter in season the same day, carried by its own fares; a big quarter in season adds 10-13% fares, the small north-east corner costs 12-17%
 - 90, 147. Mars (GRIP=0.38 FROM=0 tools/snow.mjs): a quarter to under half of Earth's fares on day one, two thirds to nine tenths by day six, by breeding; crashes 1.2-1.5x Earth's by then
