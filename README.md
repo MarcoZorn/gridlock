@@ -399,7 +399,7 @@ same either way (tools/collective.mjs):
 | 120, wrecks stay 10 s | 0.26 | 0.38 | -12% | 9.57 / 8.49 |
 
 Less than none. Seeing each other, these drivers lose more to crowding
-than blind ones do, a fifth to a quarter more, at every density with
+than blind ones do, a tenth to a quarter more, at every density with
 anyone to see, and at more than a car a road the sense no longer even saves
 crashes. Not even wrecks that stay, where crashing through does not pay,
 change the sign. What they do with what they see is brake and hesitate,
