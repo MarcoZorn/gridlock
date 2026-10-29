@@ -14,6 +14,7 @@ import { CityWorld } from "./src/cityworld.js";
 import { EcoWorld, ECON, gini, econParam, applyEcon } from "./src/ecoworld.js";
 import { Body } from "./src/body.js";
 import { Crowd, PED } from "./src/pedestrians.js";
+import { editNeuron } from "./src/netview.js";
 
 // networks stay acyclic and produce finite output
 {
@@ -382,6 +383,21 @@ import { Crowd, PED } from "./src/pedestrians.js";
   assert(ECON.rank === 0.3 && ECON.ev === 40 && econParam() === link, "a link puts the same economy back");
   Object.assign(ECON, keep);
   console.log("ok  economy knobs in a link");
+}
+
+{
+  // a brain edited by hand: muting changes what it does, muting again undoes it
+  const g = Population.fromJSON(JSON.parse(fs.readFileSync("docs/trained.json", "utf8")).pop).genomes[0].clone();
+  const inp = Array.from({ length: g.nIn }, (_, i) => Math.cos(i)), run = () => [...g.activate(inp, new Float64Array(8)).slice(0, 2)];
+  const before = run(), busy = [...g.nodes.keys()].find((id) => id < g.nIn && [...g.conns.values()].some((c) => c.on && c.inId === id));
+  editNeuron(g, busy, "mute");
+  const muted = run();
+  editNeuron(g, busy, "mute");
+  assert(String(muted) !== String(before) && String(run()) === String(before), "mute changes the outputs, unmute restores them exactly");
+  const w0 = [...g.conns.values()].map((c) => c.w);
+  editNeuron(g, busy, "up"); editNeuron(g, busy, "down");
+  assert([...g.conns.values()].every((c, i) => Math.abs(c.w - w0[i]) < 1e-12), "up then down puts the weights back");
+  console.log("ok  a brain edited by hand");
 }
 
 assert(gini([1, 1, 1, 1]) === 0 && Math.abs(gini([0, 0, 0, 1]) - 0.75) < 1e-9, "gini: equal is 0, one of four holding everything is 0.75");

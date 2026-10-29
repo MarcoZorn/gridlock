@@ -2,16 +2,16 @@
 // watch a connection appear, and a few generations later watch the car start
 // using it. With `live` ({ inputs, mouse }) the neurons light up with what the
 // car is feeling right now, and the one under the mouse is traced: its value,
-// and the three connections into it that are pushing hardest.
+// and the three connections into it that are pushing hardest. Click it to
+// mute it, scroll over it to turn it up or down (editNeuron).
 const RAY = ["far left", "left", "ahead", "right", "far right"];
 const NAMES = [...RAY.flatMap((r) => [`wall ${r}`, `car ${r}`, `closing ${r}`]), "own speed", "heading error", "sideways", "junction", "next turn", "light"];
 const OUT = ["steer", "throttle"];
 const scratch = new Float64Array(8);
 
-export function drawNetwork(ctx, g, w, h, live = null) {
-  ctx.clearRect(0, 0, w, h);
-  if (!g) return;
-
+// Where each neuron sits: inputs on the left, outputs on the right, hidden
+// neurons by depth between.
+function layout(g, w, h) {
   const pad = 18;
   const byDepth = new Map();
   for (const n of g.nodes.values()) {
@@ -29,6 +29,35 @@ export function drawNetwork(ctx, g, w, h, live = null) {
       pos.set(n.id, { x, y, kind: n.kind });
     });
   }
+  return pos;
+}
+
+const nearest = (pos, m) => {
+  let best = 9, id = null;
+  for (const [k, p] of pos) { const d = Math.hypot(p.x - m.x, p.y - m.y); if (d < best) { best = d; id = k; } }
+  return id;
+};
+export const neuronAt = (g, w, h, m) => (g ? nearest(layout(g, w, h), m) : null);
+
+// Editing by hand. "mute" cuts a neuron's outgoing connections (again: puts
+// them back); "up"/"down" scale them by a tenth. An output has no outgoing
+// connections, so for it both act on the incoming ones.
+export function editNeuron(g, id, op) {
+  const n = g.nodes.get(id);
+  if (!n) return;
+  const out = n.kind === "output", mine = [...g.conns.values()].filter((c) => (out ? c.outId : c.inId) === id);
+  if (op === "mute") {
+    const muted = mine.filter((c) => c.muted);
+    if (muted.length) for (const c of muted) { c.on = true; c.muted = false; }
+    else for (const c of mine) if (c.on) { c.on = false; c.muted = true; }
+  } else for (const c of mine) c.w *= op === "up" ? 1.1 : 1 / 1.1;
+  g.dirty();
+}
+
+export function drawNetwork(ctx, g, w, h, live = null) {
+  ctx.clearRect(0, 0, w, h);
+  if (!g) return;
+  const pos = layout(g, w, h);
 
   // live values: re-run the brain on the car's last inputs (same inputs, same
   // values, so the car's own state is untouched)
@@ -38,11 +67,7 @@ export function drawNetwork(ctx, g, w, h, live = null) {
     const { buf, slot } = g._net;
     val = (id) => buf[slot.get(id) ?? buf.length - 1];
   }
-  let hover = null;
-  if (live?.mouse) {
-    let best = 9;
-    for (const [id, p] of pos) { const d = Math.hypot(p.x - live.mouse.x, p.y - live.mouse.y); if (d < best) { best = d; hover = id; } }
-  }
+  const hover = live?.mouse ? nearest(pos, live.mouse) : null;
 
   const into = [];
   for (const c of g.conns.values()) {
@@ -84,7 +109,8 @@ export function drawNetwork(ctx, g, w, h, live = null) {
     if (n.kind === "output") { const k = g.outIds.indexOf(id); return OUT[k] || `out ${k}`; }
     return `hidden ${id}`;
   };
-  const lines = [val ? `${name(hover)} ${val(hover).toFixed(2)}` : name(hover)];
+  const muted = [...g.conns.values()].some((c) => c.muted && (c.inId === hover || c.outId === hover));
+  const lines = [`${name(hover)}${val ? ` ${val(hover).toFixed(2)}` : ""}${muted ? " (muted)" : ""}`];
   if (val) {
     into.sort((a, b) => Math.abs(b.w * val(b.inId)) - Math.abs(a.w * val(a.inId)));
     for (const c of into.slice(0, 3)) { const x = c.w * val(c.inId); lines.push(`${x >= 0 ? "+" : ""}${x.toFixed(2)} from ${name(c.inId)}`); }
