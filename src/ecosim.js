@@ -5,6 +5,7 @@ import { Crowd } from "./pedestrians.js";
 import { osmToGraph } from "./osm.js";
 import { fitCanvas, panZoom, announceToggles, shortcuts, busiestCar, cityLayer, drawHeat, drawClosures, drawLights, drawRoute, drawRays, drawCar, speciesColour } from "./render.js";
 import { drawNetwork } from "./netview.js";
+import { rayAngles } from "./driver.js";
 
 const $ = (id) => document.getElementById(id);
 
@@ -240,6 +241,7 @@ function draw() {
   if (driven && !world.cars.includes(driven)) { driven = null; $("drive").dataset.on = false; }
   const focus = selected || world.richest();
   if (follow && focus) { cam.x += (focus.x - cam.x) * 0.15; cam.y += (focus.y - cam.y) * 0.15; }
+  if (sound) listen(focus);
 
   const W = view.clientWidth, H = view.clientHeight, k = cam.k;
   vctx.clearRect(0, 0, W, H);
@@ -400,6 +402,41 @@ $("drive").onclick = async (e) => {
   if (window.DeviceOrientationEvent?.requestPermission) { try { await DeviceOrientationEvent.requestPermission(); } catch {} }
   tilt0 = null;
   window.addEventListener("deviceorientation", onTilt);
+};
+// The city by ear, for anyone who cannot watch it: the followed car's speed
+// is the pitch of a low hum; the nearest car it sees is a second tone,
+// louder the closer it is and panned to the side it is on; a crash is a
+// thud and a fare a two-note chime. One car at a time, the one on screen.
+let sound = null;
+function listen(d) {
+  const { ac, hum, near, nearGain, pan } = sound, t = ac.currentTime;
+  if (!d || d.towing) { hum.frequency.setTargetAtTime(40, t, 0.1); nearGain.gain.setTargetAtTime(0, t, 0.05); return; }
+  hum.frequency.setTargetAtTime(60 + 4 * Math.abs(d.v), t, 0.05);
+  const R = d.p.rayRange, angles = rayAngles();
+  let best = -1;
+  for (let i = 0; i < d.carRay.length; i++) if (d.carRay[i] < R && (best < 0 || d.carRay[i] < d.carRay[best])) best = i;
+  nearGain.gain.setTargetAtTime(best < 0 ? 0 : 0.15 * (1 - d.carRay[best] / R), t, 0.05);
+  if (best >= 0) { pan.pan.setTargetAtTime(Math.sin(angles[best]), t, 0.05); near.frequency.setTargetAtTime(330 + 330 * (1 - d.carRay[best] / R), t, 0.05); }
+  if (sound.car === d) {
+    if (d.crashes > sound.crashes) blip(70, 0.3, 0.4);
+    if (d.earned > sound.earned) { blip(660, 0.12, 0.15); blip(990, 0.12, 0.15, 0.12); }
+  }
+  sound.car = d; sound.crashes = d.crashes; sound.earned = d.earned;
+}
+function blip(f, len, vol, delay = 0) {
+  const { ac } = sound, t = ac.currentTime + delay, o = ac.createOscillator(), g = ac.createGain();
+  o.frequency.value = f; g.gain.setValueAtTime(vol, t); g.gain.exponentialRampToValueAtTime(0.001, t + len);
+  o.connect(g).connect(ac.destination); o.start(t); o.stop(t + len);
+}
+$("sound").onclick = (e) => {
+  if (sound) { sound.ac.close(); sound = null; e.target.dataset.on = false; return; }
+  const ac = new AudioContext(), hum = ac.createOscillator(), humGain = ac.createGain();
+  const near = ac.createOscillator(), nearGain = ac.createGain(), pan = ac.createStereoPanner();
+  hum.type = "sawtooth"; humGain.gain.value = 0.04; near.type = "sine"; nearGain.gain.value = 0;
+  hum.connect(humGain).connect(ac.destination); near.connect(nearGain).connect(pan).connect(ac.destination);
+  hum.start(); near.start();
+  sound = { ac, hum, near, nearGain, pan, car: null, crashes: 0, earned: 0 };
+  e.target.dataset.on = true;
 };
 $("colour").onclick = (e) => {
   colourBy = colourBy === "species" ? "job" : "species";
