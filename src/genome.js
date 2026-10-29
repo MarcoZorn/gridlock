@@ -174,7 +174,7 @@ export class Genome {
     this._net = {
       size, start, src: Int32Array.from(src), w: Float64Array.from(w),
       out: Int32Array.from(this.outIds.map((id) => slot.get(id) ?? zero)),
-      buf: new Float64Array(size), n: order.length,
+      buf: new Float64Array(size), n: order.length, slot,
     };
     return this._net;
   }

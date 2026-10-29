@@ -361,6 +361,15 @@ import { Crowd, PED } from "./src/pedestrians.js";
   console.log("ok  a pilot takes the wheel");
 }
 
+{
+  // the brain view reads live neuron values back through the compiled slots
+  const g = Population.fromJSON(JSON.parse(fs.readFileSync("docs/trained.json", "utf8")).pop).genomes[0], inp = Array.from({ length: g.nIn }, (_, i) => Math.sin(i)), out = new Float64Array(8);
+  g.activate(inp, out);
+  const { buf, slot } = g._net;
+  assert(g.outIds.every((id, k) => buf[slot.get(id)] === out[k]), "a neuron's live value is what the brain output");
+  console.log("ok  live neuron values");
+}
+
 assert(gini([1, 1, 1, 1]) === 0 && Math.abs(gini([0, 0, 0, 1]) - 0.75) < 1e-9, "gini: equal is 0, one of four holding everything is 0.75");
 console.log("ok  inequality measured");
 
