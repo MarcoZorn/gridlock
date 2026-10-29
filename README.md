@@ -2974,12 +2974,13 @@ against roads that never wear:
 | 7 | 41 / 149 | -5% | 60 / 57 |
 | 11 | 26 / 106 | -4% | 63 / 61 |
 
-Repairs climb every day as the fleet grows, to a hundred or more by day six,
-a third of Turin's roads shut for two hours each. The city hardly notices:
-fares +2% to -7%, a few seconds a fare. Traffic does not spread out (the
-Gini of distance per road moves from 0.65 to 0.63); the busiest roads stay
-the busiest, closing and reopening in turn, and the detours round them are
-short. Turin has the redundancy to wear out a third of its streets a day.
+Repairs climb every day as the fleet grows, to 106-149 by day six, as
+many repairs a day as a third to two fifths of Turin's 342 roads (a busy
+road can wear out twice in a day, so fewer roads than that). The city
+hardly notices: fares +2% to -7%, a few seconds a fare. Traffic does not
+spread out (the Gini of distance per road moves from 0.65 to 0.63); the
+busiest roads stay the busiest, closing and reopening in turn. Short
+detours round each closure would explain it (not measured).
 
 **Sex only on crashing.** With `--econ crashMate=1` a car may have a child
 only after it has hit another car still alive, and the child is a cross of
