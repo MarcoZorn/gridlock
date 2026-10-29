@@ -11,7 +11,7 @@ const $ = (id) => document.getElementById(id);
 // highlight where we are in the nav
 {
   const q = new URLSearchParams(location.search), page = location.pathname.endsWith("eco.html") ? "eco" : "gen";
-  const view = q.get("map") === "crossroads" ? "cross" : ["turin", "barcelona", "manhattan", "grown"].includes(q.get("map")) ? q.get("map") : page;
+  const view = q.get("map") === "crossroads" ? "cross" : ["turin", "barcelona", "manhattan", "grown", "venice"].includes(q.get("map")) ? q.get("map") : page;
   document.querySelector(`nav.views [data-view="${view}"]`)?.classList.add("here");
 }
 const view = $("view"), vctx = view.getContext("2d");
