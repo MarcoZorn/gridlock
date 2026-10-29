@@ -200,6 +200,7 @@ commits and pushes.
 
 ## Done
 
+- 87. Cars that build roads (tools/builders.mjs): a car with a child's worth of money buys the shortcut its last route lacked; 41-52 private streets give Turin 6-20% more fares, as much as a planner's 15, three quarters built in two days
 - 86. Taught first, then evolved (in neat-from-scratch): brains fitted by least squares to a demonstrator's recorded steering reach three laps in a row on hard tracks in 6.4 generations against 24.3 (13 of 16 seeds faster); a flat-out older champion teaches worse
 - 85. Edit a brain by hand: click a neuron in the brain panel to mute it, scroll to scale it; the car gets its own copy, children inherit the edit
 - 82. A notebook page (notebook.html): any experiment as the body of an async function, run in a worker with the simulator in scope, output logged, code kept in the link
