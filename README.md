@@ -2856,6 +2856,26 @@ Turin, a fifth of the fares go too; where it is a third of the city, more
 fares are carried, but shorter, so each pays less. The fleet does not
 shrink with the money: about as many cars live on smaller fares.
 
+**Seasons that move.** Demand migrates instead: one quarter of Turin is in
+season and weighs four times the rest as a destination, and the season moves
+on round the compass every day, or every two (tools/migrate-demand.mjs). The
+same bookings, only where they go changes. Fares against no season, days two
+to eight, four seeds, by the quarter in season:
+
+| season | north-east (57 junctions) | south-east (128) | south-west (102) | north-west (33) |
+|---|---|---|---|---|
+| a day each | -12% | +10% | +13% | +3% |
+| two days each | -17% | +11% | +10% | -2% |
+
+The fleet follows the season the same day: the share of fares into the
+season's quarter that also start there goes from 5-34% to 17-58%, at once,
+because a fare ends where it is going and the next one starts there. Nobody
+has to learn the move, so there is nothing to learn: the second day of a
+two-day season is no better than the first (0% against +7%, noisy). What
+matters is where the season is: the two big quarters in season carry more
+fares, the small north-east corner fewer (why is not measured; shorter
+trips into the big quarters, longer ones out to the corner, is a guess).
+
 **A city that grows where fares detour.** Every night three new streets are
 built, each the short link (60-260 long, crossing nothing) between two
 junctions that would have cut the most distance off the day's actual fares.
@@ -3218,6 +3238,23 @@ are slower in snow, but only as slow as weak engines make them, and no
 slower as the days pass. What the economy does instead is make up the
 fares (by day 10, 80-102% of clear weather at half grip, 68-84% at 0.3)
 and live with the crashes, which cost a car cash but never its life.
+
+**Mars.** Tyres grip in proportion to gravity, so a city on Mars is snow
+from the first tick at 0.38 of Earth's grip, engine, brakes and steering
+alike (`GRIP=0.38 FROM=0 node tools/snow.mjs turin 7`). Against Earth, Turin:
+
+| seed | fares, day 1 | day 6 | crashes per 1000 units, day 1 | day 6 |
+|---|---|---|---|---|
+| 3 | 44% | 88% | 0.96x | 1.19x |
+| 5 | 24% | 63% | 1.01x | 1.17x |
+| 7 | 32% | 64% | 1.02x | 1.34x |
+| 11 | 28% | 80% | 0.84x | 1.45x |
+
+The first day is a disaster, a quarter to under half the fares, because
+the founders were raised on Earth and a weak car takes a long time to earn
+a child. By day six the city has two thirds to nine tenths of Earth's fares,
+by breeding, not caution: the crash gap opens as the days pass, the same
+as in the snow, from about even to 1.2-1.5 times Earth's.
 
 **Real rain.** A real fortnight of Turin's weather, 15-28 May 2025, seven
 days with a millimetre or more (Open-Meteo, docs/turin-rain.json), one sim
