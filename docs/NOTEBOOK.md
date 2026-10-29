@@ -3954,3 +3954,33 @@ charge of 0.1 on Turin against no charge, twenty fresh paired seeds
 Every seed moved the same way on every measure, and all three predictions
 written before the run held. The four-seed reading (fares -17%, crashes
 -20%, trips -28%) was right; now it has error bars.
+
+### Study 1, first curve: when Turin's monopoly is decided
+
+Turin, seed 7: family 44, one founder among about fifty, owns every car by
+day four. Rewound to every third city hour of day 0 and replayed 32 times
+with fresh noise (`REPS=32 DAYS=4 EVERY=3 SPAN=24 node tools/replay.mjs
+turin 7`), how often does family 44 end up with over half the cars?
+
+| rewound to hour | family 44 wins | 95% interval | its share of the cars then |
+|---|---|---|---|
+| 0 | 0/32 | 0-11% | 2% |
+| 3 | 1/32 | 1-16% | 17% |
+| 6 | 15/32 | 31-64% | 37% |
+| 9 | 22/32 | 51-82% | 40% |
+| 12 | 32/32 | 89-100% | 53% |
+| 15 to 21 | 32/32 each | 89-100% | 51-53% |
+
+The monopoly is decided in a window of about six city hours on the first
+morning. At hour 3 the family already has a sixth of the cars and almost
+never wins again; by hour 12 it never loses. Most of the rise tracks its
+share: once it holds half the cars it always wins. The part that runs
+ahead of the share is hours 6 to 9, where a family with under two fifths
+of the cars wins one replay in two, then two in three. Whether that is
+evolution (its brains are better) or just arithmetic (the biggest family
+breeds fastest) is what the frozen replays, now running, will say.
+
+The same-noise control (seed 0) does not reproduce the original run until
+hour 12: restoring a snapshot re-places every car, which is itself a
+shake. So these replays measure what the population had decided, not its
+exact positions.
