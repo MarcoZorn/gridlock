@@ -3118,6 +3118,28 @@ same way, from 13-21% on day one to 3-8% on day six. Emergencies end a
 little better than that, 4-15%, so the triple fare may select for speed a
 little, but the streets filling up swamps it.
 
+So make the others give way. While a car carries an emergency, every other
+car within 60 units ahead of it, in a cone 30 degrees either side, pays 2 a
+second for being in the way (tools/yield.mjs). Nobody can hear a siren:
+there is no input for it, so whatever yielding evolves has to be a habit
+that keeps a car out of the way of anything. Turin, emergencies in time,
+and day six against no fine:
+
+| seed | in time, day 1 / day 6 | no fine, day 6 | cars | car crashes per 1000 units | fares, days 4-6 |
+|---|---|---|---|---|---|
+| 3 | 42% / 53% | 4% | 112 / 203 | 0.98 / 2.17 | -19% |
+| 5 | 43% / 56% | 15% | 126 / 166 | 1.09 / 1.91 | -10% |
+| 7 | 39% / 46% | 8% | 102 / 152 | 1.25 / 1.77 | -14% |
+| 11 | 44% / 48% | 4% | 105 / 148 | 1.25 / 1.98 | -5% |
+
+Four to thirteen times as many emergencies arrive in time, and the share
+rises over the days where without the fine it falls. Part of it is the
+fines thinning the city, 24-45% fewer cars by day six, $10,000-17,000 of
+fines a day; part may be selection (the share climbs from day one in every
+city, 39-44% to 46-56%), but fleet and habit are not separated here.
+Crashes per distance fall 29-55% with them. Make getting in the way cost, and the ambulances get through, at
+5-19% of the fares.
+
 **Reputation.** With `--econ reputation=1.5`, passengers refuse any car
 that has crashed more than one and a half times as often as the average
 car; it can still carry freight. Turin, days two to six, two seeds:
