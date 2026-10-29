@@ -200,6 +200,7 @@ commits and pushes.
 
 ## Done
 
+- 81. Live neuron tracing: neurons lit by their live value on both city pages, hover one for its value and the three inputs pushing it hardest
 - 76. Sound (eco page): the followed car by ear, speed as pitch, the nearest car as a panned tone, crashes and fares as sounds
 - 73, 74 (one person). Drive (eco page): take the wheel of any car with the keys or by tilting a phone, among the evolved drivers; not multiplayer over a network
 - 69. Against the posted speed limits (tools/calibrate.mjs): fares take 0.74-0.80 of the time at the limit in Turin, 0.55-0.58 in Barcelona and Manhattan, by day four; the evolved drivers speed, sim time needs stretching by at least 1.3-1.8 to be real
