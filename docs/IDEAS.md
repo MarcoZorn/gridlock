@@ -1,6 +1,6 @@
-# Roadmap
+# Ideas
 
-A hundred and fifty ideas, from next week to never, and the order to try them in.
+A hundred and fifty ideas, and which have been tried. The research programme now lives in [ROADMAP.md](../ROADMAP.md).
 Hard on purpose: most have not been done, some may not be possible.
 
 ## A hundred and fifty ideas

@@ -1,4 +1,7 @@
-# Gridlock
+# Gridlock: lab notebook
+
+Every experiment as it was run, in order, corrections included. The summary is in the [README](../README.md); this is the record behind it.
+
 
 A city where traffic evolves. There are no traffic laws anywhere in this code.
 
@@ -8,7 +11,7 @@ A city where traffic evolves. There are no traffic laws anywhere in this code.
 [on Barcelona's](https://marcozorn.github.io/gridlock/eco.html?map=barcelona) ·
 [on Manhattan's](https://marcozorn.github.io/gridlock/eco.html?map=manhattan)
 
-![Generation 250: evolved drivers spread across a procedural city](docs/city.png)
+![Generation 250: evolved drivers spread across a procedural city](city.png)
 
 Every car is a NEAT brain. The roads, the physics, collisions and route finding
 are written by hand; how to drive the route is not. The question this project
@@ -26,7 +29,7 @@ the one city that split ended up all vans. And gridlock, only when crashes are
 made to stay in the road, because these drivers crash their way through a
 queue rather than wait in it.
 
-It grew out of [neat-from-scratch](docs/neat.md), whose NEAT engine it still
+It grew out of [neat-from-scratch](neat.md), whose NEAT engine it still
 runs on, and borrows its later ideas from
 [primordial](https://github.com/MarcoZorn/primordial). No libraries, no build
 step: serve the folder and open it.
@@ -343,7 +346,7 @@ Trips peak at about 120 cars and fall after it: more cars, fewer people
 delivered. On the generation page, "Wrecks stay" switches this on: load the
 trained drivers, turn traffic up and watch it lock.
 
-![Gridlock, finally: with wrecks that stay, chains of crashed cars (red) block the roads and only a handful of the 120 cars are still moving](docs/gridlock.png) That is gridlock, and what it took was crashes that leave
+![Gridlock, finally: with wrecks that stay, chains of crashed cars (red) block the roads and only a handful of the 120 cars are still moving](gridlock.png) That is gridlock, and what it took was crashes that leave
 something in the road long enough for the queue behind to reach the junction
 before. These drivers, raised where a crash is a fine and a short tow, crash
 their way through traffic rather than queue in it, and only stop being able
@@ -507,7 +510,7 @@ cars). The shipped drivers on a one-way ring of 32 junctions
 (`node tools/ring.mjs 90`), speed by position across, time running down,
 red stopped and green fast:
 
-![Space-time plot of 90 evolved cars on a ring road: green diagonal streaks of moving cars, and red marks that stay in one place rather than drifting backwards](docs/ring.png)
+![Space-time plot of 90 evolved cars on a ring road: green diagonal streaks of moving cars, and red marks that stay in one place rather than drifting backwards](ring.png)
 
 No phantom jams. Cars stop, 8 to 11% of the time at every density from 10
 cars to 90, but the red marks are vertical: a car stopped in one place to
@@ -772,7 +775,7 @@ A camera at 50 km/h everywhere already cost a third of the fares; these
 drivers live by speed, and a real city's limits enforced to the letter
 leave them nothing to live on.
 
-![A junction under traffic lights, drivers raised for 3000 generations with them](docs/lights.gif)
+![A junction under traffic lights, drivers raised for 3000 generations with them](lights.gif)
 
 **The price of a red light.** With the four-second bug fixed, drivers under
 lights still ran about 2.4 reds each per generation. That turned out to be
@@ -1040,7 +1043,7 @@ Hour by hour, three seeds on Turin (`node tools/sidechart.mjs`, from the
 `sideAll` / `sideRight` counts every telemetry row now carries; the eco page
 shows the same number live):
 
-![Share of cars right of the middle on Turin's two-way roads, three seeds over six days: one settles left by day two, one right by day three, one is still undecided](docs/side-of-road.svg)
+![Share of cars right of the middle on Turin's two-way roads, three seeds over six days: one settles left by day two, one right by day three, one is still undecided](side-of-road.svg)
 
 Why the economy settles it in fifteen generations when the generation city,
 with 120 cars on the road, has not in thousands, I do not know yet. One
@@ -1103,7 +1106,7 @@ upkeep.
    earns nothing extra. Half the founders now get random bodies, so the
    options exist and the economy picks.
 
-![Morning rush in the ecosystem, cars coloured by species, the richest car's route in blue](docs/eco.gif)
+![Morning rush in the ecosystem, cars coloured by species, the richest car's route in blue](eco.gif)
 
 A whole day can be recorded without a browser: `node tools/timelapse.mjs
 runs/inh-base-s7/state.json docs/day.gif` runs a saved economy on for one
@@ -1111,7 +1114,7 @@ city day and draws a frame every ten city minutes, every car a dot in its
 species' colour (rsvg-convert and ffmpeg make the GIF). Turin, seed 7, day
 seven, midnight to midnight in twelve seconds:
 
-![A day in Turin's economy, seed 7: cars as dots coloured by species, clock and car count below](docs/day.gif)
+![A day in Turin's economy, seed 7: cars as dots coloured by species, clock and car count below](day.gif)
 
 **What came out:** a city whose population follows the clock, from about 24
 cars at night to 60-70 in the evening rush. In the runs with vans, they rise
@@ -1216,7 +1219,7 @@ The ecosystem page can load the first of these cities as it was on day 40
   one under the mouse is traced: its value and the three connections into
   it pushing hardest. Here a car's throttle sits near zero, a car ahead
   pushing it up (+3.44) and one to the far right and a hidden neuron
-  pulling it down. ![Tracing the throttle neuron](docs/trace.png)
+  pulling it down. ![Tracing the throttle neuron](trace.png)
 - **Editing a brain by hand.** Click a neuron to mute it (its outgoing
   connections cut; click again to put them back), scroll over it to turn
   it up or down a tenth at a time. The car gets its own copy of the brain
@@ -1411,11 +1414,11 @@ place. A map past four times the size of a small city keeps
 the economy of a city four times the size, so a real map never asks a
 browser to draw a thousand cars.
 
-![The Eixample, Barcelona](docs/barcelona.png)
+![The Eixample, Barcelona](barcelona.png)
 
-![The ecosystem on central Turin's streets](docs/turin.png)
+![The ecosystem on central Turin's streets](turin.png)
 
-![Midtown Manhattan, one-way streets and all: the highlighted route goes round the block](docs/manhattan.png)
+![Midtown Manhattan, one-way streets and all: the highlighted route goes round the block](manhattan.png)
 
 **A grown city.** Not drawn and not mapped: `node tools/lsystem.mjs 7 >
 maps/grown.json` grows streets by a branching rule in the spirit of an
@@ -1426,7 +1429,7 @@ reaching a junction near its end, which closes a block. Seed 7 gives 185
 junctions and 239 two-way streets, most junctions three-way, like an old
 town.
 
-![A city grown by a branching rule, seed 7](docs/grown.png)
+![A city grown by a branching rule, seed 7](grown.png)
 
 **Venice.** Boats on the canals round the Rialto: OpenStreetMap's
 `waterway=canal` ways, read as one-lane streets by the same converter, give
@@ -1557,7 +1560,7 @@ names, compared with `FROM=2 TO=6 node tools/ecocmp.mjs`:
 | insurance | 324 | 3304 | 38 s | 377 |
 | finish the fare and insurance | 470 | 4768 | 55 s | 390 |
 
-![Fares a day under each rule: the congestion charge, speed camera, fuel tax and double fares below no rule at all, finishing the fare and insurance above it, and the two together highest](docs/rules.svg)
+![Fares a day under each rule: the congestion charge, speed camera, fuel tax and double fares below no rule at all, finishing the fare and insurance above it, and the two together highest](rules.svg)
 
 Every rule that costs drivers money shrinks the fleet and the fares with it.
 Every rule that keeps marginal drivers in business grows the fleet; the
@@ -2586,7 +2589,7 @@ family, and follow them day by day (`DAYS=8 node tools/dynasty.mjs turin
 | Manhattan, seed 7 | 7 3 1 1 1 1 1 1 |
 | Manhattan, seed 11 | 6 4 3 2 2 1 1 1 |
 
-![Each founder's family as a share of Turin's cars over eight days: several coloured bands at the start, one orange family taking the whole city by day three and a half](docs/families.svg)
+![Each founder's family as a share of Turin's cars over eight days: several coloured bands at the start, one orange family taking the whole city by day three and a half](families.svg)
 
 (`SVG=docs/families.svg`, Turin seed 7, a share every eighth of a day.)
 The question answers itself: in three of the four, within three to six
@@ -3834,7 +3837,7 @@ where three or more roads meet count as junctions; one-way streets on):
 | Turin | 19% | 81% | 14% |
 | Barcelona | 17% | 83% | 18% |
 
-![A day of crashes on central Turin: whole streets light up, the long diagonal brightest](docs/turin-heat.png)
+![A day of crashes on central Turin: whole streets light up, the long diagonal brightest](turin-heat.png)
 
 In the generation city with traffic on, the same trained drivers crash into
 a kerb a little more often than into each other (57% walls over three

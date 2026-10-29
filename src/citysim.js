@@ -254,7 +254,7 @@ $("loadFile").onchange = async (e) => {
 async function loadTrained() {
   let r = control !== "none" ? await fetch(`docs/trained-${control}.json`) : null;
   // trained-v2: raised from scratch with the settings of today (species step
-  // 0.02); fewer crashes and faster than trained.json in unseen cities (README).
+  // 0.02); fewer crashes and faster than trained.json in unseen cities (docs/NOTEBOOK.md).
   // trained.json stays for the tools and the economy's founders.
   if (!r || !r.ok) r = await fetch("docs/trained-v2.json");
   const j = await r.json();
