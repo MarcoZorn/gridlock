@@ -200,6 +200,7 @@ commits and pushes.
 
 ## Done
 
+- 64. Collective intelligence (tools/collective.mjs): of what crowding costs, the share drivers win back by seeing each other is 0% to -27%; blind to other cars they make 4-46% more trips from 40 cars up, with wrecks too
 - 51. Fundamental diagram in real units (tools/fundamental.mjs): at real jam density, 123 cars a lane-km, the evolved drivers still move 2,066 cars an hour a lane, a freeway's capacity, because half are ghosts being towed; compared with quoted figures, not NGSIM's raw data
 - 31. A stock market of lineages (tools/stocks.mjs): re-listed at dawn, last hour's worst-paying cars pay a fifth more than the index the hour after (5/5 cities), last hour's best 6-9% less; mean reversion, no momentum
 - 29. Tipping evolved by passengers (tools/tips.mjs): blind drivers, tips die out (6%); drivers who pick the best tipper, tips run away to 95% of the fare in two days, the fleet doubles to the cap and carries 8-27% fewer fares
