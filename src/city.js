@@ -110,6 +110,27 @@ export class City {
     return e;
   }
 
+  // Streets that could be built: unlinked junctions 60-260 apart, the new
+  // street crossing no other and passing no third junction within 20.
+  // ponytail: every pair against every road, O(n^2 E); a second on Turin
+  buildable() {
+    const out = [], N = this.nodes;
+    const cross = (p, q, r, t) => {
+      const d = (q.x - p.x) * (t.y - r.y) - (q.y - p.y) * (t.x - r.x);
+      if (Math.abs(d) < 1e-9) return false;
+      const u = ((r.x - p.x) * (t.y - r.y) - (r.y - p.y) * (t.x - r.x)) / d, v = ((r.x - p.x) * (q.y - p.y) - (r.y - p.y) * (q.x - p.x)) / d;
+      return u > 0 && u < 1 && v > 0 && v < 1;
+    };
+    for (let a = 0; a < N.length; a++) for (let b = a + 1; b < N.length; b++) {
+      const p = N[a], q = N[b], len = Math.hypot(q.x - p.x, q.y - p.y);
+      if (len < 60 || len > 260 || this.edgeBetween(a, b)) continue;
+      if (N.some((m, i) => i !== a && i !== b && segDist(m.x, m.y, p.x, p.y, q.x, q.y) < 20)) continue;
+      if (this.edges.some((e) => e.a !== a && e.b !== a && e.a !== b && e.b !== b && cross(p, q, N[e.a], N[e.b]))) continue;
+      out.push([a, b, len]);
+    }
+    return out;
+  }
+
   nearestEdge(x, y) {
     let best = null, bd = Infinity;
     for (const e of this.edges) {

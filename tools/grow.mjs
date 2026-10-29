@@ -2,7 +2,6 @@ import fs from "node:fs";
 import { EcoWorld, DAY } from "../src/ecoworld.js";
 import { DT } from "../src/cityworld.js";
 import { Population, Rng } from "../src/neat.js";
-import { segDist } from "../src/city.js";
 // A city that grows where demand is unmet: every night ROADS new streets are
 // built, each the short link between two nearby junctions that would have
 // cut the most distance off the day's actual fares. Against the same number
@@ -16,13 +15,6 @@ import { segDist } from "../src/city.js";
 const [map = "turin", seed = 7] = process.argv.slice(2), roads = +(process.env.ROADS || 3), days = +(process.env.DAYS || 6);
 const founders = Population.fromJSON(JSON.parse(fs.readFileSync("docs/trained.json", "utf8")).pop);
 const perDay = DAY / DT;
-const cross = (p, q, r, s) => {
-  const d = (q.x - p.x) * (s.y - r.y) - (q.y - p.y) * (s.x - r.x);
-  if (Math.abs(d) < 1e-9) return false;
-  const t = ((r.x - p.x) * (s.y - r.y) - (r.y - p.y) * (s.x - r.x)) / d;
-  const u = ((r.x - p.x) * (q.y - p.y) - (r.y - p.y) * (q.x - p.x)) / d;
-  return t > 0 && t < 1 && u > 0 && u < 1;
-};
 // shortest distances from every junction, one-way streets respected
 // ponytail: n Dijkstras with a linear scan, O(n^3); fine at a few hundred junctions
 function allPairs(c) {
@@ -45,17 +37,6 @@ function allPairs(c) {
   }
   return D;
 }
-function candidates(c) {
-  const out = [], N = c.nodes;
-  for (let a = 0; a < N.length; a++) for (let b = a + 1; b < N.length; b++) {
-    const p = N[a], q = N[b], len = Math.hypot(q.x - p.x, q.y - p.y);
-    if (len < 60 || len > 260 || c.edgeBetween(a, b)) continue;
-    if (N.some((m, i) => i !== a && i !== b && segDist(m.x, m.y, p.x, p.y, q.x, q.y) < 20)) continue;
-    if (c.edges.some((e) => e.a !== a && e.b !== a && e.a !== b && e.b !== b && cross(p, q, N[e.a], N[e.b]))) continue;
-    out.push([a, b, len]);
-  }
-  return out;
-}
 for (const arm of (process.env.ARMS || "none,random,demand").split(",")) {
   const w = new EcoWorld({ seed: +seed, founders, graph: JSON.parse(fs.readFileSync(`maps/${map}.json`, "utf8")) });
   const c = w.city, rng = new Rng(+seed + 99);
@@ -67,7 +48,7 @@ for (const arm of (process.env.ARMS || "none,random,demand").split(",")) {
   for (let day = 1; day <= days; day++) {
     if (day > 1 && arm !== "none") {
       for (let k = 0; k < roads; k++) {
-        const cand = candidates(c);
+        const cand = c.buildable();
         let pick;
         if (arm === "random") pick = cand[rng.int(cand.length)];
         else {
