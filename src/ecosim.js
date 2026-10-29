@@ -1,5 +1,5 @@
 // Browser front end for the ecosystem: no generations, one long-running city.
-import { EcoWorld, ECON } from "./ecoworld.js";
+import { EcoWorld, ECON, econParam, applyEcon } from "./ecoworld.js";
 import { Population, Rng } from "./neat.js";
 import { Crowd } from "./pedestrians.js";
 import { osmToGraph } from "./osm.js";
@@ -576,6 +576,9 @@ function syncUrl() {
   for (const [param, on] of [["charge", world.congestion > 0], ["camera", world.speedLimit > 0], ["boom", world.freightBoom > 1], ["finish", world.finishFare > 0], ["insure", world.insurance > 0]]) {
     if (on) u.searchParams.set(param, 1); else u.searchParams.delete(param);
   }
+  if (world.crowd) u.searchParams.set("peds", 1); else u.searchParams.delete("peds");
+  const econ = econParam();
+  if (econ) u.searchParams.set("econ", econ); else u.searchParams.delete("econ");
   history.replaceState(null, "", u);
 }
 $("share").onclick = async (e) => {
@@ -661,8 +664,11 @@ if (["none", "lights", "roundabouts"].includes(params.get("control"))) {
 }
 await Promise.all([loadFounders("none"), control !== "none" ? loadFounders(control) : null]);
 for (const c of Object.keys(FOUNDER_FILES)) if (!founders[c]) loadFounders(c);
+// ?econ=rank=0.3,ev=40: any economy knob, as headless.mjs --econ takes them
+applyEcon(params.get("econ"));
 reset(+params.get("seed") || 3);
 // ?charge=1&camera=1&boom=1&finish=1 start the city under those rules
 for (const id of ["charge", "camera", "boom", "finish", "insure"]) if (params.get(id) === "1") $(id).click();
+if (params.get("peds") === "1") $("peds-on").click();
 if (params.get("place")) { $("place").value = params.get("place"); $("go").click(); }
 frame();
