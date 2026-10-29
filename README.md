@@ -2710,6 +2710,26 @@ vote, and the old record is a few quiet night hours against a busy present
 (my reading, not tested).
 A vote on experience alone locks in its first answer, right or wrong.
 
+Or let them vote with their survival. A traffic code of five rules (speed
+camera none/25/35/50, lights off/on, congestion charge 0/0.05/0.1,
+insurance off/on, minimum fare 0/10/20) is scored by how many cars are alive
+after a day of a fresh city run under it, and a (1+3) search changes one
+rule at a time, keeping a change when at least as many cars live
+(tools/code.mjs, ten generations, one training city each). Then the code
+found, two days on four Turin cities it never saw, against no rules:
+
+| trained on | code found | cars, no rules / code | fares |
+|---|---|---|---|
+| seed 101 | minimum fare 10 | 191/171, 170/200, 167/166, 171/210 | +10%, 0%, -14%, +23% |
+| seed 202 | minimum fare 20, insurance | 191/188, 170/226, 167/187, 171/185 | +51%, +84%, +74%, +73% |
+
+Survival never picks a camera, lights or a charge: every one of them was
+tried and lost cars. It picks the rules that put money in drivers' pockets,
+a floor under the fare and crashes paid by a pool, and the second code,
+found in one city, carries half again to nearly twice the fares in all four
+it never saw. Two searches, each of ten generations and one city, so which
+rules win is the finding, not their exact values.
+
 **A central bank.** A basic income moves money from the cars that earn to
 all of them. What if it came from nowhere? With `--econ print=0.0369` every
 car is paid 0.0369 a second by nobody, what the quarter basic income paid
