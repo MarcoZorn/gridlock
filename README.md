@@ -35,6 +35,8 @@ step: serve the folder and open it.
   signals / traffic lights / roundabouts, heatmaps, any car's senses and brain.
 - `eco.html`: the city with no fitness function. Wallets, births, deaths, two
   markets, evolved bodies, a road editor, fast-forward by the day.
+- `notebook.html`: write an experiment and run it in the browser, the
+  simulator in scope, off the page in a worker; the code rides in the link.
 - `LIVE.md`: tables and charts from the long headless runs.
 - URL options: `?seed=7`, `?size=small|medium|large`, `?control=none|lights|roundabouts`,
   on the eco page the rules `?charge=1&camera=1&boom=1&finish=1&insure=1`,
