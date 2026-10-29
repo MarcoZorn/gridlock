@@ -3562,6 +3562,17 @@ parent's body: culture alongside genes. Turin, days two to six: 2690 and
 per car a little higher (209 and 214 against 188 and 206). A modest gain,
 in both seeds.
 
+Learner drivers (tools/learner.mjs) keep their parent's brain and take
+lessons from the same best earner instead: three children in ten nudge
+their weights at random twenty times, keeping each nudge that brings their
+steering and throttle closer to the instructor's over its last 300
+recorded moments. They close about 40% of the gap (35-46% a day). Turin,
+four seeds, days two to six, against no lessons: fares -9% to +14% (two
+seeds up, two down), crashes per distance -8% to +1%. Copying the brain
+outright, in the same runs: fares -1% to +15%, crashes per distance -20%
+to +4%. Four seeds, so a hint, not a result: lessons from a small sample
+look like a weak, noisy copy, and the whole brain carries more.
+
 Choosing whom to breed with is the genetic version of the same thing. A
 child's brain is crossed with a mate's in three births in ten, the mate
 picked at random from the solvent cars of the parent's species. With
