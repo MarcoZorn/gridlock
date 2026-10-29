@@ -2920,6 +2920,27 @@ routes are long and the gaps obvious, then a street every few hours once the
 shortcuts that pay for themselves are taken. Each car built for its own
 route; the city got the roads anyway.
 
+**Ants against cars.** Route by stigmergy instead: every fare delivered
+marks each road of its route, the marks halve every hour, and every route
+is chosen by length times (1 - A x mark), the mark measured against the
+most-marked road, so a busy road looks shorter and draws more
+(tools/ants.mjs). Turin, days four to six, against plain shortest paths:
+
+| seed | fares, A=0.5 | A=0.9 | crashes per 1000 units, A=0.9 |
+|---|---|---|---|
+| 3 | +1% | +4% | +8% |
+| 5 | -6% | -5% | -10% |
+| 7 | +1% | +2% | +12% |
+| 11 | -1% | +1% | +13% |
+
+No ant highways. How evenly distance is spread over the roads (a Gini of
+0.64-0.66) does not move on any day in any city. The marks work: after
+half a day at A=0.9 the ten most-used roads carry 0.43-0.50 of the top
+mark. But they are the roads shortest paths use anyway, so only 14 of 400
+sampled routes change, and those by 5% more length. Ants need trails
+because they start lost; these drivers already know the shortest way, so
+the trail the colony lays is the map they were following.
+
 **Sex only on crashing.** With `--econ crashMate=1` a car may have a child
 only after it has hit another car still alive, and the child is a cross of
 the two; a crash costs what it always did and is good for one child
