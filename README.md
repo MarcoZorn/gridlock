@@ -382,6 +382,29 @@ km/h, a real freeway's capacity in a real standstill. Possible only because
 half of them are ghosts being towed. With wrecks that stay, the speeds are
 of the right kind for a jam, 3 km/h, but flow still creeps up with density;
 what falls is trips, which counts only what gets somewhere.
+
+How much intelligence does this traffic have collectively? One number for
+it: of what crowding costs a driver, the share it wins back because the
+drivers see each other. The same drivers, as they are or blind to other cars
+(as in tools/ablate.mjs), trips per car a minute; a car alone makes 2.06, the
+same either way (tools/collective.mjs):
+
+| cars at once | seeing | blind | share won back | crashes per 1000 units, seeing / blind |
+|---|---|---|---|---|
+| 10 | 1.90 | 1.90 | 0% | 2.17 / 2.44 |
+| 40 | 1.61 | 1.68 | -18% | 3.53 / 4.01 |
+| 120 | 1.21 | 1.39 | -27% | 6.54 / 7.15 |
+| 480 | 0.70 | 0.96 | -24% | 14.28 / 13.14 |
+| 40, wrecks stay 10 s | 0.56 | 0.70 | -21% | 4.55 / 4.28 |
+| 120, wrecks stay 10 s | 0.26 | 0.38 | -12% | 9.57 / 8.49 |
+
+Less than none. Seeing each other, these drivers lose more to crowding
+than blind ones do, a fifth to a quarter more, at every density with
+anyone to see, and at more than a car a road the sense no longer even saves
+crashes. Not even wrecks that stay, where crashing through does not pay,
+change the sign. What they do with what they see is brake and hesitate,
+and the crowd delivers fewer people for it. Their collective intelligence,
+on this measure, is negative.
 From scratch with today's settings (400 generations, the last 200 in traffic,
 three seeds each), the hint mostly goes: waiting over the last 50 generations
 5.0% with wrecks against 4.3% without, one seed of three the other way, and a
