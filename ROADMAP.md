@@ -200,6 +200,7 @@ commits and pushes.
 
 ## Done
 
+- 105. Buses (tools/buses.mjs): six city-run buses on a fixed line take about 700 trips a day; taxi fares fall only 2-10%, so the city carries 14-28% more people
 - 103. A black market (tools/blackmarket.mjs): fares off the books grow to 21-41% of cars where the expected fine is half the platform's cut, sit at the mutation floor at break-even, fall below it where enforcement is doubled
 - 101. The traffic code evolved by survival (tools/code.mjs): never kept cameras, lights or charges; a minimum fare and insurance, which in four unseen Turin cities carries 51-84% more fares
 - 99. Drivers vote on the rules (tools/referendum.mjs): by their own earnings under each, they vote in speed cameras that cost 39-84% of fares in 4 of 4 Turin cities, and lights that starve the city in 2 of 4; the first night's answer locks in
