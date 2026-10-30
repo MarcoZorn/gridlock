@@ -4437,3 +4437,28 @@ Reading: the hand driver collapses more often on one-way Barcelona, and where it
 20% more in the two-way city (156.2 against 129.6), where evolved drivers do not differ (132.8 against 134.3).
 The telemetry counts crashes by wall or car only; it does not say which road or which rule of `src/hand.js`
 fails, so that part of the question stays open.
+
+### Correction: "wall crashes" in the entry above were not wall crashes
+
+I labelled `crashes - carCrashes` as wall crashes. `carCrashes` counts collision pairs, and a pair crashes
+both cars, so that difference is mostly the second car of each pair. `tools/crashkinds.mjs` now reports
+crashes and car-car pairs instead (hand drivers, one-way Barcelona, days 2-6, per seed and day: 16240.3
+crashes, 7232.8 pairs; two-way: 31053.6 crashes, 14541.5 pairs). The collapsed-run counts and the crashes
+per car and day (129.6 and 156.2 for the surviving hand runs) do not depend on the label and stand.
+
+### Crash log (ECON.crashLog, headless `--crash-log`, tools/crashmap.mjs)
+
+Every crash is now loggable with its kind (wall or car), impact, road (from node, to node) and junction.
+`node headless.mjs --eco --run tmp/cl-hand-one --days 3 --founders hand --seed 102 --map barcelona --crash-log`
+and the same with `--map tmp/barcelona-twoway.json` (seed 102 was not collapsed in either arm). Then
+`node tools/crashmap.mjs tmp/cl-hand-one tmp/cl-hand-two`:
+
+- one-way: 74673 crashes on 729 roads; car 98.6%, wall 1.4%; in a junction 45.5%; mean impact 0.084. The ten
+  worst roads hold 21.8% of them, the worst (482>483) alone 4726.
+- two-way: 44397 crashes on 1203 roads; car 97.8%, wall 2.2%; in a junction 47.7%; mean impact 0.104. The ten
+  worst roads hold 5.9%, the worst (457>456) 325.
+
+Reading: the hand driver's crashes are other cars, not walls, in both cities. The one-way city concentrates
+them: a handful of roads take a fifth of all crashes, where the two-way city spreads them. One seed per arm,
+so the pattern, not a rate. Which part of `src/hand.js` makes it pile up on those roads is still open
+(next: look at what those roads are, one-way streets feeding a merge?).
