@@ -186,7 +186,7 @@ properly (with a test where it is code), and ticks it off. No idling.
 - [x] gridlock: an "About the method" section on the findings page:
   pre-registration, paired seeds, bootstrap and Wilson intervals, what was
   corrected and why; short, for a visitor who is not a statistician.
-- [ ] cars: `report.py` adds a chart page: held-out laps against settings
+- [x] cars: `report.py` adds a chart page: held-out laps against settings
   for one swept parameter (rays, sight, delay), with intervals.
 - [x] neat-from-scratch: the tour gets a sixth step for "Replay, new seed",
   explaining replaying the tape on this page.
