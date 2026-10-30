@@ -21,6 +21,7 @@ import { arm as crashArm } from "./tools/crashkinds.mjs";
 import { summary as crashSummary } from "./tools/crashmap.mjs";
 import { info as roadInfo } from "./tools/roadinfo.mjs";
 import { binomial, share as sideShare, wilson as sideWilson } from "./tools/sides.mjs";
+import { look as collapseLook } from "./tools/collapse.mjs";
 import { describe as describeLine } from "./src/lineage.js";
 import { Rewind } from "./src/rewind.js";
 import { Crowd, PED } from "./src/pedestrians.js";
@@ -364,6 +365,17 @@ import { editNeuron } from "./src/netview.js";
     assert.strictEqual(sideShare(d, 4), 0.7, "day 4 counts only rows between day 3 and day 4");
   } finally { fs.rmSync(d, { recursive: true, force: true }); }
   console.log("ok  sides: share per run, binomial, Wilson");
+}
+
+// COLLAPSE: a run that ends at the floor is collapsed, and its first day is summed
+{
+  const row = (tick, cars, o = {}) => ({ tick, cars, crashes: 1, cash: 9, trips: 2, births: 0, deaths: 1, immigrants: 3, ...o });
+  const dead = collapseLook([row(600, 50), row(40000, 25), row(86400, 24), row(2 * 86400, 24)], 30);
+  assert.deepStrictEqual([dead.collapsed, dead.peak, dead.endCars, dead.day1.trips, dead.day1.immigrants], [true, 50, 24, 6, 9], "collapsed run: peak, end, first-day sums");
+  assert(dead.lastAbove < 1 && dead.before, "and the day it last had more than the floor");
+  const live = collapseLook([row(600, 50), row(86400, 120), row(2 * 86400, 200)], 30);
+  assert.deepStrictEqual([live.collapsed, live.peak, live.lastAbove], [false, 200, 2], "a growing city is not collapsed");
+  console.log("ok  collapse: floor, peak, first day");
 }
 
 // the research tools run end to end: a two-seed trial and a two-replay
