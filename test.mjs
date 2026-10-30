@@ -3,6 +3,7 @@
 // producing cars that spin in circles forever.
 import assert from "node:assert";
 import fs from "node:fs";
+import { execFileSync } from "node:child_process";
 import { World } from "./src/world.js";
 import { Population } from "./src/neat.js";
 import { Genome, Innovations } from "./src/genome.js";
@@ -192,6 +193,19 @@ import { editNeuron } from "./src/netview.js";
   assert.strictEqual(k1, k0, "a rule that never fires must not change a keyed run");
   assert.notStrictEqual(u1, u0, "unkeyed, the same rule shifts the shared stream");
   console.log("ok  keyed draws: an inert rule changes nothing");
+}
+
+// the research tools run end to end: a two-seed trial and a two-replay
+// rewind of one city hour, from clean caches, with real numbers out
+{
+  const sh = (cmd, env) => execFileSync("node", cmd, { env: { ...process.env, ...env }, encoding: "utf8" });
+  fs.rmSync("tmp/replay/grid-s3-d1-e12", { recursive: true, force: true });
+  for (const s of [101, 102]) fs.rmSync(`runs/trial-grid-base-d1-s${s}`, { recursive: true, force: true }), fs.rmSync(`runs/trial-grid-basic_0.25-d1-s${s}`, { recursive: true, force: true });
+  const tr = sh(["tools/trial.mjs", "grid", "basic=0.25"], { SEEDS: "2", DAYS: "1", FROM: "0" });
+  assert(/2 seeds/.test(tr) && !/NaN/.test(tr), "trial prints intervals, not NaN:\n" + tr);
+  const rp = sh(["tools/replay.mjs", "grid", "3"], { REPS: "2", DAYS: "1", EVERY: "12", SPAN: "12" });
+  assert(/hour 0 \| [0-2]\/2 \|/.test(rp), "replay prints a win count out of its two replays:\n" + rp);
+  console.log("ok  tools: trial and replay smoke");
 }
 
 // bodies: derived physics move the right way with the genes
