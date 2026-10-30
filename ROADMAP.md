@@ -265,6 +265,13 @@ prediction written first, then the run, then the README line.
 - [x] gridlock: platforms, `tools/platforms.mjs` over twenty seeds: drivers' share against passengers'
   share per platform, slope with an interval.
   (Done: `SEEDS=` mode; C21 confirmed, -1.3 points. A slope across several price settings is untried.)
-- [ ] gridlock: why hand-driver economies collapse (C13, C17: 24 cars, 22 families): a collapsed run
+- [x] gridlock: why hand-driver economies collapse (C13, C17: 24 cars, 22 families): a collapsed run
   is one that never grew past its floor; count, per hand run, the day the city last had more than
   30 cars and what the telemetry shows then (crashes, cash, immigrants).
+  (Done: `tools/collapse.mjs`. They never start: day-1 trips 57.8 against 1212.7 in Turin; every collapsed
+  run peaks at its 50 starting cars.)
+- [ ] gridlock: what decides the start? Hand-driver Turin seed 104 (collapsed) against seed 101 (thrives): trips,
+  deaths and cash by city hour for the first day, and where the first fares are; one change to `src/hand.js` or
+  the start that makes seed 104 start without making 101 worse.
+- [ ] gridlock: a give-way rule at the merge for the hand driver (the corridor at 324), tested on Barcelona one-way
+  seed 102 with `--crash-log`: crashes on the corridor and trips per car-day before and after.
