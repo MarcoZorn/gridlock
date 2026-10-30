@@ -4618,3 +4618,18 @@ Reading: a collapsed run is a cold-start trap. In those seeds the hand driver ma
 of cash and die, immigrants (the economy's floor) replace them, and no car ever earns enough to breed; the city sits at about 24
 cars with 22 families, which is what C17's "no takeover" runs were. In the seeds that do start, trips are in the thousands. What decides
 the start (which seeds, which first hour) is not measured here.
+
+### What decides the start: hand-driver Turin seed 104 against seed 101, and a start-cars experiment
+
+Day 1 of `runs/trial-hand-turin-base-d6-s101` (thrives) and `-s104` (collapses), from the telemetry: seed 101 has 2422 pickups and
+1620 dropoffs (ratio 0.67), 0.88 pickups per car-hour over a mean of 115.3 cars; seed 104 has 194 pickups and 61 dropoffs (ratio 0.31),
+0.32 pickups per car-hour over a mean of 25.6 cars. Both have a quiet first hours (trips 9 and 2 in hours 0-2); 101 reaches 53 trips
+in hours 4-6 and 99 in hours 6-8, while 104 stays at 3 to 7 trips every two hours for the whole day, with crashes per car (per four hours)
+of 6.5 to 11.6 against 19.8 to 34.2 in 101: the small city is not crashing more, it is not earning.
+
+Start cars (`tmp/startcars.mjs`, hand drivers, Turin seed 104, `startCars` 50, 100 and 200, two days each):
+50 gives 26 cars and 61 trips on day 1, 24 cars and 62 trips on day 2; 200 gives 24 cars and 69 trips, then 24 cars and 58;
+100 gives 177 cars and 1916 trips on day 1, 189 cars and 2336 on day 2. So the city starts or does not start without a
+monotone link to how many cars it begins with: at 100 it thrives, at 50 and 200 it falls to the floor. One seed, one run per setting,
+so the pattern is a bistable start (the seed's luck decides which side it lands on), not a rate. What a better start rule would be
+is open; the next item asks whether the hand driver can be changed to start more often.
