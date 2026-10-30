@@ -43,10 +43,11 @@ an evolving market.
 4. Two more cities and a second founder population before it is called a
    result.
 
-Known limitation: restoring a snapshot re-places every car on a fresh fare,
-so even a replay with the original noise does not follow the original run
-(the "same-noise control" column). Replays measure what was decided by the
-population, not by its exact positions.
+Snapshots now restore exactly (every car's and pedestrian's state, the random
+stream and the queues; `test.mjs` checks 3000 steps). Replays run before
+2026-10-30 used older snapshots that re-placed every car on restore, so for
+them the same-noise control did not follow the original run; their results
+stand, as replays of a lightly shaken city.
 
 ## Study 2: economics or evolution? (next)
 
@@ -68,3 +69,26 @@ corrected in the README.
   (Boeing's orientation entropy), with the regressors chosen before.
 - Common random numbers: a random stream per car and purpose, so a rule
   changes only what it touches. Needed before any chaos measurement.
+
+## While runs are going: the backlog
+
+A session waiting on long runs takes the first open item here, does it
+properly (with a test where it is code), and ticks it off. No idling.
+
+- [ ] gridlock: common random numbers, a random stream per car and purpose
+  behind `ECON.keyed`, with a test that a rule touching nothing leaves the
+  run identical.
+- [ ] gridlock: a smoke test for `tools/trial.mjs` and `tools/replay.mjs`
+  (two seeds, one city hour) in `test.mjs`.
+- [ ] gridlock: profile a one-day economy and make it faster; every saved
+  second is more replays a night. Measure before and after.
+- [ ] gridlock: the eco page gets a Rewind button (snapshot every city hour,
+  restore any of them), now that restores are exact.
+- [ ] gridlock: `tools/policies.mjs` reads the twenty-seed trial runs where
+  they exist instead of the four-seed ones.
+- [ ] cars: `bench.py` reports a 95% bootstrap interval for held-out laps
+  across seeds, like `tools/trial.mjs`.
+- [ ] cars: a test that `track_room` keeps every pinch passable at
+  hardness 2 too.
+- [ ] neat-from-scratch: a hard-tracks toggle on the page, and the leader
+  shown is the one picked on many tracks, not the record-holder.
