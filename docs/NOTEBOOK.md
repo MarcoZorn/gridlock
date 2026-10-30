@@ -4704,3 +4704,10 @@ brakes +0.005 [-0.033, +0.041] (10 of 20); range -0.136 [-0.170, -0.101] (20 of 
 cargo -0.245 [-0.267, -0.226] (20 of 20); jam -0.126 [-0.173, -0.065] (19 of 20). Predicted length, range and cargo down and rays up in at least
 18 of 20 each: holds. "Short-sighted" here means the sight-range gene fell while the number of rays rose, so the cars see less far with
 more rays. The seeds 101-120 gave the same pattern (seen before the claim, said in its source). The freight condition was not run.
+
+### Claim C26 opened: generalisation to real streets, at twenty seeds
+
+The README's "1.3 to 2.8 crashes per 1000 units on Manhattan, Barcelona and Turin against 3.5" comes from `tools/yieldrule.mjs` with no rule and
+`MAP=` (three seeds each: 2.79 Turin, 1.35 Barcelona, 1.27 Manhattan, 3.52 on the generated cities, checked again today). The tool now takes
+`ARMS=none SEEDS=n` for the absolute rate with a 95% bootstrap interval. Prediction written before the run, in `docs/claims.jsonl`: the interval of each
+real city lies entirely below the generated cities' interval. Unit c26 (four maps in parallel), logs `tmp/yr-c26-*.log`.
