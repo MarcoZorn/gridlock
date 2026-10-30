@@ -238,7 +238,9 @@ properly (with a test where it is code), and ticks it off. No idling.
   already exist (`FREEZE=1 tools/replay.mjs`); the hand-driver arm has no
   family differences to take over, so say that in the notebook with the
   numbers from a one-day hand run (distinct species, distinct bodies).
-- [ ] gridlock: Study 2, dynasty takeover with hand drivers measured properly: `tools/replay.mjs`'s
+- [x] gridlock: Study 2, dynasty takeover with hand drivers measured properly: `tools/replay.mjs`'s
   family tracking on twenty hand-driver runs (`--founders hand` through `tools/replay.mjs`, which today
   loads docs/trained.json only), the share of the biggest family at day 6 with a Wilson interval on
   runs above half, next to the same twenty evolved runs. Open the claim with its prediction first.
+  (Done as `tools/families.mjs` and claim C17, killed: 12 of 20 hand runs above half
+  against 19 of 20 evolved. The README's "three of four runs, every car" is 8 of 20.)
