@@ -89,7 +89,7 @@ properly (with a test where it is code), and ticks it off. No idling.
   car per tick, which changes results; not done.)
 - [ ] gridlock: the eco page gets a Rewind button (snapshot every city hour,
   restore any of them), now that restores are exact.
-- [ ] gridlock: `tools/policies.mjs` reads the twenty-seed trial runs where
+- [x] gridlock: `tools/policies.mjs` reads the twenty-seed trial runs where
   they exist instead of the four-seed ones.
 - [x] cars: `bench.py` reports a 95% bootstrap interval for held-out laps
   across seeds, like `tools/trial.mjs`.
