@@ -4639,3 +4639,11 @@ is open; the next item asks whether the hand driver can be changed to start more
 Prediction written before the run, in `docs/claims.jsonl`. `tools/starts.mjs` (new, smoke-tested): hand-written drivers on
 Turin, two days, seeds 101-120, startCars 50, 100 and 150, the share of runs ending above 30 cars with a Wilson interval each.
 Predicted at least 18 of 20 at startCars 100. `SEEDS=20 START=50,100,150 node tools/starts.mjs turin`, unit c22, log `tmp/starts-c22.log`.
+
+### Claim C22 killed: a bigger start does not make a hand-driver city start
+
+`SEEDS=20 START=50,100,150 node tools/starts.mjs turin` (`tmp/starts-c22.log`), hand-written drivers, Turin, two days, seeds
+101-120; a run starts if it ends with more than 30 cars. startCars 50: 16 of 20 (Wilson [58%, 92%]); 100: 16 of 20 ([58%, 92%]);
+150: 17 of 20 ([64%, 95%]). Predicted at least 18 of 20 at 100: fails. The seed-104 pattern (100 starts, 50 and 200 do not) was luck
+of one seed; across twenty seeds the start rate is about four in five whatever the start. What makes the other fifth never take off
+is still open (the first-day numbers say they earn almost nothing, not why).
