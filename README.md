@@ -102,7 +102,8 @@ re-tests them (see *How sure*, below).
   (4768 a day against 2476), more than any change to the drivers.
 - **Credit and insurance buy activity with recklessness.** An overdraft
   raises fares by a fifth to a quarter and crashes as much; insured drivers
-  crash twice as often, because the reckless stop going broke.
+  crash 87% more per car (interval 82-91%, twenty seeds) and earn a third
+  more (+34%), because the reckless stop going broke.
 
 **The street network**
 - **Real one-way cities are fragile.** Close 5% of road segments at random

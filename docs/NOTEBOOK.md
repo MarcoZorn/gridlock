@@ -4107,3 +4107,22 @@ distrust single-snapshot rates.
 
 Not yet done: the "biggest family stays biggest" check, and other cities.
 Table: `node tmp/c1-table.mjs turin-s11-d4-e3`.
+
+### Claim C4, confirmed: insurance at twenty seeds
+
+`SEEDS=20 node tools/trial.mjs turin insurance=1`, days 2-6, log in
+`tmp/trial-insurance.log`.
+
+| measure | change | 95% interval | seeds up/down |
+|---|---|---|---|
+| fares a day | +34.3% | +31.5 to +37.2 | 20/0 |
+| crashes per car a day | +86.5% | +82.1 to +91.1 | 20/0 |
+| trip time | -35.8% | -37.4 to -34.2 | 0/20 |
+| cars | +65.4% | +59.5 to +71.1 | 20/0 |
+| Gini | +0.051 | +0.046 to +0.055 | 20/0 |
+
+Predictions held (crashes +60 to +120%, fares +10 to +40%). The README's
+"twice as often" was a little high: +87%, interval excluding 100%. README
+corrected. Cars rise by two thirds, so part of the extra crashing is
+crowding; per-car rates already divide that out, but trip time falls, which
+is odd with more cars and unexplained here.
