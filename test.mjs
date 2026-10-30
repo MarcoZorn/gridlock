@@ -263,6 +263,16 @@ import { editNeuron } from "./src/netview.js";
   console.log("ok  reaper: bullets parse, re-tests use real rules, five-open rule holds");
 }
 
+// METHOD: the findings page's method section quotes the bootstrap size the trial tool really uses
+{
+  const page = fs.readFileSync("findings.html", "utf8"), trial = fs.readFileSync("tools/trial.mjs", "utf8");
+  const reps = trial.match(/function bootstrap\(xs, reps = (\d+)\)/)[1];
+  assert(page.includes('id="method"'), "findings page has its method section");
+  assert(page.includes(`${reps} times`), `and says ${reps} bootstrap resamples, as trial.mjs does`);
+  assert(/twenty seeds/.test(page) && /Wilson/.test(page), "and names the paired seeds and the Wilson interval");
+  console.log("ok  findings page: method section agrees with the trial tool");
+}
+
 // the research tools run end to end: a two-seed trial and a two-replay
 // rewind of one city hour, from clean caches, with real numbers out
 {
