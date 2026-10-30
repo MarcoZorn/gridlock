@@ -110,6 +110,9 @@ re-tests them (see *How sure*, below).
 - **Real one-way cities are fragile.** Close 5% of road segments at random
   and half of Turin, Barcelona or Manhattan can no longer reach the rest;
   a grid loses 1%. The busiest roads are not the critical ones.
+- **One-way arrows cost fares and buy no safety.** Barcelona with its streets two-way
+  instead: fares a day +18.2% [+15.7%, +20.6%] over twenty seeds, trip time -17.5%,
+  crashes per car -0.9% [-3.6%, +1.7%] (C10, confirmed).
 - **No Braess paradox.** Of every road in the three cities that can be
   closed without stranding a trip, none saves more than 0.07% of travel
   time.
@@ -156,7 +159,7 @@ on day 0. Venice seed 7 is also open at hour 12 (0 of 32 from hour 0, 14
 from hour 12) and closes by hour 18 (26 of 32). Early decision is the
 exception (one run of four). The leader does not beat its own share of the
 cars reliably: on two fresh runs, 5 of 9 snapshots with the winner under half the
-cars had its win-rate interval above the share, 0 below (C9, killed). Claims C1, C3, C6, C7, C8 and C9 in [docs/claims.jsonl](docs/claims.jsonl) (`tools/replay.mjs`;
+cars had its win-rate interval above the share, 0 below (C9, killed). Claims C1, C3, C6, C7, C8, C9 and C10 in [docs/claims.jsonl](docs/claims.jsonl) (`tools/replay.mjs`;
 [ROADMAP.md](ROADMAP.md)).
 
 ## Running it

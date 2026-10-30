@@ -150,7 +150,7 @@ properly (with a test where it is code), and ticks it off. No idling.
 - [ ] gridlock: a "Study 1" page (`replay.html`): pick a saved economy and an
   hour, run sixteen replays in Web Workers in the browser, and draw the win
   rate as it comes in. The replay study, runnable by anyone.
-- [ ] gridlock: a time-lapse recorder on the eco page: capture a frame every
+- [x] gridlock: a time-lapse recorder on the eco page: capture a frame every
   city hour into a WebM with `MediaRecorder`, download button, so a day can
   be shared as a video.
 - [ ] gridlock: a lineage explorer on the eco page: click a car, see its

@@ -4314,3 +4314,11 @@ cars, Barcelona 8 winner with 56%. Snapshots from hour 3 on with the winner unde
 least 60% above and at most 1 below: 5 of 9 is 56%, so it fails. Venice leans
 above its share, Barcelona mostly sits on it, as in Barcelona 7. Reading: the share
 of cars explains most of the curve; no general head start for the leader.
+
+### Claim C10 confirmed: Barcelona's one-way arrows cost fares, no safety gain
+
+`SEEDS=20 ALT=tmp/barcelona-twoway.json node tools/trial.mjs barcelona`, log `tmp/trial-oneway.log`.
+Two-way vs one-way, days 2-6: fares a day +18.2% [+15.7%, +20.6%] (20 up / 0 down); crashes per
+car a day -0.9% [-3.6%, +1.7%] (9 up / 11 down); trip time -17.5% [-20.2%, -14.8%]; cars -2.9%
+[-6.7%, +0.7%]; Gini -0.016 [-0.026, -0.007]. Predicted fares +10 to +35% excluding zero and
+crashes within +-15%: both hold. C11 (frozen charge, Turin) is running next.
