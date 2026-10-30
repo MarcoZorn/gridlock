@@ -4601,3 +4601,20 @@ that sentence as an observation. Seed-to-seed spread is large (per-seed values i
 at the end 59.5% against the ideal free distribution 60.9%; difference -1.3 points [-2.5, -0.0], 4 above / 16 below.
 Predicted the interval inside -10 to +10 points: holds, comfortably. The interval touches zero from below, so the
 drivers sit slightly under the ideal on B. One price setting only; a spread of settings (a slope) is untried.
+
+### Why hand-driver economies collapse: they never start
+
+`node tools/collapse.mjs "runs/trial-hand-turin-base-d6-s{s}"` and the same for `trial-hand-barcelona-base` (a run is
+collapsed if it ends with 30 cars or fewer):
+
+- Turin, hand drivers: 4 of 20 collapsed (seeds 104, 112, 114, 116). Barcelona one-way: 7 of 20 (103, 106, 108, 110, 114, 117, 119);
+  the two-way Barcelona arm: 4 of 20 (101, 108, 113, 119); the evolved Turin trials: 0 of 20.
+- Every collapsed run peaks at the 50 starting cars on day 0 and last has more than 30 cars on day 0.1: it never grows.
+- The first day tells them apart. Turin, collapsed (mean of 4): 57.8 trips, 7.5 births, 181.0 deaths, 198.0 immigrants; the other 16:
+  1212.7 trips, 785.0 births, 746.7 deaths, 77.8 immigrants. Barcelona one-way, collapsed (7): 14.1 trips, 2.4 births, 202.1 deaths,
+  223.7 immigrants; the other 13: 1372.4 trips, 1865.0 births, 1830.0 deaths, 83.1 immigrants.
+
+Reading: a collapsed run is a cold-start trap. In those seeds the hand driver makes almost no trips on the first day, so cars run out
+of cash and die, immigrants (the economy's floor) replace them, and no car ever earns enough to breed; the city sits at about 24
+cars with 22 families, which is what C17's "no takeover" runs were. In the seeds that do start, trips are in the thousands. What decides
+the start (which seeds, which first hour) is not measured here.
