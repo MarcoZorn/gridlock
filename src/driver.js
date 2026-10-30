@@ -153,18 +153,26 @@ export class Driver {
 
   sense(hash) {
     const c = this.city, R = this.p.rayRange, A = rayAngles();
+    // City.contains, inlined: the rays call it more than anything else in the
+    // simulator. Same arithmetic, so the same answers to the last bit.
+    const mask = c.mask, gw = c.gw, cs = c.cellSize, W = c.w, H = c.h, island = c.roundabouts ? c.island : null, x0 = this.x, y0 = this.y, step = BODY.rayStep;
+    const inside = (x, y) => {
+      if (x < 0 || y < 0 || x >= W || y >= H) return false;
+      const k = ((y / cs) | 0) * gw + ((x / cs) | 0);
+      return mask[k] === 1 && !(island && island[k] === 1);
+    };
     for (let i = 0; i < N_RAYS; i++) {
       const ang = this.a + A[i];
       const cx = Math.cos(ang), cy = Math.sin(ang);
       this.dx[i] = cx; this.dy[i] = cy;
       let d = 0, hit = R;
       while (d < R) {
-        d += BODY.rayStep;
-        if (!c.contains(this.x + cx * d, this.y + cy * d)) {
-          let lo = d - BODY.rayStep, hi = d;
+        d += step;
+        if (!inside(x0 + cx * d, y0 + cy * d)) {
+          let lo = d - step, hi = d;
           for (let k = 0; k < 3; k++) {
             const m = (lo + hi) / 2;
-            if (c.contains(this.x + cx * m, this.y + cy * m)) lo = m; else hi = m;
+            if (inside(x0 + cx * m, y0 + cy * m)) lo = m; else hi = m;
           }
           hit = lo;
           break;

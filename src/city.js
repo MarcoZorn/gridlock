@@ -305,6 +305,7 @@ export class City {
   bake() {
     this.version = (this.version || 0) + 1;   // anything cached from the old layout is stale
     this.heat = null;
+    this.cellSize = CELL;   // for code that reads the mask directly (Driver.sense)
     this.gw = Math.ceil(this.w / CELL);
     this.gh = Math.ceil(this.h / CELL);
     this.mask = new Uint8Array(this.gw * this.gh);
