@@ -158,7 +158,7 @@ properly (with a test where it is code), and ticks it off. No idling.
 
 ### Bigger pieces (hours each; split into commits as they go)
 
-- [ ] gridlock: a "Study 1" page (`replay.html`): pick a saved economy and an
+- [x] gridlock: a "Study 1" page (`replay.html`): pick a saved economy and an
   hour, run sixteen replays in Web Workers in the browser, and draw the win
   rate as it comes in. The replay study, runnable by anyone.
 - [x] gridlock: a time-lapse recorder on the eco page: capture a frame every
