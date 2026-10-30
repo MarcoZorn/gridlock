@@ -1,6 +1,6 @@
-// How often does a hand-driver city start? For each START (comma list, default
+// How often does a city start? For each START (comma list, default
 // 50,100,150) and seeds 101.., run DAYS days (default 2) with the hand-written
-// driver and count the runs that end with more than FLOOR cars (default 30):
+// driver (or FOUNDERS=docs/trained.json: the evolved ones, free to evolve) and count the runs that end with more than FLOOR cars (default 30):
 // the others never left their floor (tools/collapse.mjs). Wilson 95% interval each.
 //
 //   SEEDS=20 START=50,100,150 node tools/starts.mjs turin
@@ -10,13 +10,15 @@ import os from "node:os";
 import { spawn } from "node:child_process";
 import { EcoWorld, ECON } from "../src/ecoworld.js";
 import { HandBrain } from "../src/hand.js";
+import { Population } from "../src/neat.js";
 
 export const wilson = (k, n) => { const z = 1.96, p = k / n, c = (p + z * z / (2 * n)) / (1 + z * z / n), h = (z / (1 + z * z / n)) * Math.sqrt(p * (1 - p) / n + z * z / (4 * n * n)); return [c - h, c + h]; };
 
 export function once(map, seed, startCars, days) {
-  ECON.freezeAt = 1;
+  const evolved = process.env.FOUNDERS && process.env.FOUNDERS !== "hand";
+  if (!evolved) ECON.freezeAt = 1;
   const graph = map === "grid" ? null : JSON.parse(fs.readFileSync(map.endsWith(".json") ? map : `maps/${map}.json`, "utf8"));
-  const w = new EcoWorld({ seed, founders: HandBrain.founders(), graph, startCars });
+  const w = new EcoWorld({ seed, founders: evolved ? Population.fromJSON(JSON.parse(fs.readFileSync(process.env.FOUNDERS, "utf8")).pop) : HandBrain.founders(), graph, startCars });
   while (w.tick < days * 86400) w.step();
   return w.cars.length;
 }
@@ -39,7 +41,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     }));
     for (const [st, cars] of res) {
       const k = cars.filter((c) => c > floor).length, [lo, hi] = wilson(k, cars.length);
-      console.log(`${map}, hand-written drivers, startCars ${st}, ${days} days: ${k} of ${cars.length} runs end with more than ${floor} cars (Wilson 95% [${(100 * lo).toFixed(0)}%, ${(100 * hi).toFixed(0)}%])`);
+      console.log(`${map}, ${process.env.FOUNDERS && process.env.FOUNDERS !== "hand" ? "evolved drivers" : "hand-written drivers"}, startCars ${st}, ${days} days: ${k} of ${cars.length} runs end with more than ${floor} cars (Wilson 95% [${(100 * lo).toFixed(0)}%, ${(100 * hi).toFixed(0)}%])`);
     }
   }
 }
