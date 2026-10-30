@@ -20,6 +20,7 @@ import { RETEST, PLANS, bullets, claimFor } from "./tools/reap.mjs";
 import { arm as crashArm } from "./tools/crashkinds.mjs";
 import { summary as crashSummary } from "./tools/crashmap.mjs";
 import { info as roadInfo } from "./tools/roadinfo.mjs";
+import { binomial, share as sideShare, wilson as sideWilson } from "./tools/sides.mjs";
 import { describe as describeLine } from "./src/lineage.js";
 import { Rewind } from "./src/rewind.js";
 import { Crowd, PED } from "./src/pedestrians.js";
@@ -351,6 +352,18 @@ import { editNeuron } from "./src/netview.js";
   assert.strictEqual(roadInfo(g, 1, 0).direction, "against the arrow", "and which way the arrow points");
   assert.strictEqual(roadInfo(g, 0, 2), null, "and no road where there is none");
   console.log("ok  crash log: opt-in, kinds, and no effect on the run");
+}
+
+// SIDES: the share of cars keeping right, per run and day, and the coin-flip test
+{
+  assert(Math.abs(binomial(10, 20) - 1) < 1e-9 && Math.abs(binomial(5, 20) - 0.0414) < 1e-3 && binomial(0, 20) < 1e-5, "exact binomial two-sided p");
+  assert(sideWilson(15, 20)[0] > 0.5 && sideWilson(10, 20)[0] < 0.5, "Wilson");
+  const d = fs.mkdtempSync("tmp/sides-");
+  try {
+    fs.writeFileSync(`${d}/telemetry.jsonl`, [{ tick: 3 * 86400 + 600, sideAll: 100, sideRight: 80 }, { tick: 3 * 86400 + 1200, sideAll: 100, sideRight: 60 }, { tick: 5 * 86400, sideAll: 100, sideRight: 0 }].map((r) => JSON.stringify(r)).join("\n"));
+    assert.strictEqual(sideShare(d, 4), 0.7, "day 4 counts only rows between day 3 and day 4");
+  } finally { fs.rmSync(d, { recursive: true, force: true }); }
+  console.log("ok  sides: share per run, binomial, Wilson");
 }
 
 // the research tools run end to end: a two-seed trial and a two-replay
