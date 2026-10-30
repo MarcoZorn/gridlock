@@ -116,7 +116,8 @@ re-tests them (see *How sure*, below).
   a grid loses 1%. The busiest roads are not the critical ones.
 - **One-way arrows cost fares and buy no safety.** Barcelona with its streets two-way
   instead: fares a day +18.2% [+15.7%, +20.6%] over twenty seeds, trip time -17.5%,
-  crashes per car -0.9% [-3.6%, +1.7%] (C10, confirmed).
+  crashes per car -0.9% [-3.6%, +1.7%] (C10, confirmed). With hand-written drivers that cannot evolve the
+  crash half does not hold: crashes per car +276.1% [+85.4%, +498.8%] (C13, killed).
 - **No Braess paradox.** Of every road in the three cities that can be
   closed without stranding a trip, none saves more than 0.07% of travel
   time.
