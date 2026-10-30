@@ -4462,3 +4462,29 @@ Reading: the hand driver's crashes are other cars, not walls, in both cities. Th
 them: a handful of roads take a fifth of all crashes, where the two-way city spreads them. One seed per arm,
 so the pattern, not a rate. Which part of `src/hand.js` makes it pile up on those roads is still open
 (next: look at what those roads are, one-way streets feeding a merge?).
+
+### Where the hand driver piles up on one-way Barcelona, and one guess about why
+
+`node tools/roadinfo.mjs maps/barcelona.json "482>483" ...` (quote the ids: `>` is a shell redirect) on
+the ten worst roads of the one-way crash log above. Median road in this map is 57 units long; the worst
+ten are 219, 210, 200, 199, 193, 49, 116, 210, 55 and 243, nine of them one-way (one two-way, 286>285), six with one lane
+and four with two. Crashes correlate with road length at 0.26 over the 729 roads that had one, so length alone
+is not it. Seven roads form one corridor, 25>324, 324>482, 482>483, 483>410, 410>467, 467>468 and 468>469:
+388, 1173, 4726, 646, 313, 754 and 2110 crashes, 10110 of the 74673 (13.5%) on 7 of 729 roads. Per 100
+units of road the worst are short connectors in that corridor (410>467 at length 13, 324>482 at 49, 25>324 at 16).
+324>482 is where three other roads merge in (301, 25, 426).
+
+One guess, tested: the hand driver leaves too little room to the car ahead. `GRIDLOCK_HAND_FOLLOW` (default 1.5,
+the weight on the car-ray distance in `src/hand.js`) at 0.8 and 0.4, same economy (Barcelona one-way,
+seed 102, three days, `tmp/cl-hand-*`):
+
+| follow | trips | crashes | mean cars | crashes per car-day | trips per car-day |
+|---|---|---|---|---|---|
+| 1.5 (default) | 5435 | 74673 | 186.8 | 133.2 | 9.7 |
+| 0.8 | 4889 | 64618 | 170.8 | 126.1 | 9.5 |
+| 0.4 | 2315 | 17196 | 94.3 | 60.8 | 8.2 |
+
+More caution cuts crashes per car (133.2 to 60.8) but also trips per car (9.7 to 8.2) and the city shrinks to
+half. So it is a trade, not a free fix: the guess is partly right (following distance matters) and does not meet
+"without lowering trips". The merge at 324 stays untested: the hand driver has no rule for giving way. One seed,
+one run per setting.
