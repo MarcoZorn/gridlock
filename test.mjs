@@ -16,6 +16,7 @@ import { EcoWorld, ECON, gini, econParam, applyEcon } from "./src/ecoworld.js";
 import { Body } from "./src/body.js";
 import { HandBrain } from "./src/hand.js";
 import { tape, replay } from "./tools/tapecars.mjs";
+import { RETEST, bullets, claimFor } from "./tools/reap.mjs";
 import { Rewind } from "./src/rewind.js";
 import { Crowd, PED } from "./src/pedestrians.js";
 import { editNeuron } from "./src/netview.js";
@@ -245,6 +246,21 @@ import { editNeuron } from "./src/netview.js";
   assert.notStrictEqual(JSON.stringify(other.genome.toJSON()), lead(w)[1], "fresh stream: another champion");
   assert.strictEqual(tape(5, 6).generation, 6, "tape stops at the generation asked for");
   console.log("ok  racing-car tape: a save resumes exactly");
+}
+
+// REAP: the README's bullets parse, every re-test names real ECON rules, and a claim opens only under five
+{
+  const bs = bullets(fs.readFileSync("README.md", "utf8")), claims = fs.readFileSync("docs/claims.jsonl", "utf8").trim().split("\n").map(JSON.parse);
+  assert(bs.length >= 10 && bs.some((b) => b.tested) && bs.some((b) => !b.tested), `README bullets parsed (${bs.length})`);
+  for (const r of RETEST) {
+    assert(bs.some((b) => b.title.startsWith(r.title)), `README still has the bullet "${r.title}"`);
+    for (const kv of r.rules.split(",")) assert(kv.split("=")[0] in ECON, `${kv} is an ECON rule`);
+  }
+  const open = (n) => Array.from({ length: n }, (_, i) => ({ id: `C${i + 1}`, status: "open" }));
+  assert.strictEqual(claimFor(RETEST[0], open(5)), null, "five open claims: nothing new opens");
+  assert.strictEqual(claimFor(RETEST[0], open(2)).id, "C3", "under five: the next id");
+  assert(claims.every((c) => c.id && c.cmd && c.predicted), "every claim has a command and a prediction");
+  console.log("ok  reaper: bullets parse, re-tests use real rules, five-open rule holds");
 }
 
 // the research tools run end to end: a two-seed trial and a two-replay
