@@ -75,7 +75,7 @@ corrected in the README.
 A session waiting on long runs takes the first open item here, does it
 properly (with a test where it is code), and ticks it off. No idling.
 
-- [ ] gridlock: common random numbers, a random stream per car and purpose
+- [x] gridlock: common random numbers, a random stream per car and purpose
   behind `ECON.keyed`, with a test that a rule touching nothing leaves the
   run identical.
 - [ ] gridlock: a smoke test for `tools/trial.mjs` and `tools/replay.mjs`
