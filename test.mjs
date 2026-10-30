@@ -581,4 +581,23 @@ console.log("ok  inequality measured");
   console.log("ok  time-lapse frames one per slot");
 }
 
+// the replay page's worker runs in node too, given a fetch that reads files:
+// a base run with its snapshots, and a replay from one of them
+{
+  const out = [];
+  const keep = { self: globalThis.self, fetch: globalThis.fetch };
+  globalThis.self = { postMessage: (m) => { if (m.done) out.push(m); } };
+  globalThis.fetch = async (u) => ({ json: async () => JSON.parse(fs.readFileSync(new URL(u), "utf8")) });
+  try {
+    await import("./src/replayworker.js");
+    await self.onmessage({ data: { kind: "base", map: "grid", seed: 3, days: 1, hours: [0, 6] } });
+    const base = out.pop();
+    assert(base.snaps[0] && base.snaps[6] && base.winner != null && base.share > 0, "the base run names a winner and keeps both snapshots");
+    await self.onmessage({ data: { kind: "one", snap: base.snaps[6], seed: 1 } });
+    const r = out.pop();
+    assert(Number.isInteger(r.won) && r.cars > 0 && r.won <= r.cars, "a replay reports the winner's cars out of all");
+  } finally { globalThis.self = keep.self; globalThis.fetch = keep.fetch; }
+  console.log("ok  replay page worker: base run and a replay");
+}
+
 console.log("\nall checks passed");

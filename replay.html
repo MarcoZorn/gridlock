@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Gridlock: replay the tape</title>
+<meta name="description" content="Rewind an evolving taxi economy to an earlier hour and replay it with fresh noise: from when is the city's monopoly already decided? Runs in your browser.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 16 16%27%3E%3Crect width=%2716%27 height=%2716%27 rx=%273%27 fill=%27%2314161c%27/%3E%3Cpath d=%27M2 8h12M8 2v12%27 stroke=%27%23ff8a5c%27 stroke-width=%273%27/%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css">
+<style>
+  main.rp { max-width: 900px; margin: 0 auto; padding: 8px 24px 48px; display: grid; gap: 14px; grid-template-columns: minmax(0, 1fr) !important; grid-template-areas: none !important; }
+  .rp .card label { display: inline-flex; gap: 6px; align-items: center; margin: 0 14px 8px 0; font-size: 12px; color: var(--dim); }
+  .rp select, .rp input { background: var(--bg); color: var(--ink); border: 1px solid var(--line); border-radius: 6px; padding: 4px 6px; font: inherit; }
+  .rp input[type=number] { width: 64px; } .rp input.hours { width: 150px; }
+  #status { font-size: 12px; color: var(--dim); margin-top: 6px; min-height: 1.5em; }
+  .bars { display: grid; gap: 8px; }
+  .bars .row { display: grid; grid-template-columns: 70px 1fr 120px; gap: 10px; align-items: center; font-size: 12px; }
+  .bars .track { position: relative; height: 18px; background: var(--bg); border: 1px solid var(--line); border-radius: 4px; }
+  .bars .fill { position: absolute; left: 0; top: 0; bottom: 0; background: var(--blue); border-radius: 3px; opacity: 0.85; }
+  .bars .ci { position: absolute; top: 7px; height: 2px; background: var(--ink); }
+  .bars .share { position: absolute; top: -3px; bottom: -3px; width: 2px; background: var(--accent); }
+  .bars .num { text-align: right; font-variant-numeric: tabular-nums; }
+  .legend { font-size: 12px; color: var(--dim); } .legend i { display: inline-block; width: 10px; height: 10px; vertical-align: -1px; margin: 0 4px 0 10px; }
+  @media (max-width: 560px) { .bars .row { grid-template-columns: 56px 1fr 92px; } }
+</style>
+</head>
+<body>
+<header>
+<nav class="views">
+  <a href="index.html">Generations</a>
+  <a href="eco.html">No fitness function</a>
+  <a href="eco.html?map=turin">Turin</a>
+  <a href="replay.html" class="on">Replay the tape</a>
+  <a href="findings.html">Findings</a>
+  <a href="notebook.html">Notebook</a>
+  <a href="https://github.com/MarcoZorn/gridlock">Code</a>
+</nav>
+  <h1>Grid<span>lock</span>: replay the tape</h1>
+  <p>
+    In the taxi economy one founder's family always ends up owning the city. When is that decided?
+    This page runs an economy, rewinds it to earlier hours of its first day, and replays each
+    rewind with fresh random noise. If the same family wins almost every replay from some hour on,
+    the outcome was already decided then. The method is Gould's "replaying the tape of life", as
+    Blount, Borland and Lenski ran it on bacteria. Everything runs here, in your browser.
+  </p>
+</header>
+<main class="rp">
+  <section class="card">
+    <label>city <select id="map"><option>turin</option><option>barcelona</option><option>manhattan</option><option value="grid">generated grid</option></select></label>
+    <label>seed <input id="seed" type="number" value="7" min="1"></label>
+    <label>replays per hour <input id="reps" type="number" value="8" min="2" max="64"></label>
+    <label>run to day <input id="days" type="number" value="2" min="1" max="4"></label>
+    <label>rewind to hours <input id="hours" class="hours" value="0,3,6,9,12"></label>
+    <button id="go">Run</button>
+    <div id="status">Turin, seed 7 is the economy where the monopoly was decided within the first morning (claim C1). It takes a few minutes.</div>
+  </section>
+  <section class="card">
+    <h2>How often the eventual winner wins again</h2>
+    <div class="bars" id="bars"></div>
+    <p class="legend"><i style="background:var(--blue)"></i>replays won (over half the cars) <i style="background:var(--ink);height:2px"></i>95% interval <i style="background:var(--accent);width:2px"></i>the family's share of the cars at that hour</p>
+  </section>
+</main>
+<script type="module">
+const $ = (id) => document.getElementById(id);
+const wilson = (k, n) => { if (!n) return [0, 1]; const z = 1.96, p = k / n, c = (p + z * z / (2 * n)) / (1 + z * z / n), h = (z / (1 + z * z / n)) * Math.sqrt(p * (1 - p) / n + z * z / (4 * n * n)); return [Math.max(0, c - h), Math.min(1, c + h)]; };
+const work = (msg, onProgress) => new Promise((ok, fail) => {
+  const w = new Worker(new URL("./src/replayworker.js", import.meta.url), { type: "module" });
+  w.onmessage = (e) => { if (e.data.done) { w.terminate(); ok(e.data); } else if (onProgress) onProgress(e.data); };
+  w.onerror = (e) => { w.terminate(); fail(e); };
+  w.postMessage(msg);
+});
+function draw(hours, res, shares) {
+  $("bars").innerHTML = hours.map((h) => {
+    const r = res[h], n = r.length, k = r.filter((x) => x.won / x.cars > 0.5).length, [lo, hi] = wilson(k, n);
+    return `<div class="row"><span>hour ${h}</span><span class="track">
+      <span class="fill" style="width:${n ? (100 * k / n).toFixed(1) : 0}%"></span>
+      ${n ? `<span class="ci" style="left:${(100 * lo).toFixed(1)}%;width:${(100 * (hi - lo)).toFixed(1)}%"></span>` : ""}
+      ${shares ? `<span class="share" style="left:${(100 * shares[h]).toFixed(1)}%"></span>` : ""}</span>
+      <span class="num">${n ? `${k}/${n}` : "-"}${shares ? ` · ${(100 * shares[h]).toFixed(0)}%` : ""}</span></div>`;
+  }).join("");
+}
+// ?map=&seed=&reps=&days=&hours= fill the form; &auto=1 starts the run (a shareable experiment)
+const q = new URLSearchParams(location.search);
+for (const k of ["map", "seed", "reps", "days", "hours"]) if (q.has(k)) $(k).value = q.get(k);
+$("go").onclick = async () => {
+  const map = $("map").value, seed = +$("seed").value, reps = +$("reps").value, days = +$("days").value;
+  const hours = $("hours").value.split(",").map(Number).filter((h) => h >= 0 && h < 24 * days).sort((a, b) => a - b);
+  $("go").disabled = true;
+  const res = Object.fromEntries(hours.map((h) => [h, []]));
+  draw(hours, res, null);
+  try {
+    $("status").textContent = "Running the original economy…";
+    const base = await work({ kind: "base", map, seed, days, hours }, (p) => ($("status").textContent = `Running the original economy… ${(100 * p.progress).toFixed(0)}%`));
+    draw(hours, res, base.shares);
+    const jobs = [];
+    for (let r = 1; r <= reps; r++) for (const h of hours) jobs.push([h, r]);
+    let done = 0, next = 0;
+    const lanes = Math.max(1, Math.min(8, (navigator.hardwareConcurrency || 4) - 1));
+    $("status").textContent = `Family ${base.winner} ends with ${(100 * base.share).toFixed(0)}% of the cars. Replaying on ${lanes} threads: 0/${jobs.length}`;
+    await Promise.all(Array.from({ length: lanes }, async () => {
+      while (next < jobs.length) {
+        const [h, r] = jobs[next++];
+        const out = await work({ kind: "one", snap: base.snaps[h], seed: r });
+        res[h].push(out); done++;
+        draw(hours, res, base.shares);
+        $("status").textContent = `Family ${base.winner} ends with ${(100 * base.share).toFixed(0)}% of the cars. Replaying on ${lanes} threads: ${done}/${jobs.length}`;
+      }
+    }));
+    $("status").textContent += ". Done.";
+  } catch (err) {
+    $("status").textContent = `Something went wrong: ${err.message || err}`;
+  }
+  $("go").disabled = false;
+};
+if (q.get("auto") === "1") $("go").click();
+</script>
+</body>
+</html>
