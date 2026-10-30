@@ -4216,3 +4216,21 @@ decided by hour 12, while Turin seed 11 (corrected table above) and Barcelona
 seed 7 are not decided on day 0, so only one of three runs shows an early decision. A frozen run (hours 0, 6, 12, 21) is going in
 `tmp/replay-barcelona7-frozen.log` and will be added here. README needs no
 change: it states the Turin replays, not a general rule.
+
+### Claim C7, killed: freezing mutation does not make the winner surer (six fresh Turin seeds)
+
+Hour 12, 16 replays per cell, winner (>50% of cars) replays, from `tmp/c7-turin*.log`:
+
+| seed | evolving | frozen |
+|---|---|---|
+| 21 | 1/16 | 1/16 |
+| 22 | 6/16 | 2/16 |
+| 23 | 4/16 | 1/16 |
+| 24 | 16/16 | 16/16 |
+| 25 | 9/16 | 7/16 |
+| 26 | 16/16 | 16/16 |
+
+Pooled 52/96 evolving, 43/96 frozen; Fisher two-sided p = 0.248. Predicted frozen
+at least 10 points higher in 4 of 6 seeds: it was higher in none. The earlier
+hint (seeds 7 and 11, picked after the fact) does not hold up on fresh seeds at
+hour 12. README sentence about mutation keeping the contest open is withdrawn.

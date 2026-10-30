@@ -146,12 +146,14 @@ half the cars)? On Turin seed 7, 0 of 32 replays from hour 0, 1 from hour
 3, 15 from hour 6, 22 from hour 9, and all 32 from hour 12: decided within
 the first morning, while the family holds under two fifths of the cars.
 On seed 11 it is not decided on day 0 at all (a flat 3 to 19 of 32). On
-both seeds, freezing evolution after the rewind makes the outcome surer
-(seed 11, hours 18-21: 53 of 64 frozen against 31 of 64 evolving):
-mutation keeps the contest open. Barcelona seed 7 is like Turin seed 11: 1
+seeds 7 and 11, freezing evolution after the rewind made the outcome surer
+(seed 11, hours 18-21: 53 of 64 frozen against 31 of 64 evolving), but that
+did not hold on six fresh Turin seeds rewound to hour 12 (52 of 96 evolving,
+43 of 96 frozen, p = 0.248): no evidence that mutation keeps the contest
+open. Barcelona seed 7 is like Turin seed 11: 1
 of 32 replays from hour 0, 13 from hour 6, 17 from hour 21, never decided
-on day 0. Early decision is the exception (one run of three). Claims C1, C3
-and C6 in [docs/claims.jsonl](docs/claims.jsonl) (`tools/replay.mjs`;
+on day 0. Early decision is the exception (one run of three). Claims C1, C3,
+C6 and C7 in [docs/claims.jsonl](docs/claims.jsonl) (`tools/replay.mjs`;
 [ROADMAP.md](ROADMAP.md)).
 
 ## Running it
