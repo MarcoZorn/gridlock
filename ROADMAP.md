@@ -175,10 +175,12 @@ properly (with a test where it is code), and ticks it off. No idling.
 
 ### Next batch
 
-- [ ] gridlock: Study 3 (the reaper): a `tools/reap.mjs` that reads the
+- [x] gridlock: Study 3 (the reaper): a `tools/reap.mjs` that reads the
   README's headline bullets that still rest on two to four seeds, lists
   them with the command that would re-test each, and opens the oldest as a
-  claim (one at a time, the five-open rule).
+  claim (one at a time, the five-open rule). (Done: of the README's 15 bullets under
+  What it has found, only one is testable with `trial.mjs` and has no interval yet:
+  "Rules about failure"; the rest need a study of their own.)
 - [ ] gridlock: the generation page gets the same Lineage card as the eco
   page, for the leader of the current generation (species, parents).
 - [ ] gridlock: an "About the method" section on the findings page:
