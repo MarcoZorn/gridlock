@@ -9,6 +9,8 @@ import os from "node:os";
 //
 //   SEEDS=20 DAYS=6 node tools/trial.mjs turin basic=0.25
 //   node tools/trial.mjs turin congestion=0.1,peakToll=1
+//   BODY=wallDamage=0 node tools/trial.mjs turin   (a BODY constant the economy reads, treatment arm only;
+//   evolved bodies carry their own sight, so BODY=rayRange=.. changes nothing)
 // A map can be a name from maps/ or a path. ALT=other-map.json compares two
 // maps instead of a rule (the rule, if any, then applies to ALT's arm):
 //   ALT=tmp/barcelona-twoway.json node tools/trial.mjs barcelona
@@ -19,7 +21,9 @@ const seeds = Array.from({ length: n }, (_, i) => 101 + i);   // fresh seeds, ap
 // a run per arm and seed: (map, no rule) and (ALT or map, the rule)
 // FOUNDERS=hand: the hand-written driver of src/hand.js in both arms (nothing evolves)
 const fnd = process.env.FOUNDERS || "docs/trained.json", pre = fnd === "docs/trained.json" ? "trial" : `trial-${tag(fnd)}`;
-const name = (rule, s, m = map) => `runs/${pre}-${tag(m)}-${rule ? rule.replace(/[=,]/g, "_") : "base"}-d${days}-s${s}`;
+// BODY=rayRange=60: body constants for the treatment arm only (headless.mjs --body), alone or with a rule
+const body = process.env.BODY || "";
+const name = (rule, s, m = map, b = "") => `runs/${pre}-${tag(m)}-${rule ? rule.replace(/[=,]/g, "_") : "base"}${b ? "-body_" + b.replace(/[=,]/g, "_") : ""}-d${days}-s${s}`;
 const done = (dir) => { try { return fs.readFileSync(`${dir}/telemetry.jsonl`, "utf8").trim().split("\n").map(JSON.parse).at(-1).tick >= days * 86400; } catch { return false; } };
 
 async function runAll(jobs) {
@@ -27,11 +31,12 @@ async function runAll(jobs) {
   const lanes = Math.max(1, Math.min(jobs.length, os.cpus().length - 2));
   await Promise.all(Array.from({ length: lanes }, async () => {
     while (next < jobs.length) {
-      const [dir, s, rule, m] = jobs[next++];
+      const [dir, s, rule, m, b] = jobs[next++];
       fs.rmSync(dir, { recursive: true, force: true });
       const args = ["headless.mjs", "--eco", "--run", dir, "--days", String(days), "--founders", fnd, "--seed", String(s), "--threads", "1"];
       if (m !== "grid") args.push("--map", m);
       if (rule) args.push("--econ", rule);
+      if (b) args.push("--body", b);
       await new Promise((ok) => spawn("node", args, { stdio: "ignore" }).on("exit", ok));
     }
   }));
@@ -63,14 +68,14 @@ const jobs = [];
 // FREEZE=1: no mutation after day FROM, in both arms, so only the rule acts on the founders' genes
 const fz = process.env.FREEZE ? `freezeAt=${from * 86400}` : "";
 const join = (r) => [r, fz].filter(Boolean).join(",");
-const arms = [[join(""), map], [join(econ), alt || map]];
-if (!alt && !econ) { console.error("give a rule or ALT=map"); process.exit(1); }
-for (const s of seeds) for (const [rule, m] of arms) { const dir = name(rule, s, m); if (!done(dir)) jobs.push([dir, s, rule, m]); }
+const arms = [[join(""), map, ""], [join(econ), alt || map, body]];
+if (!alt && !econ && !body) { console.error("give a rule, BODY=constants or ALT=map"); process.exit(1); }
+for (const s of seeds) for (const [rule, m, b] of arms) { const dir = name(rule, s, m, b); if (!done(dir)) jobs.push([dir, s, rule, m, b]); }
 if (jobs.length) console.error(`running ${jobs.length} economies (${map}, ${days} days)...`);
 await runAll(jobs);
 
-const pairs = seeds.map((s) => [stats(name(join(""), s, map)), stats(name(join(econ), s, alt || map))]);
-console.log(`${alt ? `${tag(alt)}${econ ? " + " + econ : ""} vs ${tag(map)}` : `${map}, ${econ} vs no rule`}, ${n} seeds, days ${from}-${days}: mean change, 95% interval, seeds up/down`);
+const pairs = seeds.map((s) => [stats(name(join(""), s, map)), stats(name(join(econ), s, alt || map, body))]);
+console.log(`${alt ? `${tag(alt)}${econ ? " + " + econ : ""}${body ? " + body " + body : ""} vs ${tag(map)}` : `${map}, ${[econ, body && "body " + body].filter(Boolean).join(" + ")} vs no rule`}, ${n} seeds, days ${from}-${days}: mean change, 95% interval, seeds up/down`);
 for (const k of Object.keys(pairs[0][0])) {
   const ch = pairs.map(([b, x]) => (k === "Gini" ? x[k] - b[k] : x[k] / b[k] - 1));
   const m = ch.reduce((a, x) => a + x, 0) / ch.length, [lo, hi] = bootstrap(ch);
