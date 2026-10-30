@@ -4078,6 +4078,31 @@ an open contest for days. The frozen replays for seed 11 are running.
 
 ### Claim C3, killed: seed 11 is not decided at the same hour as seed 7
 
+*Correction (2026-10-30): the table and reading in this entry are wrong,
+for the same reason as the first C1 table: `tmp/c1-table.mjs` counted a
+replay as won whenever family 42 still had any car. With the right test
+(over half the cars), from `tools/replay.mjs`'s own summary:*
+
+| hour | evolving | frozen |
+|---|---|---|
+| 0 | 3/32 | 6/32 |
+| 3 | 7/32 | 3/32 |
+| 6 | 12/32 | 8/32 |
+| 9 | 11/32 | 9/32 |
+| 12 | 19/32 | 8/32 |
+| 15 | 9/32 | 3/32 |
+| 18 | 16/32 | 26/32 |
+| 21 | 15/32 | 27/32 |
+
+*C3 is still dead, but for the opposite reason: seed 11 is not decided
+early, it is not decided on day 0 at all while evolution runs (a flat one
+in three to three in five). With evolution frozen it is decided late, from
+hour 18 (26-27 of 32). On both seeds, freezing mutation makes the outcome
+surer than letting it run; on seed 11 the difference is large at hours 18
+and 21 (53 of 64 frozen against 31 of 64 evolving). Mutation keeps the
+contest open. The original text follows, kept as written.*
+
+
 The same replay on Turin seed 11 (winner family 42, final share 53%). Same
 setup as C1; 95% Wilson intervals.
 
@@ -4141,7 +4166,9 @@ the eventual winner's rank.
   19.6% of the cars while the leader holds 16% to 32%. Yet its replay win
   rate is 27/32 (evolving) at hour 6 and 30/32 at hour 12 (table above).
   So on seed 11 the outcome is decided by something the day-0 share does
-  not show.
+  not show. *(Corrected: those two rates counted survival, not winning;
+  the real ones are 12/32 and 19/32, see the C3 correction. The leader
+  ranks are right, and the outcome is in fact not decided on day 0.)*
 
 One seed each; item 4 (other cities, other founders) is still open. No
 claim opened; C5 is the only open claim.
