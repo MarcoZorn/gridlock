@@ -262,8 +262,9 @@ prediction written first, then the run, then the README line.
 - [x] gridlock: side of the road, `tools/sidechart.mjs` over twenty fresh seeds: the share keeping to
   one side after four days with an interval, and how many seeds keep right (a coin-flip check).
   (Done as `tools/sides.mjs` on the existing Turin trial runs, claim C20 killed: 7 of 20 reach 75%.)
-- [ ] gridlock: platforms, `tools/platforms.mjs` over twenty seeds: drivers' share against passengers'
+- [x] gridlock: platforms, `tools/platforms.mjs` over twenty seeds: drivers' share against passengers'
   share per platform, slope with an interval.
+  (Done: `SEEDS=` mode; C21 confirmed, -1.3 points. A slope across several price settings is untried.)
 - [ ] gridlock: why hand-driver economies collapse (C13, C17: 24 cars, 22 families): a collapsed run
   is one that never grew past its floor; count, per hand run, the day the city last had more than
   30 cars and what the telemetry shows then (crashes, cash, immigrants).
