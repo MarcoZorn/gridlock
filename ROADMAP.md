@@ -208,10 +208,14 @@ properly (with a test where it is code), and ticks it off. No idling.
   (Done: `ECON.crashLog`, `tools/crashmap.mjs`. Hand driver, Barcelona seed 102: 98.6%
   of one-way crashes are car-car, and ten roads hold 21.8% of them; two-way, 5.9%.
   Notebook has the numbers and a correction to the earlier "wall crashes" label.)
-- [ ] gridlock: what are the roads where the hand driver piles up on one-way
+- [x] gridlock: what are the roads where the hand driver piles up on one-way
   Barcelona (482>483, 474>475, 468>469)? Say from the map what they have in
   common (merge, one-way into a junction, length), and test one guess with a
   change to `src/hand.js` that lowers their crashes without lowering trips.
+  (Done in part: `tools/roadinfo.mjs`. Seven roads of one corridor, with a merge at 324,
+  hold 13.5% of the crashes. More room to the car ahead (`GRIDLOCK_HAND_FOLLOW`)
+  cut crashes per car-day from 133.2 to 60.8 but trips per car-day from 9.7 to 8.2:
+  a trade. A give-way rule at merges is untried.)
 - [ ] gridlock: Study 3: give each README bullet that `tools/reap.mjs` marks
   "needs a study of its own" a one-line plan (which tool, how many seeds, what
   would count as a hit) in `RETEST`, shown in the list; the tool opens claims
