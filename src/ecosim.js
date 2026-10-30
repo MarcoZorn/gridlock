@@ -6,6 +6,8 @@ import { osmToGraph } from "./osm.js";
 import { fitCanvas, panZoom, announceToggles, shortcuts, busiestCar, cityLayer, drawHeat, drawClosures, drawLights, drawRoute, drawRays, drawCar, speciesColour } from "./render.js";
 import { drawNetwork, neuronAt, editNeuron } from "./netview.js";
 import { rayAngles } from "./driver.js";
+import { Rewind } from "./rewind.js";
+const rewind = new Rewind();
 
 const $ = (id) => document.getElementById(id);
 
@@ -73,7 +75,7 @@ function reset(seed) {
   // ?signals=real: on a real map, lights only where OpenStreetMap has traffic signals
   const realSignals = new URLSearchParams(location.search).get("signals") === "real";
   world = new EcoWorld({ seed, control, founders: founders[control] || founders.none || null, graph, size, realSignals });
-  selected = null;
+  rewind.clear(); selected = null;
   $("peds-on").dataset.on = false;
   $("charge").dataset.on = false;
   $("camera").dataset.on = false;
@@ -345,7 +347,7 @@ function frame() {
   if (running) {
     // at high speed, simulate on a time budget so the page stays responsive
     const until = performance.now() + 28;
-    for (let i = 0; i < speed && performance.now() < until; i++) world.step();
+    for (let i = 0; i < speed && performance.now() < until; i++) { world.step(); rewind.record(world); }
   }
   draw();
   requestAnimationFrame(frame);
@@ -487,7 +489,7 @@ for (const b of document.querySelectorAll("[data-size]")) {
 $("grow-east").onclick = () => world.grow("east");
 $("grow-south").onclick = () => world.grow("south");
 function adoptEco(w) {
-  world = w;
+  world = w; rewind.clear();
   control = world.control; size = world.size || "small"; graph = world.graph || null;
   document.querySelectorAll("[data-control]").forEach((x) => (x.dataset.on = x.dataset.control === control));
   document.querySelectorAll("[data-size]").forEach((x) => (x.dataset.on = x.dataset.size === size));
@@ -508,6 +510,10 @@ $("save").onclick = () => {
   a.download = `gridlock-eco-seed${world.seed}-day${(world.tick / 86400).toFixed(1)}.json`;
   a.click();
   URL.revokeObjectURL(a.href);
+};
+$("rewind").onclick = () => {
+  const w = rewind.back(world);
+  if (w) { world = w; selected = null; } else $("rewind").textContent = "Nothing to rewind to";
 };
 $("load").onclick = () => $("loadFile").click();
 
@@ -568,7 +574,7 @@ $("ffDay").onclick = (e) => {
   worker = new Worker(new URL("./ffworker.js", import.meta.url), { type: "module" });
   worker.onmessage = (m) => {
     if (m.data.done) {
-      world = EcoWorld.fromJSON(m.data.world);
+      world = EcoWorld.fromJSON(m.data.world); rewind.clear();
       world.city.heat = m.data.heat;   // the skipped day stays on the heatmap
           selected = null;
       worker.terminate(); worker = null;
