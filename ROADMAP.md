@@ -129,4 +129,4 @@ properly (with a test where it is code), and ticks it off. No idling.
   generation, keep going, and on demand reload it with a new seed to see
   whether evolution finds the same thing twice (the tape idea, on a track).
 
-- [ ] gridlock: open the Study 2 claim (congestion charge, frozen vs evolving, `FREEZE=1`) in `docs/claims.jsonl`, queue the twenty-seed run after C10.
+- [x] gridlock: open the Study 2 claim (congestion charge, frozen vs evolving, `FREEZE=1`) in `docs/claims.jsonl`, queue the twenty-seed run after C10.
