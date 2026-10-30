@@ -4366,3 +4366,10 @@ of does not. Eight replays and two seeds is a hint, not a claim. A first run on 
 usable: one saved species, and `pop.best` carries the best car from before the save, so two
 replays returned the saved champion unchanged. The tool takes the last generation's leader instead.
 The test checks that resuming with the same stream gives the same champion.
+
+### Claim C12 opened: the congestion charge with drivers that cannot evolve
+
+Prediction written before the run, in `docs/claims.jsonl`. `tools/trial.mjs` takes `FOUNDERS=hand` now
+(the `src/hand.js` driver in both arms, run directories `runs/trial-hand-*`). Launched as systemd unit
+c12: `FOUNDERS=hand SEEDS=20 node tools/trial.mjs turin congestion=0.1`, log `tmp/trial-hand-charge.log`.
+Nothing to read until its summary prints.
