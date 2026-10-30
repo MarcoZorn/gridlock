@@ -4400,3 +4400,12 @@ unit c13, log `tmp/trial-hand-oneway.log`. Nothing to read until its summary pri
 fares a day 1258.6 one-way and 2030.7 two-way, cars 133.0 and 203.1: the per-seed ratios blow up on
 seeds where the one-way arm had almost no fares. Not tested why; the hand driver may simply jam or
 crash on one-way Barcelona. The evolved result (C10) stands for evolved drivers only.
+
+### Study 3 starts: tools/reap.mjs, and claim C14 opened
+
+`node tools/reap.mjs` lists the README bullets under "What it has found": 3 carry an interval
+already (of 15), 1 can be re-tested with `trial.mjs` and has none ("Rules about failure matter more than rules
+about driving", one seed: 4768 fares a day against 2476), the other 11 need a study of their own.
+`--open` filed it as C14, prediction in `docs/claims.jsonl` written before the run: fares +40% to +150%
+with the interval above zero. `SEEDS=20 node tools/trial.mjs turin finishFare=1,insurance=1`, unit c14,
+log `tmp/trial-failure-rules.log`.
