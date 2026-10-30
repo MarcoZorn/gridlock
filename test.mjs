@@ -424,6 +424,8 @@ import { editNeuron } from "./src/netview.js";
   assert(/startCars 30, 1 days: \d of 2 runs end with more than 30 cars/.test(st) && /startCars 60, 1 days: \d of 2/.test(st), "starts.mjs counts the runs that start, per startCars:\n" + st);
   const yr = sh(["tools/yieldrule.mjs"], { SEEDS: "1" });
   assert(/1 seeds, yielding rule against none/.test(yr) && /rule  fitness/.test(yr) && /wide  crashes per car/.test(yr) && !/NaN/.test(yr), "yieldrule.mjs with SEEDS= prints paired intervals:\n" + yr);
+  const se = sh(["tools/starts.mjs", "grid"], { SEEDS: "2", DAYS: "1", START: "30", FOUNDERS: "docs/trained.json" });
+  assert(/evolved drivers, startCars 30, 1 days: \d of 2 runs/.test(se), "starts.mjs with FOUNDERS= runs the evolved drivers:\n" + se);
   const hd = sh(["tools/trial.mjs", "grid", "basic=0.25"], { SEEDS: "2", DAYS: "1", FROM: "0", FOUNDERS: "hand" });
   assert(/2 seeds/.test(hd) && !/NaN/.test(hd), "trial with hand-written founders prints intervals:\n" + hd);
   const rp = sh(["tools/replay.mjs", "grid", "3"], { REPS: "2", DAYS: "1", EVERY: "12", SPAN: "12", REPLAY_DIR: rdir });
