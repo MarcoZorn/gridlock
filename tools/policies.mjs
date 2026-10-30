@@ -4,6 +4,9 @@ import fs from "node:fs";
 // change, seed by seed, in fares a day, crashes per car a day and trip time,
 // with how many of the four seeds moved that way; and the mean Gini.
 //
+// Where `tools/trial.mjs` has run the same rule on twenty seeds (runs/trial-turin-*),
+// that row reads those runs against the twenty-seed baseline instead, and says so.
+//
 //   node tools/policies.mjs
 const rules = [
   ["basic income, a quarter", "ubi-0.25"], ["basic income, a half", "ubi-0.5"],
@@ -20,6 +23,11 @@ const stats = (run) => {
   return { fares: sum((x) => x.trips) / days, crashes: sum((x) => x.crashes) / (cars * days), trip: sum((x) => x.tripTicks) / sum((x) => x.trips) / 60, gini: sum((x) => x.gini) / rows.length };
 };
 const SEEDS = [3, 5, 7, 11];
+const TRIAL = { "toll-all": "congestion_0.1", "credit-30": "credit_30", "ins-flat": "insurance_1" };   // by the rule's parameters
+const TSEEDS = Array.from({ length: 20 }, (_, i) => 101 + i);
+const trialRuns = (rule) => TSEEDS.map((s) => `trial-turin-${rule}-d6-s${s}`);
+const have = (runs) => runs.every((r) => fs.existsSync(`runs/${r}/telemetry.jsonl`));
+const tbase = have(trialRuns("base")) ? TSEEDS.map((s) => stats(`trial-turin-base-d6-s${s}`)) : null;
 const base = Object.fromEntries(SEEDS.map((s) => [s, stats(`inh-base-s${s}`)]));
 const change = (r, k) => {
   const d = r.map(([x, b]) => x[k] / b[k] - 1), m = d.reduce((a, x) => a + x, 0) / d.length;
@@ -28,8 +36,9 @@ const change = (r, k) => {
 };
 console.log("| rule | fares a day | crashes per car | trip | Gini |\n|---|---|---|---|---|");
 for (const [name, prefix] of rules) {
-  const r = SEEDS.map((s) => [stats(`${prefix}-s${s}`), base[s]]);
-  console.log(`| ${name} | ${change(r, "fares")} | ${change(r, "crashes")} | ${change(r, "trip")} | ${(r.reduce((a, [x]) => a + x.gini, 0) / r.length).toFixed(2)} |`);
+  const long = tbase && TRIAL[prefix] && have(trialRuns(TRIAL[prefix]));
+  const r = long ? TSEEDS.map((s, i) => [stats(`trial-turin-${TRIAL[prefix]}-d6-s${s}`), tbase[i]]) : SEEDS.map((s) => [stats(`${prefix}-s${s}`), base[s]]);
+  console.log(`| ${name}${long ? " (20 seeds)" : ""} | ${change(r, "fares")} | ${change(r, "crashes")} | ${change(r, "trip")} | ${(r.reduce((a, [x]) => a + x.gini, 0) / r.length).toFixed(2)} |`);
 }
 const mean = (k) => SEEDS.reduce((a, s) => a + base[s][k], 0) / SEEDS.length;
 console.log(`| no rule | ${mean("fares").toFixed(0)} | ${mean("crashes").toFixed(0)} | ${mean("trip").toFixed(0)} s | ${mean("gini").toFixed(2)} |`);
