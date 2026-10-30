@@ -4373,3 +4373,13 @@ Prediction written before the run, in `docs/claims.jsonl`. `tools/trial.mjs` tak
 (the `src/hand.js` driver in both arms, run directories `runs/trial-hand-*`). Launched as systemd unit
 c12: `FOUNDERS=hand SEEDS=20 node tools/trial.mjs turin congestion=0.1`, log `tmp/trial-hand-charge.log`.
 Nothing to read until its summary prints.
+
+### Claim C12 confirmed: the charge's trade needs no evolution
+
+`FOUNDERS=hand SEEDS=20 node tools/trial.mjs turin congestion=0.1`, log `tmp/trial-hand-charge.log`.
+Hand-written drivers in both arms, days 2-6: crashes per car a day -40.3% [-48.6%, -33.0%] (0 up /
+20 down); fares a day -57.0% [-68.8%, -45.8%] (0 up / 20 down); trip time -25.2% [-33.6%, -16.5%]
+(1 up / 19 down); cars -44.6% [-55.1%, -33.5%]; Gini -0.008 [-0.015, -0.001]. Both intervals entirely
+below zero: the prediction holds. The hand driver crashes more than the evolved founders at baseline
+(notebook above), and the fare cost is much larger here (-57.0% against -15.0% frozen evolved);
+different drivers, different cities, so no claim about why.
