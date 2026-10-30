@@ -94,7 +94,11 @@ re-tests them (see *How sure*, below).
   drivers make the takeover more complete. Wealth itself is not inherited (parent and child
   earnings are uncorrelated); numbers are.
 - **The cheapest car wins**, small and short-sighted, unless freight pays
-  enough to make trucks worth it, and then only for a while.
+  enough to make trucks worth it, and then only for a while. Over twenty fresh
+  Turin seeds at six days, mean body length fell by 0.277 [-0.290, -0.265] and the
+  sight-range gene by 0.136 [-0.170, -0.101], each in 20 of 20 runs, cargo by 0.245
+  (20 of 20), and the number of rays rose in 19 of 20 (+0.113 [+0.082, +0.146];
+  C25, confirmed). The freight half is not re-tested.
 - **Drivers spread across competing platforms as ecology predicts**, in
   proportion to what each pays out (the ideal free distribution), without
   any driver ever choosing: over twenty Turin seeds 59.5% of drivers end on
@@ -187,7 +191,7 @@ on day 0. Venice seed 7 is also open at hour 12 (0 of 32 from hour 0, 14
 from hour 12) and closes by hour 18 (26 of 32). Early decision is the
 exception (one run of four). The leader does not beat its own share of the
 cars reliably: on two fresh runs, 5 of 9 snapshots with the winner under half the
-cars had its win-rate interval above the share, 0 below (C9, killed). Claims C1, C3, C6, C7, C8, C9, C10, C11, C12, C13, C14, C15, C16, C17, C18, C19, C20, C21, C22, C23 and C24 in [docs/claims.jsonl](docs/claims.jsonl) (`tools/replay.mjs`;
+cars had its win-rate interval above the share, 0 below (C9, killed). Claims C1, C3, C6, C7, C8, C9, C10, C11, C12, C13, C14, C15, C16, C17, C18, C19, C20, C21, C22, C23, C24 and C25 in [docs/claims.jsonl](docs/claims.jsonl) (`tools/replay.mjs`;
 [ROADMAP.md](ROADMAP.md)).
 
 ## Running it
