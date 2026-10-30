@@ -4761,3 +4761,9 @@ Predicted the cargo interval above zero and a rise in at least 12 of 20: fails t
 So six days of tripled freight changes almost nothing here (cargo -0.224 against -0.245). The older note ("with freight paying triple, half the cities
 evolved trucks") came from forty-day runs and the threshold "between twice and three times today's rate" in one seed's city; a six-day Turin run is too short
 and too different. Whether longer runs or a different pay level find trucks is not tested here.
+
+### Claim C29 opened: one-way arrows with hand drivers, runs that started only
+
+Prediction written before the run, in `docs/claims.jsonl`. `tools/survivors.mjs` (new, tested) pairs two arms on the seeds where both ended above 30 cars. Hand
+drivers on Barcelona, one-way against two-way, six days, seeds 201-220 (`runs/surv-one-s*`, `runs/surv-two-s*`): predicted fares up and crashes per car up, each with the
+interval above zero. The crash prediction rests on the survivors figures on seeds 101-120 (129.6 one-way, 156.2 two-way, seen before). Unit c29, log `tmp/survivors-c29.log`.
