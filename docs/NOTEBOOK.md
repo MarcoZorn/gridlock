@@ -4694,3 +4694,13 @@ found nowhere else. That is weaker than it sounds: a number such as 95% turns up
 the bullet's own result behind it; the tool lists those as too common to prove anything (for example 24%, 95%, 27%, 29%, 18% and 21% in the
 safety-rules bullet, 0.3, 0.02 and 100 in the species bullet). The tool is a floor, not a proof: it catches a number nobody ever wrote down,
 not a number written down for a different thing. `test.mjs` fails if a README number stops being found.
+
+### Claim C25 confirmed: the cheapest car wins, on fresh seeds
+
+Twenty six-day Turin economies, seeds 121-140, no rule (`runs/traits-turin-s121` to `-s140`, headless with the trained founders), then
+`SEED0=121 SEEDS=20 node tools/traits.mjs "runs/traits-turin-s{s}"` (`tmp/traits-c25.log`). The mean body trait at the end less at the start:
+length -0.277 [-0.290, -0.265] (fell in 20 of 20); width -0.257 [-0.288, -0.225] (20 of 20); engine -0.103 [-0.146, -0.062] (17 of 20);
+brakes +0.005 [-0.033, +0.041] (10 of 20); range -0.136 [-0.170, -0.101] (20 of 20); rays +0.113 [+0.082, +0.146] (fell in 1, so rose in 19);
+cargo -0.245 [-0.267, -0.226] (20 of 20); jam -0.126 [-0.173, -0.065] (19 of 20). Predicted length, range and cargo down and rays up in at least
+18 of 20 each: holds. "Short-sighted" here means the sight-range gene fell while the number of rays rose, so the cars see less far with
+more rays. The seeds 101-120 gave the same pattern (seen before the claim, said in its source). The freight condition was not run.
