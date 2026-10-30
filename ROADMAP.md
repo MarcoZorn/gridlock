@@ -82,6 +82,11 @@ properly (with a test where it is code), and ticks it off. No idling.
   (two seeds, one city hour) in `test.mjs`.
 - [ ] gridlock: profile a one-day economy and make it faster; every saved
   second is more replays a night. Measure before and after.
+  (Profiled 2026-10-30, Turin seed 7, 15000 steps, 4.1-4.4 s CPU: the ray
+  march in `Driver.sense` plus `City.contains` and the spatial hash is about
+  a third, `Genome.activate` about a tenth. Binding `contains` once per
+  sense changed nothing measurable. A real gain needs fewer wall probes per
+  car per tick, which changes results; not done.)
 - [ ] gridlock: the eco page gets a Rewind button (snapshot every city hour,
   restore any of them), now that restores are exact.
 - [ ] gridlock: `tools/policies.mjs` reads the twenty-seed trial runs where
