@@ -138,12 +138,15 @@ instrument that re-tests itself:
 ## Now
 
 **When is a monopoly decided?** One family always ends up owning the city.
-Rewinding Turin (seed 7) to each third hour of day 0 and replaying it
-thirty-two times with fresh noise, the winning family wins again in 1 of 32
-replays from hour 0, 25 of 32 from hour 6, and every one from hour 12.
-Switching evolution off changes nothing. That is one seed in one city: a
-second seed, whether the family is just the biggest, and more cities are
-still to do (`tools/replay.mjs`, [ROADMAP.md](ROADMAP.md)).
+Rewinding Turin (seed 7) to every third hour of day 0 and replaying it
+thirty-two times with fresh noise, the eventual winner wins again in 0 of
+32 replays from hour 0, 1 from hour 3, 15 from hour 6, 22 from hour 9 and
+every one from hour 12, while it still holds under two fifths of the cars
+at hours 6 to 9. With evolution frozen after the rewind it is the same or
+surer (21 and 27 of 32 at hours 6 and 9): the monopoly is demography, not
+better drivers. One seed in one city so far; a second seed and more
+cities are running (`tools/replay.mjs`, [ROADMAP.md](ROADMAP.md),
+claim C1 in [docs/claims.jsonl](docs/claims.jsonl)).
 
 ## Running it
 
