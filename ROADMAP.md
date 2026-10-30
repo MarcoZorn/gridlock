@@ -203,8 +203,15 @@ properly (with a test where it is code), and ticks it off. No idling.
   telemetry only.
   (Partly: `tools/crashkinds.mjs`. The blow-up was collapsed economies, 7 of 20
   one-way runs against 4 of 20 two-way; which rule of `src/hand.js` fails is open.)
-- [ ] gridlock: log each crash's road, kind and speed in the telemetry (opt-in,
+- [x] gridlock: log each crash's road, kind and speed in the telemetry (opt-in,
   `--crash-log`), then say which junctions or roads the hand driver crashes on.
+  (Done: `ECON.crashLog`, `tools/crashmap.mjs`. Hand driver, Barcelona seed 102: 98.6%
+  of one-way crashes are car-car, and ten roads hold 21.8% of them; two-way, 5.9%.
+  Notebook has the numbers and a correction to the earlier "wall crashes" label.)
+- [ ] gridlock: what are the roads where the hand driver piles up on one-way
+  Barcelona (482>483, 474>475, 468>469)? Say from the map what they have in
+  common (merge, one-way into a junction, length), and test one guess with a
+  change to `src/hand.js` that lowers their crashes without lowering trips.
 - [ ] gridlock: Study 3: give each README bullet that `tools/reap.mjs` marks
   "needs a study of its own" a one-line plan (which tool, how many seeds, what
   would count as a hit) in `RETEST`, shown in the list; the tool opens claims
