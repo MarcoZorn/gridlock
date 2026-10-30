@@ -287,7 +287,10 @@ prediction written first, then the run, then the README line.
 
 - [ ] gridlock: Study 3, the reaper's three untouched bullets: generalise to unseen cities (`tools/crashes.mjs`),
   queue but do not yield (`tools/yieldrule.mjs`), cheapest car wins (`tools/ecocmp.mjs`). Each needs a SEEDS= mode with
-  an interval, a smoke test, then the claim.
+  an interval, a smoke test, then the claim. Note for the first: the README's "1.3 to 2.8 crashes per 1000 units on
+  real streets against 3.5 on generated grids" has no tool named in the notebook (NOTEBOOK 'Real streets' and the
+  generalise entry near line 108); `tools/drunk.mjs` measures crashes per 1000 units in generated cities with
+  `CityWorld`, so a `MAP=` switch there (real map against generated, twenty seeds) is the likely route.
 - [ ] gridlock: README sweep: every bullet's numbers against `docs/claims.jsonl` (the closed claims C1-C22), flag any
   bullet whose number no claim result or notebook entry backs, and fix it from the notebook.
 - [ ] gridlock: the cold-start trap is a property of the economy, not of the hand driver? Check whether evolved
