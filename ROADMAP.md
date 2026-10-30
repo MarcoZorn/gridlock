@@ -156,7 +156,7 @@ properly (with a test where it is code), and ticks it off. No idling.
 - [ ] gridlock: a lineage explorer on the eco page: click a car, see its
   ancestors back to the founder as a strip of their bodies and earnings, and
   its family's share of the city over time.
-- [ ] cars: a headless evaluation report (`report.py`) that writes an HTML
+- [x] cars: a headless evaluation report (`report.py`) that writes an HTML
   page with every bench log's held-out laps and intervals, newest first.
 - [ ] neat-from-scratch: a guided tour mode on the page: five short steps
   (genome, mutation, speciation, crossover, the track) that highlight the
