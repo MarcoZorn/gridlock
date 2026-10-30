@@ -292,8 +292,9 @@ prediction written first, then the run, then the README line.
   real streets against 3.5 on generated grids" has no tool named in the notebook (NOTEBOOK 'Real streets' and the
   generalise entry near line 108); `tools/drunk.mjs` measures crashes per 1000 units in generated cities with
   `CityWorld`, so a `MAP=` switch there (real map against generated, twenty seeds) is the likely route.
-- [ ] gridlock: README sweep: every bullet's numbers against `docs/claims.jsonl` (the closed claims C1-C22), flag any
+- [x] gridlock: README sweep: every bullet's numbers against `docs/claims.jsonl` (the closed claims C1-C22), flag any
   bullet whose number no claim result or notebook entry backs, and fix it from the notebook.
+  (Done: `tools/sweep.mjs`, tested. No README number is orphaned; the common ones are listed as weak evidence.)
 - [x] gridlock: the cold-start trap is a property of the economy, not of the hand driver? Check whether evolved
   founders ever fail to start (0 of 20 in the Turin trials) with `startCars` 20 or 10, using `tools/starts.mjs`
   with a `FOUNDERS=` switch.
