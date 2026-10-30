@@ -136,7 +136,7 @@ properly (with a test where it is code), and ticks it off. No idling.
   `activate(inputs, out)`, and `--founders hand` so an economy runs on it;
   children copy it unchanged. Test that it drives (trips, few crashes) on a
   generated city.
-- [ ] gridlock: `docs/claims.jsonl` gets structured effects (measure, mean,
+- [x] gridlock: `docs/claims.jsonl` gets structured effects (measure, mean,
   low, high) for the trial claims, and the findings page draws each as an
   interval bar around zero.
 - [ ] cars: replaying the tape on the racing cars: save the population at

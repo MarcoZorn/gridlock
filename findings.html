@@ -17,6 +17,15 @@
   .claim p { margin: 8px 0 0; font-size: 13px; line-height: 1.6; color: var(--ink); }
   .claim dl { margin: 10px 0 0; display: grid; grid-template-columns: 90px 1fr; gap: 4px 12px; font-size: 12px; line-height: 1.55; }
   .claim dt { color: var(--dim); } .claim dd { margin: 0; } .claim code { font-size: 11px; color: var(--dim); overflow-wrap: anywhere; }
+  .fx { margin: 12px 0 2px; display: grid; gap: 6px; }
+  .fx .row { display: grid; grid-template-columns: 150px 1fr 70px; gap: 10px; align-items: center; font-size: 12px; }
+  .fx .lab { color: var(--dim); } .fx .num { text-align: right; font-variant-numeric: tabular-nums; color: var(--ink); }
+  .fx .track { position: relative; height: 14px; }
+  .fx .zero { position: absolute; top: -2px; bottom: -2px; width: 1px; background: var(--dim); }
+  .fx .ci { position: absolute; top: 4px; height: 6px; border-radius: 3px; background: var(--blue); }
+  .fx .ci.neg { background: var(--accent); }
+  .fx .pt { position: absolute; top: 2px; width: 2px; height: 10px; background: var(--ink); }
+  @media (max-width: 560px) { .fx .row { grid-template-columns: 1fr 64px; } .fx .track { grid-column: 1 / -1; grid-row: 2; } }
   .tally { color: var(--dim); font-size: 13px; }
   @media (max-width: 560px) { .claim dl { grid-template-columns: 1fr; } .claim dt { margin-top: 6px; } }
 </style>
@@ -50,6 +59,18 @@
 <script type="module">
 const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
 const order = { confirmed: 0, open: 1, failing: 2, killed: 3 };
+// each effect as its 95% interval on a shared scale around zero
+function bars(fx) {
+  if (!fx || !fx.length) return "";
+  const span = Math.max(...fx.map((e) => Math.max(Math.abs(e.low), Math.abs(e.high)))) * 1.1;
+  const x = (v) => `${(50 + 50 * v / span).toFixed(2)}%`;
+  return `<div class="fx" role="img" aria-label="effects with 95% intervals">${fx.map((e) => `
+    <div class="row"><span class="lab">${esc(e.measure)}</span>
+      <span class="track"><span class="zero" style="left:50%"></span>
+        <span class="ci ${e.mean < 0 ? "neg" : ""}" style="left:${x(Math.min(e.low, e.high))};width:calc(${x(Math.max(e.low, e.high))} - ${x(Math.min(e.low, e.high))})"></span>
+        <span class="pt" style="left:${x(e.mean)}"></span></span>
+      <span class="num">${e.mean > 0 ? "+" : ""}${e.mean}${esc(e.unit || "")}</span></div>`).join("")}</div>`;
+}
 try {
   const text = await (await fetch("docs/claims.jsonl", { cache: "no-store" })).text();
   const claims = text.trim().split("\n").filter(Boolean).map((l) => JSON.parse(l));
@@ -60,6 +81,7 @@ try {
     <article class="claim">
       <header><h2>${esc(c.id)}</h2><span class="st ${esc(c.status)}">${esc(c.status)}</span></header>
       <p>${esc(c.statement)}</p>
+      ${bars(c.effects)}
       <dl>
         <dt>predicted</dt><dd>${esc(c.predicted)}</dd>
         ${c.result ? `<dt>result</dt><dd>${esc(c.result)}</dd>` : ""}
