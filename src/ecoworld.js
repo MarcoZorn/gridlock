@@ -17,6 +17,7 @@ import { Crowd } from "./pedestrians.js";
 
 // The economy, in one place so it can be tuned without hunting.
 export const ECON = {
+  keyed: 0,             // 1: each rule's coin flips come from a stream of their own (car, tick, purpose), so a rule changes only what it touches
   startCash: 14,
   birthCash: 34,        // a car this rich has a child...
   childCost: 16,        // ...pays this to raise it...
@@ -200,6 +201,16 @@ export class EcoWorld {
   get control() { return this.city.control; }
   set control(c) { this.city.control = c; }
 
+  // a coin flip for one rule: the shared stream, or with ECON.keyed a hash of
+  // (seed, tick, car, purpose) that consumes nothing, so switching a rule on
+  // cannot shift anyone else's luck
+  draw(purpose, car, other = 0) {
+    if (!ECON.keyed) return this.rng.next();
+    let h = Math.imul(this.seed + 1, 0x9e3779b1) ^ Math.imul(this.tick + 1, 0x85ebca6b) ^ Math.imul(car.id + 1, 0xc2b2ae35) ^ Math.imul(purpose, 0x27d4eb2f) ^ Math.imul(other + 1, 0x165667b1);
+    h ^= h >>> 15; h = Math.imul(h, 0x2c1b3c6d); h ^= h >>> 12; h = Math.imul(h, 0x297a2d39); h ^= h >>> 15;
+    return (h >>> 0) / 4294967296;
+  }
+
   randomFare(from, cameFrom = -1, jam = 0) {
     const c = this.city, n = c.nodes.length, a = c.nodes[from];
     let to, tries = 0;
@@ -342,10 +353,10 @@ export class EcoWorld {
       const fPay = d.body.capacity >= ECON.freightMin && this.freight >= 1 ? ECON.freightRate * this.freightBoom * fLoad : 0;
       const onB = ECON.platformB && d.platform === 1, queue = onB ? this.passengersB : this.passengers;
       const cheap = d.union && d.routeLen * ECON.passengerRate < ECON.union;
-      const takes = !ECON.market || this.rng.next() < Math.exp(-ECON.market * (d.price - 1));
+      const takes = !ECON.market || this.draw(1, d) < Math.exp(-ECON.market * (d.price - 1));
       const pPay = queue >= 1 && !cheap && takes && this.trusted(d) ? ECON.passengerRate * (1 + ECON.speedBonus / 2) * d.price : 0;
       if (fPay > pPay) { kind = "freight"; load = fLoad; this.freight--; }
-      else if (pPay > 0) { kind = "passenger"; shared = ECON.carpool > 0 && queue >= 2 && this.rng.next() < ECON.carpool; if (shared) { if (onB) this.passengersB--; else this.passengers--; this.events.pickups++; } urgent = ECON.emergency > 0 && this.rng.next() < ECON.emergency; surge = 1 + ECON.surge * queue / (ECON.fareQueue * this.scale * (onB ? ECON.platformB : 1 - ECON.platformB)); if (onB) this.passengersB--; else this.passengers--; this.events.pickups++; }
+      else if (pPay > 0) { kind = "passenger"; shared = ECON.carpool > 0 && queue >= 2 && this.draw(2, d) < ECON.carpool; if (shared) { if (onB) this.passengersB--; else this.passengers--; this.events.pickups++; } urgent = ECON.emergency > 0 && this.draw(3, d) < ECON.emergency; surge = 1 + ECON.surge * queue / (ECON.fareQueue * this.scale * (onB ? ECON.platformB : 1 - ECON.platformB)); if (onB) this.passengersB--; else this.passengers--; this.events.pickups++; }
       else this.events.deadheads++;
     }
     d.job = {
@@ -469,7 +480,7 @@ export class EcoWorld {
     this.events.carCrashes += collideCars(onRoad, this.hash, (a, b) => {
       if (this.onPair) this.onPair(a, b);   // for measurements: who hit whom
       const ped = a.isPed ? a : b.isPed ? b : null;
-      if (!ped) { if (ECON.crashMate) { a.mate = b; b.mate = a; } if (ECON.hgt && this.rng.next() < ECON.hgt) this.swapGenes(a, b); return; }
+      if (!ped) { if (ECON.crashMate) { a.mate = b; b.mate = a; } if (ECON.hgt && this.draw(4, a, b.id) < ECON.hgt) this.swapGenes(a, b); return; }
       const car = ped === a ? b : a;
       car.cash -= ECON.pedestrianFine;
       this.events.pedHits++;
@@ -531,7 +542,7 @@ export class EcoWorld {
     // Culture: with ECON.imitate the child learns to drive from the most
     // successful car on the road (earnings per hour), not from its parent.
     // The body is still the parent's.
-    if (ECON.imitate && this.rng.next() < ECON.imitate) {
+    if (ECON.imitate && this.draw(5, parent) < ECON.imitate) {
       let best = null, rate = -Infinity;
       for (const o of this.cars) {
         const age = this.tick - o.born;

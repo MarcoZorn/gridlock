@@ -177,6 +177,23 @@ import { editNeuron } from "./src/netview.js";
   console.log("ok  a save carries on exactly");
 }
 
+// common random numbers: with ECON.keyed a rule that never fires leaves the
+// run identical; without it the extra coin flips shift everyone's luck
+{
+  const trained = JSON.parse(fs.readFileSync("docs/trained.json", "utf8"));
+  const run = (keyed, emergency) => {
+    Object.assign(ECON, { keyed, emergency });
+    const w = new EcoWorld({ seed: 5, founders: Population.fromJSON(trained.pop) });
+    for (let i = 0; i < 1500; i++) w.step();
+    return [w.cars.length, w.events.trips, w.rng.s, w.cars.reduce((a, d) => a + d.cash + d.x + d.y, 0)].join(" ");
+  };
+  const [k0, k1, u0, u1] = [run(1, 0), run(1, 1e-12), run(0, 0), run(0, 1e-12)];
+  Object.assign(ECON, { keyed: 0, emergency: 0 });
+  assert.strictEqual(k1, k0, "a rule that never fires must not change a keyed run");
+  assert.notStrictEqual(u1, u0, "unkeyed, the same rule shifts the shared stream");
+  console.log("ok  keyed draws: an inert rule changes nothing");
+}
+
 // bodies: derived physics move the right way with the genes
 {
   const g = { length: 0.2, width: 0.3, engine: 0.5, brakes: 0.5, range: 0.5, rays: 0.8, cargo: 0.1 };
