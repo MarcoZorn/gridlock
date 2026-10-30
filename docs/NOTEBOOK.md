@@ -4075,3 +4075,35 @@ over 75% by hour 12 (19/32, 59%): that part fails. So seed 7's six-hour
 window is not a law. When one family races ahead on the first morning,
 as in seed 7, the race is over in hours; when nobody does, the city stays
 an open contest for days. The frozen replays for seed 11 are running.
+
+### Claim C3, killed: seed 11 is not decided at the same hour as seed 7
+
+The same replay on Turin seed 11 (winner family 42, final share 53%). Same
+setup as C1; 95% Wilson intervals.
+
+| hour | evolving | frozen | winner's share |
+|---|---|---|---|
+| 0 | 15/32 (31-64%) | 15/32 (31-64%) | 2% |
+| 3 | 20/32 (45-77%) | 12/32 (23-55%) | 10% |
+| 6 | 27/32 (68-93%) | 23/32 (55-84%) | 18% |
+| 9 | 29/32 (76-97%) | 22/32 (51-82%) | 14% |
+| 12 | 30/32 (80-98%) | 28/32 (72-95%) | 13% |
+| 15 | 21/32 (48-80%) | 15/32 (31-64%) | 17% |
+| 18 | 31/32 (84-99%) | 32/32 (89-100%) | 16% |
+| 21 | 32/32 (89-100%) | 30/32 (80-98%) | 20% |
+
+The prediction said under 20% at hour 0. It is 47%: half the replays
+from the very first hour end with family 42 again. The claim is dead as
+written. The other predictions went the right way: above 75% well before
+hour 18 (hour 6), the winner far below half the cars when the rate passes
+it (18%).
+
+Two things to carry forward. The decision time differs by seed: hour 6 on
+seed 7, hour 0-3 on seed 11. And frozen evolution does not match evolving
+on seed 11 as it did on seed 7: hours 3-9 pooled, 57/96 against 76/96. The
+intervals overlap hour by hour and the hours share one run, so this is a
+hint. The dip at hour 15 (both columns) is unexplained and is a reason to
+distrust single-snapshot rates.
+
+Not yet done: the "biggest family stays biggest" check, and other cities.
+Table: `node tmp/c1-table.mjs turin-s11-d4-e3`.
