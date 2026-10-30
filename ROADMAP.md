@@ -181,7 +181,7 @@ properly (with a test where it is code), and ticks it off. No idling.
   claim (one at a time, the five-open rule). (Done: of the README's 15 bullets under
   What it has found, only one is testable with `trial.mjs` and has no interval yet:
   "Rules about failure"; the rest need a study of their own.)
-- [ ] gridlock: the generation page gets the same Lineage card as the eco
+- [x] gridlock: the generation page gets the same Lineage card as the eco
   page, for the leader of the current generation (species, parents).
 - [x] gridlock: an "About the method" section on the findings page:
   pre-registration, paired seeds, bootstrap and Wilson intervals, what was
