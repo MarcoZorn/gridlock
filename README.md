@@ -100,8 +100,9 @@ re-tests them (see *How sure*, below).
 - **Rules about failure matter more than rules about driving.** Letting a
   broke taxi finish its ride and pooling crash costs nearly doubled fares
   (4768 a day against 2476), more than any change to the drivers.
-- **Credit and insurance buy activity with recklessness.** An overdraft
-  raises fares by a fifth to a quarter and crashes as much; insured drivers
+- **Credit and insurance buy activity with recklessness.** A 30-unit overdraft
+  raises fares by 28% (interval 26-30%) and crashes per car by 25% (22-28%),
+  twenty seeds; insured drivers
   crash 87% more per car (interval 82-91%, twenty seeds) and earn a third
   more (+34%), because the reckless stop going broke.
 

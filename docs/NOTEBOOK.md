@@ -4145,3 +4145,21 @@ the eventual winner's rank.
 
 One seed each; item 4 (other cities, other founders) is still open. No
 claim opened; C5 is the only open claim.
+
+### Claim C5, confirmed: credit at twenty seeds
+
+`SEEDS=20 node tools/trial.mjs turin credit=30`, days 2-6, log in
+`tmp/trial-credit.log`.
+
+| measure | change | 95% interval | seeds up/down |
+|---|---|---|---|
+| fares a day | +28.0% | +26.0 to +29.7 | 20/0 |
+| crashes per car a day | +25.2% | +22.4 to +28.1 | 20/0 |
+| trip time | +21.0% | +18.0 to +24.0 | 20/0 |
+| cars | +60.2% | +55.4 to +65.5 | 20/0 |
+| Gini | +0.291 | +0.288 to +0.294 | 20/0 |
+
+Predictions held (fares and crashes each +15 to +30%). The README's "a
+fifth to a quarter" for fares was a bit low (+28%); corrected. Unlike
+insurance, credit makes trips slower (+21%). The 30 is still my guess at
+the original setting. README corrected.
