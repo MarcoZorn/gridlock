@@ -17,6 +17,7 @@ import { Body } from "./src/body.js";
 import { HandBrain } from "./src/hand.js";
 import { tape, replay } from "./tools/tapecars.mjs";
 import { RETEST, bullets, claimFor } from "./tools/reap.mjs";
+import { describe as describeLine } from "./src/lineage.js";
 import { Rewind } from "./src/rewind.js";
 import { Crowd, PED } from "./src/pedestrians.js";
 import { editNeuron } from "./src/netview.js";
@@ -271,6 +272,27 @@ import { editNeuron } from "./src/netview.js";
   assert(page.includes(`${reps} times`), `and says ${reps} bootstrap resamples, as trial.mjs does`);
   assert(/twenty seeds/.test(page) && /Wilson/.test(page), "and names the paired seeds and the Wilson interval");
   console.log("ok  findings page: method section agrees with the trial tool");
+}
+
+// LINEAGE (generation page): ancestry is tracked without touching the evolution, and walks back one
+// generation per step
+{
+  const w = new World({ seed: 4 });
+  for (let i = 0; i < 12; i++) w.runGeneration();
+  assert.strictEqual(w.pop.rng.s, 828470956, "tracking ancestry draws no random numbers: the stream ends where it did before");
+  assert.strictEqual(JSON.stringify(w.pop.genomes.map((g) => g.toJSON())).length, 74245, "and the population is the same");
+  const chain = w.pop.lineage(w.leader().genome);
+  assert(chain.length >= 10, `the leader's line goes back (${chain.length} entries)`);
+  chain.forEach((a, i) => {
+    if (i) assert.strictEqual(a.gen, chain[i - 1].gen + 1, "one generation per step");
+    if (i) assert.strictEqual(a.parents[0], chain[i - 1].id, "the first parent is the previous entry");
+    if (i < chain.length - 1) assert(a.fitness >= 0 && a.species > 0, "every past ancestor has a fitness and a species");
+  });
+  assert.strictEqual(chain.at(-1).gen, w.pop.generation, "the line ends in the current generation");
+  assert(/species \d+/.test(describeLine(chain)) && /generations of ancestors known/.test(describeLine(chain)), "and the card names its species, even before the generation is speciated");
+  const again = Population.fromJSON(JSON.parse(JSON.stringify(w.pop.toJSON())));
+  assert.deepStrictEqual(again.lineage(again.genomes[0]), [], "a save starts a fresh ancestry");
+  console.log("ok  lineage: ancestry tracked, evolution untouched");
 }
 
 // the research tools run end to end: a two-seed trial and a two-replay
