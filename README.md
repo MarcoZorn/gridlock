@@ -138,11 +138,12 @@ instrument that re-tests itself:
 ## Now
 
 **When is a monopoly decided?** One family always ends up owning the city.
-Rewind the economy to each morning and replay it thirty-two times with
-fresh noise: from which day does the same family win anyway? This is
-Lenski's "replaying the tape" from evolutionary biology, applied to wealth
-concentration in an evolving market, with frozen evolution as the control
-(`tools/replay.mjs`). See [ROADMAP.md](ROADMAP.md).
+Rewinding Turin (seed 7) to each third hour of day 0 and replaying it
+thirty-two times with fresh noise, the winning family wins again in 1 of 32
+replays from hour 0, 25 of 32 from hour 6, and every one from hour 12.
+Switching evolution off changes nothing. That is one seed in one city: a
+second seed, whether the family is just the biggest, and more cities are
+still to do (`tools/replay.mjs`, [ROADMAP.md](ROADMAP.md)).
 
 ## Running it
 
