@@ -166,7 +166,7 @@ properly (with a test where it is code), and ticks it off. No idling.
   its family's share of the city over time.
 - [x] cars: a headless evaluation report (`report.py`) that writes an HTML
   page with every bench log's held-out laps and intervals, newest first.
-- [ ] neat-from-scratch: a guided tour mode on the page: five short steps
+- [x] neat-from-scratch: a guided tour mode on the page: five short steps
   (genome, mutation, speciation, crossover, the track) that highlight the
   live run and explain it, for people who have never seen NEAT.
 
