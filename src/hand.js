@@ -10,6 +10,8 @@ import { Genome, Innovations } from "./genome.js";
 import { N_RAYS, N_INPUTS, N_OUTPUTS } from "./driver.js";
 
 const clamp = (x, lo, hi) => Math.max(lo, Math.min(hi, x));
+// GRIDLOCK_HAND_FOLLOW (Node only): how much room it leaves a car ahead, for experiments
+const FOLLOW = +(globalThis.process?.env?.GRIDLOCK_HAND_FOLLOW) || 1.5;
 const MID = N_RAYS >> 1, K = N_RAYS * 3;    // input layout: wall, car, closing per ray, then v, heading, lateral, dist, turn, light
 
 export class HandBrain extends Genome {
@@ -22,7 +24,7 @@ export class HandBrain extends Genome {
     if (light < 0) target = Math.min(target, dist * 2);
     for (let i = Math.max(0, MID - 1); i <= Math.min(N_RAYS - 1, MID + 1); i++) {
       const wall = inp[i * 3], car = inp[i * 3 + 1], closing = inp[i * 3 + 2];
-      target = Math.min(target, wall * 1.2, car * 1.5 + (closing > 0 ? -closing : 0));
+      target = Math.min(target, wall * 1.2, car * FOLLOW + (closing > 0 ? -closing : 0));
     }
     out[0] = clamp(err * 1.5, -1, 1);
     out[1] = clamp((Math.max(0.05, target) - v) * 4, -1, 1);
