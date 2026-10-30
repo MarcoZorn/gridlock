@@ -4743,3 +4743,11 @@ Roads tested, closable without stranding a fare, closures that made it worse by 
 Turin 342, 74, 62, 1, -0.05%; Barcelona 643, 150, 95, 2, -0.05%; Manhattan 541, 115, 85, 1, -0.07%. Each city's last line is "Braess roads (closing saves over 0.5%): none".
 This is the table the notebook already had, reproduced to the digit, and the README's "none saves more than 0.07%" stands. The scan is deterministic, so
 there is no interval to give and no claim to open; what it does not cover is closing two roads at once, or other loads than 3.
+
+### Claim C28 confirmed, with a surprise: the generated city keeps right
+
+`SEED0=161 node tools/sides.mjs "runs/side-gen-s{s}"` (`tmp/sides-c28.log`), default generated small city, four days, seeds 161-180: shares on the majority side
+0.83 0.84 0.63 0.85 0.79 0.81 0.79 0.84 0.86 0.78 0.66 0.64 0.89 0.87 0.83 0.50 0.84 0.84 0.73 0.60; 14 of 20 at 0.75 or more (Wilson [48%, 85%]); predicted at
+least 12: holds. Not predicted: 16 of 20 keep the right, exact binomial p 0.012, whereas Turin (C20) gave 8 of 20. So in the generated city the order is
+stronger than in Turin and the side is not a coin flip. A guess, untested: the trained founders were raised in generated cities, where the road geometry may
+favour one hand; the earlier "which side differs between identical runs" was seen in Turin. A follow-up (below in the roadmap) asks whether it is the founders.
