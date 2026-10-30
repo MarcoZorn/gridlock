@@ -250,9 +250,10 @@ properly (with a test where it is code), and ticks it off. No idling.
 Each: a tool that runs twenty seeds and prints an interval (with a smoke test), then the claim with its
 prediction written first, then the run, then the README line.
 
-- [ ] gridlock: NEAT species step, `tools/stepcmp.mjs`: evolve from scratch with a compatibility
+- [x] gridlock: NEAT species step, `tools/stepcmp.mjs`: evolve from scratch with a compatibility
   threshold step of 0.3 and of 0.02, twenty seeds each, mean fitness at generation 60, paired
   bootstrap interval. Cheap (0.08 s a generation).
+  (Done: tool, smoke test, claim C18 open, unit c18.)
 - [ ] gridlock: one-way fragility, `tools/percolation.mjs` with a SEEDS= mode: twenty random closure
   orders per city, the share of junctions still reachable at 5% of roads closed, Wilson or
   bootstrap interval, for Turin, Barcelona, Manhattan and the grid.
