@@ -4558,3 +4558,12 @@ by seed, mean fitness over the last TAIL generations. A two-seed smoke run at 60
 0.3 gave 62.6 and 0.02 gave 29.1 on average, difference -33.5 [-77.8, +10.7], one seed up and one down, so
 the effect is not visible at two seeds and 60 generations and the real run uses 100 generations and the last 20.
 `SEEDS=20 GENS=100 TAIL=20 node tools/stepcmp.mjs`, unit c18, log `tmp/stepcmp.log`.
+
+### Claim C19 confirmed: fragility at 5% closed, on fresh closure orders
+
+`tools/percolation.mjs` already averaged twenty closure orders (seeds 100-119) but printed no interval; it now does,
+and `ORDER0=1000` uses seeds 1000-1019. `for m in turin barcelona manhattan grid; do ORDER0=1000 node tools/percolation.mjs $m | tail -1; done`
+(`tmp/percolation-c19.log`), 5% of roads closed, share of the city still all connected:
+Turin 46.1% [38.5%, 53.5%], Barcelona 60.8% [54.2%, 67.0%], Manhattan 55.6% [48.8%, 61.6%], grid 99.4% [99.1%, 99.8%].
+Predicted the three cities inside 35-70% and the grid's lower bound at 97% or more: holds. "Half" in the README
+was a fair summary; the three real cities range from 46% to 61% depending on which roads close.
