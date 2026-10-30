@@ -19,6 +19,7 @@ import { tape, replay } from "./tools/tapecars.mjs";
 import { RETEST, bullets, claimFor } from "./tools/reap.mjs";
 import { arm as crashArm } from "./tools/crashkinds.mjs";
 import { summary as crashSummary } from "./tools/crashmap.mjs";
+import { info as roadInfo } from "./tools/roadinfo.mjs";
 import { describe as describeLine } from "./src/lineage.js";
 import { Rewind } from "./src/rewind.js";
 import { Crowd, PED } from "./src/pedestrians.js";
@@ -342,6 +343,11 @@ import { editNeuron } from "./src/netview.js";
   } finally { fs.rmSync(d, { recursive: true, force: true }); }
   const sm = crashSummary([[1, 1, "car", 0.1, 5, 6, -1], [2, 2, "car", 0.3, 5, 6, 7], [3, 3, "wall", 0.2, 8, 9, -1]]);
   assert.deepStrictEqual([sm.n, sm.kinds.car, sm.kinds.wall, sm.junction, sm.roads, sm.top[0]], [3, 2, 1, 1, 2, ["5>6", 2]], "crashmap counts kinds, junctions and roads");
+  const g = { nodes: [[0, 0], [30, 40], [30, 80]], edges: [[0, 1, 1, 1], [1, 2, 2, 0]], signals: [] };
+  const ri = roadInfo(g, 0, 1);
+  assert.deepStrictEqual([ri.length, ri.lanes, ri.oneway, ri.direction, ri.atTo.length], [50, 1, true, "with the arrow", 2], "roadinfo: length, lanes, one-way, neighbours");
+  assert.strictEqual(roadInfo(g, 1, 0).direction, "against the arrow", "and which way the arrow points");
+  assert.strictEqual(roadInfo(g, 0, 2), null, "and no road where there is none");
   console.log("ok  crash log: opt-in, kinds, and no effect on the run");
 }
 
