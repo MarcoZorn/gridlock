@@ -26,6 +26,9 @@
   .fx .ci.neg { background: var(--accent); }
   .fx .pt { position: absolute; top: 2px; width: 2px; height: 10px; background: var(--ink); }
   @media (max-width: 560px) { .fx .row { grid-template-columns: 1fr 64px; } .fx .track { grid-column: 1 / -1; grid-row: 2; } }
+  .method { max-width: 900px; margin: 0 auto; padding: 8px 24px 56px; }
+  .method h2 { font-size: 16px; margin: 0 0 8px; } .method h3 { font-size: 13px; margin: 16px 0 4px; }
+  .method p, .method li { font-size: 13px; line-height: 1.65; color: var(--ink); } .method ul { padding-left: 18px; margin: 4px 0; }
   .tally { color: var(--dim); font-size: 13px; }
   @media (max-width: 560px) { .claim dl { grid-template-columns: 1fr; } .claim dt { margin-top: 6px; } }
 </style>
@@ -56,6 +59,48 @@
 </header>
 
 <main class="claims" id="claims"><p class="tally">Loading the claims…</p></main>
+
+<section class="method" id="method">
+  <h2>About the method</h2>
+  <p>
+    A simulation can be made to say almost anything if you look at enough runs and keep the ones you like.
+    The lab's rules are there to stop that, in five habits.
+  </p>
+  <h3>Write the prediction first</h3>
+  <p>
+    Before a run starts, the claim, the command that reproduces it and what would count as a hit are written
+    into <code>docs/claims.jsonl</code> and committed. Afterwards the claim is marked confirmed or killed, never
+    quietly reworded. That is pre-registration, and it is why killed claims are listed above as plainly as the
+    confirmed ones.
+  </p>
+  <h3>Pair the seeds</h3>
+  <p>
+    A rule is compared with no rule on the same twenty seeds: the same city, the same founders, the same luck at the start,
+    changed only by the rule. Each seed gives one difference, so the question is how those twenty differences
+    behave, and not whether two averages of very noisy runs happen to differ.
+  </p>
+  <h3>Report an interval, not a point</h3>
+  <p>
+    For a rule, the mean change across seeds comes with a 95% interval from a bootstrap: the twenty seeds are resampled
+    with replacement 4000 times and the middle 95% of the resulting means is kept. If the interval
+    includes zero, the effect is not distinguishable from nothing, and the bar says so. For a proportion, such as how
+    many replays the same family wins, the interval is a Wilson interval, which stays sensible near 0% and 100% and with few replays.
+  </p>
+  <h3>Beat the dull explanation</h3>
+  <p>
+    "The biggest family stays biggest" explains a lot of the monopoly results, so the replay study tests the leader
+    against its own share of the cars before it claims any head start. That claim was killed.
+    A result that survives with the drivers' evolution frozen, or with a hand-written driver that cannot evolve, is about the
+    economy and not about evolution; one that disappears needed the evolving drivers.
+  </p>
+  <h3>Correct in the open</h3>
+  <p>
+    Results that rested on two to four seeds flipped when seeds were added, and the README says so. A result
+    is corrected where it was first stated, and the lab notebook keeps the original numbers and the reason for each correction.
+    A tool that counted replays where the family merely survived, and not replays where it won, gave wrong
+    tables twice; since then a win means ending with over half the cars, read straight from the tool's printed summary.
+  </p>
+</section>
 
 <script type="module">
 const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
