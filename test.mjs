@@ -18,6 +18,7 @@ import { HandBrain } from "./src/hand.js";
 import { tape, replay } from "./tools/tapecars.mjs";
 import { RETEST, bullets, claimFor } from "./tools/reap.mjs";
 import { arm as crashArm } from "./tools/crashkinds.mjs";
+import { summary as crashSummary } from "./tools/crashmap.mjs";
 import { describe as describeLine } from "./src/lineage.js";
 import { Rewind } from "./src/rewind.js";
 import { Crowd, PED } from "./src/pedestrians.js";
@@ -304,7 +305,7 @@ import { editNeuron } from "./src/netview.js";
   console.log("ok  CONTRIBUTING agrees with the repo");
 }
 
-// CRASHKINDS: wall crashes are crashes minus car crashes; a small city counts as collapsed
+// CRASHKINDS: crashes and car-car pairs are summed over days; a small city counts as collapsed
 {
   const d = fs.mkdtempSync("tmp/crashkinds-");
   try {
@@ -314,11 +315,34 @@ import { editNeuron } from "./src/netview.js";
     write("a2", [3, 4].flatMap((n) => day(n, { cars: 20 })));
     const r = crashArm(`${d}/a{s}`, [1, 2], 2, 4);
     assert.strictEqual(r.runs, 2, "both runs read");
-    assert.strictEqual(r.car, 2 * (4 + 6 + 4 + 6), "car crashes summed over rows in days 2-4");
-    assert.strictEqual(r.wall, 2 * (6 + 14 + 6 + 14), "wall crashes are crashes minus car crashes");
+    assert.strictEqual(r.pairs, 2 * (4 + 6 + 4 + 6), "car-car pairs summed over rows in days 2-4");
+    assert.strictEqual(r.crashes, 2 * (10 + 20 + 10 + 20), "crashes summed likewise");
     assert.deepStrictEqual(r.perSeed.map((x) => x.collapsed), [false, true], "the 20-car city is collapsed");
   } finally { fs.rmSync(d, { recursive: true, force: true }); }
-  console.log("ok  crashkinds: wall and car crashes, collapsed runs");
+  console.log("ok  crashkinds: crashes, pairs, collapsed runs");
+}
+
+// CRASHLOG: opt-in, every crash with its kind and road, and switching it on changes nothing else
+{
+  const trained = JSON.parse(fs.readFileSync("docs/trained.json", "utf8"));
+  const run = (on) => {
+    ECON.crashLog = on;
+    try { const w = new EcoWorld({ seed: 3, founders: Population.fromJSON(trained.pop) }); for (let i = 0; i < 6000; i++) w.step(); return w; }
+    finally { ECON.crashLog = 0; }
+  };
+  const off = run(0), on = run(1);
+  assert(!off.crashLog, "off by default: nothing is logged");
+  assert(on.crashLog.length > 0 && on.crashLog.every((c) => c.length === 7 && (c[2] === "wall" || c[2] === "car") && c[3] >= 0), `crashes are logged (${on.crashLog.length}) with a kind and an impact`);
+  assert.strictEqual(JSON.stringify(on.toJSON()), JSON.stringify(off.toJSON()), "and logging does not change the run");
+  const d = fs.mkdtempSync("tmp/crashlog-");
+  try {
+    execFileSync("node", ["headless.mjs", "--eco", "--run", d, "--days", "1", "--founders", "docs/trained.json", "--seed", "3", "--crash-log"], { stdio: "pipe" });
+    const rows = fs.readFileSync(`${d}/crashes.jsonl`, "utf8").trim().split("\n").map(JSON.parse);
+    assert(rows.length > 0 && rows.every((r) => r.length === 7), `headless --crash-log writes crashes.jsonl (${rows.length} lines)`);
+  } finally { fs.rmSync(d, { recursive: true, force: true }); }
+  const sm = crashSummary([[1, 1, "car", 0.1, 5, 6, -1], [2, 2, "car", 0.3, 5, 6, 7], [3, 3, "wall", 0.2, 8, 9, -1]]);
+  assert.deepStrictEqual([sm.n, sm.kinds.car, sm.kinds.wall, sm.junction, sm.roads, sm.top[0]], [3, 2, 1, 1, 2, ["5>6", 2]], "crashmap counts kinds, junctions and roads");
+  console.log("ok  crash log: opt-in, kinds, and no effect on the run");
 }
 
 // the research tools run end to end: a two-seed trial and a two-replay
