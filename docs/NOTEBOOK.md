@@ -4347,3 +4347,22 @@ Turin seeds 3 and 4, 20000 ticks, frozen: hand 147 and 154 trips, 311 and 309 cr
 crashes more per km than the evolved founders. Tried and dropped: a lateral term in the steering
 (crashes up either sign), lower cruise speed (up), steering gains 1.0 and 4 (worse than 1.5).
 No trial claim opened yet; the arm is not run against a rule.
+
+### Replaying the tape on the racing cars (tools/tapecars.mjs)
+
+Save the population at generation FROM, resume it eight times with a fresh random stream (same
+tracks), take the leader of generation FROM+40 and match it to the nearest saved species by
+compatibility distance (an approximation: no lineage is tracked). Logs `tmp/tapecars-s3.log`,
+`tmp/tapecars-s2.log`.
+
+- Seed 3, saved at generation 10 (11 species): species counts 9:2 3:2 5:2 0:1 8:1, so five different
+  species end on top; modal species 9 wins 2 of 8 (Wilson 95% [7%, 59%]). Best fitness across the
+  replays 2382.0 to 2413.6.
+- Seed 2, saved at generation 8 (8 species): 3:3 1:2 4:1 7:2; modal species 3 wins 3 of 8 ([14%, 69%]).
+  Fitness 2832.8 to 2908.1.
+
+Reading: where evolution ends up, in fitness, repeats closely; which saved species it grows out
+of does not. Eight replays and two seeds is a hint, not a claim. A first run on seed 1 was not
+usable: one saved species, and `pop.best` carries the best car from before the save, so two
+replays returned the saved champion unchanged. The tool takes the last generation's leader instead.
+The test checks that resuming with the same stream gives the same champion.

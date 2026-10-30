@@ -147,9 +147,12 @@ properly (with a test where it is code), and ticks it off. No idling.
 - [x] gridlock: `docs/claims.jsonl` gets structured effects (measure, mean,
   low, high) for the trial claims, and the findings page draws each as an
   interval bar around zero.
-- [ ] cars: replaying the tape on the racing cars: save the population at
+- [x] cars: replaying the tape on the racing cars: save the population at
   generation 10, rerun from it with eight new seeds, and see whether the
-  same species ends up on top (`bench.py`-style, a test for the save).
+  same species ends up on top (`bench.py`-style, a test for the save). (Done: `tools/tapecars.mjs`, test
+  that a save resumes exactly. Seed 3 from generation 10: the eight replays end
+  nearest to five different saved species, the modal one 2 of 8; seed 2 from
+  generation 8: four species, the modal one 3 of 8. Notebook has the numbers.)
 - [ ] gridlock: a smoke test for `tools/trial.mjs` with `ALT=` (two maps)
   and with `FREEZE=1`, one seed, one city day.
 
