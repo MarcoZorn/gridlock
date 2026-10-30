@@ -4389,3 +4389,14 @@ different drivers, different cities, so no claim about why.
 Prediction written before the run, in `docs/claims.jsonl`. Study 2: C10 again with the hand-written
 driver. `FOUNDERS=hand SEEDS=20 ALT=tmp/barcelona-twoway.json node tools/trial.mjs barcelona`, systemd
 unit c13, log `tmp/trial-hand-oneway.log`. Nothing to read until its summary prints.
+
+### Claim C13 killed: one-way arrows with non-evolving drivers
+
+`FOUNDERS=hand SEEDS=20 ALT=tmp/barcelona-twoway.json node tools/trial.mjs barcelona`, log
+`tmp/trial-hand-oneway.log`. Two-way vs one-way, days 2-6: fares a day +3767.1% [+913.7%, +7311.0%]
+(16 up / 4 down); crashes per car a day +276.1% [+85.4%, +498.8%] (17 up / 3 down); cars +234.9%
+[+69.9%, +428.2%]; trip time +25.8% [-9.3%, +67.0%]; Gini +0.000 [-0.011, +0.013]. Predicted fares up
+(holds) and crashes within +-15% (fails by a wide margin). From the telemetry of the same runs, mean
+fares a day 1258.6 one-way and 2030.7 two-way, cars 133.0 and 203.1: the per-seed ratios blow up on
+seeds where the one-way arm had almost no fares. Not tested why; the hand driver may simply jam or
+crash on one-way Barcelona. The evolved result (C10) stands for evolved drivers only.
