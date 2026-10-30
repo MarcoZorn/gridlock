@@ -93,7 +93,7 @@ properly (with a test where it is code), and ticks it off. No idling.
   they exist instead of the four-seed ones.
 - [x] cars: `bench.py` reports a 95% bootstrap interval for held-out laps
   across seeds, like `tools/trial.mjs`.
-- [ ] cars: a test that `track_room` keeps every pinch passable at
+- [x] cars: a test that `track_room` keeps every pinch passable at
   hardness 2 too.
 - [x] neat-from-scratch: a hard-tracks toggle on the page, and the leader
   shown is the one picked on many tracks, not the record-holder. (Already
