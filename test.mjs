@@ -600,4 +600,19 @@ console.log("ok  inequality measured");
   console.log("ok  replay page worker: base run and a replay");
 }
 
+// lineage: every ancestor back to the founder, each with its body, the dead
+// with what they earned (the eco page's lineage card draws from this)
+{
+  const trained = JSON.parse(fs.readFileSync("docs/trained.json", "utf8"));
+  const w = new EcoWorld({ seed: 6, founders: Population.fromJSON(trained.pop) });
+  for (let i = 0; i < 20000; i++) w.step();
+  const d = w.cars.reduce((a, b) => (b.generation > a.generation ? b : a));
+  const line = w.lineage(d);
+  assert(d.generation >= 2 && line.length === d.generation + 1, `a car ${d.generation} generations deep has ${d.generation + 1} ancestors in its line, got ${line.length}`);
+  assert(line[0].parent === -1 && line.at(-1).id === d.id, "from its founder to itself");
+  assert(line.every((a) => Array.isArray(a.body) && a.body.length === 4 && a.body.every(Number.isFinite)), "each with its body");
+  assert(line.filter((a) => a.died >= 0).every((a) => Number.isFinite(a.earned)), "and the dead with what they earned");
+  console.log(`ok  lineage: ${line.length} ancestors with bodies and earnings`);
+}
+
 console.log("\nall checks passed");

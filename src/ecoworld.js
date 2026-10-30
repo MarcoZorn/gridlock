@@ -189,7 +189,7 @@ export class EcoWorld {
     this.species = [];          // { id, brain, body, size, born }
     this.nextSpecies = 0;
     this.threshold = 0.8;       // nudged so the number of species stays readable
-    this.ancestry = new Map();  // id -> { parent, born, died, generation, species, children }
+    this.ancestry = new Map();  // id -> { parent, born, died, generation, species, children, body: [len, wid, cargo room, top speed], earned (at death) }
     this.log = [];              // telemetry rows
     this.events = freshEvents();
     this.crowd = pedestrians ? new Crowd(this.city, new Rng(seed * 7 + 1), pedestrians) : null;
@@ -315,7 +315,8 @@ export class EcoWorld {
       this.city.addHeat("crash", car.x, car.y);
     };
     this.cars.push(d);
-    this.ancestry.set(d.id, { parent: d.parent, born: this.tick, died: -1, generation: d.generation, species: d.species, children: 0 });
+    this.ancestry.set(d.id, { parent: d.parent, born: this.tick, died: -1, generation: d.generation, species: d.species, children: 0,
+      body: [+d.p.len.toFixed(1), +d.p.wid.toFixed(1), +d.body.capacity.toFixed(1), Math.round(d.p.maxSpeed)] });
     if (parent && this.ancestry.has(parent.id)) this.ancestry.get(parent.id).children++;
     return d;
   }
@@ -508,7 +509,7 @@ export class EcoWorld {
     const finishing = (d) => this.finishFare && d.job && d.job.kind && this.tick - d.job.start < 3 * d.job.expect && d.cash > -20;
     const broke = (d) => d.cash < -ECON.credit && !finishing(d);
     if (ECON.forgive) for (const d of this.cars) if (broke(d) && !d.forgiven) { d.cash = 0; d.forgiven = true; }
-    for (const d of this.cars) if (broke(d) && this.ancestry.has(d.id)) this.ancestry.get(d.id).died = this.tick;
+    for (const d of this.cars) if (broke(d) && this.ancestry.has(d.id)) Object.assign(this.ancestry.get(d.id), { died: this.tick, earned: +d.earned.toFixed(1) });
     this.cars = this.cars.filter((d) => !broke(d));
     this.events.deaths += before - this.cars.length;
     this.events.births += born.length;

@@ -43,6 +43,9 @@ const sdc = $("sides"), sdctx = sdc.getContext("2d");
 const fac = $("fares"), factx = fac.getContext("2d");
 const bod = $("bodies"), octx = bod.getContext("2d");
 const tree = $("tree"), tctx = tree.getContext("2d");
+const lin = $("lineage"), lctx = lin.getContext("2d"), fam = $("famshare"), fctx = fam.getContext("2d");
+const familyShare = new Map();   // founder id -> [[tick, share], ...], for the lineage card
+let sampledAt = -1;
 
 let place = null;   // a city typed by name, rebuilt from OpenStreetMap
 let world, founders = {}, graph = null, size = "small", running = true, speed = 1, showRays = true, follow = false;
@@ -61,6 +64,8 @@ function layout() {
   fitCanvas(fac, bw, 70);
   fitCanvas(bod, bw, 130);
   fitCanvas(tree, bw, 140);
+  fitCanvas(lin, bw, 70);
+  fitCanvas(fam, bw, 46);
   cam.fitted = false;
 }
 
@@ -76,7 +81,7 @@ function reset(seed) {
   // ?signals=real: on a real map, lights only where OpenStreetMap has traffic signals
   const realSignals = new URLSearchParams(location.search).get("signals") === "real";
   world = new EcoWorld({ seed, control, founders: founders[control] || founders.none || null, graph, size, realSignals });
-  rewind.clear(); selected = null;
+  rewind.clear(); familyShare.clear(); sampledAt = -1; selected = null;
   $("peds-on").dataset.on = false;
   $("charge").dataset.on = false;
   $("camera").dataset.on = false;
@@ -184,6 +189,49 @@ function drawTree(focus) {
 
 // Every living car as a dot: how much it can carry against how fast it can
 // go. Taxis sit top left, vans and trucks bottom right, if both exist.
+// The lineage card: the focus car's ancestors back to its founder, and how
+// much of the city that family has been, sampled every city hour.
+function sampleFamilies() {
+  const hour = Math.floor(world.tick / 3600);
+  if (hour === sampledAt) return;
+  sampledAt = hour;
+  const count = new Map();
+  for (const d of world.cars) { const f = world.lineage(d)[0]?.id ?? d.id; count.set(f, (count.get(f) || 0) + 1); }
+  for (const [f, n] of count) {
+    if (!familyShare.has(f)) familyShare.set(f, []);
+    const s = familyShare.get(f); s.push([world.tick, n / world.cars.length]); if (s.length > 24 * 8) s.shift();
+  }
+}
+function drawLineage(focus) {
+  const W = lin.clientWidth, H = lin.clientHeight;
+  lctx.clearRect(0, 0, W, H); fctx.clearRect(0, 0, fam.clientWidth, fam.clientHeight);
+  if (!focus) { $("lFounder").textContent = "-"; return; }
+  sampleFamilies();
+  const line = world.lineage(focus), alive = new Map(world.cars.map((d) => [d.id, d]));
+  const earned = (a) => (alive.has(a.id) ? alive.get(a.id).earned : a.earned || 0);
+  const top = Math.max(1, ...line.map(earned)), n = line.length, slot = Math.min(28, (W - 8) / Math.max(1, n));
+  line.forEach((a, i) => {
+    const [len, wid] = a.body || [10, 5], x = 4 + slot * (i + 0.5), y = H / 2;
+    const L = Math.max(4, Math.min(slot * 0.9, len * 1.6)), Wd = Math.max(3, Math.min(H * 0.8, wid * 2.4));
+    lctx.globalAlpha = 0.25 + 0.75 * Math.sqrt(Math.max(0, earned(a)) / top);
+    lctx.fillStyle = speciesColour(a.species);
+    lctx.fillRect(x - L / 2, y - Wd / 2, L, Wd);
+  });
+  lctx.globalAlpha = 1;
+  if (n) { lctx.strokeStyle = "#ffffff"; lctx.lineWidth = 1.5; const x = 4 + slot * (n - 0.5); lctx.strokeRect(x - slot * 0.48, 4, slot * 0.96, H - 8); }
+  const founder = line[0]?.id ?? focus.id;
+  $("lFounder").textContent = `#${founder} / ${Math.max(0, n - 1)}`;
+  const s = familyShare.get(founder) || [], FW = fam.clientWidth, FH = fam.clientHeight;
+  fctx.strokeStyle = "#232733"; fctx.strokeRect(0.5, 0.5, FW - 1, FH - 1);
+  if (s.length > 1) {
+    const t0 = s[0][0], t1 = s[s.length - 1][0] || t0 + 1;
+    fctx.strokeStyle = speciesColour(focus.species); fctx.lineWidth = 1.5; fctx.beginPath();
+    s.forEach(([t, v], i) => { const x = 2 + (FW - 4) * (t - t0) / Math.max(1, t1 - t0), y = FH - 2 - (FH - 4) * v; i ? fctx.lineTo(x, y) : fctx.moveTo(x, y); });
+    fctx.stroke();
+    fctx.fillStyle = "#8b93a7"; fctx.font = "10px ui-monospace, monospace"; fctx.fillText(`${(100 * s[s.length - 1][1]).toFixed(0)}% of the cars`, 4, 11);
+  }
+}
+
 function drawBodies() {
   const W = bod.clientWidth, H = bod.clientHeight, P = 6;
   octx.clearRect(0, 0, W, H);
@@ -309,6 +357,7 @@ function draw() {
   drawFares();
   drawTree(focus);
   drawBodies();
+  drawLineage(focus);
 
   const last = world.log.slice(-6);
   const sum = (key) => last.reduce((a, r) => a + r[key], 0);
@@ -512,7 +561,7 @@ for (const b of document.querySelectorAll("[data-size]")) {
 $("grow-east").onclick = () => world.grow("east");
 $("grow-south").onclick = () => world.grow("south");
 function adoptEco(w) {
-  world = w; rewind.clear();
+  world = w; rewind.clear(); familyShare.clear(); sampledAt = -1;
   control = world.control; size = world.size || "small"; graph = world.graph || null;
   document.querySelectorAll("[data-control]").forEach((x) => (x.dataset.on = x.dataset.control === control));
   document.querySelectorAll("[data-size]").forEach((x) => (x.dataset.on = x.dataset.size === size));
@@ -597,7 +646,7 @@ $("ffDay").onclick = (e) => {
   worker = new Worker(new URL("./ffworker.js", import.meta.url), { type: "module" });
   worker.onmessage = (m) => {
     if (m.data.done) {
-      world = EcoWorld.fromJSON(m.data.world); rewind.clear();
+      world = EcoWorld.fromJSON(m.data.world); rewind.clear(); familyShare.clear(); sampledAt = -1;
       world.city.heat = m.data.heat;   // the skipped day stays on the heatmap
           selected = null;
       worker.terminate(); worker = null;
