@@ -173,3 +173,21 @@ properly (with a test where it is code), and ticks it off. No idling.
   (genome, mutation, speciation, crossover, the track) that highlight the
   live run and explain it, for people who have never seen NEAT.
 
+### Next batch
+
+- [ ] gridlock: Study 3 (the reaper): a `tools/reap.mjs` that reads the
+  README's headline bullets that still rest on two to four seeds, lists
+  them with the command that would re-test each, and opens the oldest as a
+  claim (one at a time, the five-open rule).
+- [ ] gridlock: the generation page gets the same Lineage card as the eco
+  page, for the leader of the current generation (species, parents).
+- [ ] gridlock: an "About the method" section on the findings page:
+  pre-registration, paired seeds, bootstrap and Wilson intervals, what was
+  corrected and why; short, for a visitor who is not a statistician.
+- [ ] cars: `report.py` adds a chart page: held-out laps against settings
+  for one swept parameter (rays, sight, delay), with intervals.
+- [ ] neat-from-scratch: the tour gets a sixth step for "Replay, new seed",
+  explaining replaying the tape on this page.
+- [ ] all three: a short `CONTRIBUTING.md` per repo: how to run the tests,
+  where results go, the rules of the lab for gridlock.
+
