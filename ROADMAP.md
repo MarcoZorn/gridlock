@@ -310,8 +310,9 @@ prediction written first, then the run, then the README line.
   on twenty seeds of a larger city (`--size` of headless.mjs), prediction first: the share on the majority side
   rises above the Turin figure (median 0.67 of the rounded values at day 4).
   (Changed: the Turin runs already have 182-231 cars, so the question became the default generated city, claim C28, unit c28.)
-- [ ] gridlock: Braess on all three cities at once (`tools/wardrop.mjs`, the exhaustive scan): record the largest saving per
+- [x] gridlock: Braess on all three cities at once (`tools/wardrop.mjs`, the exhaustive scan): record the largest saving per
   city in the notebook from the output, and compare with the README's 0.07% (Study 3 plan: no seeds).
+  (Done: reproduced to the digit, best closures -0.05%, -0.05%, -0.07%; no claim needed.)
 - [ ] gridlock: survivors only: C13 mixed collapsed hand runs with surviving ones. Re-run the one-way against two-way
   Barcelona comparison for hand drivers on the runs that started (`tools/collapse.mjs` lists them), a paired bootstrap
   over the seeds where both arms started, prediction first.
