@@ -152,8 +152,9 @@ did not hold on six fresh Turin seeds rewound to hour 12 (52 of 96 evolving,
 43 of 96 frozen, p = 0.248): no evidence that mutation keeps the contest
 open. Barcelona seed 7 is like Turin seed 11: 1
 of 32 replays from hour 0, 13 from hour 6, 17 from hour 21, never decided
-on day 0. Early decision is the exception (one run of three). Claims C1, C3,
-C6 and C7 in [docs/claims.jsonl](docs/claims.jsonl) (`tools/replay.mjs`;
+on day 0. Venice seed 7 is also open at hour 12 (0 of 32 from hour 0, 14
+from hour 12) and closes by hour 18 (26 of 32). Early decision is the
+exception (one run of four). Claims C1, C3, C6, C7 and C8 in [docs/claims.jsonl](docs/claims.jsonl) (`tools/replay.mjs`;
 [ROADMAP.md](ROADMAP.md)).
 
 ## Running it

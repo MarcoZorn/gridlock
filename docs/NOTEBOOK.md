@@ -4234,3 +4234,18 @@ Pooled 52/96 evolving, 43/96 frozen; Fisher two-sided p = 0.248. Predicted froze
 at least 10 points higher in 4 of 6 seeds: it was higher in none. The earlier
 hint (seeds 7 and 11, picked after the fact) does not hold up on fresh seeds at
 hour 12. README sentence about mutation keeping the contest open is withdrawn.
+
+### Claim C8, confirmed: Venice seed 7 is not decided by hour 12
+
+32 replays per snapshot, winner (family 85, 97% of cars at the end), from `tmp/replay-venice7.log`:
+
+| rewound to hour | winner replays | 95% interval | winner's share then |
+|---|---|---|---|
+| 0 | 0/32 | 0-11% | 0% |
+| 6 | 8/32 | 13-42% | 7% |
+| 12 | 14/32 | 28-61% | 13% |
+| 18 | 26/32 | 65-91% | 22% |
+
+Predicted under 25% at hour 0 and under 75% at hour 12: both held. The contest
+closes between hours 12 and 18, later than Turin seed 7 (hour 12) and about
+like the others. Of four runs, only Turin seed 7 was decided by hour 12.
