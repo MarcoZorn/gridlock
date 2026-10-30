@@ -244,3 +244,22 @@ properly (with a test where it is code), and ticks it off. No idling.
   runs above half, next to the same twenty evolved runs. Open the claim with its prediction first.
   (Done as `tools/families.mjs` and claim C17, killed: 12 of 20 hand runs above half
   against 19 of 20 evolved. The README's "three of four runs, every car" is 8 of 20.)
+
+### Next batch, from the reaper's plans (C15 to C17)
+
+Each: a tool that runs twenty seeds and prints an interval (with a smoke test), then the claim with its
+prediction written first, then the run, then the README line.
+
+- [ ] gridlock: NEAT species step, `tools/stepcmp.mjs`: evolve from scratch with a compatibility
+  threshold step of 0.3 and of 0.02, twenty seeds each, mean fitness at generation 60, paired
+  bootstrap interval. Cheap (0.08 s a generation).
+- [ ] gridlock: one-way fragility, `tools/percolation.mjs` with a SEEDS= mode: twenty random closure
+  orders per city, the share of junctions still reachable at 5% of roads closed, Wilson or
+  bootstrap interval, for Turin, Barcelona, Manhattan and the grid.
+- [ ] gridlock: side of the road, `tools/sidechart.mjs` over twenty fresh seeds: the share keeping to
+  one side after four days with an interval, and how many seeds keep right (a coin-flip check).
+- [ ] gridlock: platforms, `tools/platforms.mjs` over twenty seeds: drivers' share against passengers'
+  share per platform, slope with an interval.
+- [ ] gridlock: why hand-driver economies collapse (C13, C17: 24 cars, 22 families): a collapsed run
+  is one that never grew past its floor; count, per hand run, the day the city last had more than
+  30 cars and what the telemetry shows then (crashes, cash, immigrants).
