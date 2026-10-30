@@ -102,8 +102,10 @@ re-tests them (see *How sure*, below).
   -40.3% [-48.6%, -33.0%], fares -57.0% [-68.8%, -45.8%] (C12, confirmed). Rules that lower inequality slow the trips or
   shrink the city.
 - **Rules about failure matter more than rules about driving.** Letting a
-  broke taxi finish its ride and pooling crash costs nearly doubled fares
-  (4768 a day against 2476), more than any change to the drivers.
+  broke taxi finish its ride and pooling crash costs nearly doubled fares:
+  +86.8% [+81.9%, +91.1%] over twenty seeds (C14, confirmed), with crashes per
+  car up 91.4% [+87.0%, +95.9%] and the city twice as big. Whether that beats
+  any change to the drivers is not re-tested.
 - **Credit and insurance buy activity with recklessness.** A 30-unit overdraft
   raises fares by 28% (interval 26-30%) and crashes per car by 25% (22-28%),
   twenty seeds; insured drivers
@@ -164,7 +166,7 @@ on day 0. Venice seed 7 is also open at hour 12 (0 of 32 from hour 0, 14
 from hour 12) and closes by hour 18 (26 of 32). Early decision is the
 exception (one run of four). The leader does not beat its own share of the
 cars reliably: on two fresh runs, 5 of 9 snapshots with the winner under half the
-cars had its win-rate interval above the share, 0 below (C9, killed). Claims C1, C3, C6, C7, C8, C9, C10, C11 and C12 in [docs/claims.jsonl](docs/claims.jsonl) (`tools/replay.mjs`;
+cars had its win-rate interval above the share, 0 below (C9, killed). Claims C1, C3, C6, C7, C8, C9, C10, C11, C12, C13 and C14 in [docs/claims.jsonl](docs/claims.jsonl) (`tools/replay.mjs`;
 [ROADMAP.md](ROADMAP.md)).
 
 ## Running it
