@@ -206,7 +206,12 @@ import { editNeuron } from "./src/netview.js";
   assert(/2 seeds/.test(tr) && !/NaN/.test(tr), "trial prints intervals, not NaN:\n" + tr);
   const rp = sh(["tools/replay.mjs", "grid", "3"], { REPS: "2", DAYS: "1", EVERY: "12", SPAN: "12" });
   assert(/hour 0 \| [0-2]\/2 \|/.test(rp), "replay prints a win count out of its two replays:\n" + rp);
-  console.log("ok  tools: trial and replay smoke");
+  // seed 0 is the control: same noise as the original, so it must end the same
+  const d = "tmp/replay/grid-s3-d1-e12", end = JSON.parse(fs.readFileSync(`${d}/end.json`, "utf8"));
+  const ctl = fs.readFileSync(`${d}/replays-evolving.jsonl`, "utf8").trim().split("\n").map(JSON.parse).find((r) => r.seed === 0);
+  assert.strictEqual(ctl.won / ctl.cars, end.share, "replay with seed 0 reproduces the original run");
+  assert.strictEqual(ctl.top, end.winner, "and ends with the same winning family");
+  console.log("ok  tools: trial and replay smoke, seed-0 replay reproduces the original");
 }
 
 // rewind: back to the start of this hour, then the hour before, and stepping
