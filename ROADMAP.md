@@ -164,7 +164,7 @@ properly (with a test where it is code), and ticks it off. No idling.
 - [x] gridlock: a time-lapse recorder on the eco page: capture a frame every
   city hour into a WebM with `MediaRecorder`, download button, so a day can
   be shared as a video.
-- [ ] gridlock: a lineage explorer on the eco page: click a car, see its
+- [x] gridlock: a lineage explorer on the eco page: click a car, see its
   ancestors back to the founder as a strip of their bodies and earnings, and
   its family's share of the city over time.
 - [x] cars: a headless evaluation report (`report.py`) that writes an HTML
