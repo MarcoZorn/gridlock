@@ -24,6 +24,7 @@ import { binomial, share as sideShare, wilson as sideWilson } from "./tools/side
 import { look as collapseLook } from "./tools/collapse.mjs";
 import { unbacked, count as numCount } from "./tools/sweep.mjs";
 import { change as traitChange } from "./tools/traits.mjs";
+import { paired as pairedSurvivors } from "./tools/survivors.mjs";
 import { describe as describeLine } from "./src/lineage.js";
 import { Rewind } from "./src/rewind.js";
 import { Crowd, PED } from "./src/pedestrians.js";
@@ -412,6 +413,14 @@ import { editNeuron } from "./src/netview.js";
   const ch = traitChange([{ traits: { length: 0.5, rays: 0.2 } }, { traits: { length: 0.4, rays: 0.5 } }, { traits: { length: 0.1, rays: 0.7 } }]);
   assert(Math.abs(ch.length + 0.4) < 1e-9 && Math.abs(ch.rays - 0.5) < 1e-9, "trait change is last row less first");
   console.log("ok  traits: change per trait");
+}
+
+// SURVIVORS: only seeds where both arms ended above the floor are compared
+{
+  const m = (end, fares) => ({ end, "fares a day": fares, "crashes per car a day": 2, "trip time": 1, cars: 100 });
+  const r = pairedSurvivors([m(100, 10), m(20, 10), m(100, 10)], [m(100, 20), m(100, 99), m(20, 20)]);
+  assert.deepStrictEqual([r.kept, r.of, r.rows["fares a day"].mean, r.rows["fares a day"].up], [1, 3, 1, 1], "one seed kept: both arms above the floor; fares doubled");
+  console.log("ok  survivors: collapsed seeds left out of the pairing");
 }
 
 // the research tools run end to end: a two-seed trial and a two-replay
