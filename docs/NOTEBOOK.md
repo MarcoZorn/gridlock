@@ -4678,3 +4678,10 @@ a junction when a side ray sees a car closing in): fitness -4.1% [-5.0%, -3.2%] 
 crashes per car +0.6% [-0.1%, +1.3%] (12 up / 8 down, not distinguishable from zero). The wide rule: fitness -4.8% [-5.6%, -4.0%], trips per car
 -9.4% [-10.0%, -8.7%], crashes per car +0.8% [-0.1%, +1.7%]. Predicted fitness down with the interval below zero and crashes not down: holds.
 So a coded rule costs trips and buys no safety; the README's "even then it cost them elsewhere" now has a number for the coded version.
+
+### Claim C24 confirmed: the evolved founders have no cold-start trap
+
+`FOUNDERS=docs/trained.json SEEDS=20 START=10,20 node tools/starts.mjs turin` (`tmp/starts-c24.log`), evolved founders free to evolve, two
+days, seeds 101-120: startCars 10, 20 of 20 runs end with more than 30 cars (Wilson 95% [84%, 100%]); startCars 20, 20 of 20 ([84%, 100%]).
+Predicted at least 18 of 20 at each: holds. Next to C22 (hand drivers: 16, 16 and 17 of 20 at 50, 100 and 150) the trap is a property of the
+hand-written driver, which cannot learn to earn in a sparse city, not of the economy's start.
