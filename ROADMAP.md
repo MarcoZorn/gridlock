@@ -313,9 +313,10 @@ prediction written first, then the run, then the README line.
 - [x] gridlock: Braess on all three cities at once (`tools/wardrop.mjs`, the exhaustive scan): record the largest saving per
   city in the notebook from the output, and compare with the README's 0.07% (Study 3 plan: no seeds).
   (Done: reproduced to the digit, best closures -0.05%, -0.05%, -0.07%; no claim needed.)
-- [ ] gridlock: survivors only: C13 mixed collapsed hand runs with surviving ones. Re-run the one-way against two-way
+- [x] gridlock: survivors only: C13 mixed collapsed hand runs with surviving ones. Re-run the one-way against two-way
   Barcelona comparison for hand drivers on the runs that started (`tools/collapse.mjs` lists them), a paired bootstrap
   over the seeds where both arms started, prediction first.
+  (Done as `tools/survivors.mjs` and claim C29, unit c29.)
 - [ ] gridlock: why does the generated city keep right (C28: 16 of 20, p 0.012) and Turin not (C20: 8 of 20)? Run the generated
   city with `FOUNDERS=hand` (no learned habit; hand drivers have no side) and with founders raised on Turin, twenty seeds,
   `tools/sides.mjs`, prediction first: the hand arm shows no right bias (6 to 14 of 20 keep right).
