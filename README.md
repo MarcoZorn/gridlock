@@ -95,7 +95,9 @@ re-tests them (see *How sure*, below).
   safer and faster in every seed tried, and all of them cost fares. For the
   charge this now holds at twenty seeds: 45% fewer cars, crashes per car
   down 24% (95% interval 21-27%), trips 29% faster, fares down 18%
-  (15-21%), in every seed. Rules that lower inequality slow the trips or
+  (15-21%), in every seed. With mutation frozen after day 2 in both
+  arms the trade stays: crashes per car -31.4% [-35.0%, -27.7%], fares -15.0%
+  [-18.5%, -11.6%] (C11, confirmed), so it is the economy, not evolution. Rules that lower inequality slow the trips or
   shrink the city.
 - **Rules about failure matter more than rules about driving.** Letting a
   broke taxi finish its ride and pooling crash costs nearly doubled fares
