@@ -29,6 +29,24 @@ export const PED = {
 
 const N_IN = 6, N_OUT = 1;   // [left dist, left closing, right dist, right closing, waited, bias-ish]
 
+const PSKIP = new Set(["brain", "city", "p"]);
+function personState(p) {
+  const o = {};
+  for (const [k, v] of Object.entries(p)) {
+    if (PSKIP.has(k) || typeof v === "function") continue;
+    if (ArrayBuffer.isView(v)) o[k] = { typed: Array.from(v) };
+    else if (v === null || typeof v !== "object" || Array.isArray(v)) o[k] = v;
+    else o[k] = { ...v };
+  }
+  return o;
+}
+function restorePerson(p, o) {
+  for (const [k, v] of Object.entries(o)) {
+    if (v && v.typed) p[k].set(v.typed);
+    else p[k] = Array.isArray(v) ? v.slice() : v && typeof v === "object" ? { ...v } : v;
+  }
+}
+
 export class Pedestrian {
   constructor(brain, city, rng, energy = PED.start) {
     this.brain = brain;
@@ -144,7 +162,11 @@ export class Crowd {
   }
 
   toJSON() {
-    return { innov: this.innov.toJSON(), rng: this.rng.s, people: this.people.map((p) => ({ brain: p.brain.toJSON(), energy: p.energy, crossings: p.crossings, children: p.children })) };
+    return {
+      innov: this.innov.toJSON(), rng: this.rng.s, nextId: this.nextId, events: this.events,
+      // state: where each person stands and what they are doing, so a restore carries on exactly
+      people: this.people.map((p) => ({ brain: p.brain.toJSON(), energy: p.energy, crossings: p.crossings, children: p.children, state: personState(p) })),
+    };
   }
 
   // People come back at fresh crossing spots, with their brains and energy.
@@ -154,8 +176,11 @@ export class Crowd {
     for (const q of j.people) {
       const p = new Pedestrian(Genome.fromJSON(q.brain), city, rng, q.energy);
       p.crossings = q.crossings; p.children = q.children; p.id = c.nextId--;
+      if (q.state) restorePerson(p, q.state);
       c.people.push(p);
     }
+    // with full states, the placing above must not count: put the stream back
+    if (j.people.length && j.people[0].state) { c.rng.s = j.rng; c.nextId = j.nextId; if (j.events) c.events = { ...j.events }; }
     return c;
   }
 

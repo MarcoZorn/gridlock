@@ -164,6 +164,19 @@ import { editNeuron } from "./src/netview.js";
   console.log(`ok  ecosystem: ${total.trips} paid trips, ${total.births} births, ${total.deaths} deaths, resumes`);
 }
 
+// a save carries on exactly: the restored economy, pedestrians included,
+// stays step for step with the one it was saved from
+{
+  const trained = JSON.parse(fs.readFileSync("docs/trained.json", "utf8"));
+  const w = new EcoWorld({ seed: 5, founders: Population.fromJSON(trained.pop), pedestrians: 30 });
+  for (let i = 0; i < 3000; i++) w.step();
+  const b = EcoWorld.fromJSON(JSON.parse(JSON.stringify(w)));
+  const sig = (x) => [x.cars.length, x.events.trips, x.events.crashes, x.rng.s, x.cars.reduce((a, d) => a + d.cash + d.x + d.y, 0), x.crowd.people.length].join(" ");
+  for (let i = 0; i < 3000; i++) { w.step(); b.step(); }
+  assert.strictEqual(sig(b), sig(w), "a restored economy must follow the original exactly");
+  console.log("ok  a save carries on exactly");
+}
+
 // bodies: derived physics move the right way with the genes
 {
   const g = { length: 0.2, width: 0.3, engine: 0.5, brakes: 0.5, range: 0.5, rays: 0.8, cargo: 0.1 };
