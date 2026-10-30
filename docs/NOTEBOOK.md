@@ -4417,3 +4417,23 @@ Days 2-6: fares a day +86.8% [+81.9%, +91.1%] (20 up / 0 down); crashes per car 
 [+87.0%, +95.9%] (20 up / 0 down); trip time -22.7% [-24.5%, -20.7%]; cars +101.5% [+95.3%, +107.8%];
 Gini +0.132 [+0.126, +0.138]. Predicted fares +40% to +150% with the interval above zero: holds.
 The README's "more than any change to the drivers" was not re-tested; the bullet now says so.
+
+### Why C13 blew up: collapsed economies, not one failing part of the driver
+
+`node tools/crashkinds.mjs "runs/trial-<arm>-d6-s{s}"` on the C13 runs and, for comparison, the C10
+(evolved drivers) runs, days 2-6, 20 seeds each, a run with fewer than 30 cars on average counted as collapsed:
+
+| arm | collapsed runs | crashes per car and day, the others |
+|---|---|---|
+| hand drivers, one-way | 7 of 20 | 129.6 |
+| hand drivers, two-way | 4 of 20 | 156.2 |
+| evolved, one-way | 0 of 20 | 134.3 |
+| evolved, two-way | 0 of 20 | 132.8 |
+
+Mean trips a day over the seeds, hand drivers: 1258.6 one-way, 2030.7 two-way. In the collapsed runs the city
+sits at 24 or 25 cars making between 10 and 28 trips a day (seeds 103, 106, 108, 110, 114, 117, 119 one-way), so
+a few trips and a cars floor give huge percentage swings; that is where the +3767% of fares came from.
+Reading: the hand driver collapses more often on one-way Barcelona, and where it survives it crashes about
+20% more in the two-way city (156.2 against 129.6), where evolved drivers do not differ (132.8 against 134.3).
+The telemetry counts crashes by wall or car only; it does not say which road or which rule of `src/hand.js`
+fails, so that part of the question stays open.
