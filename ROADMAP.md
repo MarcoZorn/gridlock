@@ -130,3 +130,18 @@ properly (with a test where it is code), and ticks it off. No idling.
   whether evolution finds the same thing twice (the tape idea, on a track).
 
 - [x] gridlock: open the Study 2 claim (congestion charge, frozen vs evolving, `FREEZE=1`) in `docs/claims.jsonl`, queue the twenty-seed run after C10.
+- [ ] gridlock: Study 2's third arm, drivers that do not evolve at all: a
+  hand-written controller (pure pursuit on the route target, slow for the
+  next turn, brake for a car closing ahead) exposed as a brain with
+  `activate(inputs, out)`, and `--founders hand` so an economy runs on it;
+  children copy it unchanged. Test that it drives (trips, few crashes) on a
+  generated city.
+- [ ] gridlock: `docs/claims.jsonl` gets structured effects (measure, mean,
+  low, high) for the trial claims, and the findings page draws each as an
+  interval bar around zero.
+- [ ] cars: replaying the tape on the racing cars: save the population at
+  generation 10, rerun from it with eight new seeds, and see whether the
+  same species ends up on top (`bench.py`-style, a test for the save).
+- [ ] gridlock: a smoke test for `tools/trial.mjs` with `ALT=` (two maps)
+  and with `FREEZE=1`, one seed, one city day.
+
