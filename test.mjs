@@ -371,6 +371,8 @@ import { editNeuron } from "./src/netview.js";
   assert(/body rayRange=60 vs no rule, 2 seeds/.test(bd) && !/NaN/.test(bd), "trial with BODY= runs the treatment arm with that body:\n" + bd);
   const dr = sh(["tools/drunk.mjs"], { SEEDS: "2", FOG: "0.5" });
   assert(/against none, 2 seeds/.test(dr) && /distance per tick/.test(dr) && !/NaN/.test(dr), "drunk.mjs with SEEDS= prints paired intervals:\n" + dr);
+  const fm = sh(["tools/families.mjs", "grid"], { SEEDS: "2", DAYS: "1", FOUNDERS: "hand" });
+  assert(/hand-written drivers, 1 days, 2 seeds: a family owns over half the cars in \d of 2 runs/.test(fm), "families.mjs counts runs with a dominant family:\n" + fm);
   const hd = sh(["tools/trial.mjs", "grid", "basic=0.25"], { SEEDS: "2", DAYS: "1", FROM: "0", FOUNDERS: "hand" });
   assert(/2 seeds/.test(hd) && !/NaN/.test(hd), "trial with hand-written founders prints intervals:\n" + hd);
   const rp = sh(["tools/replay.mjs", "grid", "3"], { REPS: "2", DAYS: "1", EVERY: "12", SPAN: "12", REPLAY_DIR: rdir });
