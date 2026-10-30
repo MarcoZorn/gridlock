@@ -4584,3 +4584,20 @@ Prediction written before the run, in `docs/claims.jsonl`. `tools/platforms.mjs`
 its own process; default output checked identical to before). `SEEDS=20 B=0.7 CA=0.1 CB=0.4 node tools/platforms.mjs turin`,
 unit c21, log `tmp/platforms-c21.log`: the share of drivers on B at the end less the ideal free distribution
 (60.9% for these prices), interval inside -10 to +10 points.
+
+### Claim C18 killed: the small species step did not help from scratch
+
+`SEEDS=20 GENS=100 TAIL=20 node tools/stepcmp.mjs` (`tmp/stepcmp.log`), generation-based city from scratch, seeds 101-120,
+mean fitness over generations 81-100: step 0.3 gives 135.6, step 0.02 gives 112.1; difference (0.02 minus 0.3) -23.4
+[-55.0, +6.0], 9 up / 11 down. Predicted a positive difference with the interval above zero: fails, and the point
+estimate is the other way. The README's "evolution does better from scratch in three seeds of three" is not borne out at
+twenty seeds; whether the threshold still flips between two values at 0.3 was not measured here and the bullet keeps
+that sentence as an observation. Seed-to-seed spread is large (per-seed values in `tmp/stepcmp.err`, from 12.4 to
+216.3 over the forty runs), which is why three seeds could point either way.
+
+### Claim C21 confirmed: platforms and the ideal free distribution
+
+`SEEDS=20 B=0.7 CA=0.1 CB=0.4 node tools/platforms.mjs turin` (`tmp/platforms-c21.log`), six days, seeds 101-120: drivers on B
+at the end 59.5% against the ideal free distribution 60.9%; difference -1.3 points [-2.5, -0.0], 4 above / 16 below.
+Predicted the interval inside -10 to +10 points: holds, comfortably. The interval touches zero from below, so the
+drivers sit slightly under the ideal on B. One price setting only; a spread of settings (a slope) is untried.
