@@ -4249,3 +4249,16 @@ hour 12. README sentence about mutation keeping the contest open is withdrawn.
 Predicted under 25% at hour 0 and under 75% at hour 12: both held. The contest
 closes between hours 12 and 18, later than Turin seed 7 (hour 12) and about
 like the others. Of four runs, only Turin seed 7 was decided by hour 12.
+
+### Study 1 step 3 (exploratory, not a claim): win rate against the winner's share that morning
+
+Re-read of `tmp/replay-{turin7,turin11,barcelona7,venice7}.log`, not a new run, and
+no prediction was written before I saw the tables, so it can open a claim but not
+close one. Snapshots from hour 3 on where the winner held under 50% of the cars
+(20 of them): the 95% interval of the replay win rate lies above the share in 11,
+contains it in 8, and lies below it in 1 (Turin 7, hour 3). The excess is
+clearest in Turin 11 (6 of 7 above) and Venice 7 (3 of 3); Barcelona 7 sits on its
+share at 6 of 7. The snapshots of one run are not independent, so 11 of 20 is
+less than it looks. Reading: "the biggest family stays biggest" is not beaten
+cleanly; in two of four runs the family wins more often than its share alone
+says, in one it does not. A claim needs a fresh run with the prediction written first.
