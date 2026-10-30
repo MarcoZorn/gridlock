@@ -6,6 +6,7 @@ import { bootstrap } from "./stats.mjs";
 // Does yielding pay? The shipped drivers, with or without a coded rule bolted
 //
 //   node tools/yieldrule.mjs none|rule|wide
+//   MAP=turin ARMS=none SEEDS=20 node tools/yieldrule.mjs   crashes per 1000 units with no rule on that map, with an interval
 //   SEEDS=20 node tools/yieldrule.mjs     rule and wide against none on seeds 101.., paired, with 95% intervals
 //
 // on: near a junction, if a side ray sees a car closing in, brake hard.
@@ -49,7 +50,13 @@ function arm(m, seeds) {
 }
 const line = (m, r) => `junction price x${process.env.JPRICE || 1} ${m.padEnd(6)} fitness ${(r.fit / r.n).toFixed(0)}  trips/car ${(r.trips / r.n).toFixed(2)}  crashes/car ${(r.crashes / r.n).toFixed(2)}  crashes per 1000 units ${(1000 * r.crashes / r.km).toFixed(2)}  rule fired ${(100 * r.forced / Math.max(1, r.calls)).toFixed(1)}% of ticks`;
 if (!process.env.SEEDS) console.log(line(mode, arm(mode, [77, 91, 101])));
-else {
+else if (process.env.ARMS === "none") {
+  // ARMS=none: no rule, just how often the shipped drivers crash on this map (MAP=, default the generated cities)
+  const n = +process.env.SEEDS, xs = [];
+  for (let i = 0; i < n; i++) { const r = arm("none", [101 + i]); xs.push(1000 * r.crashes / r.km); }
+  const mean = xs.reduce((a, b) => a + b, 0) / n, [lo, hi] = bootstrap(xs);
+  console.log(`${process.env.MAP || "generated cities"}, ${n} seeds: crashes per 1000 units driven ${mean.toFixed(2)}, 95% interval ${lo.toFixed(2)}-${hi.toFixed(2)}`);
+} else {
   const n = +process.env.SEEDS, rows = [];
   for (let i = 0; i < n; i++) {
     const b = arm("none", [101 + i]), r = arm("rule", [101 + i]), w = arm("wide", [101 + i]);
