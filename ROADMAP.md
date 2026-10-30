@@ -294,6 +294,7 @@ prediction written first, then the run, then the README line.
   `CityWorld`, so a `MAP=` switch there (real map against generated, twenty seeds) is the likely route.
 - [ ] gridlock: README sweep: every bullet's numbers against `docs/claims.jsonl` (the closed claims C1-C22), flag any
   bullet whose number no claim result or notebook entry backs, and fix it from the notebook.
-- [ ] gridlock: the cold-start trap is a property of the economy, not of the hand driver? Check whether evolved
+- [x] gridlock: the cold-start trap is a property of the economy, not of the hand driver? Check whether evolved
   founders ever fail to start (0 of 20 in the Turin trials) with `startCars` 20 or 10, using `tools/starts.mjs`
   with a `FOUNDERS=` switch.
+  (Done: `FOUNDERS=` in `tools/starts.mjs`, C24 confirmed: 20 of 20 at startCars 10 and at 20. The trap is the hand driver's.)
