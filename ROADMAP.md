@@ -279,5 +279,17 @@ prediction written first, then the run, then the README line.
   startCars 50, 100 and 150 (a `--start-cars` flag for headless.mjs first), the share of runs that end above 30
   cars with a Wilson interval each; a hit is a setting that starts them most of the time.
   (Done as `tools/starts.mjs` and claim C22, killed: 16, 16 and 17 of 20 at 50, 100 and 150.)
-- [ ] gridlock: a give-way rule at the merge for the hand driver (the corridor at 324), tested on Barcelona one-way
+- [x] gridlock: a give-way rule at the merge for the hand driver (the corridor at 324), tested on Barcelona one-way
   seed 102 with `--crash-log`: crashes on the corridor and trips per car-day before and after.
+  (Done: `GRIDLOCK_HAND_YIELD`, tested; no gain, corridor crashes 10110 off against 10265 and 10999 on.)
+
+### Next batch, from C17 to C22
+
+- [ ] gridlock: Study 3, the reaper's three untouched bullets: generalise to unseen cities (`tools/crashes.mjs`),
+  queue but do not yield (`tools/yieldrule.mjs`), cheapest car wins (`tools/ecocmp.mjs`). Each needs a SEEDS= mode with
+  an interval, a smoke test, then the claim.
+- [ ] gridlock: README sweep: every bullet's numbers against `docs/claims.jsonl` (the closed claims C1-C22), flag any
+  bullet whose number no claim result or notebook entry backs, and fix it from the notebook.
+- [ ] gridlock: the cold-start trap is a property of the economy, not of the hand driver? Check whether evolved
+  founders ever fail to start (0 of 20 in the Turin trials) with `startCars` 20 or 10, using `tools/starts.mjs`
+  with a `FOUNDERS=` switch.
