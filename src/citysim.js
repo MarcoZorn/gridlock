@@ -2,9 +2,10 @@
 import { CityWorld } from "./cityworld.js";
 import { SIZES } from "./ecoworld.js";
 import { BODY, SENSES } from "./driver.js";
-import { fitCanvas, panZoom, announceToggles, shortcuts, busiestCar, cityLayer, drawHeat, drawSenses, drawLights, drawRoute, drawRays, drawCar } from "./render.js";
+import { fitCanvas, panZoom, announceToggles, shortcuts, busiestCar, cityLayer, drawHeat, drawSenses, drawLights, drawRoute, drawRays, drawCar, speciesColour } from "./render.js";
 import { drawNetwork, neuronAt, editNeuron } from "./netview.js";
 import { drawSparkline } from "./sparkline.js";
+import { drawLineage, describe } from "./lineage.js";
 
 const $ = (id) => document.getElementById(id);
 
@@ -16,6 +17,7 @@ const $ = (id) => document.getElementById(id);
 }
 const view = $("view"), vctx = view.getContext("2d");
 const brain = $("brain"), bctx = brain.getContext("2d");
+const lin = $("lineage"), lctx = lin.getContext("2d");
 // hover a neuron to trace it (netview.js)
 let brainMouse = null;
 brain.addEventListener("mousemove", (e) => { const r = brain.getBoundingClientRect(); brainMouse = { x: e.clientX - r.left, y: e.clientY - r.top }; });
@@ -51,6 +53,7 @@ function layout() {
   const bw = brain.parentElement.getBoundingClientRect().width - 28;
   fitCanvas(brain, bw, 170);
   fitCanvas(spark, bw, 60);
+  fitCanvas(lin, bw, 60);
   fitCanvas(senses, bw, 64);
   cam.fitted = false;
 }
@@ -113,6 +116,9 @@ function draw() {
   brainFocus = focus;
   drawNetwork(bctx, focus ? focus.genome : null, brain.clientWidth, brain.clientHeight, focus ? { inputs: focus.inputs, mouse: brainMouse } : null);
   drawSparkline(sctx, world.history, spark.clientWidth, spark.clientHeight);
+  const chain = focus ? world.pop.lineage(focus.genome) : [];
+  drawLineage(lctx, lin.clientWidth, lin.clientHeight, chain, focus ? focus.fitness() : 0, speciesColour);
+  $("lNote").textContent = describe(chain);
   drawSenses(senses, focus && focus.alive ? focus : null);
 
   let alive = 0, trips = 0, crashes = 0;

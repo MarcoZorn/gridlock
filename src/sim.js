@@ -4,6 +4,8 @@ import { DrawnTrack, WORLD_W, WORLD_H } from "./track.js";
 import { CAR, rayAngles } from "./car.js";
 import { drawNetwork } from "./netview.js";
 import { drawSparkline } from "./sparkline.js";
+import { drawLineage, describe } from "./lineage.js";
+import { speciesColour } from "./render.js";
 
 const ANGLES = rayAngles();
 const $ = (id) => document.getElementById(id);
@@ -11,6 +13,7 @@ const $ = (id) => document.getElementById(id);
 const view = $("view"), vctx = view.getContext("2d");
 const brain = $("brain"), bctx = brain.getContext("2d");
 const spark = $("spark"), sctx = spark.getContext("2d");
+const lin = $("lineage"), lctx = lin.getContext("2d");
 
 let world, running = true, speed = 1, showRays = true, showAll = true;
 let hard = false, drawMode = false, stroke = null, fit = { k: 1, ox: 0, oy: 0 };
@@ -31,6 +34,7 @@ function layout() {
   const bw = brain.parentElement.getBoundingClientRect().width;
   fitCanvas(brain, bw, 150);
   fitCanvas(spark, bw, 60);
+  fitCanvas(lin, bw, 60);
 }
 
 function reset(seed) {
@@ -218,6 +222,9 @@ function draw() {
 
   drawNetwork(bctx, lead ? lead.genome : null, brain.clientWidth, brain.clientHeight);
   drawSparkline(sctx, world.history, spark.clientWidth, spark.clientHeight);
+  const chain = lead ? world.pop.lineage(lead.genome) : [];
+  drawLineage(lctx, lin.clientWidth, lin.clientHeight, chain, lead ? lead.fitness() : 0, speciesColour);
+  $("lNote").textContent = describe(chain);
 
   const alive = world.cars.filter((c) => c.alive).length;
   const last = world.history[world.history.length - 1];
