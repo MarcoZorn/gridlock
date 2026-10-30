@@ -4567,3 +4567,13 @@ and `ORDER0=1000` uses seeds 1000-1019. `for m in turin barcelona manhattan grid
 Turin 46.1% [38.5%, 53.5%], Barcelona 60.8% [54.2%, 67.0%], Manhattan 55.6% [48.8%, 61.6%], grid 99.4% [99.1%, 99.8%].
 Predicted the three cities inside 35-70% and the grid's lower bound at 97% or more: holds. "Half" in the README
 was a fair summary; the three real cities range from 46% to 61% depending on which roads close.
+
+### Claim C20 killed: the side of the road is a lean, not an order of three in four
+
+`node tools/sides.mjs "runs/trial-turin-base-d6-s{s}"` (`tmp/sides-c20.log`): for each of the twenty seeds
+101-120, the share of cars on two-way roads on the run's majority side during city day 4 (from the telemetry's
+sideRight and sideAll). Shares, rounded: 0.76 0.75 0.65 0.56 0.83 0.75 0.78 0.69 0.75 0.82 0.59 0.51 0.52 0.59
+0.62 0.59 0.72 0.65 0.83 0.59. 7 of 20 are at 0.75 or more (Wilson 95% [18%, 57%]); predicted at least 15. Which side
+the majority keeps: 8 of 20 the right, exact binomial p 0.503, inside the predicted 6 to 14. So the "by chance"
+half holds and the strength does not: the README's "three in four to nine in ten" was true of runs with more cars
+than these (not re-measured here), and the bullet now says it is a lean in Turin trials.
