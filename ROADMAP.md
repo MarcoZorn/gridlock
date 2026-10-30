@@ -188,7 +188,7 @@ properly (with a test where it is code), and ticks it off. No idling.
   corrected and why; short, for a visitor who is not a statistician.
 - [ ] cars: `report.py` adds a chart page: held-out laps against settings
   for one swept parameter (rays, sight, delay), with intervals.
-- [ ] neat-from-scratch: the tour gets a sixth step for "Replay, new seed",
+- [x] neat-from-scratch: the tour gets a sixth step for "Replay, new seed",
   explaining replaying the tape on this page.
 - [ ] all three: a short `CONTRIBUTING.md` per repo: how to run the tests,
   where results go, the rules of the lab for gridlock.
