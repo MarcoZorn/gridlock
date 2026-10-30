@@ -275,8 +275,9 @@ prediction written first, then the run, then the README line.
   the start that makes seed 104 start without making 101 worse.
   (Answered in part: seed 104 makes 0.32 pickups per car-hour against 0.88; changing `startCars` does not help
   monotonically, 100 thrives and 50 and 200 collapse. Bistable by luck; numbers in the notebook.)
-- [ ] gridlock: how often does a hand-driver Turin city start, by `startCars`? `tools/collapse.mjs` over twenty seeds at
+- [x] gridlock: how often does a hand-driver Turin city start, by `startCars`? `tools/collapse.mjs` over twenty seeds at
   startCars 50, 100 and 150 (a `--start-cars` flag for headless.mjs first), the share of runs that end above 30
   cars with a Wilson interval each; a hit is a setting that starts them most of the time.
+  (Done as `tools/starts.mjs` and claim C22, unit c22.)
 - [ ] gridlock: a give-way rule at the merge for the hand driver (the corridor at 324), tested on Barcelona one-way
   seed 102 with `--crash-log`: crashes on the corridor and trips per car-day before and after.
