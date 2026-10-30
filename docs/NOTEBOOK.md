@@ -4190,3 +4190,29 @@ Predictions held (fares and crashes each +15 to +30%). The README's "a
 fifth to a quarter" for fares was a bit low (+28%); corrected. Unlike
 insurance, credit makes trips slower (+21%). The 30 is still my guess at
 the original setting. README corrected.
+
+### Claim C6, killed: Barcelona seed 7 is not decided by day 0
+
+`REPS=32 DAYS=4 EVERY=3 SPAN=24 node tools/replay.mjs barcelona 7`, log in
+`tmp/replay-barcelona7.log`. The eventual winner (family 59) ends with 60%
+of the cars; its share at hours 0-21 of day 0 was 0%, 13%, 24%, 25%, 28%,
+28%, 29%, 38%.
+
+| rewound to hour | same winner | 95% interval |
+|---|---|---|
+| 0 | 1/32 | 1-16% |
+| 3 | 2/32 | 2-20% |
+| 6 | 13/32 | 26-58% |
+| 9 | 8/32 | 13-42% |
+| 12 | 13/32 | 26-58% |
+| 15 | 10/32 | 18-49% |
+| 18 | 14/32 | 28-61% |
+| 21 | 17/32 | 36-69% |
+
+Predicted under 50% at hour 0 (held) and 75% or more by hour 12 (failed:
+13/32). The rate rises early, then plateaus at roughly 25-53%: by the end of
+day 0 the winner is still only a coin flip to repeat. Turin seed 7 was
+decided by hour 12, while Turin seed 11 (corrected table above) and Barcelona
+seed 7 are not decided on day 0, so only one of three runs shows an early decision. A frozen run (hours 0, 6, 12, 21) is going in
+`tmp/replay-barcelona7-frozen.log` and will be added here. README needs no
+change: it states the Turin replays, not a general rule.
