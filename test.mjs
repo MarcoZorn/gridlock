@@ -259,6 +259,8 @@ import { editNeuron } from "./src/netview.js";
   assert(/2 seeds/.test(tr) && !/NaN/.test(tr), "trial prints intervals, not NaN:\n" + tr);
   const fr = sh(["tools/trial.mjs", "grid", "basic=0.25"], { SEEDS: "2", DAYS: "2", FROM: "1", FREEZE: "1" });
   assert(/2 seeds/.test(fr) && !/NaN/.test(fr), "frozen trial prints intervals:\n" + fr);
+  const hd = sh(["tools/trial.mjs", "grid", "basic=0.25"], { SEEDS: "2", DAYS: "1", FROM: "0", FOUNDERS: "hand" });
+  assert(/2 seeds/.test(hd) && !/NaN/.test(hd), "trial with hand-written founders prints intervals:\n" + hd);
   const rp = sh(["tools/replay.mjs", "grid", "3"], { REPS: "2", DAYS: "1", EVERY: "12", SPAN: "12", REPLAY_DIR: rdir });
   assert(/hour 0 \| [0-2]\/2 \|/.test(rp), "replay prints a win count out of its two replays:\n" + rp);
   // seed 0 is the control: same noise as the original, so it must end the same
