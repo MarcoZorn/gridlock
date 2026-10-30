@@ -4719,3 +4719,10 @@ seeds 101-120: generated cities 3.58 crashes per 1000 units driven [3.53, 3.63];
 1.27 [1.25, 1.28]. Predicted each real city's interval entirely below the generated one: holds, by a wide margin. The three-seed figures the README had
 (2.8, 1.4, 1.3 against 3.5) were right to the first decimal. The intervals are tight because a seed is one 120-car traffic city over six generations
 and the seeds vary only the traffic; they say nothing about other drivers or other cities.
+
+### Correction to the C20 entry: the car count is not the explanation
+
+The C20 entry and the README said the earlier "three in four to nine in ten" had needed more cars than a Turin trial has. That was a guess
+and it is wrong: in the twenty Turin runs of C20, the mean number of cars during day 4 is 182 at the lowest, 208 at the median and 231 at the
+highest, more than the "about a hundred cars" the older note gave as the condition. The strength of the lean did not reproduce at twenty seeds;
+why the older runs showed more is not known. The README now says only that.
