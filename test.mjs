@@ -14,6 +14,7 @@ import { SpatialHash } from "./src/spatial.js";
 import { CityWorld } from "./src/cityworld.js";
 import { EcoWorld, ECON, gini, econParam, applyEcon } from "./src/ecoworld.js";
 import { Body } from "./src/body.js";
+import { Rewind } from "./src/rewind.js";
 import { Crowd, PED } from "./src/pedestrians.js";
 import { editNeuron } from "./src/netview.js";
 
@@ -206,6 +207,25 @@ import { editNeuron } from "./src/netview.js";
   const rp = sh(["tools/replay.mjs", "grid", "3"], { REPS: "2", DAYS: "1", EVERY: "12", SPAN: "12" });
   assert(/hour 0 \| [0-2]\/2 \|/.test(rp), "replay prints a win count out of its two replays:\n" + rp);
   console.log("ok  tools: trial and replay smoke");
+}
+
+// rewind: back to the start of this hour, then the hour before, and stepping
+// on from a restore retraces the original run
+{
+  const trained = JSON.parse(fs.readFileSync("docs/trained.json", "utf8"));
+  const w = new EcoWorld({ seed: 5, founders: Population.fromJSON(trained.pop) });
+  const rw = new Rewind(3);
+  const sig = (x) => [x.tick, x.cars.length, x.events.trips, x.rng.s, x.cars.reduce((a, d) => a + d.cash + d.x + d.y, 0)].join(" ");
+  const at = {};
+  while (w.tick < 8000) { w.step(); rw.record(w); if (w.tick % 3600 === 0) at[w.tick] = sig(w); }
+  let b = rw.back(w);
+  assert.strictEqual(sig(b), at[7200], "mid-hour: back to the start of the hour");
+  b = rw.back(b);
+  assert.strictEqual(sig(b), at[3600], "on the hour: back to the hour before");
+  assert.strictEqual(rw.back(b), null, "nothing older than the saves");
+  const c = new Rewind().back(w);
+  assert.strictEqual(c, null, "no saves, no rewind");
+  console.log("ok  rewind goes back hour by hour");
 }
 
 // bodies: derived physics move the right way with the genes
