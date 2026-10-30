@@ -17,7 +17,9 @@ const tag = (m) => m.replace(/^.*\//, "").replace(/\.json$/, "");   // a path's 
 const n = +(process.env.SEEDS || 20), days = +(process.env.DAYS || 6), from = +(process.env.FROM || 2);
 const seeds = Array.from({ length: n }, (_, i) => 101 + i);   // fresh seeds, apart from the hand-picked ones used so far
 // a run per arm and seed: (map, no rule) and (ALT or map, the rule)
-const name = (rule, s, m = map) => `runs/trial-${tag(m)}-${rule ? rule.replace(/[=,]/g, "_") : "base"}-d${days}-s${s}`;
+// FOUNDERS=hand: the hand-written driver of src/hand.js in both arms (nothing evolves)
+const fnd = process.env.FOUNDERS || "docs/trained.json", pre = fnd === "docs/trained.json" ? "trial" : `trial-${tag(fnd)}`;
+const name = (rule, s, m = map) => `runs/${pre}-${tag(m)}-${rule ? rule.replace(/[=,]/g, "_") : "base"}-d${days}-s${s}`;
 const done = (dir) => { try { return fs.readFileSync(`${dir}/telemetry.jsonl`, "utf8").trim().split("\n").map(JSON.parse).at(-1).tick >= days * 86400; } catch { return false; } };
 
 async function runAll(jobs) {
@@ -27,7 +29,7 @@ async function runAll(jobs) {
     while (next < jobs.length) {
       const [dir, s, rule, m] = jobs[next++];
       fs.rmSync(dir, { recursive: true, force: true });
-      const args = ["headless.mjs", "--eco", "--run", dir, "--days", String(days), "--founders", "docs/trained.json", "--seed", String(s), "--threads", "1"];
+      const args = ["headless.mjs", "--eco", "--run", dir, "--days", String(days), "--founders", fnd, "--seed", String(s), "--threads", "1"];
       if (m !== "grid") args.push("--map", m);
       if (rule) args.push("--econ", rule);
       await new Promise((ok) => spawn("node", args, { stdio: "ignore" }).on("exit", ok));
