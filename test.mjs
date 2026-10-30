@@ -486,4 +486,12 @@ import { editNeuron } from "./src/netview.js";
 assert(gini([1, 1, 1, 1]) === 0 && Math.abs(gini([0, 0, 0, 1]) - 0.75) < 1e-9, "gini: equal is 0, one of four holding everything is 0.75");
 console.log("ok  inequality measured");
 
+{
+  // the findings page renders docs/claims.jsonl: every line must carry what it shows
+  const lines = fs.readFileSync("docs/claims.jsonl", "utf8").trim().split("\n");
+  for (const l of lines) { const c = JSON.parse(l); for (const k of ["id", "statement", "cmd", "predicted", "status", "opened"]) assert(c[k], `${c.id} lacks ${k}`); }
+  assert(fs.readFileSync("findings.html", "utf8").includes("docs/claims.jsonl"), "findings page reads the claims");
+  console.log(`ok  ${lines.length} claims well-formed`);
+}
+
 console.log("\nall checks passed");
