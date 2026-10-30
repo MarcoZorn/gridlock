@@ -4577,3 +4577,10 @@ sideRight and sideAll). Shares, rounded: 0.76 0.75 0.65 0.56 0.83 0.75 0.78 0.69
 the majority keeps: 8 of 20 the right, exact binomial p 0.503, inside the predicted 6 to 14. So the "by chance"
 half holds and the strength does not: the README's "three in four to nine in ten" was true of runs with more cars
 than these (not re-measured here), and the bullet now says it is a lean in Turin trials.
+
+### Claim C21 opened: platforms against the ideal free distribution, at twenty seeds
+
+Prediction written before the run, in `docs/claims.jsonl`. `tools/platforms.mjs` gets a `SEEDS=` mode (each seed in
+its own process; default output checked identical to before). `SEEDS=20 B=0.7 CA=0.1 CB=0.4 node tools/platforms.mjs turin`,
+unit c21, log `tmp/platforms-c21.log`: the share of drivers on B at the end less the ideal free distribution
+(60.9% for these prices), interval inside -10 to +10 points.
