@@ -4013,3 +4013,30 @@ the winner was the largest family at hour 6.
 The earlier reading of the same-noise control was wrong: it is one replay per
 hour, not 32, so it says nothing by itself. Limits: one seed, one city
 (Study 1 items 2-4 are open). Table: `node tmp/c1-table.mjs`.
+
+### Claim C1, confirmed: the monopoly is arithmetic, not evolution
+
+The frozen replays: the same rewinds, with all mutation switched off after
+the rewind, so the families can only grow or shrink, never change.
+
+| rewound to hour | evolving: family 44 wins | frozen: family 44 wins |
+|---|---|---|
+| 0 | 0/32 | 0/32 |
+| 3 | 1/32 | 1/32 |
+| 6 | 15/32 | 21/32 |
+| 9 | 22/32 | 27/32 |
+| 12 to 21 | 32/32 each | 31 or 32/32 |
+
+Freezing evolution does not slow the monopoly down; if anything it makes
+it surer (hours 6 and 9 together: 48 of 64 frozen against 37 of 64
+evolving, Fisher's exact test p = 0.06, so a hint, not a result). Which
+family takes the city is decided in a few hours of the first morning, by
+which family is ahead and breeding, not by better brains arriving: the
+same takeover happens with nothing evolving at all. Mutation, if it does
+anything, gives the others a little longer to catch up, because a leader's
+children are mutants and mutants are on average worse.
+
+All three predictions written before the run held: under 20% from hour 0
+(0%), over 75% by hour 18 (100%), and the frozen null similar. The rise
+does come before the family holds half the cars, but only by a few hours.
+One seed; a second is running.
