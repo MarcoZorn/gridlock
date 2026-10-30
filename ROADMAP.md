@@ -117,7 +117,7 @@ properly (with a test where it is code), and ticks it off. No idling.
 - [ ] gridlock: `tools/trial.mjs` on a map file (`maps/x.json` or a path),
   so the one-way claim can be re-tested: Barcelona with its arrows against
   the two-way copy in `tmp/barcelona-twoway.json`, twenty seeds.
-- [ ] gridlock: a findings page (`findings.html`) that reads
+- [x] gridlock: a findings page (`findings.html`) that reads
   `docs/claims.jsonl` and shows every claim with its status, prediction and
   result, linked from the site's nav. Plain HTML, no build step.
 - [ ] gridlock: a test for `tools/explain.mjs` on a short run (it prints,
