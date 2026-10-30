@@ -125,7 +125,7 @@ properly (with a test where it is code), and ticks it off. No idling.
 - [ ] gridlock: refresh `docs/city.png` from the current build with
   headless Chrome after a few generations, so the README shows today's
   drivers.
-- [ ] neat-from-scratch: a "Replay from here" button: save the run at a
+- [x] neat-from-scratch: a "Replay from here" button: save the run at a
   generation, keep going, and on demand reload it with a new seed to see
   whether evolution finds the same thing twice (the tape idea, on a track).
 
