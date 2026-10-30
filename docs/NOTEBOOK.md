@@ -3987,6 +3987,15 @@ exact positions.
 
 ### Claim C1, confirmed for one seed: Turin's monopoly is decided by hour six
 
+*Correction (2026-10-30): the table in this entry is wrong. The script
+behind it (`tmp/c1-table.mjs`) counted a replay as a win whenever family 44
+still had at least one car, so it measures whether the family survives,
+not whether it takes the city. The correct counts, with over half the cars
+as the test, are in the next entry: 15/32 at hour 6, not 25/32. The
+conclusion that follows it ("decided by hour six", "78% of replays at 37%
+of the cars") goes with it.*
+
+
 Turin, seed 7: the base run's winner is family 44, which ends with every
 car. Snapshots every third city hour of day 0, each replayed 32 times with
 fresh noise (days 0-3), counting replays that crown family 44 again. 95%
