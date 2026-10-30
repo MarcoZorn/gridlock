@@ -4126,3 +4126,22 @@ Predictions held (crashes +60 to +120%, fares +10 to +40%). The README's
 corrected. Cars rise by two thirds, so part of the extra crashing is
 crowding; per-car rates already divide that out, but trip time falls, which
 is odd with more cars and unexplained here.
+
+### Study 1 item 3: does "the biggest family stays biggest" explain it?
+
+`node tmp/leader.mjs turin-s7-d4-e3` and `... turin-s11-d4-e3` read the
+saved snapshots and list the largest family at each hour of day 0 next to
+the eventual winner's rank.
+
+- Seed 7: the eventual winner (44) is the largest family from hour 6 on
+  (36.8% of the cars at hour 6, 53.2% at hour 12). The replay win rate
+  also turns on at hour 6, so the trivial explanation holds here.
+- Seed 11: the eventual winner (42) is never the largest family at any
+  snapshot of day 0: rank 4, 2, 4, 3, 3, 3, 2 at hours 3-21, with 9.7% to
+  19.6% of the cars while the leader holds 16% to 32%. Yet its replay win
+  rate is 27/32 (evolving) at hour 6 and 30/32 at hour 12 (table above).
+  So on seed 11 the outcome is decided by something the day-0 share does
+  not show.
+
+One seed each; item 4 (other cities, other founders) is still open. No
+claim opened; C5 is the only open claim.
