@@ -97,7 +97,9 @@ re-tests them (see *How sure*, below).
   down 24% (95% interval 21-27%), trips 29% faster, fares down 18%
   (15-21%), in every seed. With mutation frozen after day 2 in both
   arms the trade stays: crashes per car -31.4% [-35.0%, -27.7%], fares -15.0%
-  [-18.5%, -11.6%] (C11, confirmed), so it is the economy, not evolution. Rules that lower inequality slow the trips or
+  [-18.5%, -11.6%] (C11, confirmed), so it is the economy, not evolution. With a
+  hand-written driver that cannot evolve at all it holds too: crashes per car
+  -40.3% [-48.6%, -33.0%], fares -57.0% [-68.8%, -45.8%] (C12, confirmed). Rules that lower inequality slow the trips or
   shrink the city.
 - **Rules about failure matter more than rules about driving.** Letting a
   broke taxi finish its ride and pooling crash costs nearly doubled fares
@@ -161,7 +163,7 @@ on day 0. Venice seed 7 is also open at hour 12 (0 of 32 from hour 0, 14
 from hour 12) and closes by hour 18 (26 of 32). Early decision is the
 exception (one run of four). The leader does not beat its own share of the
 cars reliably: on two fresh runs, 5 of 9 snapshots with the winner under half the
-cars had its win-rate interval above the share, 0 below (C9, killed). Claims C1, C3, C6, C7, C8, C9 and C10 in [docs/claims.jsonl](docs/claims.jsonl) (`tools/replay.mjs`;
+cars had its win-rate interval above the share, 0 below (C9, killed). Claims C1, C3, C6, C7, C8, C9, C10, C11 and C12 in [docs/claims.jsonl](docs/claims.jsonl) (`tools/replay.mjs`;
 [ROADMAP.md](ROADMAP.md)).
 
 ## Running it
