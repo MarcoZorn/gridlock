@@ -4532,3 +4532,20 @@ holds. Crashes fall a little in fog, which was not predicted.
 interval entirely above +150%: holds. "Quadruples" is +300%, just above the top of the interval, so "nearly
 quadruples" is what the README now says. The intervals are narrow because each seed is a whole traffic city
 of 120 cars over three generations, and the seeds differ only in the city's layout of traffic.
+
+### Claim C17 killed: the takeover is not shown to need no evolution; and a correction to "three of four runs"
+
+`FOUNDERS=hand SEEDS=20 node tools/families.mjs turin` (`tmp/families-hand.log`) and the same without
+`FOUNDERS` (`tmp/families-evolved.log`), Turin, six days, seeds 101-120.
+
+- Hand-written drivers: a family owns over half the cars in 12 of 20 runs (Wilson 95% [39%, 78%]); one family
+  owns every car in 0 of 20; mean share of the biggest family 46.75%; 2 families alive in 6 runs, and in four runs
+  (seeds 104, 112, 114, 116) the city is a small one of 24 or 25 cars with 22 to 24 families.
+- Evolved drivers: over half in 19 of 20 (Wilson [76%, 99%]); one family owns every car in 8 of 20 ([22%, 61%]);
+  mean share 79.1%.
+
+The prediction was at least 15 of 20 for the hand arm: it fails, so C17 is killed. Reading: with drivers that cannot
+evolve a family still often leads, by luck of founders and bodies, but it rarely finishes the job; evolving drivers
+push the leader to a monopoly. Correction: the README said "in three of four runs every car descends from a single
+founder"; over twenty seeds it is 8 of 20, and the bullet now says so. The hand runs with 22+ families are collapsed
+economies (see the C13 note): the city never grew past its floor, so there was no takeover to measure.
