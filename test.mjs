@@ -23,6 +23,7 @@ import { info as roadInfo } from "./tools/roadinfo.mjs";
 import { binomial, share as sideShare, wilson as sideWilson } from "./tools/sides.mjs";
 import { look as collapseLook } from "./tools/collapse.mjs";
 import { unbacked, count as numCount } from "./tools/sweep.mjs";
+import { change as traitChange } from "./tools/traits.mjs";
 import { describe as describeLine } from "./src/lineage.js";
 import { Rewind } from "./src/rewind.js";
 import { Crowd, PED } from "./src/pedestrians.js";
@@ -404,6 +405,13 @@ import { editNeuron } from "./src/netview.js";
   const real = unbacked(fs.readFileSync("README.md", "utf8"), fs.readFileSync("docs/NOTEBOOK.md", "utf8") + fs.readFileSync("docs/claims.jsonl", "utf8"));
   assert(real.length >= 10 && real.every((r) => r.miss.length === 0), `every README number is in the notebook or the claims (${real.filter((r) => r.miss.length).map((r) => r.title + ": " + r.miss.join(" ")).join("; ")})`);
   console.log("ok  sweep: README numbers trace to the notebook");
+}
+
+// TRAITS: the change in each mean trait, last row less first
+{
+  const ch = traitChange([{ traits: { length: 0.5, rays: 0.2 } }, { traits: { length: 0.4, rays: 0.5 } }, { traits: { length: 0.1, rays: 0.7 } }]);
+  assert(Math.abs(ch.length + 0.4) < 1e-9 && Math.abs(ch.rays - 0.5) < 1e-9, "trait change is last row less first");
+  console.log("ok  traits: change per trait");
 }
 
 // the research tools run end to end: a two-seed trial and a two-replay
