@@ -46,7 +46,7 @@ A city where traffic evolves. There are no traffic laws anywhere in this code.
 [on Barcelona's](https://marcozorn.github.io/gridlock/eco.html?map=barcelona) ·
 [on Manhattan's](https://marcozorn.github.io/gridlock/eco.html?map=manhattan)
 
-![Generation 250: evolved drivers spread across a procedural city](city.png)
+![Generation 600: trained drivers spread across a procedural city](city.png)
 
 Every car is a NEAT brain. The roads, the physics, collisions and route finding
 are written by hand; how to drive the route is not. The question this project

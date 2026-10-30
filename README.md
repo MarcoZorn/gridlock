@@ -10,7 +10,7 @@
 [the lab notebook](docs/NOTEBOOK.md) ·
 [what is being studied now](ROADMAP.md)
 
-![Generation 250: evolved drivers spread across a procedural city](docs/city.png)
+![Generation 600: trained drivers spread across a procedural city](docs/city.png)
 
 ## The question
 
