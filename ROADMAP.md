@@ -299,3 +299,17 @@ prediction written first, then the run, then the README line.
   founders ever fail to start (0 of 20 in the Turin trials) with `startCars` 20 or 10, using `tools/starts.mjs`
   with a `FOUNDERS=` switch.
   (Done: `FOUNDERS=` in `tools/starts.mjs`, C24 confirmed: 20 of 20 at startCars 10 and at 20. The trap is the hand driver's.)
+
+### Next batch, from C23 to C26
+
+- [ ] gridlock: the freight half of "the cheapest car wins" (C25 tested the default economy only): a freight price
+  setting that makes trucks pay (`ECON.freightMin` and the freight rate, see ECON), twenty fresh seeds with
+  `tools/traits.mjs`, prediction first: cargo gene rises, length rises. Needs the settings read from `src/ecoworld.js`.
+- [ ] gridlock: the side of the road with more cars (C20 killed the strength at Turin's trial size): the same `tools/sides.mjs`
+  on twenty seeds of a larger city (`--size` of headless.mjs), prediction first: the share on the majority side
+  rises above the Turin figure (median 0.67 of the rounded values at day 4).
+- [ ] gridlock: Braess on all three cities at once (`tools/wardrop.mjs`, the exhaustive scan): record the largest saving per
+  city in the notebook from the output, and compare with the README's 0.07% (Study 3 plan: no seeds).
+- [ ] gridlock: survivors only: C13 mixed collapsed hand runs with surviving ones. Re-run the one-way against two-way
+  Barcelona comparison for hand drivers on the runs that started (`tools/collapse.mjs` lists them), a paired bootstrap
+  over the seeds where both arms started, prediction first.
