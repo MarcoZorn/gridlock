@@ -295,6 +295,14 @@ import { editNeuron } from "./src/netview.js";
   console.log("ok  lineage: ancestry tracked, evolution untouched");
 }
 
+// CONTRIBUTING: names files and rules that exist
+{
+  const c = fs.readFileSync("CONTRIBUTING.md", "utf8"), road = fs.readFileSync("ROADMAP.md", "utf8");
+  for (const f of ["test.mjs", "docs/NOTEBOOK.md", "docs/claims.jsonl", "tools/trial.mjs", "tools/replay.mjs", "ROADMAP.md"]) assert(c.includes(f) && fs.existsSync(f), `CONTRIBUTING names ${f}, which exists`);
+  assert(/At most five open claims/.test(c) && /At most five open claims/.test(road), "and the five-claim rule is the ROADMAP's");
+  console.log("ok  CONTRIBUTING agrees with the repo");
+}
+
 // the research tools run end to end: a two-seed trial and a two-replay
 // rewind of one city hour, from clean caches, with real numbers out
 {
