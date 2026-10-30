@@ -446,6 +446,8 @@ import { editNeuron } from "./src/netview.js";
   assert(/1 seeds, yielding rule against none/.test(yr) && /rule  fitness/.test(yr) && /wide  crashes per car/.test(yr) && !/NaN/.test(yr), "yieldrule.mjs with SEEDS= prints paired intervals:\n" + yr);
   const se = sh(["tools/starts.mjs", "grid"], { SEEDS: "2", DAYS: "1", START: "30", FOUNDERS: "docs/trained.json" });
   assert(/evolved drivers, startCars 30, 1 days: \d of 2 runs/.test(se), "starts.mjs with FOUNDERS= runs the evolved drivers:\n" + se);
+  const gn = sh(["tools/yieldrule.mjs"], { SEEDS: "1", ARMS: "none", MAP: "crossroads" });
+  assert(/crossroads, 1 seeds: crashes per 1000 units driven \d+\.\d\d, 95% interval \d+\.\d\d-\d+\.\d\d/.test(gn), "yieldrule.mjs ARMS=none prints a crash rate with an interval:\n" + gn);
   const hd = sh(["tools/trial.mjs", "grid", "basic=0.25"], { SEEDS: "2", DAYS: "1", FROM: "0", FOUNDERS: "hand" });
   assert(/2 seeds/.test(hd) && !/NaN/.test(hd), "trial with hand-written founders prints intervals:\n" + hd);
   const rp = sh(["tools/replay.mjs", "grid", "3"], { REPS: "2", DAYS: "1", EVERY: "12", SPAN: "12", REPLAY_DIR: rdir });
