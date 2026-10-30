@@ -285,10 +285,10 @@ prediction written first, then the run, then the README line.
 
 ### Next batch, from C17 to C22
 
-- [ ] gridlock: Study 3, the reaper's three untouched bullets: generalise to unseen cities (`tools/crashes.mjs`),
+- [x] gridlock: Study 3, the reaper's three untouched bullets: generalise to unseen cities (`tools/crashes.mjs`),
   queue but do not yield (`tools/yieldrule.mjs`), cheapest car wins (`tools/ecocmp.mjs`). Each needs a SEEDS= mode with
   an interval, a smoke test, then the claim. (Queue-but-do-not-yield done: `yieldrule.mjs SEEDS=`, C23 confirmed.
-  Generalise and cheapest-car-wins still open.) Note for the first: the README's "1.3 to 2.8 crashes per 1000 units on
+  Cheapest car wins done: `tools/traits.mjs`, C25 confirmed. Generalise: source found, `yieldrule.mjs MAP= ARMS=none`; C26 open.) Note for the first: the README's "1.3 to 2.8 crashes per 1000 units on
   real streets against 3.5 on generated grids" has no tool named in the notebook (NOTEBOOK 'Real streets' and the
   generalise entry near line 108); `tools/drunk.mjs` measures crashes per 1000 units in generated cities with
   `CityWorld`, so a `MAP=` switch there (real map against generated, twenty seeds) is the likely route.
