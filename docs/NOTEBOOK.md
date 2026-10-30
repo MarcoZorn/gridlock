@@ -4633,3 +4633,9 @@ Start cars (`tmp/startcars.mjs`, hand drivers, Turin seed 104, `startCars` 50, 1
 monotone link to how many cars it begins with: at 100 it thrives, at 50 and 200 it falls to the floor. One seed, one run per setting,
 so the pattern is a bistable start (the seed's luck decides which side it lands on), not a rate. What a better start rule would be
 is open; the next item asks whether the hand driver can be changed to start more often.
+
+### Claim C22 opened: how often does a hand-driver city start?
+
+Prediction written before the run, in `docs/claims.jsonl`. `tools/starts.mjs` (new, smoke-tested): hand-written drivers on
+Turin, two days, seeds 101-120, startCars 50, 100 and 150, the share of runs ending above 30 cars with a Wilson interval each.
+Predicted at least 18 of 20 at startCars 100. `SEEDS=20 START=50,100,150 node tools/starts.mjs turin`, unit c22, log `tmp/starts-c22.log`.
