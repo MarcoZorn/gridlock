@@ -278,6 +278,6 @@ prediction written first, then the run, then the README line.
 - [x] gridlock: how often does a hand-driver Turin city start, by `startCars`? `tools/collapse.mjs` over twenty seeds at
   startCars 50, 100 and 150 (a `--start-cars` flag for headless.mjs first), the share of runs that end above 30
   cars with a Wilson interval each; a hit is a setting that starts them most of the time.
-  (Done as `tools/starts.mjs` and claim C22, unit c22.)
+  (Done as `tools/starts.mjs` and claim C22, killed: 16, 16 and 17 of 20 at 50, 100 and 150.)
 - [ ] gridlock: a give-way rule at the merge for the hand driver (the corridor at 324), tested on Barcelona one-way
   seed 102 with `--crash-log`: crashes on the corridor and trips per car-day before and after.
