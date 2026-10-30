@@ -494,4 +494,20 @@ console.log("ok  inequality measured");
   console.log(`ok  ${lines.length} claims well-formed`);
 }
 
+{
+  // explain.mjs narrates a run from its telemetry: sentences present, no NaN
+  const name = "explain-test", dir = `runs/${name}`;
+  const traits = { length: 0.5, width: 0.5, engine: 0.5, brakes: 0.5, range: 0.5, rays: 0.5, cargo: 0.5, jam: 0.5 };
+  const rows = [];
+  for (let d = 0; d < 4; d++) for (let h = 1; h <= 2; h++) rows.push({ tick: d * 86400 + h * 3600, cars: 100 + d, trips: 50 + d, crashes: 5, carCrashes: 2, tripTicks: 6000, births: 3, deaths: 2, immigrants: 0, maxGen: d, gini: 0.3, traits: { ...traits, engine: 0.5 + d * 0.1 }, sideRight: 7, sideAll: 10, species: [1, 2] });
+  fs.mkdirSync(dir, { recursive: true });
+  fs.writeFileSync(`${dir}/telemetry.jsonl`, rows.map((r) => JSON.stringify(r)).join("\n"));
+  try {
+    const out = execFileSync("node", ["tools/explain.mjs", name], { encoding: "utf8" });
+    assert(!/NaN|Infinity|undefined/.test(out), "explain: every number finite");
+    for (const w of ["Over 3 days", "crashed", "A trip took", "Wealth was", "more engine", "kept to the right", "species were alive"]) assert(out.includes(w), `explain says: ${w}`);
+  } finally { fs.rmSync(dir, { recursive: true }); }
+  console.log("ok  explain.mjs narrates a short run");
+}
+
 console.log("\nall checks passed");

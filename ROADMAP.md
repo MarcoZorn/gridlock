@@ -120,7 +120,7 @@ properly (with a test where it is code), and ticks it off. No idling.
 - [x] gridlock: a findings page (`findings.html`) that reads
   `docs/claims.jsonl` and shows every claim with its status, prediction and
   result, linked from the site's nav. Plain HTML, no build step.
-- [ ] gridlock: a test for `tools/explain.mjs` on a short run (it prints,
+- [x] gridlock: a test for `tools/explain.mjs` on a short run (it prints,
   every number is finite, the sentences are there).
 - [ ] gridlock: refresh `docs/city.png` from the current build with
   headless Chrome after a few generations, so the README shows today's
