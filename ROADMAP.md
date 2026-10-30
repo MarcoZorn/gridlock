@@ -78,7 +78,7 @@ properly (with a test where it is code), and ticks it off. No idling.
 - [x] gridlock: common random numbers, a random stream per car and purpose
   behind `ECON.keyed`, with a test that a rule touching nothing leaves the
   run identical.
-- [ ] gridlock: a smoke test for `tools/trial.mjs` and `tools/replay.mjs`
+- [x] gridlock: a smoke test for `tools/trial.mjs` and `tools/replay.mjs`
   (two seeds, one city hour) in `test.mjs`.
 - [ ] gridlock: profile a one-day economy and make it faster; every saved
   second is more replays a night. Measure before and after.
