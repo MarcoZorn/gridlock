@@ -1,10 +1,13 @@
 import fs from "node:fs";
 import { City } from "../src/city.js";
 import { Rng } from "../src/neat.js";
+import { bootstrap } from "./stats.mjs";
 // Percolation: close random roads one at a time; what share of junctions can
 // still reach, and be reached from, the biggest connected piece, obeying the arrows?
 //
 //   node tools/percolation.mjs turin        (TARGETED=1: busiest roads first)
+// ORDER0=1000: closure orders seeded from 1000 (default 100), twenty of them; the line after the
+// table gives the 5% figure with a 95% bootstrap interval over the orders.
 const map = process.argv[2];
 const c = new City(1, map === "grid" ? {} : { graph: JSON.parse(fs.readFileSync(map.endsWith(".json") ? map : `maps/${map}.json`, "utf8")) });
 const strongest = (open) => {
@@ -32,9 +35,13 @@ if (targeted) {
 }
 const rows = [];
 for (let trial = 0; trial < (targeted ? 1 : 20); trial++) {
-  const rng = new Rng(100 + trial), open = new Array(c.edges.length).fill(true);
+  const rng = new Rng(+(process.env.ORDER0 || 100) + trial), open = new Array(c.edges.length).fill(true);
   const order = targeted ? c.edges.map((e) => e.id).sort((x, y) => busy[y] - busy[x]) : c.edges.map((e) => e.id).sort(() => rng.next() - 0.5);
   order.forEach((id, k) => { open[id] = false; const f = (k + 1) / order.length; const bin = Math.round(f * 20); if (Math.abs(f * 20 - bin) < 0.5 / order.length * 20 + 1e-9) (rows[bin] ||= []).push(strongest(open)); });
 }
 const at = (p) => { const r = rows[Math.round(p * 20)] || []; return r.length ? (100 * r.reduce((a, b) => a + b, 0) / r.length).toFixed(0) + "%" : "-"; };
 console.log(map.padEnd(10), targeted ? "busiest first" : "at random", "share of the city still all connected, with this many roads closed: 5%", at(0.05), " 10%", at(0.1), " 20%", at(0.2), " 30%", at(0.3), " 50%", at(0.5));
+if (!targeted && rows[1]?.length) {
+  const [lo, hi] = bootstrap(rows[1]), m = rows[1].reduce((a, b) => a + b, 0) / rows[1].length, p = (v) => (100 * v).toFixed(1) + "%";
+  console.log(`${map}: with 5% of the roads closed, ${p(m)} of the city still all connected, 95% interval ${p(lo)}-${p(hi)} over ${rows[1].length} closure orders`);
+}
