@@ -4409,3 +4409,11 @@ about driving", one seed: 4768 fares a day against 2476), the other 11 need a st
 `--open` filed it as C14, prediction in `docs/claims.jsonl` written before the run: fares +40% to +150%
 with the interval above zero. `SEEDS=20 node tools/trial.mjs turin finishFare=1,insurance=1`, unit c14,
 log `tmp/trial-failure-rules.log`.
+
+### Claim C14 confirmed: failure rules at twenty seeds
+
+`SEEDS=20 node tools/trial.mjs turin finishFare=1,insurance=1`, log `tmp/trial-failure-rules.log`.
+Days 2-6: fares a day +86.8% [+81.9%, +91.1%] (20 up / 0 down); crashes per car a day +91.4%
+[+87.0%, +95.9%] (20 up / 0 down); trip time -22.7% [-24.5%, -20.7%]; cars +101.5% [+95.3%, +107.8%];
+Gini +0.132 [+0.126, +0.138]. Predicted fares +40% to +150% with the interval above zero: holds.
+The README's "more than any change to the drivers" was not re-tested; the bullet now says so.
