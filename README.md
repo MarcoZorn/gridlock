@@ -85,7 +85,8 @@ re-tests them (see *How sure*, below).
 - **A side of the road, by chance, but only a lean.** Over twenty Turin seeds at day four the
   cars on the run's majority side are 51% to 83% of those on two-way roads, and 7 of 20 runs
   reach three in four (Wilson 95% interval 18-57%); the earlier "three in four to nine in
-  ten" needed more cars than a Turin trial has (C20, killed). Which side is a coin flip: 8 of
+  ten" did not reproduce, although these runs have 182 to 231 cars on day four (C20,
+  killed). Which side is a coin flip: 8 of
   20 keep the right (exact binomial p 0.50). The order grows smoothly with traffic, with no
   sharp transition.
 - **One family takes the city, mostly.** Over twenty fresh Turin seeds at six days, one
