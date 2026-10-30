@@ -22,6 +22,7 @@ import { summary as crashSummary } from "./tools/crashmap.mjs";
 import { info as roadInfo } from "./tools/roadinfo.mjs";
 import { binomial, share as sideShare, wilson as sideWilson } from "./tools/sides.mjs";
 import { look as collapseLook } from "./tools/collapse.mjs";
+import { unbacked, count as numCount } from "./tools/sweep.mjs";
 import { describe as describeLine } from "./src/lineage.js";
 import { Rewind } from "./src/rewind.js";
 import { Crowd, PED } from "./src/pedestrians.js";
@@ -392,6 +393,17 @@ import { editNeuron } from "./src/netview.js";
   assert.strictEqual(onFree, free, "knob on, road clear: nothing changes");
   assert(onSide < free, `knob on: a car closing from the side slows it (${onSide} against ${free})`);
   console.log("ok  hand driver: the give-way knob");
+}
+
+// SWEEP: a README number nothing else backs is flagged, a whole-number match is not fooled by longer numbers
+{
+  const readme = "## What it has found\n- **One.** It is 12.5% faster, 7 of 20 runs, 4321 cars.\n\n## How sure\n";
+  const rows = unbacked(readme, "the run gave 12.5% and also 112.55 and 14321");
+  assert.deepStrictEqual([rows.length, rows[0].miss], [1, ["4321"]], "4321 is not found inside 14321, 12.5% is found");
+  assert.strictEqual(numCount("12.5%", "12.5 and 112.5 and 12.55 and 12.5."), 2, "counts whole numbers only (a full stop after is fine)");
+  const real = unbacked(fs.readFileSync("README.md", "utf8"), fs.readFileSync("docs/NOTEBOOK.md", "utf8") + fs.readFileSync("docs/claims.jsonl", "utf8"));
+  assert(real.length >= 10 && real.every((r) => r.miss.length === 0), `every README number is in the notebook or the claims (${real.filter((r) => r.miss.length).map((r) => r.title + ": " + r.miss.join(" ")).join("; ")})`);
+  console.log("ok  sweep: README numbers trace to the notebook");
 }
 
 // the research tools run end to end: a two-seed trial and a two-replay
