@@ -6,7 +6,7 @@
 // or more, with a Wilson interval, and how many of the runs keep the right
 // (a coin flip would give about half, tested two-sided with the exact binomial).
 //
-//   node tools/sides.mjs "runs/trial-turin-base-d6-s{s}"      (seeds 101..; SEEDS=20 DAY=4 LEVEL=0.75)
+//   node tools/sides.mjs "runs/trial-turin-base-d6-s{s}"      (seeds 101..; SEEDS=20 SEED0=101 DAY=4 LEVEL=0.75)
 import fs from "node:fs";
 
 export const wilson = (k, n) => { const z = 1.96, p = k / n, c = (p + z * z / (2 * n)) / (1 + z * z / n), h = (z / (1 + z * z / n)) * Math.sqrt(p * (1 - p) / n + z * z / (4 * n * n)); return [c - h, c + h]; };
@@ -26,9 +26,9 @@ export function share(dir, day) {
 }
 
 if (import.meta.url === `file://${process.argv[1]}`) {
-  const pat = process.argv[2], n = +(process.env.SEEDS || 20), day = +(process.env.DAY || 4), level = +(process.env.LEVEL || 0.75);
+  const pat = process.argv[2], n = +(process.env.SEEDS || 20), s0 = +(process.env.SEED0 || 101), day = +(process.env.DAY || 4), level = +(process.env.LEVEL || 0.75);
   const rs = [];
-  for (let i = 0; i < n; i++) { const d = pat.replace("{s}", 101 + i); if (fs.existsSync(`${d}/telemetry.jsonl`)) { const r = share(d, day); if (r !== null) rs.push(r); } }
+  for (let i = 0; i < n; i++) { const d = pat.replace("{s}", s0 + i); if (fs.existsSync(`${d}/telemetry.jsonl`)) { const r = share(d, day); if (r !== null) rs.push(r); } }
   const one = rs.map((r) => Math.max(r, 1 - r)), keep = one.filter((x) => x >= level).length, right = rs.filter((r) => r > 0.5).length;
   const [lo, hi] = wilson(keep, rs.length);
   console.log(`${pat}, day ${day}: ${rs.length} runs; share on the majority side per run: ${one.map((x) => x.toFixed(2)).join(" ")}`);
