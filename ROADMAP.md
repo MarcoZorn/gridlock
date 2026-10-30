@@ -259,8 +259,9 @@ prediction written first, then the run, then the README line.
   bootstrap interval, for Turin, Barcelona, Manhattan and the grid.
   (Done: the tool already averaged twenty orders; it now prints the interval and takes ORDER0= for
   fresh orders. C19 confirmed.)
-- [ ] gridlock: side of the road, `tools/sidechart.mjs` over twenty fresh seeds: the share keeping to
+- [x] gridlock: side of the road, `tools/sidechart.mjs` over twenty fresh seeds: the share keeping to
   one side after four days with an interval, and how many seeds keep right (a coin-flip check).
+  (Done as `tools/sides.mjs` on the existing Turin trial runs, claim C20 killed: 7 of 20 reach 75%.)
 - [ ] gridlock: platforms, `tools/platforms.mjs` over twenty seeds: drivers' share against passengers'
   share per platform, slope with an interval.
 - [ ] gridlock: why hand-driver economies collapse (C13, C17: 24 cars, 22 families): a collapsed run
