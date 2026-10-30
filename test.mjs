@@ -375,6 +375,8 @@ import { editNeuron } from "./src/netview.js";
   assert(/hand-written drivers, 1 days, 2 seeds: a family owns over half the cars in \d of 2 runs/.test(fm), "families.mjs counts runs with a dominant family:\n" + fm);
   const sc = sh(["tools/stepcmp.mjs"], { SEEDS: "2", GENS: "4", TAIL: "2" });
   assert(/step 0.02 against 0.3, from scratch, 2 seeds/.test(sc) && !/NaN/.test(sc), "stepcmp.mjs prints a paired difference with an interval:\n" + sc);
+  const pc = sh(["tools/percolation.mjs", "grid"], { ORDER0: "7" });
+  assert(/with 5% of the roads closed, \d+\.\d% of the city still all connected, 95% interval \d+\.\d%-\d+\.\d% over 20 closure orders/.test(pc), "percolation.mjs prints the 5% figure with an interval:\n" + pc);
   const hd = sh(["tools/trial.mjs", "grid", "basic=0.25"], { SEEDS: "2", DAYS: "1", FROM: "0", FOUNDERS: "hand" });
   assert(/2 seeds/.test(hd) && !/NaN/.test(hd), "trial with hand-written founders prints intervals:\n" + hd);
   const rp = sh(["tools/replay.mjs", "grid", "3"], { REPS: "2", DAYS: "1", EVERY: "12", SPAN: "12", REPLAY_DIR: rdir });
