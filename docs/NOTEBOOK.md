@@ -4503,3 +4503,20 @@ Predictions written before the runs, in `docs/claims.jsonl`:
   above +150% (the README's "quadruples" is +300%).
 
 Running as systemd units c15 and c16, logs `tmp/drunk-fog.log` and `tmp/drunk-delay.log`.
+
+### The dynasty question for the hand-driver arm: what the species numbers say, and what they do not
+
+From the last telemetry row of the C12 hand runs and the matching evolved runs (Turin, day 6, 20 seeds each,
+`runs/trial-hand-turin-base-d6-s*` and `runs/trial-turin-base-d6-s*`):
+
+| arm | species | largest species' share of cars | runs with a species above 90% | cars | oldest lineage (generations) |
+|---|---|---|---|---|---|
+| hand | 1.20 | 0.93 | 16 of 20 | 98.85 | 21.35 |
+| evolved | 5.60 | 0.57 | 1 of 20 | 215.80 | 22.40 |
+
+All means over the seeds. A hand run has one brain, so species there only separate bodies, and it sits at one
+species; evolved runs split into several. That is a statement about species, not about families: species
+in this economy are labels from brain and body distance, and a family is everyone descended from one founder.
+Hand-driver cars still have different founders and different bodies at the start, and children copy them
+unchanged, so a family can still take over by luck and by what its body earns. Whether it does is not
+measured here; that needs the family tracking of `tools/replay.mjs` on a hand run, which is the next backlog item.
