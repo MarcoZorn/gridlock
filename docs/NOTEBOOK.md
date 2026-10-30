@@ -4735,3 +4735,11 @@ Predictions written before the runs, in `docs/claims.jsonl`.
   gene change with `tools/traits.mjs` (`SEED0=141`), predicted to rise (interval above zero, rose in at least 12 of 20). Unit c27, log `tmp/traits-c27.log`.
 - C28: the default generated city, four days, seeds 161-180 (`runs/side-gen-s*`), `SEED0=161 node tools/sides.mjs`, predicted at least 12 of 20 runs
   with 75% or more of the cars on one side. Unit c28, log `tmp/sides-c28.log`.
+
+### Braess, rerun on all three cities (no seeds: the scan is exhaustive)
+
+`BRAESS=1000 LOAD=3 node tools/wardrop.mjs <city> 7` for Turin, Barcelona and Manhattan, run again today (`tmp/braess-turin.log`, `-barcelona`, `-manhattan`).
+Roads tested, closable without stranding a fare, closures that made it worse by over 0.5%, closures that saved anything, best closure:
+Turin 342, 74, 62, 1, -0.05%; Barcelona 643, 150, 95, 2, -0.05%; Manhattan 541, 115, 85, 1, -0.07%. Each city's last line is "Braess roads (closing saves over 0.5%): none".
+This is the table the notebook already had, reproduced to the digit, and the README's "none saves more than 0.07%" stands. The scan is deterministic, so
+there is no interval to give and no claim to open; what it does not cover is closing two roads at once, or other loads than 3.
