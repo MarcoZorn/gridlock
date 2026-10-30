@@ -183,7 +183,7 @@ properly (with a test where it is code), and ticks it off. No idling.
   "Rules about failure"; the rest need a study of their own.)
 - [ ] gridlock: the generation page gets the same Lineage card as the eco
   page, for the leader of the current generation (species, parents).
-- [ ] gridlock: an "About the method" section on the findings page:
+- [x] gridlock: an "About the method" section on the findings page:
   pre-registration, paired seeds, bootstrap and Wilson intervals, what was
   corrected and why; short, for a visitor who is not a statistician.
 - [ ] cars: `report.py` adds a chart page: held-out laps against settings
