@@ -378,6 +378,22 @@ import { editNeuron } from "./src/netview.js";
   console.log("ok  collapse: floor, peak, first day");
 }
 
+// HAND YIELD: with the knob on, a car closing in on an outer ray slows the hand driver; off, nothing changes
+{
+  const probe = `import { HandBrain } from "./src/hand.js"; import { N_INPUTS, N_RAYS } from "./src/driver.js";
+    const g = new HandBrain(), inp = new Float64Array(N_INPUTS), out = new Float64Array(2);
+    for (let i = 0; i < N_RAYS; i++) { inp[i * 3] = 1; inp[i * 3 + 1] = 1; }
+    const K = N_RAYS * 3; inp[K] = 0.6; inp[K + 3] = 1;
+    if (process.argv[1] === "side") { inp[1] = 0.4; inp[2] = 0.3; }
+    g.activate(inp, out); console.log(out[1].toFixed(3));`;
+  const run = (arg, y) => Number(execFileSync("node", ["--input-type=module", "-e", probe, arg], { env: { ...process.env, ...(y ? { GRIDLOCK_HAND_YIELD: y } : {}) }, encoding: "utf8" }));
+  const free = run("none", ""), offSide = run("side", ""), onSide = run("side", "0.5"), onFree = run("none", "0.5");
+  assert.strictEqual(offSide, free, "knob off: a car on the side ray changes nothing");
+  assert.strictEqual(onFree, free, "knob on, road clear: nothing changes");
+  assert(onSide < free, `knob on: a car closing from the side slows it (${onSide} against ${free})`);
+  console.log("ok  hand driver: the give-way knob");
+}
+
 // the research tools run end to end: a two-seed trial and a two-replay
 // rewind of one city hour, from clean caches, with real numbers out
 {
