@@ -302,12 +302,14 @@ prediction written first, then the run, then the README line.
 
 ### Next batch, from C23 to C26
 
-- [ ] gridlock: the freight half of "the cheapest car wins" (C25 tested the default economy only): a freight price
+- [x] gridlock: the freight half of "the cheapest car wins" (C25 tested the default economy only): a freight price
   setting that makes trucks pay (`ECON.freightMin` and the freight rate, see ECON), twenty fresh seeds with
   `tools/traits.mjs`, prediction first: cargo gene rises, length rises. Needs the settings read from `src/ecoworld.js`.
-- [ ] gridlock: the side of the road with more cars (C20 killed the strength at Turin's trial size): the same `tools/sides.mjs`
+  (Done as claim C27: the boom is freightRate and freightDemand times three, as `--econ` settings; unit c27.)
+- [x] gridlock: the side of the road with more cars (C20 killed the strength at Turin's trial size): the same `tools/sides.mjs`
   on twenty seeds of a larger city (`--size` of headless.mjs), prediction first: the share on the majority side
   rises above the Turin figure (median 0.67 of the rounded values at day 4).
+  (Changed: the Turin runs already have 182-231 cars, so the question became the default generated city, claim C28, unit c28.)
 - [ ] gridlock: Braess on all three cities at once (`tools/wardrop.mjs`, the exhaustive scan): record the largest saving per
   city in the notebook from the output, and compare with the README's 0.07% (Study 3 plan: no seeds).
 - [ ] gridlock: survivors only: C13 mixed collapsed hand runs with surviving ones. Re-run the one-way against two-way
