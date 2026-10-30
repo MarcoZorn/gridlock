@@ -1,5 +1,40 @@
 # Gridlock: lab notebook
 
+<!-- toc -->
+- [What it found, so far](#what-it-found-so-far)
+  - [How they drive](#how-they-drive)
+  - [What evolves on its own](#what-evolves-on-its-own)
+  - [Rules and prices](#rules-and-prices)
+  - [Evolving them](#evolving-them)
+- [What the drivers actually look at](#what-the-drivers-actually-look-at)
+- [The city that cannot gridlock](#the-city-that-cannot-gridlock)
+- [Phantom jams](#phantom-jams)
+- [Can they learn to signal?](#can-they-learn-to-signal)
+- [What is coded and what is evolved](#what-is-coded-and-what-is-evolved)
+- [Devlog](#devlog)
+  - [Week 1: streets](#week-1-streets)
+  - [Week 2: traffic](#week-2-traffic)
+  - [Week 3: no fitness function](#week-3-no-fitness-function)
+  - [Week 4: your city, long runs](#week-4-your-city-long-runs)
+  - [Extensions](#extensions)
+- [Files](#files)
+- [Reading](#reading)
+  - [Claim C2, confirmed: the congestion charge at twenty seeds](#claim-c2-confirmed-the-congestion-charge-at-twenty-seeds)
+  - [Study 1, first curve: when Turin's monopoly is decided](#study-1-first-curve-when-turins-monopoly-is-decided)
+  - [Claim C1, confirmed for one seed: Turin's monopoly is decided by hour six](#claim-c1-confirmed-for-one-seed-turins-monopoly-is-decided-by-hour-six)
+  - [Claim C1, confirmed: the monopoly is arithmetic, not evolution](#claim-c1-confirmed-the-monopoly-is-arithmetic-not-evolution)
+  - [Claim C3: seed 11 is not decided on day 0 (evolving half)](#claim-c3-seed-11-is-not-decided-on-day-0-evolving-half)
+  - [Claim C3, killed: seed 11 is not decided at the same hour as seed 7](#claim-c3-killed-seed-11-is-not-decided-at-the-same-hour-as-seed-7)
+  - [Claim C4, confirmed: insurance at twenty seeds](#claim-c4-confirmed-insurance-at-twenty-seeds)
+  - [Study 1 item 3: does "the biggest family stays biggest" explain it?](#study-1-item-3-does-the-biggest-family-stays-biggest-explain-it)
+  - [Claim C5, confirmed: credit at twenty seeds](#claim-c5-confirmed-credit-at-twenty-seeds)
+  - [Claim C6, killed: Barcelona seed 7 is not decided by day 0](#claim-c6-killed-barcelona-seed-7-is-not-decided-by-day-0)
+  - [Claim C7, killed: freezing mutation does not make the winner surer (six fresh Turin seeds)](#claim-c7-killed-freezing-mutation-does-not-make-the-winner-surer-six-fresh-turin-seeds)
+  - [Claim C8, confirmed: Venice seed 7 is not decided by hour 12](#claim-c8-confirmed-venice-seed-7-is-not-decided-by-hour-12)
+  - [Study 1 step 3 (exploratory, not a claim): win rate against the winner's share that morning](#study-1-step-3-exploratory-not-a-claim-win-rate-against-the-winners-share-that-morning)
+  - [Claim C9 opened: does the winner beat its own share? (running)](#claim-c9-opened-does-the-winner-beat-its-own-share-running)
+<!-- /toc -->
+
 Every experiment as it was run, in order, corrections included. The summary is in the [README](../README.md); this is the record behind it.
 
 
