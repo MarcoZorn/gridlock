@@ -145,3 +145,20 @@ properly (with a test where it is code), and ticks it off. No idling.
 - [ ] gridlock: a smoke test for `tools/trial.mjs` with `ALT=` (two maps)
   and with `FREEZE=1`, one seed, one city day.
 
+### Bigger pieces (hours each; split into commits as they go)
+
+- [ ] gridlock: a "Study 1" page (`replay.html`): pick a saved economy and an
+  hour, run sixteen replays in Web Workers in the browser, and draw the win
+  rate as it comes in. The replay study, runnable by anyone.
+- [ ] gridlock: a time-lapse recorder on the eco page: capture a frame every
+  city hour into a WebM with `MediaRecorder`, download button, so a day can
+  be shared as a video.
+- [ ] gridlock: a lineage explorer on the eco page: click a car, see its
+  ancestors back to the founder as a strip of their bodies and earnings, and
+  its family's share of the city over time.
+- [ ] cars: a headless evaluation report (`report.py`) that writes an HTML
+  page with every bench log's held-out laps and intervals, newest first.
+- [ ] neat-from-scratch: a guided tour mode on the page: five short steps
+  (genome, mutation, speciation, crossover, the track) that highlight the
+  live run and explain it, for people who have never seen NEAT.
+
