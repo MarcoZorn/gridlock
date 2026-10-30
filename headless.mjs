@@ -3,6 +3,7 @@
 //
 //   node headless.mjs --run runs/lanes --gens 3000 --traffic-from 200 --density 40 --control lights
 //   node headless.mjs --eco --run runs/eco --days 30 --founders docs/trained.json [--pedestrians 40] [--map turin] [--econ crashCost=27]
+//   --founders hand: the hand-written driver of src/hand.js, nothing evolves
 //
 // runs/<name>/telemetry.jsonl   one JSON object per generation (kept in git)
 // runs/<name>/state.json        the latest checkpoint (ignored by git)
@@ -12,6 +13,7 @@ import { CityWorld } from "./src/cityworld.js";
 import { BODY } from "./src/driver.js";
 import { EcoWorld, ECON } from "./src/ecoworld.js";
 import { Population } from "./src/neat.js";
+import { HandBrain } from "./src/hand.js";
 import { Worker } from "node:worker_threads";
 
 const arg = (name, def) => {
@@ -64,12 +66,14 @@ if (process.argv.includes("--eco")) {
   // minutes of simulation each), writing its ten-minute telemetry rows.
   const days = +arg("days", 10), TICKS_PER_DAY = 24 * 60 * 60;
   let eco;
+  // hand-written drivers never evolve: nothing mutates, bodies included
+  if (arg("founders", null) === "hand" && !ECON.freezeAt) ECON.freezeAt = 1;
   if (fs.existsSync(statePath)) {
     eco = EcoWorld.fromJSON(JSON.parse(fs.readFileSync(statePath, "utf8")));
     console.log(`resumed ${dir} at day ${(eco.tick / TICKS_PER_DAY).toFixed(2)}`);
   } else {
     const f = arg("founders", null);
-    const founders = f ? Population.fromJSON(JSON.parse(fs.readFileSync(f, "utf8")).pop) : null;
+    const founders = f === "hand" ? HandBrain.founders() : f ? Population.fromJSON(JSON.parse(fs.readFileSync(f, "utf8")).pop) : null;
     eco = new EcoWorld({ seed, control, founders, graph, size: arg("size", "small"), pedestrians: +arg("pedestrians", 0), realSignals: process.argv.includes("--real-signals") });
     console.log(`new ecosystem ${dir}, seed ${seed}${f ? `, founders from ${f}` : ""}`);
   }
