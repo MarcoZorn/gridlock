@@ -4331,3 +4331,9 @@ Mutation frozen after day 2 in both arms, days 2-6: crashes per car a day -31.4%
 [-31.9%, -25.4%]; cars -43.3% [-46.4%, -40.4%]; Gini +0.006 [+0.005, +0.008]. Both intervals
 entirely below zero, so the prediction holds. Not compared against the evolving arm in a paired
 test, so no claim about how much evolution adds.
+
+### SpatialHash.near inlined into Driver.sense: no gain, reverted
+
+Idle machine, `TICKS=20000 node tmp/prof2.mjs`, alternating old and inlined: 4.50 and 4.45 s old,
+4.49 and 4.45 s inlined; 8000 ticks of the 59-car run: 1.82, 1.80, 1.82 s old against 1.82, 1.81,
+1.84 s inlined. Signatures identical both times. Not worth the longer code; `src/driver.js` unchanged.

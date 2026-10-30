@@ -84,13 +84,16 @@ properly (with a test where it is code), and ticks it off. No idling.
   second is more replays a night. Measure before and after. (The ray wall
   test inlined: 5.3 to 4.7 s of CPU for 20000 ticks of a 114-car Turin,
   identical results.)
-- [ ] gridlock: the same for the car rays: `SpatialHash.near` with its
+- [x] gridlock: the same for the car rays: `SpatialHash.near` with its
   callback is next in the profile (about 16% with the callback body).
   Inline it in `Driver.sense`, keep results bit-identical (compare
   `tmp/prof2.mjs`'s signature), measure CPU time, not wall time.
   (Tried 11:50 with 60 replay workers running: bit-identical, but CPU time
   per 8000 ticks was 5.54 s new vs 5.59 s old over three alternating pairs,
-  inside the noise. Reverted. Re-measure on an idle machine before retrying.)
+  inside the noise. Reverted.) Re-measured on an idle machine (`tmp/prof2.mjs`,
+  CPU time, alternating): 20000 ticks of the 114-car Turin, 4.50 and 4.45 s old
+  against 4.49 and 4.45 s inlined, same signature. No gain (V8 already inlines
+  the callback), so it stays as it was.
 - [x] gridlock: now that snapshots restore exactly, a replay with seed 0
   must reproduce the original run: check it on a fresh snapshot with
   `tools/replay.mjs` and add that check to the smoke test.
