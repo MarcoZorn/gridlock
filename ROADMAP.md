@@ -270,8 +270,13 @@ prediction written first, then the run, then the README line.
   30 cars and what the telemetry shows then (crashes, cash, immigrants).
   (Done: `tools/collapse.mjs`. They never start: day-1 trips 57.8 against 1212.7 in Turin; every collapsed
   run peaks at its 50 starting cars.)
-- [ ] gridlock: what decides the start? Hand-driver Turin seed 104 (collapsed) against seed 101 (thrives): trips,
+- [x] gridlock: what decides the start? Hand-driver Turin seed 104 (collapsed) against seed 101 (thrives): trips,
   deaths and cash by city hour for the first day, and where the first fares are; one change to `src/hand.js` or
   the start that makes seed 104 start without making 101 worse.
+  (Answered in part: seed 104 makes 0.32 pickups per car-hour against 0.88; changing `startCars` does not help
+  monotonically, 100 thrives and 50 and 200 collapse. Bistable by luck; numbers in the notebook.)
+- [ ] gridlock: how often does a hand-driver Turin city start, by `startCars`? `tools/collapse.mjs` over twenty seeds at
+  startCars 50, 100 and 150 (a `--start-cars` flag for headless.mjs first), the share of runs that end above 30
+  cars with a Wilson interval each; a hit is a setting that starts them most of the time.
 - [ ] gridlock: a give-way rule at the merge for the hand driver (the corridor at 324), tested on Barcelona one-way
   seed 102 with `--crash-log`: crashes on the corridor and trips per car-day before and after.
