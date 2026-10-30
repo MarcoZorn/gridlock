@@ -140,14 +140,17 @@ instrument that re-tests itself:
 ## Now
 
 **When is a monopoly decided?** One family always ends up owning the city.
-Rewinding Turin to each third hour of day 0 and replaying it thirty-two
-times with fresh noise, seed 7's winner wins again in 1 of 32 replays from
-hour 0, 25 of 32 from hour 6, and every one from hour 12. Seed 11 does not
-fit: its winner wins 15 of 32 from hour 0, with under a fifth of the cars
-that day. So the monopoly is decided within the first day, but not at one
-fixed hour. Two seeds, one city; whether the winner is just the biggest
-family, and other cities, are still to do (`tools/replay.mjs`,
-[ROADMAP.md](ROADMAP.md)).
+Rewind the economy to every third hour of day 0 and replay it thirty-two
+times with fresh noise: how often does the same family win again (over
+half the cars)? On Turin seed 7, 0 of 32 replays from hour 0, 1 from hour
+3, 15 from hour 6, 22 from hour 9, and all 32 from hour 12: decided within
+the first morning, while the family holds under two fifths of the cars.
+On seed 11 it is not decided on day 0 at all (a flat 3 to 19 of 32). On
+both seeds, freezing evolution after the rewind makes the outcome surer
+(seed 11, hours 18-21: 53 of 64 frozen against 31 of 64 evolving):
+mutation keeps the contest open. Two seeds, one city so far
+(`tools/replay.mjs`, claims C1 and C3 in
+[docs/claims.jsonl](docs/claims.jsonl), [ROADMAP.md](ROADMAP.md)).
 
 ## Running it
 

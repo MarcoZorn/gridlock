@@ -14,6 +14,10 @@ earlier list of 150 ideas, and which were tried, is in
   paired seeds), Wilson intervals for proportions. Two to four seeds is a
   hint, not a result.
 - A claim that dies is written up as plainly as one that lives.
+- Replay results come only from the summary `tools/replay.mjs` prints
+  (saved in `tmp/replay-*.log`): a replay is won when the family ends with
+  over half the cars. Counting replays where the family merely survives
+  gave wrong tables twice.
 - Results go into [docs/NOTEBOOK.md](docs/NOTEBOOK.md) as they happen; the
   README only changes when a claim is confirmed or killed.
 
