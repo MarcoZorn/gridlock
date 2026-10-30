@@ -4262,3 +4262,9 @@ share at 6 of 7. The snapshots of one run are not independent, so 11 of 20 is
 less than it looks. Reading: "the biggest family stays biggest" is not beaten
 cleanly; in two of four runs the family wins more often than its share alone
 says, in one it does not. A claim needs a fresh run with the prediction written first.
+
+### Claim C9 opened: does the winner beat its own share? (running)
+
+Prediction written before the run, in `docs/claims.jsonl`. Runs launched detached:
+`REPS=32 DAYS=4 EVERY=3 SPAN=18 node tools/replay.mjs venice 8` and `... barcelona 8`, logs
+`tmp/replay-venice8.log` and `tmp/replay-barcelona8.log`. Nothing to read until the summaries print.
