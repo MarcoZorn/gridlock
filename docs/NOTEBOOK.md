@@ -4670,3 +4670,11 @@ Prediction written before the run, in `docs/claims.jsonl`. `tools/yieldrule.mjs`
 the single-run output was checked identical before). A two-seed smoke run was seen first (rule: fitness -5.4% [-6.4%, -4.4%], crashes per car
 +0.1%). `SEEDS=20 node tools/yieldrule.mjs`, unit c23, log `tmp/yieldrule-c23.log`: predicted the rule's fitness down with the interval below zero,
 crashes per car not clearly down.
+
+### Claim C23 confirmed: yielding does not pay
+
+`SEEDS=20 node tools/yieldrule.mjs` (`tmp/yieldrule-c23.log`), traffic cities, seeds 101-120, paired against none. The rule (brake hard near
+a junction when a side ray sees a car closing in): fitness -4.1% [-5.0%, -3.2%] (0 up / 20 down), trips per car -6.6% [-7.2%, -6.1%],
+crashes per car +0.6% [-0.1%, +1.3%] (12 up / 8 down, not distinguishable from zero). The wide rule: fitness -4.8% [-5.6%, -4.0%], trips per car
+-9.4% [-10.0%, -8.7%], crashes per car +0.8% [-0.1%, +1.7%]. Predicted fitness down with the interval below zero and crashes not down: holds.
+So a coded rule costs trips and buys no safety; the README's "even then it cost them elsewhere" now has a number for the coded version.
