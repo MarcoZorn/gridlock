@@ -114,7 +114,7 @@ properly (with a test where it is code), and ticks it off. No idling.
 - [ ] gridlock: Study 2 needs `tools/trial.mjs` to take `FREEZE=1` (no
   mutation after day 2, in both arms). Add it with a smoke test, then open
   a claim for the congestion charge frozen vs evolving.
-- [ ] gridlock: `tools/trial.mjs` on a map file (`maps/x.json` or a path),
+- [x] gridlock: `tools/trial.mjs` on a map file (`maps/x.json` or a path),
   so the one-way claim can be re-tested: Barcelona with its arrows against
   the two-way copy in `tmp/barcelona-twoway.json`, twenty seeds.
 - [x] gridlock: a findings page (`findings.html`) that reads

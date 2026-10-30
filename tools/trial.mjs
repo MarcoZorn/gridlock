@@ -9,10 +9,15 @@ import os from "node:os";
 //
 //   SEEDS=20 DAYS=6 node tools/trial.mjs turin basic=0.25
 //   node tools/trial.mjs turin congestion=0.1,peakToll=1
-const [map = "turin", econ = ""] = process.argv.slice(2);
+// A map can be a name from maps/ or a path. ALT=other-map.json compares two
+// maps instead of a rule (the rule, if any, then applies to ALT's arm):
+//   ALT=tmp/barcelona-twoway.json node tools/trial.mjs barcelona
+const [map = "turin", econ = ""] = process.argv.slice(2), alt = process.env.ALT || null;
+const tag = (m) => m.replace(/^.*\//, "").replace(/\.json$/, "");   // a path's run-name part
 const n = +(process.env.SEEDS || 20), days = +(process.env.DAYS || 6), from = +(process.env.FROM || 2);
 const seeds = Array.from({ length: n }, (_, i) => 101 + i);   // fresh seeds, apart from the hand-picked ones used so far
-const name = (rule, s) => `runs/trial-${map}-${rule ? rule.replace(/[=,]/g, "_") : "base"}-d${days}-s${s}`;
+// a run per arm and seed: (map, no rule) and (ALT or map, the rule)
+const name = (rule, s, m = map) => `runs/trial-${tag(m)}-${rule ? rule.replace(/[=,]/g, "_") : "base"}-d${days}-s${s}`;
 const done = (dir) => { try { return fs.readFileSync(`${dir}/telemetry.jsonl`, "utf8").trim().split("\n").map(JSON.parse).at(-1).tick >= days * 86400; } catch { return false; } };
 
 async function runAll(jobs) {
@@ -20,10 +25,10 @@ async function runAll(jobs) {
   const lanes = Math.max(1, Math.min(jobs.length, os.cpus().length - 2));
   await Promise.all(Array.from({ length: lanes }, async () => {
     while (next < jobs.length) {
-      const [dir, s, rule] = jobs[next++];
+      const [dir, s, rule, m] = jobs[next++];
       fs.rmSync(dir, { recursive: true, force: true });
       const args = ["headless.mjs", "--eco", "--run", dir, "--days", String(days), "--founders", "docs/trained.json", "--seed", String(s), "--threads", "1"];
-      if (map !== "grid") args.push("--map", map);
+      if (m !== "grid") args.push("--map", m);
       if (rule) args.push("--econ", rule);
       await new Promise((ok) => spawn("node", args, { stdio: "ignore" }).on("exit", ok));
     }
@@ -53,12 +58,14 @@ function bootstrap(xs, reps = 4000) {
 }
 
 const jobs = [];
-for (const s of seeds) for (const rule of ["", econ]) { const dir = name(rule, s); if (!done(dir)) jobs.push([dir, s, rule]); }
+const arms = [["", map], [econ, alt || map]];
+if (!alt && !econ) { console.error("give a rule or ALT=map"); process.exit(1); }
+for (const s of seeds) for (const [rule, m] of arms) { const dir = name(rule, s, m); if (!done(dir)) jobs.push([dir, s, rule, m]); }
 if (jobs.length) console.error(`running ${jobs.length} economies (${map}, ${days} days)...`);
 await runAll(jobs);
 
-const pairs = seeds.map((s) => [stats(name("", s)), stats(name(econ, s))]);
-console.log(`${map}, ${econ || "no rule"} vs no rule, ${n} seeds, days ${from}-${days}: mean change, 95% interval, seeds up/down`);
+const pairs = seeds.map((s) => [stats(name("", s, map)), stats(name(econ, s, alt || map))]);
+console.log(`${alt ? `${tag(alt)}${econ ? " + " + econ : ""} vs ${tag(map)}` : `${map}, ${econ} vs no rule`}, ${n} seeds, days ${from}-${days}: mean change, 95% interval, seeds up/down`);
 for (const k of Object.keys(pairs[0][0])) {
   const ch = pairs.map(([b, x]) => (k === "Gini" ? x[k] - b[k] : x[k] / b[k] - 1));
   const m = ch.reduce((a, x) => a + x, 0) / ch.length, [lo, hi] = bootstrap(ch);
