@@ -4383,3 +4383,9 @@ Hand-written drivers in both arms, days 2-6: crashes per car a day -40.3% [-48.6
 below zero: the prediction holds. The hand driver crashes more than the evolved founders at baseline
 (notebook above), and the fare cost is much larger here (-57.0% against -15.0% frozen evolved);
 different drivers, different cities, so no claim about why.
+
+### Claim C13 opened: one-way arrows with drivers that cannot evolve
+
+Prediction written before the run, in `docs/claims.jsonl`. Study 2: C10 again with the hand-written
+driver. `FOUNDERS=hand SEEDS=20 ALT=tmp/barcelona-twoway.json node tools/trial.mjs barcelona`, systemd
+unit c13, log `tmp/trial-hand-oneway.log`. Nothing to read until its summary prints.
