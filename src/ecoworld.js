@@ -79,6 +79,7 @@ export const ECON = {
   speedLimit: 0,        // a speed camera everywhere: over this speed a car pays...
   speedFine: 0.3,       // ...this much a second at double the limit, in proportion below that (an experiment, off)
   union: 0,             // union cars refuse passenger fares that pay less than this; the card passes parent to child (an experiment)
+  freezeAt: 0,          // a tick: from then on children are exact copies, no mutation or crossover (tools/trial.mjs FREEZE=1)
   crashMate: 0,         // 1: a car may only have a child after hitting another car, and the child is a cross of the two (tools/crashmate.mjs)
 };
 
@@ -225,6 +226,7 @@ export class EcoWorld {
   // when almost nobody can make a trip pay.
   immigrate(parent = null) {
     let brain, body;
+    if (ECON.freezeAt && this.tick >= ECON.freezeAt && this.cars.length) { parent ||= this.rng.pick(this.cars); this.events.immigrants++; return this.spawn(parent.genome.clone(), new Body(parent.body.genes), ECON.startCash, null); }
     if (parent) {
       brain = mutate(parent.genome.clone(), this.innov, this.rng, this.cfg);
       body = parent.body.mutate(this.rng);
@@ -526,6 +528,7 @@ export class EcoWorld {
   // brain is crossed with another solvent car's. It starts on a random road;
   // spawning on top of the parent would just be a collision.
   birth(parent) {
+    if (ECON.freezeAt && this.tick >= ECON.freezeAt) return this.spawn(parent.genome.clone(), new Body(parent.body.genes), ECON.childCash, parent);
     let brain;
     const mates = this.cars.filter((o) => o !== parent && o.cash > ECON.startCash && o.species === parent.species);
     if (ECON.crashMate && parent.mate) {

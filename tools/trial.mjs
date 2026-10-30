@@ -58,13 +58,16 @@ function bootstrap(xs, reps = 4000) {
 }
 
 const jobs = [];
-const arms = [["", map], [econ, alt || map]];
+// FREEZE=1: no mutation after day FROM, in both arms, so only the rule acts on the founders' genes
+const fz = process.env.FREEZE ? `freezeAt=${from * 86400}` : "";
+const join = (r) => [r, fz].filter(Boolean).join(",");
+const arms = [[join(""), map], [join(econ), alt || map]];
 if (!alt && !econ) { console.error("give a rule or ALT=map"); process.exit(1); }
 for (const s of seeds) for (const [rule, m] of arms) { const dir = name(rule, s, m); if (!done(dir)) jobs.push([dir, s, rule, m]); }
 if (jobs.length) console.error(`running ${jobs.length} economies (${map}, ${days} days)...`);
 await runAll(jobs);
 
-const pairs = seeds.map((s) => [stats(name("", s, map)), stats(name(econ, s, alt || map))]);
+const pairs = seeds.map((s) => [stats(name(join(""), s, map)), stats(name(join(econ), s, alt || map))]);
 console.log(`${alt ? `${tag(alt)}${econ ? " + " + econ : ""} vs ${tag(map)}` : `${map}, ${econ} vs no rule`}, ${n} seeds, days ${from}-${days}: mean change, 95% interval, seeds up/down`);
 for (const k of Object.keys(pairs[0][0])) {
   const ch = pairs.map(([b, x]) => (k === "Gini" ? x[k] - b[k] : x[k] / b[k] - 1));

@@ -196,6 +196,21 @@ import { editNeuron } from "./src/netview.js";
   console.log("ok  keyed draws: an inert rule changes nothing");
 }
 
+// FREEZE: with ECON.freezeAt set, children are exact copies, so no body is ever new
+{
+  const trained = JSON.parse(fs.readFileSync("docs/trained.json", "utf8"));
+  Object.assign(ECON, { freezeAt: 1 });
+  try {
+    const w = new EcoWorld({ seed: 9, founders: Population.fromJSON(trained.pop) });
+    const seen = new Set(w.cars.map((c) => JSON.stringify(c.body)));
+    for (let i = 0; i < 20000; i++) w.step();
+    const born = w.log.reduce((a, r) => a + r.births, 0);
+    assert(born > 0, "children were born");
+    assert(w.cars.every((c) => seen.has(JSON.stringify(c.body))), "a frozen run makes no new bodies");
+  } finally { ECON.freezeAt = 0; }
+  console.log("ok  freezeAt: births copy, nothing mutates");
+}
+
 // the research tools run end to end: a two-seed trial and a two-replay
 // rewind of one city hour, from clean caches, with real numbers out
 {
@@ -204,6 +219,8 @@ import { editNeuron } from "./src/netview.js";
   for (const s of [101, 102]) fs.rmSync(`runs/trial-grid-base-d1-s${s}`, { recursive: true, force: true }), fs.rmSync(`runs/trial-grid-basic_0.25-d1-s${s}`, { recursive: true, force: true });
   const tr = sh(["tools/trial.mjs", "grid", "basic=0.25"], { SEEDS: "2", DAYS: "1", FROM: "0" });
   assert(/2 seeds/.test(tr) && !/NaN/.test(tr), "trial prints intervals, not NaN:\n" + tr);
+  const fr = sh(["tools/trial.mjs", "grid", "basic=0.25"], { SEEDS: "2", DAYS: "2", FROM: "1", FREEZE: "1" });
+  assert(/2 seeds/.test(fr) && !/NaN/.test(fr), "frozen trial prints intervals:\n" + fr);
   const rp = sh(["tools/replay.mjs", "grid", "3"], { REPS: "2", DAYS: "1", EVERY: "12", SPAN: "12" });
   assert(/hour 0 \| [0-2]\/2 \|/.test(rp), "replay prints a win count out of its two replays:\n" + rp);
   // seed 0 is the control: same noise as the original, so it must end the same

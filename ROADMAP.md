@@ -111,7 +111,7 @@ properly (with a test where it is code), and ticks it off. No idling.
   shown is the one picked on many tracks, not the record-holder. (Already
   there: a Hard tracks button, and the page shows this generation's best,
   never the record-holder.)
-- [ ] gridlock: Study 2 needs `tools/trial.mjs` to take `FREEZE=1` (no
+- [x] gridlock: Study 2 needs `tools/trial.mjs` to take `FREEZE=1` (no
   mutation after day 2, in both arms). Add it with a smoke test, then open
   a claim for the congestion charge frozen vs evolving.
 - [x] gridlock: `tools/trial.mjs` on a map file (`maps/x.json` or a path),
