@@ -4663,3 +4663,10 @@ caps the target speed at that gap times the knob. Hand drivers, Barcelona one-wa
 The rule does not lower crashes per car-day or the corridor's crashes at either strength; it nudges both up. One seed and one run per
 setting, so the direction is not a finding, only that there is no gain to chase. The crashes at the merge are not cars failing to look
 sideways; leaving room ahead (the follow gain above) was the only knob so far that bought safety, and it cost trips.
+
+### Claim C23 opened: does yielding pay?
+
+Prediction written before the run, in `docs/claims.jsonl`. `tools/yieldrule.mjs` takes `SEEDS=n` now (paired arms none, rule, wide per seed;
+the single-run output was checked identical before). A two-seed smoke run was seen first (rule: fitness -5.4% [-6.4%, -4.4%], crashes per car
++0.1%). `SEEDS=20 node tools/yieldrule.mjs`, unit c23, log `tmp/yieldrule-c23.log`: predicted the rule's fitness down with the interval below zero,
+crashes per car not clearly down.
