@@ -133,12 +133,17 @@ properly (with a test where it is code), and ticks it off. No idling.
   whether evolution finds the same thing twice (the tape idea, on a track).
 
 - [x] gridlock: open the Study 2 claim (congestion charge, frozen vs evolving, `FREEZE=1`) in `docs/claims.jsonl`, queue the twenty-seed run after C10.
-- [ ] gridlock: Study 2's third arm, drivers that do not evolve at all: a
+- [x] gridlock: Study 2's third arm, drivers that do not evolve at all: a
   hand-written controller (pure pursuit on the route target, slow for the
   next turn, brake for a car closing ahead) exposed as a brain with
   `activate(inputs, out)`, and `--founders hand` so an economy runs on it;
   children copy it unchanged. Test that it drives (trips, few crashes) on a
-  generated city.
+  generated city. (Done: `src/hand.js`, `--founders hand` in headless.mjs, which
+  also freezes mutation. On Turin seeds 3 and 4, 20000 ticks, frozen, it made 147
+  and 154 trips against 135 and 96 for the trained founders, but crashes more per
+  km, 311 in 135 km and 309 in 144 km against 185 in 129 and 136 in 103; the test
+  only requires trips and fewer than four crashes a km. Gain and speed tweaks did
+  not lower it.)
 - [x] gridlock: `docs/claims.jsonl` gets structured effects (measure, mean,
   low, high) for the trial claims, and the findings page draws each as an
   interval bar around zero.

@@ -4337,3 +4337,13 @@ test, so no claim about how much evolution adds.
 Idle machine, `TICKS=20000 node tmp/prof2.mjs`, alternating old and inlined: 4.50 and 4.45 s old,
 4.49 and 4.45 s inlined; 8000 ticks of the 59-car run: 1.82, 1.80, 1.82 s old against 1.82, 1.81,
 1.84 s inlined. Signatures identical both times. Not worth the longer code; `src/driver.js` unchanged.
+
+### Study 2 third arm: a hand-written driver (src/hand.js)
+
+`HandBrain` is a Genome with no connections (pure pursuit, slow for turns and close cars), so
+mutation, species and saves pass over it; `--founders hand` also freezes mutation. `tmp/handtry.mjs`,
+Turin seeds 3 and 4, 20000 ticks, frozen: hand 147 and 154 trips, 311 and 309 crashes in 135 and
+144 km; trained founders 135 and 96 trips, 185 and 136 crashes in 129 and 103 km. It drives, but
+crashes more per km than the evolved founders. Tried and dropped: a lateral term in the steering
+(crashes up either sign), lower cruise speed (up), steering gains 1.0 and 4 (worse than 1.5).
+No trial claim opened yet; the arm is not run against a rule.
