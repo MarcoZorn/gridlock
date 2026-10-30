@@ -216,10 +216,16 @@ properly (with a test where it is code), and ticks it off. No idling.
   hold 13.5% of the crashes. More room to the car ahead (`GRIDLOCK_HAND_FOLLOW`)
   cut crashes per car-day from 133.2 to 60.8 but trips per car-day from 9.7 to 8.2:
   a trade. A give-way rule at merges is untried.)
-- [ ] gridlock: Study 3: give each README bullet that `tools/reap.mjs` marks
+- [x] gridlock: Study 3: give each README bullet that `tools/reap.mjs` marks
   "needs a study of its own" a one-line plan (which tool, how many seeds, what
   would count as a hit) in `RETEST`, shown in the list; the tool opens claims
   only for the ones that `trial.mjs` can run.
+  (Done: `PLANS` in `tools/reap.mjs`, eleven of them, a test that every unplanned
+  bullet fails. Two need new tools (fog, NEAT species step); two need `trial.mjs` to
+  take BODY constants, which would make more bullets trial-able.)
+- [ ] gridlock: `trial.mjs` takes BODY constants (`BODY=rayRange=60`) next to the
+  economy rule, passed to `headless.mjs --body`, with a smoke test; then fog and
+  the reaction delay become claims.
 - [ ] gridlock: Study 2, the dynasty takeover three ways: frozen replays
   already exist (`FREEZE=1 tools/replay.mjs`); the hand-driver arm has no
   family differences to take over, so say that in the notebook with the
