@@ -4751,3 +4751,13 @@ there is no interval to give and no claim to open; what it does not cover is clo
 least 12: holds. Not predicted: 16 of 20 keep the right, exact binomial p 0.012, whereas Turin (C20) gave 8 of 20. So in the generated city the order is
 stronger than in Turin and the side is not a coin flip. A guess, untested: the trained founders were raised in generated cities, where the road geometry may
 favour one hand; the earlier "which side differs between identical runs" was seen in Turin. A follow-up (below in the roadmap) asks whether it is the founders.
+
+### Claim C27 killed: tripled freight pay does not turn Turin to trucks in six days
+
+`SEED0=141 SEEDS=20 node tools/traits.mjs "runs/freight-turin-s{s}"` (`tmp/traits-c27.log`), Turin, six days, `freightRate=0.012,freightDemand=0.75`, seeds
+141-160. Mean change in the cargo gene -0.224 [-0.269, -0.158], fell in 19 of 20 (rose in 1); length -0.295 [-0.312, -0.276] (20 of 20); width -0.277
+(20 of 20); engine -0.104 (16 of 20); range -0.118 [-0.159, -0.083] (18 of 20); rays +0.149 [+0.120, +0.181] (rose in 19); jam -0.109 (18 of 20).
+Predicted the cargo interval above zero and a rise in at least 12 of 20: fails the other way. Compare C25 at default prices: cargo -0.245, 20 of 20.
+So six days of tripled freight changes almost nothing here (cargo -0.224 against -0.245). The older note ("with freight paying triple, half the cities
+evolved trucks") came from forty-day runs and the threshold "between twice and three times today's rate" in one seed's city; a six-day Turin run is too short
+and too different. Whether longer runs or a different pay level find trucks is not tested here.
