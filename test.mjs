@@ -16,7 +16,7 @@ import { EcoWorld, ECON, gini, econParam, applyEcon } from "./src/ecoworld.js";
 import { Body } from "./src/body.js";
 import { HandBrain } from "./src/hand.js";
 import { tape, replay } from "./tools/tapecars.mjs";
-import { RETEST, bullets, claimFor } from "./tools/reap.mjs";
+import { RETEST, PLANS, bullets, claimFor } from "./tools/reap.mjs";
 import { arm as crashArm } from "./tools/crashkinds.mjs";
 import { summary as crashSummary } from "./tools/crashmap.mjs";
 import { info as roadInfo } from "./tools/roadinfo.mjs";
@@ -264,6 +264,8 @@ import { editNeuron } from "./src/netview.js";
   assert.strictEqual(claimFor(RETEST[0], open(5)), null, "five open claims: nothing new opens");
   assert.strictEqual(claimFor(RETEST[0], open(2)).id, "C3", "under five: the next id");
   assert(claims.every((c) => c.id && c.cmd && c.predicted), "every claim has a command and a prediction");
+  for (const b of bs) if (!b.tested && !RETEST.some((r) => b.title.startsWith(r.title))) assert(PLANS.some((p) => b.title.startsWith(p.title)), `a plan for "${b.title}"`);
+  for (const p of PLANS) assert(p.tool === "new" || fs.existsSync(p.tool), `${p.tool} exists`);
   console.log("ok  reaper: bullets parse, re-tests use real rules, five-open rule holds");
 }
 
