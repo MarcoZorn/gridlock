@@ -62,8 +62,10 @@ re-tests them (see *How sure*, below).
 
 **Driving**
 - **Drivers generalise to cities they never saw**, and do better on real
-  streets than on the generated ones they were raised on (1.3 to 2.8
-  crashes per 1000 units on Manhattan, Barcelona and Turin against 3.5).
+  streets than on the generated ones they were raised on. Crashes per 1000
+  units driven over twenty seeds: Manhattan 1.27 (95% interval 1.25-1.28),
+  Barcelona 1.39 (1.36-1.41) and Turin 2.81 (2.78-2.83), against 3.58
+  (3.53-3.63) on generated cities (C26, confirmed).
 - **They queue but do not yield.** They follow the car ahead and rarely
   overtake. Right of way never evolved, in a whole city or on a single
   crossroads, until a junction crash was priced at thirty times an ordinary
@@ -191,7 +193,7 @@ on day 0. Venice seed 7 is also open at hour 12 (0 of 32 from hour 0, 14
 from hour 12) and closes by hour 18 (26 of 32). Early decision is the
 exception (one run of four). The leader does not beat its own share of the
 cars reliably: on two fresh runs, 5 of 9 snapshots with the winner under half the
-cars had its win-rate interval above the share, 0 below (C9, killed). Claims C1, C3, C6, C7, C8, C9, C10, C11, C12, C13, C14, C15, C16, C17, C18, C19, C20, C21, C22, C23, C24 and C25 in [docs/claims.jsonl](docs/claims.jsonl) (`tools/replay.mjs`;
+cars had its win-rate interval above the share, 0 below (C9, killed). Claims C1, C3, C6, C7, C8, C9, C10, C11, C12, C13, C14, C15, C16, C17, C18, C19, C20, C21, C22, C23, C24, C25 and C26 in [docs/claims.jsonl](docs/claims.jsonl) (`tools/replay.mjs`;
 [ROADMAP.md](ROADMAP.md)).
 
 ## Running it
