@@ -268,7 +268,7 @@ export class Driver {
     this.x += Math.cos(this.a) * this.v * dt;
     this.y += Math.sin(this.a) * this.v * dt;
 
-    if (!this.city.contains(this.x, this.y)) return this.crash(this.v, BODY.wallDamage);
+    if (!this.city.contains(this.x, this.y)) return this.crash(this.v, BODY.wallDamage, "wall");
     this.checkLight();
     this.advance();
   }
@@ -407,7 +407,7 @@ export class Driver {
   // that braking helps. A fine per crash keeps the slope.
   // `scale` prices the damage: walls can be made cheaper than other cars
   // (BODY.wallDamage) to test what a driver learns when kerbs stop mattering.
-  crash(speed = this.v, scale = 1) {
+  crash(speed = this.v, scale = 1, kind = "car") {
     if (this.towing > 0) {
       // a wreck being hit is already wrecked; with BODY.wreckBlame it pays
       // for the car that ran into it, the jam its crash caused
@@ -418,6 +418,7 @@ export class Driver {
     if (BODY.junctionPrice !== 1 && this.city.junctionAt(this.x, this.y) >= 0) scale *= BODY.junctionPrice;
     const impact = Math.min(1.5, Math.abs(speed) / BODY.maxSpeed);
     this.damage += impact * impact * scale;
+    this.crashKind = kind; this.crashImpact = impact;   // for the economy's opt-in crash log
     if (this.onCrash) this.onCrash(this);
     this.crashed = true;
     const f = this.frame();

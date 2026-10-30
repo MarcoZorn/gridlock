@@ -79,6 +79,7 @@ export const ECON = {
   speedLimit: 0,        // a speed camera everywhere: over this speed a car pays...
   speedFine: 0.3,       // ...this much a second at double the limit, in proportion below that (an experiment, off)
   union: 0,             // union cars refuse passenger fares that pay less than this; the card passes parent to child (an experiment)
+  crashLog: 0,          // 1: every crash is appended to world.crashLog [tick, car, kind, impact, road from, road to, junction] (headless.mjs --crash-log writes it out)
   freezeAt: 0,          // a tick: from then on children are exact copies, no mutation or crossover (tools/trial.mjs FREEZE=1)
   crashMate: 0,         // 1: a car may only have a child after hitting another car, and the child is a cross of the two (tools/crashmate.mjs)
 };
@@ -312,6 +313,7 @@ export class EcoWorld {
       if (!this.insurance) car.cash -= cost;   // insured: the pool pays, see the premium
       else car.cash += cost * ECON.payout;
       this.events.crashes++;
+      if (ECON.crashLog) (this.crashLog ??= []).push([this.tick, car.id, car.crashKind, +car.crashImpact.toFixed(3), car.route[car.seg], car.route[car.seg + 1], this.city.junctionAt(car.x, car.y)]);
       this.city.addHeat("crash", car.x, car.y);
     };
     this.cars.push(d);

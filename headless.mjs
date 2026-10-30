@@ -85,8 +85,12 @@ if (process.argv.includes("--eco")) {
     for (const [i, kmh] of graph.maxspeed) eco.limits[i] = kmh / 3.6 / 0.4;
   }
   let written = eco.log.length;
+  // --crash-log: every crash, one JSON array per line, in runs/<name>/crashes.jsonl (see ECON.crashLog)
+  const crashes = path.join(dir, "crashes.jsonl");
+  if (process.argv.includes("--crash-log")) ECON.crashLog = 1;
   while (!stop && eco.tick < days * TICKS_PER_DAY) {
     eco.step();
+    if (eco.crashLog?.length) { fs.appendFileSync(crashes, eco.crashLog.map((c) => JSON.stringify(c)).join("\n") + "\n"); eco.crashLog.length = 0; }
     if (eco.tick % 3600 === 0) await tick();
     if (eco.log.length > written) {
       for (const r of eco.log.slice(written)) fs.appendFileSync(telemetry, JSON.stringify(r) + "\n");
