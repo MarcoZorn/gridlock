@@ -14,6 +14,7 @@ import { SpatialHash } from "./src/spatial.js";
 import { CityWorld } from "./src/cityworld.js";
 import { EcoWorld, ECON, gini, econParam, applyEcon } from "./src/ecoworld.js";
 import { Body } from "./src/body.js";
+import { HandBrain } from "./src/hand.js";
 import { Rewind } from "./src/rewind.js";
 import { Crowd, PED } from "./src/pedestrians.js";
 import { editNeuron } from "./src/netview.js";
@@ -209,6 +210,24 @@ import { editNeuron } from "./src/netview.js";
     assert(w.cars.every((c) => seen.has(JSON.stringify(c.body))), "a frozen run makes no new bodies");
   } finally { ECON.freezeAt = 0; }
   console.log("ok  freezeAt: births copy, nothing mutates");
+}
+
+// HAND: the hand-written driver makes trips on a generated city, crashes less than
+// four times a km, and neither mutation nor a save changes it
+{
+  Object.assign(ECON, { freezeAt: 1 });
+  try {
+    const w = new EcoWorld({ seed: 3, founders: HandBrain.founders() });
+    for (let i = 0; i < 20000; i++) w.step();
+    const trips = w.cars.reduce((a, d) => a + d.trips, 0), crashes = w.cars.reduce((a, d) => a + d.crashes, 0);
+    const km = w.cars.reduce((a, d) => a + d.dist, 0) / 1000;
+    assert(trips > 50, `the hand driver makes trips (${trips})`);
+    assert(crashes / km < 4, `and rarely crashes (${crashes} in ${km.toFixed(0)} km)`);
+    assert(w.cars.every((c) => c.genome.hand), "every child is the hand driver");
+    const again = EcoWorld.fromJSON(JSON.parse(JSON.stringify(w.toJSON())));
+    assert(again.cars.every((c) => c.genome.hand), "a save keeps it");
+  } finally { ECON.freezeAt = 0; }
+  console.log("ok  hand driver: drives, does not evolve, survives a save");
 }
 
 // the research tools run end to end: a two-seed trial and a two-replay
