@@ -78,9 +78,11 @@ re-tests them (see *How sure*, below).
   twenty seeds (C15, confirmed). Raised in fog, they learn to slow down (not re-tested).
 
 **What evolves with no fitness function**
-- **A side of the road, by chance.** With enough cars, three in four to
-  nine in ten keep to one side within four days; which side differs
-  between identical runs. The order grows smoothly with traffic, with no
+- **A side of the road, by chance, but only a lean.** Over twenty Turin seeds at day four the
+  cars on the run's majority side are 51% to 83% of those on two-way roads, and 7 of 20 runs
+  reach three in four (Wilson 95% interval 18-57%); the earlier "three in four to nine in
+  ten" needed more cars than a Turin trial has (C20, killed). Which side is a coin flip: 8 of
+  20 keep the right (exact binomial p 0.50). The order grows smoothly with traffic, with no
   sharp transition.
 - **One family takes the city, mostly.** Over twenty fresh Turin seeds at six days, one
   founder's family owns over half the cars in 19 (Wilson 95% interval 76-99%), and every
@@ -175,7 +177,7 @@ on day 0. Venice seed 7 is also open at hour 12 (0 of 32 from hour 0, 14
 from hour 12) and closes by hour 18 (26 of 32). Early decision is the
 exception (one run of four). The leader does not beat its own share of the
 cars reliably: on two fresh runs, 5 of 9 snapshots with the winner under half the
-cars had its win-rate interval above the share, 0 below (C9, killed). Claims C1, C3, C6, C7, C8, C9, C10, C11, C12, C13, C14, C15, C16, C17 and C19 in [docs/claims.jsonl](docs/claims.jsonl) (`tools/replay.mjs`;
+cars had its win-rate interval above the share, 0 below (C9, killed). Claims C1, C3, C6, C7, C8, C9, C10, C11, C12, C13, C14, C15, C16, C17, C19 and C20 in [docs/claims.jsonl](docs/claims.jsonl) (`tools/replay.mjs`;
 [ROADMAP.md](ROADMAP.md)).
 
 ## Running it
