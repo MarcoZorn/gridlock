@@ -4647,3 +4647,19 @@ Predicted at least 18 of 20 at startCars 100. `SEEDS=20 START=50,100,150 node to
 150: 17 of 20 ([64%, 95%]). Predicted at least 18 of 20 at 100: fails. The seed-104 pattern (100 starts, 50 and 200 do not) was luck
 of one seed; across twenty seeds the start rate is about four in five whatever the start. What makes the other fifth never take off
 is still open (the first-day numbers say they earn almost nothing, not why).
+
+### A give-way rule at the merge: no help
+
+`GRIDLOCK_HAND_YIELD` (new, off by default, in `src/hand.js`): a car closing in on an outer ray, nearer than 0.7 of the ray's range,
+caps the target speed at that gap times the knob. Hand drivers, Barcelona one-way, seed 102, three days, `--crash-log`
+(`tmp/cl-hand-one` is the baseline, `tmp/cl-hand-y0.5`, `tmp/cl-hand-y1.0`), the seven roads of the corridor 25>324 ... 468>469:
+
+| setting | trips | crashes | mean cars | crashes per car-day | trips per car-day | corridor crashes |
+|---|---|---|---|---|---|---|
+| off | 5435 | 74673 | 186.8 | 133.2 | 9.7 | 10110 |
+| 0.5 | 4803 | 71600 | 168.5 | 141.6 | 9.5 | 10265 |
+| 1.0 | 5139 | 76334 | 177.8 | 143.1 | 9.6 | 10999 |
+
+The rule does not lower crashes per car-day or the corridor's crashes at either strength; it nudges both up. One seed and one run per
+setting, so the direction is not a finding, only that there is no gain to chase. The crashes at the merge are not cars failing to look
+sideways; leaving room ahead (the follow gain above) was the only knob so far that bought safety, and it cost trips.
