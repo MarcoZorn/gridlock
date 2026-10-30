@@ -82,9 +82,13 @@ re-tests them (see *How sure*, below).
   nine in ten keep to one side within four days; which side differs
   between identical runs. The order grows smoothly with traffic, with no
   sharp transition.
-- **One family takes the city.** In three of four runs, every car descends
-  from a single founder within three to six days. Wealth itself is not
-  inherited (parent and child earnings are uncorrelated); numbers are.
+- **One family takes the city, mostly.** Over twenty fresh Turin seeds at six days, one
+  founder's family owns over half the cars in 19 (Wilson 95% interval 76-99%), and every
+  car descends from a single founder in 8 (22-61%); the older "three of four runs" came
+  from four. With hand-written drivers that cannot evolve, a family owns over half in 12 of
+  20 and none owns the whole city (C17, killed: the prediction was 15 or more), so evolving
+  drivers make the takeover more complete. Wealth itself is not inherited (parent and child
+  earnings are uncorrelated); numbers are.
 - **The cheapest car wins**, small and short-sighted, unless freight pays
   enough to make trucks worth it, and then only for a while.
 - **Drivers spread across competing platforms as ecology predicts**, in
@@ -168,7 +172,7 @@ on day 0. Venice seed 7 is also open at hour 12 (0 of 32 from hour 0, 14
 from hour 12) and closes by hour 18 (26 of 32). Early decision is the
 exception (one run of four). The leader does not beat its own share of the
 cars reliably: on two fresh runs, 5 of 9 snapshots with the winner under half the
-cars had its win-rate interval above the share, 0 below (C9, killed). Claims C1, C3, C6, C7, C8, C9, C10, C11, C12, C13, C14, C15 and C16 in [docs/claims.jsonl](docs/claims.jsonl) (`tools/replay.mjs`;
+cars had its win-rate interval above the share, 0 below (C9, killed). Claims C1, C3, C6, C7, C8, C9, C10, C11, C12, C13, C14, C15, C16 and C17 in [docs/claims.jsonl](docs/claims.jsonl) (`tools/replay.mjs`;
 [ROADMAP.md](ROADMAP.md)).
 
 ## Running it
