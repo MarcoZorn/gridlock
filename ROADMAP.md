@@ -87,7 +87,7 @@ properly (with a test where it is code), and ticks it off. No idling.
   a third, `Genome.activate` about a tenth. Binding `contains` once per
   sense changed nothing measurable. A real gain needs fewer wall probes per
   car per tick, which changes results; not done.)
-- [ ] gridlock: the eco page gets a Rewind button (snapshot every city hour,
+- [x] gridlock: the eco page gets a Rewind button (snapshot every city hour,
   restore any of them), now that restores are exact.
 - [x] gridlock: `tools/policies.mjs` reads the twenty-seed trial runs where
   they exist instead of the four-seed ones.
