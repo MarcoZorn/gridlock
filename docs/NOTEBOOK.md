@@ -4549,3 +4549,12 @@ evolve a family still often leads, by luck of founders and bodies, but it rarely
 push the leader to a monopoly. Correction: the README said "in three of four runs every car descends from a single
 founder"; over twenty seeds it is 8 of 20, and the bullet now says so. The hand runs with 22+ families are collapsed
 economies (see the C13 note): the city never grew past its floor, so there was no takeover to measure.
+
+### Claim C18 opened: the species threshold step, from scratch
+
+Prediction written before the run, in `docs/claims.jsonl`. `tools/stepcmp.mjs` (new, with `tools/stats.mjs`
+for the bootstrap): the generation-based city from scratch with a threshold step of 0.3 and of 0.02, paired
+by seed, mean fitness over the last TAIL generations. A two-seed smoke run at 60 generations was seen first:
+0.3 gave 62.6 and 0.02 gave 29.1 on average, difference -33.5 [-77.8, +10.7], one seed up and one down, so
+the effect is not visible at two seeds and 60 generations and the real run uses 100 generations and the last 20.
+`SEEDS=20 GENS=100 TAIL=20 node tools/stepcmp.mjs`, unit c18, log `tmp/stepcmp.log`.
