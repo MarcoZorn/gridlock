@@ -190,6 +190,6 @@ properly (with a test where it is code), and ticks it off. No idling.
   for one swept parameter (rays, sight, delay), with intervals.
 - [x] neat-from-scratch: the tour gets a sixth step for "Replay, new seed",
   explaining replaying the tape on this page.
-- [ ] all three: a short `CONTRIBUTING.md` per repo: how to run the tests,
+- [x] all three: a short `CONTRIBUTING.md` per repo: how to run the tests,
   where results go, the rules of the lab for gridlock.
 
