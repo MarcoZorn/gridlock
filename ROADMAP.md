@@ -193,3 +193,19 @@ properly (with a test where it is code), and ticks it off. No idling.
 - [x] all three: a short `CONTRIBUTING.md` per repo: how to run the tests,
   where results go, the rules of the lab for gridlock.
 
+
+### Next batch, from C10 to C14
+
+- [ ] gridlock: why do hand-written drivers crash on one-way Barcelona (C13:
+  crashes per car +276% in the two-way arm)? Run one hand-driver Barcelona
+  economy per map variant, count crashes by kind (wall, car, junction) and by
+  road, and say which part of `src/hand.js` fails there. Numbers from the
+  telemetry only.
+- [ ] gridlock: Study 3: give each README bullet that `tools/reap.mjs` marks
+  "needs a study of its own" a one-line plan (which tool, how many seeds, what
+  would count as a hit) in `RETEST`, shown in the list; the tool opens claims
+  only for the ones that `trial.mjs` can run.
+- [ ] gridlock: Study 2, the dynasty takeover three ways: frozen replays
+  already exist (`FREEZE=1 tools/replay.mjs`); the hand-driver arm has no
+  family differences to take over, so say that in the notebook with the
+  numbers from a one-day hand run (distinct species, distinct bodies).
