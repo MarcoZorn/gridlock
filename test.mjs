@@ -17,6 +17,7 @@ import { Body } from "./src/body.js";
 import { HandBrain } from "./src/hand.js";
 import { tape, replay } from "./tools/tapecars.mjs";
 import { RETEST, bullets, claimFor } from "./tools/reap.mjs";
+import { arm as crashArm } from "./tools/crashkinds.mjs";
 import { describe as describeLine } from "./src/lineage.js";
 import { Rewind } from "./src/rewind.js";
 import { Crowd, PED } from "./src/pedestrians.js";
@@ -301,6 +302,23 @@ import { editNeuron } from "./src/netview.js";
   for (const f of ["test.mjs", "docs/NOTEBOOK.md", "docs/claims.jsonl", "tools/trial.mjs", "tools/replay.mjs", "ROADMAP.md"]) assert(c.includes(f) && fs.existsSync(f), `CONTRIBUTING names ${f}, which exists`);
   assert(/At most five open claims/.test(c) && /At most five open claims/.test(road), "and the five-claim rule is the ROADMAP's");
   console.log("ok  CONTRIBUTING agrees with the repo");
+}
+
+// CRASHKINDS: wall crashes are crashes minus car crashes; a small city counts as collapsed
+{
+  const d = fs.mkdtempSync("tmp/crashkinds-");
+  try {
+    const write = (name, rows) => { fs.mkdirSync(`${d}/${name}`); fs.writeFileSync(`${d}/${name}/telemetry.jsonl`, rows.map((r) => JSON.stringify(r)).join("\n")); };
+    const day = (n, o) => [{ tick: n * 86400 - 1, crashes: 10, carCrashes: 4, trips: 3, cars: o.cars }, { tick: n * 86400, crashes: 20, carCrashes: 6, trips: 5, cars: o.cars }];
+    write("a1", [3, 4].flatMap((n) => day(n, { cars: 100 })));
+    write("a2", [3, 4].flatMap((n) => day(n, { cars: 20 })));
+    const r = crashArm(`${d}/a{s}`, [1, 2], 2, 4);
+    assert.strictEqual(r.runs, 2, "both runs read");
+    assert.strictEqual(r.car, 2 * (4 + 6 + 4 + 6), "car crashes summed over rows in days 2-4");
+    assert.strictEqual(r.wall, 2 * (6 + 14 + 6 + 14), "wall crashes are crashes minus car crashes");
+    assert.deepStrictEqual(r.perSeed.map((x) => x.collapsed), [false, true], "the 20-car city is collapsed");
+  } finally { fs.rmSync(d, { recursive: true, force: true }); }
+  console.log("ok  crashkinds: wall and car crashes, collapsed runs");
 }
 
 // the research tools run end to end: a two-seed trial and a two-replay
