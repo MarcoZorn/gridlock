@@ -4685,3 +4685,12 @@ So a coded rule costs trips and buys no safety; the README's "even then it cost 
 days, seeds 101-120: startCars 10, 20 of 20 runs end with more than 30 cars (Wilson 95% [84%, 100%]); startCars 20, 20 of 20 ([84%, 100%]).
 Predicted at least 18 of 20 at each: holds. Next to C22 (hand drivers: 16, 16 and 17 of 20 at 50, 100 and 150) the trap is a property of the
 hand-written driver, which cannot learn to earn in a sparse city, not of the economy's start.
+
+### README sweep: `tools/sweep.mjs`
+
+For every bullet under "What it has found", each number written with a % sign or a decimal point (and plain integers of three digits
+or more) is looked for, as a whole number, in `docs/NOTEBOOK.md` and `docs/claims.jsonl`. Result: 0 of the 15 bullets have a number
+found nowhere else. That is weaker than it sounds: a number such as 95% turns up 25 times or more, so it can sit in the README without
+the bullet's own result behind it; the tool lists those as too common to prove anything (for example 24%, 95%, 27%, 29%, 18% and 21% in the
+safety-rules bullet, 0.3, 0.02 and 100 in the species bullet). The tool is a floor, not a proof: it catches a number nobody ever wrote down,
+not a number written down for a different thing. `test.mjs` fails if a README number stops being found.
