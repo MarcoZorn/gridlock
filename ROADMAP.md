@@ -153,7 +153,7 @@ properly (with a test where it is code), and ticks it off. No idling.
   that a save resumes exactly. Seed 3 from generation 10: the eight replays end
   nearest to five different saved species, the modal one 2 of 8; seed 2 from
   generation 8: four species, the modal one 3 of 8. Notebook has the numbers.)
-- [ ] gridlock: a smoke test for `tools/trial.mjs` with `ALT=` (two maps)
+- [x] gridlock: a smoke test for `tools/trial.mjs` with `ALT=` (two maps)
   and with `FREEZE=1`, one seed, one city day.
 
 ### Bigger pieces (hours each; split into commits as they go)
