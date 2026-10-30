@@ -223,9 +223,17 @@ properly (with a test where it is code), and ticks it off. No idling.
   (Done: `PLANS` in `tools/reap.mjs`, eleven of them, a test that every unplanned
   bullet fails. Two need new tools (fog, NEAT species step); two need `trial.mjs` to
   take BODY constants, which would make more bullets trial-able.)
-- [ ] gridlock: `trial.mjs` takes BODY constants (`BODY=rayRange=60`) next to the
+- [x] gridlock: `trial.mjs` takes BODY constants (`BODY=rayRange=60`) next to the
   economy rule, passed to `headless.mjs --body`, with a smoke test; then fog and
   the reaction delay become claims.
+  (Done: `BODY=` in `tools/trial.mjs`, smoke-tested. Fog and the delay are not BODY
+  constants after all: evolved bodies have their own sight, and both live in
+  `tools/drunk.mjs` (`FOG=`, `DELAY=`), so the reaper plans now say that. Opening them
+  as claims needs drunk.mjs to run twenty seeds with an interval.)
+- [x] gridlock: `tools/drunk.mjs` loops twenty seeds and prints an interval on crashes per
+  1000 units for FOG= and DELAY= against none, so "in fog they speed up" and "a fifth
+  of a second quadruples crashes" can be opened as claims.
+  (Done: `SEEDS=` mode, smoke-tested, default output unchanged. Opened as C15 and C16.)
 - [ ] gridlock: Study 2, the dynasty takeover three ways: frozen replays
   already exist (`FREEZE=1 tools/replay.mjs`); the hand-driver arm has no
   family differences to take over, so say that in the notebook with the
