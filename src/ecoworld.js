@@ -129,6 +129,28 @@ export function gini(xs) {
 
 const freshEvents = () => ({ births: 0, deaths: 0, immigrants: 0, trips: 0, crashes: 0, carCrashes: 0, earned: 0, deadheads: 0, freight: 0, tripTicks: 0, pedHits: 0, sideAll: 0, sideRight: 0, pickups: 0, dropoffs: 0 });
 
+// Everything a car is doing at this moment (position, speed, route, job,
+// sensors, memory), so a restored world carries on exactly where it was
+// instead of every car being dropped on a fresh fare. Saves without it
+// (older ones) still load the old way.
+const SKIP = new Set(["genome", "p", "city", "body", "seen", "onArrive", "setRoute", "onCrash"]);
+function driveState(d) {
+  const o = {};
+  for (const [k, v] of Object.entries(d)) {
+    if (SKIP.has(k) || typeof v === "function") continue;
+    if (ArrayBuffer.isView(v)) o[k] = { typed: Array.from(v) };
+    else if (v === null || typeof v !== "object" || Array.isArray(v) || k === "job") o[k] = v;
+  }
+  return o;
+}
+function restoreDriveState(d, o) {
+  for (const [k, v] of Object.entries(o)) {
+    if (v && v.typed) { if (ArrayBuffer.isView(d[k]) && d[k].length === v.typed.length) d[k].set(v.typed); }
+    else d[k] = Array.isArray(v) ? v.slice() : v && typeof v === "object" ? { ...v } : v;
+  }
+  d.seen = null;
+}
+
 export class EcoWorld {
   // `founders` is a Population from the generation-based city: a no-fitness
   // world cannot start from random brains, because a car that cannot finish
@@ -268,10 +290,9 @@ export class EcoWorld {
     // value; wrap setRoute once so every new route gets a fresh job.
     const setRoute = d.setRoute.bind(d);
     d.setRoute = (r) => { setRoute(r); this.newJob(d); };
-    let lastDamage = 0;
     d.onCrash = (car) => {
-      const hit = car.damage - lastDamage;
-      lastDamage = car.damage;
+      const hit = car.damage - (car.lastDamage || 0);   // a property, not a closure, so a snapshot keeps it
+      car.lastDamage = car.damage;
       const cost = hit * (ECON.crashMass || car.p.mass) * ECON.crashCost;
       car.lastCrashDist = car.dist;
       car.claims = (car.claims || 0) + cost;
@@ -731,11 +752,13 @@ export class EcoWorld {
       cars: this.cars.map((d) => ({
         brain: d.genome.toJSON(), body: d.body.toJSON(), cash: d.cash, id: d.id, born: d.born, parent: d.parent,
         generation: d.generation, children: d.children, earned: d.earned, species: d.species, dist: d.dist, platform: d.platform, price: d.price,
+        state: driveState(d),
       })),
       species: this.species.map((s) => ({ id: s.id, brain: s.brain.toJSON(), body: s.body.toJSON(), born: s.born, size: s.size })),
       log: this.log,
       crowd: this.crowd ? this.crowd.toJSON() : null,
       ancestry: [...this.ancestry],
+      events: this.events, pool: this.pool || 0,
     };
   }
 
@@ -765,10 +788,19 @@ export class EcoWorld {
     for (const c of j.cars) {
       const d = w.spawn(Genome.fromJSON(c.brain), Body.fromJSON(c.body), c.cash, null);
       Object.assign(d, { id: c.id, born: c.born, parent: c.parent, generation: c.generation, children: c.children, earned: c.earned, species: c.species, dist: c.dist, platform: c.platform ?? 0, price: c.price ?? 1 });
+      if (c.state) restoreDriveState(d, c.state);
     }
     w.nextId = j.nextId;
     w.species = j.species.map((s) => ({ id: s.id, brain: Genome.fromJSON(s.brain), body: Body.fromJSON(s.body), born: s.born, size: s.size }));
     w.log = j.log || [];
+    // re-placing the cars above drew on the random stream and took jobs off
+    // the queues; with full car states, put both back as they were saved
+    if (j.cars.length && j.cars[0].state) {
+      w.rng.s = j.rng;
+      w.passengers = j.passengers; w.passengersB = j.passengersB || 0; w.freight = j.freight;
+      if (j.events) w.events = { ...j.events };
+      w.pool = j.pool || 0;
+    }
     if (j.ancestry) w.ancestry = new Map(j.ancestry);
     if (j.crowd) w.crowd = Crowd.fromJSON(j.crowd, w.city, new Rng(j.seed * 7 + 1));
     w.city.time = w.tick * DT;
