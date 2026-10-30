@@ -7,6 +7,7 @@ import { fitCanvas, panZoom, announceToggles, shortcuts, busiestCar, cityLayer, 
 import { drawNetwork, neuronAt, editNeuron } from "./netview.js";
 import { rayAngles } from "./driver.js";
 import { Rewind } from "./rewind.js";
+import { Timelapse } from "./timelapse.js";
 const rewind = new Rewind();
 
 const $ = (id) => document.getElementById(id);
@@ -350,8 +351,30 @@ function frame() {
     for (let i = 0; i < speed && performance.now() < until; i++) { world.step(); rewind.record(world); }
   }
   draw();
+  if (lapse) lapse.frame(world.tick);
   requestAnimationFrame(frame);
 }
+
+// the time-lapse: start, and on the second press stop and download
+let lapse = null;
+$("timelapse").onclick = async (e) => {
+  if (!Timelapse.supported()) { e.target.textContent = "Not supported in this browser"; return; }
+  if (!lapse) {
+    lapse = new Timelapse(view);
+    lapse.start(world.tick);
+    e.target.textContent = "Stop and save the video";
+    e.target.dataset.on = "true";
+    return;
+  }
+  const frames = lapse.clock.frames, blob = await lapse.stop();
+  lapse = null;
+  e.target.textContent = "Record a time-lapse";
+  e.target.dataset.on = "false";
+  if (!blob || !frames) return;
+  const url = URL.createObjectURL(blob);
+  Object.assign(document.createElement("a"), { href: url, download: `gridlock-${params.get("map") || "city"}-${frames}-frames.webm` }).click();
+  setTimeout(() => URL.revokeObjectURL(url), 10000);
+};
 
 panZoom(view, cam, (wx, wy) => {
   if (editing) {

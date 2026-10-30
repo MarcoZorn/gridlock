@@ -215,19 +215,22 @@ import { editNeuron } from "./src/netview.js";
 // rewind of one city hour, from clean caches, with real numbers out
 {
   const sh = (cmd, env) => execFileSync("node", cmd, { env: { ...process.env, ...env }, encoding: "utf8" });
-  fs.rmSync("tmp/replay/grid-s3-d1-e12", { recursive: true, force: true });
+  // this run's own folders: two sessions running the tests at once must not delete each other's
+  const rdir = `tmp/test-replay-${process.pid}`;
+  fs.rmSync(rdir, { recursive: true, force: true });
   for (const s of [101, 102]) fs.rmSync(`runs/trial-grid-base-d1-s${s}`, { recursive: true, force: true }), fs.rmSync(`runs/trial-grid-basic_0.25-d1-s${s}`, { recursive: true, force: true });
   const tr = sh(["tools/trial.mjs", "grid", "basic=0.25"], { SEEDS: "2", DAYS: "1", FROM: "0" });
   assert(/2 seeds/.test(tr) && !/NaN/.test(tr), "trial prints intervals, not NaN:\n" + tr);
   const fr = sh(["tools/trial.mjs", "grid", "basic=0.25"], { SEEDS: "2", DAYS: "2", FROM: "1", FREEZE: "1" });
   assert(/2 seeds/.test(fr) && !/NaN/.test(fr), "frozen trial prints intervals:\n" + fr);
-  const rp = sh(["tools/replay.mjs", "grid", "3"], { REPS: "2", DAYS: "1", EVERY: "12", SPAN: "12" });
+  const rp = sh(["tools/replay.mjs", "grid", "3"], { REPS: "2", DAYS: "1", EVERY: "12", SPAN: "12", REPLAY_DIR: rdir });
   assert(/hour 0 \| [0-2]\/2 \|/.test(rp), "replay prints a win count out of its two replays:\n" + rp);
   // seed 0 is the control: same noise as the original, so it must end the same
-  const d = "tmp/replay/grid-s3-d1-e12", end = JSON.parse(fs.readFileSync(`${d}/end.json`, "utf8"));
+  const d = `${rdir}/grid-s3-d1-e12`, end = JSON.parse(fs.readFileSync(`${d}/end.json`, "utf8"));
   const ctl = fs.readFileSync(`${d}/replays-evolving.jsonl`, "utf8").trim().split("\n").map(JSON.parse).find((r) => r.seed === 0);
   assert.strictEqual(ctl.won / ctl.cars, end.share, "replay with seed 0 reproduces the original run");
   assert.strictEqual(ctl.top, end.winner, "and ends with the same winning family");
+  fs.rmSync(rdir, { recursive: true, force: true });
   console.log("ok  tools: trial and replay smoke, seed-0 replay reproduces the original");
 }
 
@@ -525,6 +528,17 @@ console.log("ok  inequality measured");
     for (const w of ["Over 3 days", "crashed", "A trip took", "Wealth was", "more engine", "kept to the right", "species were alive"]) assert(out.includes(w), `explain says: ${w}`);
   } finally { fs.rmSync(dir, { recursive: true }); }
   console.log("ok  explain.mjs narrates a short run");
+}
+
+// the time-lapse clock: one frame per slot, however many ticks pass between draws
+{
+  const { FrameClock } = await import("./src/timelapse.js");
+  const c = new FrameClock(600);
+  c.start(1000);
+  const got = [1000, 1001, 1599, 1600, 1700, 5000, 5001, 5400].filter((t) => c.due(t));
+  assert.deepStrictEqual(got, [1000, 1599, 5000, 5400], "a frame at the start, then one at each 600-tick boundary reached (1200, 4800, 5400)");
+  assert.strictEqual(c.frames, 4);
+  console.log("ok  time-lapse frames one per slot");
 }
 
 console.log("\nall checks passed");

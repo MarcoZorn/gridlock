@@ -44,7 +44,8 @@ const [map = "turin", seed = 7, which] = process.argv.slice(2);
 const days = +(process.env.DAYS || 8), reps = +(process.env.REPS || 32);
 const every = +(process.env.EVERY || 3), span = +(process.env.SPAN || 48), perHour = perDay / 24;
 const hours = Array.from({ length: Math.floor(span / every) }, (_, k) => k * every);
-const dir = `tmp/replay/${map}-s${seed}-d${days}-e${every}`;
+// REPLAY_DIR: where runs are kept (tests use their own, so parallel sessions never share one)
+const dir = `${process.env.REPLAY_DIR || "tmp/replay"}/${map}-s${seed}-d${days}-e${every}`;
 fs.mkdirSync(dir, { recursive: true });
 
 // 1. the original run, with a snapshot (and the family of every car) each morning
