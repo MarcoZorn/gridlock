@@ -3984,3 +3984,32 @@ The same-noise control (seed 0) does not reproduce the original run until
 hour 12: restoring a snapshot re-places every car, which is itself a
 shake. So these replays measure what the population had decided, not its
 exact positions.
+
+### Claim C1, confirmed for one seed: Turin's monopoly is decided by hour six
+
+Turin, seed 7: the base run's winner is family 44, which ends with every
+car. Snapshots every third city hour of day 0, each replayed 32 times with
+fresh noise (days 0-3), counting replays that crown family 44 again. 95%
+Wilson intervals; frozen = mutation switched off after the rewind.
+
+| hour | evolving | frozen | winner's share of cars |
+|---|---|---|---|
+| 0 | 1/32 (1-16%) | 0/32 (0-11%) | 2% |
+| 3 | 7/32 (11-39%) | 2/32 (2-20%) | 17% |
+| 6 | 25/32 (61-89%) | 27/32 (68-93%) | 37% |
+| 9 | 30/32 (80-98%) | 31/32 (84-99%) | 40% |
+| 12 | 32/32 (89-100%) | 32/32 (89-100%) | 53% |
+| 15 | 32/32 (89-100%) | 32/32 (89-100%) | 52% |
+| 18 | 32/32 (89-100%) | 32/32 (89-100%) | 51% |
+| 21 | 32/32 (89-100%) | 32/32 (89-100%) | 53% |
+
+All four predictions held: under 20% at hour 0, above 75% by hour 18, the
+rise before the family holds half the cars, frozen similar to evolving. At
+hour 6 the family owns 37% of the cars and still wins 78% of replays, so
+"the biggest family stays biggest" is not the whole story. It is a lower
+bound, though: 37% may already be the largest share. Not checked: whether
+the winner was the largest family at hour 6.
+
+The earlier reading of the same-noise control was wrong: it is one replay per
+hour, not 32, so it says nothing by itself. Limits: one seed, one city
+(Study 1 items 2-4 are open). Table: `node tmp/c1-table.mjs`.
