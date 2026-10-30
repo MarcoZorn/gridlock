@@ -111,3 +111,21 @@ properly (with a test where it is code), and ticks it off. No idling.
   shown is the one picked on many tracks, not the record-holder. (Already
   there: a Hard tracks button, and the page shows this generation's best,
   never the record-holder.)
+- [ ] gridlock: Study 2 needs `tools/trial.mjs` to take `FREEZE=1` (no
+  mutation after day 2, in both arms). Add it with a smoke test, then open
+  a claim for the congestion charge frozen vs evolving.
+- [ ] gridlock: `tools/trial.mjs` on a map file (`maps/x.json` or a path),
+  so the one-way claim can be re-tested: Barcelona with its arrows against
+  the two-way copy in `tmp/barcelona-twoway.json`, twenty seeds.
+- [ ] gridlock: a findings page (`findings.html`) that reads
+  `docs/claims.jsonl` and shows every claim with its status, prediction and
+  result, linked from the site's nav. Plain HTML, no build step.
+- [ ] gridlock: a test for `tools/explain.mjs` on a short run (it prints,
+  every number is finite, the sentences are there).
+- [ ] gridlock: refresh `docs/city.png` from the current build with
+  headless Chrome after a few generations, so the README shows today's
+  drivers.
+- [ ] neat-from-scratch: a "Replay from here" button: save the run at a
+  generation, keep going, and on demand reload it with a new seed to see
+  whether evolution finds the same thing twice (the tape idea, on a track).
+
