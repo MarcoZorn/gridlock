@@ -34,6 +34,7 @@ export const DEFAULTS = {
 };
 
 export function mutate(g, innov, rng, cfg) {
+  if (g.hand) return g;
   for (const c of g.conns.values()) {
     if (rng.next() < cfg.pWeight) {
       if (rng.next() < cfg.pWeightReplace) c.w = rng.normal();

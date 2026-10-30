@@ -117,6 +117,7 @@ export class Genome {
   }
 
   static fromJSON(j) {
+    if (j.hand) return new Genome.Hand();
     const kinds = { i: "input", b: "bias", h: "hidden", o: "output" };
     const g = new Genome(j.i, j.o);
     g.biasId = j.b;
