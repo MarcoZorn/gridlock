@@ -4488,3 +4488,18 @@ More caution cuts crashes per car (133.2 to 60.8) but also trips per car (9.7 to
 half. So it is a trade, not a free fix: the guess is partly right (following distance matters) and does not meet
 "without lowering trips". The merge at 324 stays untested: the hand driver has no rule for giving way. One seed,
 one run per setting.
+
+### Claims C15 and C16 opened: fog and reaction delay at twenty seeds
+
+`tools/drunk.mjs` now takes `SEEDS=n`: n seeds from 101, the FOG/DELAY/SHARE setting against none on the same
+seeds, a paired change with a 95% bootstrap interval for crashes per 1000 units and distance per tick (without
+`SEEDS` it prints the old one line, checked identical). `trial.mjs` also takes `BODY=` for body constants the
+economy reads (treatment arm only; sight is an evolved gene, so `rayRange` does nothing there).
+Predictions written before the runs, in `docs/claims.jsonl`:
+
+- C15, `SEEDS=20 FOG=0.5 node tools/drunk.mjs`: distance per tick up, interval above zero. A two-seed smoke run
+  of the new mode (distance per tick +20.4%, crashes -5.4%) was seen first; said in the claim's source.
+- C16, `SEEDS=20 DELAY=12 SHARE=1 node tools/drunk.mjs`: crashes per 1000 units up with the interval entirely
+  above +150% (the README's "quadruples" is +300%).
+
+Running as systemd units c15 and c16, logs `tmp/drunk-fog.log` and `tmp/drunk-delay.log`.
