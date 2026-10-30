@@ -196,11 +196,15 @@ properly (with a test where it is code), and ticks it off. No idling.
 
 ### Next batch, from C10 to C14
 
-- [ ] gridlock: why do hand-written drivers crash on one-way Barcelona (C13:
+- [x] gridlock: why do hand-written drivers crash on one-way Barcelona (C13:
   crashes per car +276% in the two-way arm)? Run one hand-driver Barcelona
   economy per map variant, count crashes by kind (wall, car, junction) and by
   road, and say which part of `src/hand.js` fails there. Numbers from the
   telemetry only.
+  (Partly: `tools/crashkinds.mjs`. The blow-up was collapsed economies, 7 of 20
+  one-way runs against 4 of 20 two-way; which rule of `src/hand.js` fails is open.)
+- [ ] gridlock: log each crash's road, kind and speed in the telemetry (opt-in,
+  `--crash-log`), then say which junctions or roads the hand driver crashes on.
 - [ ] gridlock: Study 3: give each README bullet that `tools/reap.mjs` marks
   "needs a study of its own" a one-line plan (which tool, how many seeds, what
   would count as a hit) in `RETEST`, shown in the list; the tool opens claims
