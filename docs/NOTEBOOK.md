@@ -4322,3 +4322,12 @@ Two-way vs one-way, days 2-6: fares a day +18.2% [+15.7%, +20.6%] (20 up / 0 dow
 car a day -0.9% [-3.6%, +1.7%] (9 up / 11 down); trip time -17.5% [-20.2%, -14.8%]; cars -2.9%
 [-6.7%, +0.7%]; Gini -0.016 [-0.026, -0.007]. Predicted fares +10 to +35% excluding zero and
 crashes within +-15%: both hold. C11 (frozen charge, Turin) is running next.
+
+### Claim C11 confirmed: the congestion charge's trade survives frozen drivers
+
+`SEEDS=20 FREEZE=1 node tools/trial.mjs turin congestion=0.1`, log `tmp/trial-frozen-charge.log`.
+Mutation frozen after day 2 in both arms, days 2-6: crashes per car a day -31.4% [-35.0%, -27.7%]
+(0 up / 20 down); fares a day -15.0% [-18.5%, -11.6%] (0 up / 20 down); trip time -28.8%
+[-31.9%, -25.4%]; cars -43.3% [-46.4%, -40.4%]; Gini +0.006 [+0.005, +0.008]. Both intervals
+entirely below zero, so the prediction holds. Not compared against the evolving arm in a paired
+test, so no claim about how much evolution adds.
