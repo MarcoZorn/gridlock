@@ -254,9 +254,11 @@ prediction written first, then the run, then the README line.
   threshold step of 0.3 and of 0.02, twenty seeds each, mean fitness at generation 60, paired
   bootstrap interval. Cheap (0.08 s a generation).
   (Done: tool, smoke test, claim C18 open, unit c18.)
-- [ ] gridlock: one-way fragility, `tools/percolation.mjs` with a SEEDS= mode: twenty random closure
+- [x] gridlock: one-way fragility, `tools/percolation.mjs` with a SEEDS= mode: twenty random closure
   orders per city, the share of junctions still reachable at 5% of roads closed, Wilson or
   bootstrap interval, for Turin, Barcelona, Manhattan and the grid.
+  (Done: the tool already averaged twenty orders; it now prints the interval and takes ORDER0= for
+  fresh orders. C19 confirmed.)
 - [ ] gridlock: side of the road, `tools/sidechart.mjs` over twenty fresh seeds: the share keeping to
   one side after four days with an interval, and how many seeds keep right (a coin-flip check).
 - [ ] gridlock: platforms, `tools/platforms.mjs` over twenty seeds: drivers' share against passengers'
