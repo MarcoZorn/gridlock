@@ -127,8 +127,11 @@ export function distance(a, b, cfg) {
 }
 
 class Species {
-  constructor(rep) { this.rep = rep; this.members = []; this.best = -Infinity; this.stale = 0; }
+  constructor(rep, id) { this.id = id; this.rep = rep; this.members = []; this.best = -Infinity; this.stale = 0; }
 }
+
+// how many generations of ancestry a population keeps
+const LINEAGE_GENS = 60;
 
 export class Population {
   constructor(nIn, nOut, cfg = {}, seed = 1) {
@@ -139,6 +142,8 @@ export class Population {
     this.generation = 0;
     this.best = null;
     this.species = [];
+    this.nextSpecies = 1; this.nextId = 1;
+    this.ancestry = new Map();   // genome id -> {gen, parents, species, fitness}, the last LINEAGE_GENS generations
     this.genomes = [];
     for (let i = 0; i < this.cfg.popSize; i++) {
       const g = Genome.initial(nIn, nOut, this.innov, this.rng);
@@ -151,6 +156,7 @@ export class Population {
   evolve() {
     const cfg = this.cfg, rng = this.rng;
     this.speciate();
+    this.tag();
 
     for (const s of this.species) {
       s.members.sort((x, y) => y.fitness - x.fitness);
@@ -161,6 +167,7 @@ export class Population {
     const champion = this.genomes.reduce((a, b) => (b.fitness > a.fitness ? b : a));
     if (!this.best || champion.fitness > this.best.fitness) {
       this.best = champion.clone();
+      this.best.id = champion.id;   // same lineage entry, a separate object
       this.best.fitness = champion.fitness;
     }
 
@@ -184,23 +191,27 @@ export class Population {
       let n = Math.round(share * cfg.popSize);
       if (s.members.length >= cfg.elitismMinSize) {
         for (let e = 0; e < cfg.elitism && e < s.members.length; e++) {
-          next.push(s.members[e].clone());
+          next.push(this.born(s.members[e].clone(), [s.members[e]]));
           n--;
         }
       }
       const pool = s.members.slice(0, Math.max(1, Math.floor(s.members.length * cfg.survival)));
       for (let i = 0; i < n; i++) {
-        let child;
+        let child, from;
         if (pool.length > 1 && rng.next() < cfg.pCrossover) {
-          child = crossover(rng.pick(pool), rng.pick(pool), rng, cfg);
+          const a = rng.pick(pool), b = rng.pick(pool);
+          child = crossover(a, b, rng, cfg);
+          from = [a, b];
         } else {
-          child = rng.pick(pool).clone();
+          const a = rng.pick(pool);
+          child = a.clone();
+          from = [a];
         }
-        next.push(mutate(child, this.innov, rng, cfg));
+        next.push(this.born(mutate(child, this.innov, rng, cfg), from));
       }
     }
     while (next.length < cfg.popSize) {
-      next.push(mutate(this.best.clone(), this.innov, rng, cfg));
+      next.push(this.born(mutate(this.best.clone(), this.innov, rng, cfg), [this.best]));
     }
     next.length = cfg.popSize;
 
@@ -212,6 +223,30 @@ export class Population {
     for (const s of this.species) { s.rep = s.members[0]; s.members = []; }
     this.genomes = next;
     this.generation++;
+    for (const [id, a] of this.ancestry) if (a.gen < this.generation - LINEAGE_GENS) this.ancestry.delete(id);
+  }
+
+  // Give every genome of this generation an id and a lineage entry, with its
+  // species and fitness; the first generation has no parents. Draws no random numbers.
+  tag() {
+    for (const s of this.species) for (const g of s.members) {
+      if (g.id == null || !this.ancestry.has(g.id)) { g.id = this.nextId++; this.ancestry.set(g.id, { gen: this.generation, parents: [] }); }
+      Object.assign(this.ancestry.get(g.id), { species: s.id, fitness: g.fitness });
+    }
+  }
+
+  born(child, parents) {
+    child.id = this.nextId++;
+    this.ancestry.set(child.id, { gen: this.generation + 1, parents: parents.map((p) => p.id) });
+    return child;
+  }
+
+  // The first-parent chain behind a genome, oldest first, as far back as the
+  // population remembers: [{id, gen, parents, species, fitness}].
+  lineage(g) {
+    const out = [];
+    for (let id = g.id, a = this.ancestry.get(id); a; id = a.parents[0], a = this.ancestry.get(id)) out.push({ id, ...a });
+    return out.reverse();
   }
 
   // Everything needed to carry on evolving exactly where this left off:
@@ -233,13 +268,14 @@ export class Population {
     p.rng = new Rng(1);
     p.rng.s = j.rng;
     p.threshold = j.threshold;
+    p.nextSpecies = 1; p.nextId = 1; p.ancestry = new Map();   // a save does not carry ancestry
     p.generation = j.generation;
     p.innov = Innovations.fromJSON(j.innov);
     p.genomes = j.genomes.map((g) => Genome.fromJSON(g));
     p.best = null;
     if (j.best) { p.best = Genome.fromJSON(j.best.g); p.best.fitness = j.best.f; }
     p.species = j.species.map((s) => {
-      const sp = new Species(Genome.fromJSON(s.rep));
+      const sp = new Species(Genome.fromJSON(s.rep), p.nextSpecies++);
       sp.best = s.best; sp.stale = s.stale;
       return sp;
     });
@@ -253,7 +289,7 @@ export class Population {
       for (const s of this.species) {
         if (distance(g, s.rep, this.cfg) < this.threshold) { home = s; break; }
       }
-      if (!home) { home = new Species(g); this.species.push(home); }
+      if (!home) { home = new Species(g, this.nextSpecies++); this.species.push(home); }
       home.members.push(g);
     }
     this.species = this.species.filter((s) => s.members.length);
