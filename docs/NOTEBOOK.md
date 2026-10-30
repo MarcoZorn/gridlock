@@ -4711,3 +4711,11 @@ The README's "1.3 to 2.8 crashes per 1000 units on Manhattan, Barcelona and Turi
 `MAP=` (three seeds each: 2.79 Turin, 1.35 Barcelona, 1.27 Manhattan, 3.52 on the generated cities, checked again today). The tool now takes
 `ARMS=none SEEDS=n` for the absolute rate with a 95% bootstrap interval. Prediction written before the run, in `docs/claims.jsonl`: the interval of each
 real city lies entirely below the generated cities' interval. Unit c26 (four maps in parallel), logs `tmp/yr-c26-*.log`.
+
+### Claim C26 confirmed: the drivers crash less on real streets than on the generated cities
+
+`for m in "" turin barcelona manhattan; do MAP=$m ARMS=none SEEDS=20 node tools/yieldrule.mjs; done` (`tmp/yr-c26-*.log`), traffic cities, no rule,
+seeds 101-120: generated cities 3.58 crashes per 1000 units driven [3.53, 3.63]; Turin 2.81 [2.78, 2.83]; Barcelona 1.39 [1.36, 1.41]; Manhattan
+1.27 [1.25, 1.28]. Predicted each real city's interval entirely below the generated one: holds, by a wide margin. The three-seed figures the README had
+(2.8, 1.4, 1.3 against 3.5) were right to the first decimal. The intervals are tight because a seed is one 120-car traffic city over six generations
+and the seeds vary only the traffic; they say nothing about other drivers or other cities.
