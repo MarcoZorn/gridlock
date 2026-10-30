@@ -4520,3 +4520,15 @@ in this economy are labels from brain and body distance, and a family is everyon
 Hand-driver cars still have different founders and different bodies at the start, and children copy them
 unchanged, so a family can still take over by luck and by what its body earns. Whether it does is not
 measured here; that needs the family tracking of `tools/replay.mjs` on a hand run, which is the next backlog item.
+
+### Claims C15 and C16 confirmed: fog and reaction delay at twenty seeds
+
+`SEEDS=20 FOG=0.5 node tools/drunk.mjs` (`tmp/drunk-fog.log`): distance per tick +20.7% [+20.0%, +21.5%]
+(20 up / 0 down); crashes per 1000 units -5.5% [-6.8%, -4.2%] (0 up / 20 down). Predicted distance per tick up:
+holds. Crashes fall a little in fog, which was not predicted.
+
+`SEEDS=20 DELAY=12 SHARE=1 node tools/drunk.mjs` (`tmp/drunk-delay.log`): crashes per 1000 units +291.6%
+[+285.0%, +298.4%] (20 up / 0 down); distance per tick -63.7% [-64.2%, -63.2%] (0 up / 20 down). Predicted the
+interval entirely above +150%: holds. "Quadruples" is +300%, just above the top of the interval, so "nearly
+quadruples" is what the README now says. The intervals are narrow because each seed is a whole traffic city
+of 120 cars over three generations, and the seeds differ only in the city's layout of traffic.
