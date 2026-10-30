@@ -4767,3 +4767,8 @@ and too different. Whether longer runs or a different pay level find trucks is n
 Prediction written before the run, in `docs/claims.jsonl`. `tools/survivors.mjs` (new, tested) pairs two arms on the seeds where both ended above 30 cars. Hand
 drivers on Barcelona, one-way against two-way, six days, seeds 201-220 (`runs/surv-one-s*`, `runs/surv-two-s*`): predicted fares up and crashes per car up, each with the
 interval above zero. The crash prediction rests on the survivors figures on seeds 101-120 (129.6 one-way, 156.2 two-way, seen before). Unit c29, log `tmp/survivors-c29.log`.
+
+### Claim C30 opened: is the generated city's right-hand habit learned?
+
+Prediction written before the run, in `docs/claims.jsonl`: with hand-written drivers (no learned side) in the default generated city, four days, seeds 221-240,
+the number of runs keeping right is between 6 and 14 of 20. `SEED0=221 node tools/sides.mjs "runs/side-hand-s{s}"`, unit c30 (starts when c29 ends), log `tmp/sides-c30.log`.
