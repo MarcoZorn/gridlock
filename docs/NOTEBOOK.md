@@ -4303,3 +4303,14 @@ says, in one it does not. A claim needs a fresh run with the prediction written 
 Prediction written before the run, in `docs/claims.jsonl`. Runs launched detached:
 `REPS=32 DAYS=4 EVERY=3 SPAN=18 node tools/replay.mjs venice 8` and `... barcelona 8`, logs
 `tmp/replay-venice8.log` and `tmp/replay-barcelona8.log`. Nothing to read until the summaries print.
+
+### Claim C9 killed: the winner does not reliably beat its own share
+
+Runs finished (`tmp/replay-venice8.log`, `tmp/replay-barcelona8.log`; they had
+completed before the pause, I only read them). Venice 8 winner ends with 74% of the
+cars, Barcelona 8 winner with 56%. Snapshots from hour 3 on with the winner under 50%
+(9 pooled): interval above the share in 5, contains it in 4, below in 0
+(Venice hours 3, 6, 12, 15 and Barcelona hour 15 above). The prediction needed at
+least 60% above and at most 1 below: 5 of 9 is 56%, so it fails. Venice leans
+above its share, Barcelona mostly sits on it, as in Barcelona 7. Reading: the share
+of cars explains most of the curve; no general head start for the leader.

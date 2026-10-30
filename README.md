@@ -154,7 +154,9 @@ open. Barcelona seed 7 is like Turin seed 11: 1
 of 32 replays from hour 0, 13 from hour 6, 17 from hour 21, never decided
 on day 0. Venice seed 7 is also open at hour 12 (0 of 32 from hour 0, 14
 from hour 12) and closes by hour 18 (26 of 32). Early decision is the
-exception (one run of four). Claims C1, C3, C6, C7 and C8 in [docs/claims.jsonl](docs/claims.jsonl) (`tools/replay.mjs`;
+exception (one run of four). The leader does not beat its own share of the
+cars reliably: on two fresh runs, 5 of 9 snapshots with the winner under half the
+cars had its win-rate interval above the share, 0 below (C9, killed). Claims C1, C3, C6, C7, C8 and C9 in [docs/claims.jsonl](docs/claims.jsonl) (`tools/replay.mjs`;
 [ROADMAP.md](ROADMAP.md)).
 
 ## Running it
