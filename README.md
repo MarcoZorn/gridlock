@@ -69,11 +69,13 @@ re-tests them (see *How sure*, below).
   crossroads, until a junction crash was priced at thirty times an ordinary
   one; even then it cost them elsewhere.
 - **They are reflex machines.** A fifth of a second of reaction delay, a
-  quarter of a human's, quadruples crashes. No textbook car-following model
+  quarter of a human's, nearly quadruples crashes: +291.6% [+285.0%, +298.4%]
+  over twenty seeds (C16, confirmed). No textbook car-following model
   describes them, but one brain at a time is predictable: what it sees
   explains up to 77% of its acceleration.
 - **In fog they speed up**, reading the edge of their shortened sight as
-  open road; raised in fog, they learn to slow down.
+  open road: with sight halved, distance per tick +20.7% [+20.0%, +21.5%] over
+  twenty seeds (C15, confirmed). Raised in fog, they learn to slow down (not re-tested).
 
 **What evolves with no fitness function**
 - **A side of the road, by chance.** With enough cars, three in four to
@@ -166,7 +168,7 @@ on day 0. Venice seed 7 is also open at hour 12 (0 of 32 from hour 0, 14
 from hour 12) and closes by hour 18 (26 of 32). Early decision is the
 exception (one run of four). The leader does not beat its own share of the
 cars reliably: on two fresh runs, 5 of 9 snapshots with the winner under half the
-cars had its win-rate interval above the share, 0 below (C9, killed). Claims C1, C3, C6, C7, C8, C9, C10, C11, C12, C13 and C14 in [docs/claims.jsonl](docs/claims.jsonl) (`tools/replay.mjs`;
+cars had its win-rate interval above the share, 0 below (C9, killed). Claims C1, C3, C6, C7, C8, C9, C10, C11, C12, C13, C14, C15 and C16 in [docs/claims.jsonl](docs/claims.jsonl) (`tools/replay.mjs`;
 [ROADMAP.md](ROADMAP.md)).
 
 ## Running it
