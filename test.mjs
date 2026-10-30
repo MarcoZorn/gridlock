@@ -15,6 +15,7 @@ import { CityWorld } from "./src/cityworld.js";
 import { EcoWorld, ECON, gini, econParam, applyEcon } from "./src/ecoworld.js";
 import { Body } from "./src/body.js";
 import { HandBrain } from "./src/hand.js";
+import { tape, replay } from "./tools/tapecars.mjs";
 import { Rewind } from "./src/rewind.js";
 import { Crowd, PED } from "./src/pedestrians.js";
 import { editNeuron } from "./src/netview.js";
@@ -228,6 +229,22 @@ import { editNeuron } from "./src/netview.js";
     assert(again.cars.every((c) => c.genome.hand), "a save keeps it");
   } finally { ECON.freezeAt = 0; }
   console.log("ok  hand driver: drives, does not evolve, survives a save");
+}
+
+// TAPE (racing cars): a saved population resumed with its own random stream carries on
+// exactly as the original did; a fresh stream does not
+{
+  const w = new World({ seed: 5 });
+  while (w.pop.generation < 6) w.runGeneration();
+  const snap = JSON.parse(JSON.stringify(w.pop.toJSON()));
+  for (let i = 0; i < 3; i++) w.runGeneration();   // then the fourth, stopped before it breeds, like replay()
+  const lead = (x) => { const c = x.leader(); return [c.fitness(), JSON.stringify(c.genome.toJSON())]; };
+  while (w.step()) {}
+  const same = replay(5, snap, 0, 4), other = replay(5, snap, 99991, 4);
+  assert.deepStrictEqual([same.fitness(), JSON.stringify(same.genome.toJSON())], lead(w), "same stream: same champion");
+  assert.notStrictEqual(JSON.stringify(other.genome.toJSON()), lead(w)[1], "fresh stream: another champion");
+  assert.strictEqual(tape(5, 6).generation, 6, "tape stops at the generation asked for");
+  console.log("ok  racing-car tape: a save resumes exactly");
 }
 
 // the research tools run end to end: a two-seed trial and a two-replay
