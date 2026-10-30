@@ -4726,3 +4726,12 @@ The C20 entry and the README said the earlier "three in four to nine in ten" had
 and it is wrong: in the twenty Turin runs of C20, the mean number of cars during day 4 is 182 at the lowest, 208 at the median and 231 at the
 highest, more than the "about a hundred cars" the older note gave as the condition. The strength of the lean did not reproduce at twenty seeds;
 why the older runs showed more is not known. The README now says only that.
+
+### Claims C27 and C28 opened: freight, and the side of the road in the generated city
+
+Predictions written before the runs, in `docs/claims.jsonl`.
+
+- C27: `freightRate=0.012,freightDemand=0.75` (the freight boom: both tripled) on Turin, six days, seeds 141-160 (`runs/freight-turin-s*`), cargo
+  gene change with `tools/traits.mjs` (`SEED0=141`), predicted to rise (interval above zero, rose in at least 12 of 20). Unit c27, log `tmp/traits-c27.log`.
+- C28: the default generated city, four days, seeds 161-180 (`runs/side-gen-s*`), `SEED0=161 node tools/sides.mjs`, predicted at least 12 of 20 runs
+  with 75% or more of the cars on one side. Unit c28, log `tmp/sides-c28.log`.
