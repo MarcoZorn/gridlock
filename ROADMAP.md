@@ -90,5 +90,7 @@ properly (with a test where it is code), and ticks it off. No idling.
   across seeds, like `tools/trial.mjs`.
 - [ ] cars: a test that `track_room` keeps every pinch passable at
   hardness 2 too.
-- [ ] neat-from-scratch: a hard-tracks toggle on the page, and the leader
-  shown is the one picked on many tracks, not the record-holder.
+- [x] neat-from-scratch: a hard-tracks toggle on the page, and the leader
+  shown is the one picked on many tracks, not the record-holder. (Already
+  there: a Hard tracks button, and the page shows this generation's best,
+  never the record-holder.)
