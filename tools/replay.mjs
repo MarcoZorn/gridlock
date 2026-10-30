@@ -89,7 +89,8 @@ await Promise.all(Array.from({ length: Math.max(1, Math.min(jobs.length, os.cpus
 }));
 
 // 3. P(the original winner wins again), per snapshot day, with a Wilson interval
-const all = fs.readFileSync(out, "utf8").trim().split("\n").map(JSON.parse);
+// one result per (hour, seed): two runners on the same files can write a replay twice
+const all = [...new Map(fs.readFileSync(out, "utf8").trim().split("\n").map(JSON.parse).map((r) => [key(r.day, r.seed), r])).values()];
 const wilson = (k, n) => { const z = 1.96, p = k / n, c = (p + z * z / (2 * n)) / (1 + z * z / n), h = (z / (1 + z * z / n)) * Math.sqrt(p * (1 - p) / n + z * z / (4 * n * n)); return [c - h, c + h]; };
 console.log(`${map} s${seed}, ${days} days, ${tag}: the winner (family ${end.winner}) ends with ${(100 * end.share).toFixed(0)}% of the cars; its share at each snapshot (hours ${hours.join(" ")}) ${end.path.map((x) => (100 * x).toFixed(0) + "%").join(" ")}`);
 console.log("rewound to hour | replays the winner wins (>50% of cars) | 95% interval | winner's share then | same-noise control");

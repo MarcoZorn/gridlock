@@ -4049,3 +4049,29 @@ All three predictions written before the run held: under 20% from hour 0
 (0%), over 75% by hour 18 (100%), and the frozen null similar. The rise
 does come before the family holds half the cars, but only by a few hours.
 One seed; a second is running.
+
+### Claim C3: seed 11 is not decided on day 0 (evolving half)
+
+The second Turin economy behaves quite differently. Its eventual winner,
+family 42, never takes the city outright: it ends day four with 53% of
+the cars, and through day 0 it holds only 10-20%. Rewound to every third
+hour of day 0 and replayed 32 times (one result per replay; two runners
+had overlapped on the same files and written some twice, now dropped):
+
+| rewound to hour | family 42 ends with over half the cars | its share then |
+|---|---|---|
+| 0 | 3/32 | 2% |
+| 3 | 7/32 | 10% |
+| 6 | 12/32 | 18% |
+| 9 | 11/32 | 14% |
+| 12 | 19/32 | 13% |
+| 15 | 9/32 | 17% |
+| 18 | 16/32 | 16% |
+| 21 | 15/32 | 20% |
+
+No decision on day 0: from hour 3 on the same family wins about one
+replay in three to three in five, flat within the noise. C3 predicted
+over 75% by hour 12 (19/32, 59%): that part fails. So seed 7's six-hour
+window is not a law. When one family races ahead on the first morning,
+as in seed 7, the race is over in hours; when nobody does, the city stays
+an open contest for days. The frozen replays for seed 11 are running.
