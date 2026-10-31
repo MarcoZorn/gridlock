@@ -177,9 +177,12 @@ re-tests them (see *How sure*, below).
 
 ## How sure
 
-Most of the above was measured on two to four seeds, and several results
-flipped when seeds were added. The project is now turning into an
-instrument that re-tests itself:
+Most of the above was first measured on two to four seeds, and several
+results flipped when seeds were added. Each has since been re-tested, one
+claim at a time, on twenty seeds: `docs/claims.jsonl` holds 31 claims, 20
+confirmed and 11 killed, none open, and 14 of the 15 headline bullets above carry
+an interval (the fifteenth, no Braess road, is an exhaustive scan with no seeds
+to vary). The project is an instrument that re-tests itself:
 
 - `tools/trial.mjs` runs a rule against no rule on twenty paired seeds and
   reports each effect with a 95% bootstrap interval.
@@ -207,7 +210,8 @@ on day 0. Venice seed 7 is also open at hour 12 (0 of 32 from hour 0, 14
 from hour 12) and closes by hour 18 (26 of 32). Early decision is the
 exception (one run of four). The leader does not beat its own share of the
 cars reliably: on two fresh runs, 5 of 9 snapshots with the winner under half the
-cars had its win-rate interval above the share, 0 below (C9, killed). Claims C1, C3, C6, C7, C8, C9, C10, C11, C12, C13, C14, C15, C16, C17, C18, C19, C20, C21, C22, C23, C24, C25, C26, C27, C28, C29, C30 and C31 in [docs/claims.jsonl](docs/claims.jsonl) (`tools/replay.mjs`;
+cars had its win-rate interval above the share, 0 below (C9, killed). The
+claims are in [docs/claims.jsonl](docs/claims.jsonl) (`tools/replay.mjs` and the other tools named there;
 [ROADMAP.md](ROADMAP.md)).
 
 ## Running it
