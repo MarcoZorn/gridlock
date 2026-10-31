@@ -4851,3 +4851,10 @@ Of the twenty confirmed claims, the ones that cleared their bar by the least are
 against -15 to -25%), C28 (14 of 20 against 12) and C31 (exactly 18 of 20, since replicated and killed as C34). The other three are replicated on seeds none of them used, with the
 same bars, predictions written before the runs, in `docs/claims.jsonl`: C35 (C2, `SEED0=301 SEEDS=20 node tools/trial.mjs turin congestion=0.1`), C36 (C5, `... turin credit=30`) and C37 (C28,
 seeds 241-260). `tools/trial.mjs` takes `SEED0=` now. Unit c35 runs them in turn; logs `tmp/trial-c35.log`, `tmp/trial-c36.log`, `tmp/sides-c37.log`.
+
+### Claim C35 killed on a band, not on the effect: the charge replicates on fresh seeds
+
+`SEED0=301 SEEDS=20 node tools/trial.mjs turin congestion=0.1` (`tmp/trial-c35.log`), days 2-6: fares a day -15.4% [-19.0%, -11.4%] (1 up / 19 down); crashes per car a day -20.9% [-24.1%, -17.4%] (0 up / 20 down);
+trip time -32.4% [-33.9%, -30.8%] (0 up / 20 down); cars -45.4% [-49.2%, -41.5%]; Gini +0.007 [+0.006, +0.008]. The bars were C2's: fares in -10 to -25% (yes), crashes per car in -15 to -25% (yes), trip time in -20 to -30%
+(no: -32.4%), every interval excluding zero (yes). One of three bands fails, so the claim is killed by its own rule. C2's trip-time figure had been -29.0%, at the edge of that band, which is what the margin
+pass was looking for. The charge itself replicates; the fares and crashes figures are close to the first ones (-17.8% and -24.0%).
