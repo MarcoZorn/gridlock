@@ -26,6 +26,7 @@ import { unbacked, uncited, count as numCount } from "./tools/sweep.mjs";
 import { change as traitChange } from "./tools/traits.mjs";
 import { paired as pairedSurvivors } from "./tools/survivors.mjs";
 import { pooled } from "./tools/pool.mjs";
+import { parse as parseIdm, summary as idmSummary } from "./tools/idmbrains.mjs";
 import { describe as describeLine } from "./src/lineage.js";
 import { Rewind } from "./src/rewind.js";
 import { Crowd, PED } from "./src/pedestrians.js";
@@ -449,6 +450,14 @@ import { editNeuron } from "./src/netview.js";
   assert.deepStrictEqual([r["fares a day"].n, r["fares a day"].up, r["fares a day"].down, +r["fares a day"].mean.toFixed(3), +r["crashes per car a day"].mean.toFixed(3)], [4, 3, 0, 0.15, -0.5], "four seeds pooled: ratios, direction counts");
   assert(r["fares a day"].lo > 0 && r["fares a day"].hi < 0.31, "with an interval around the mean");
   console.log("ok  pool: per-seed changes over several sets");
+}
+
+// IDMBRAINS: the idm.mjs lines parse, the summary takes best and median
+{
+  const r = parseIdm("30001 samples; IDM fit: top speed 65; explains 22% of the variance in acceleration\nacceleration percentiles 5/25/50/75/95: 1 2 3 4 5\na straight line explains: car ahead 46%, road ahead 56%, both 58%\nnearest neighbours on all seven explain 77% of held-out acceleration\n");
+  assert.deepStrictEqual(r, { idm: 22, line: 58, nn: 77 }, "the three explained-variance figures");
+  assert.deepStrictEqual(idmSummary([{ idm: 22, line: 58, nn: 77 }, { idm: -4, line: 8, nn: 19 }, { idm: 12, line: 29, nn: 53 }]).nn, { best: 77, median: 53 }, "best and median over brains");
+  console.log("ok  idmbrains: parse and summary");
 }
 
 // the research tools run end to end: a two-seed trial and a two-replay
