@@ -4876,3 +4876,12 @@ so their older figures (24%, 18%, 28%, 25%, 87%) had no cited source; they now c
 mostly the same number written differently ("24%" in the README against "-24.0%" in the result), plus 77% (the explained-acceleration figure, a notebook measurement with no claim), 182 and 231 (cars per run, notebook),
 1% and 0.07% (the grid and Braess figures, notebook), and 0.002 and 76% (a pooled figure of mine from two claims). `test.mjs` requires every bullet but Braess to cite a closed claim and caps the missing numbers at 24
 so that it can only get better.
+
+### Forty seeds for the replicated claims: tools/pool.mjs
+
+`node tools/pool.mjs "runs/trial-turin-base-d6-s{s}" "runs/trial-turin-congestion_0.1-d6-s{s}" 101:20 301:20` (`tmp/pool-c2.log`) merges the per-seed changes of two sets of twenty seeds into one interval; on
+the first set alone it reproduces C2 exactly (fares -17.8% [-20.5%, -15.1%], crashes per car -24.0% [-27.0%, -21.0%]), which is how it was checked. Congestion charge, forty seeds (101-120 and 301-320), days 2-6: fares a day
+-16.6% [-18.9%, -14.2%] (1 up / 39 down); crashes per car a day -22.4% [-24.6%, -20.2%] (0 up / 40 down); trip time -30.7% [-32.0%, -29.5%]; cars -45.1% [-47.4%, -42.9%].
+Credit (`tmp/pool-c5.log`), same seeds: fares a day +27.7% [+25.8%, +29.6%] (40 up / 0 down); crashes per car a day +24.8% [+22.8%, +26.8%] (40 up / 0 down); trip time +20.3% [+18.0%, +22.5%]; cars +59.2% [+55.5%, +62.8%];
+the first set alone gives C5's +28.0% [+26.0%, +29.7%] and +25.2% [+22.4%, +28.1%]. The side-of-the-road pooled figures (C28 and C37) are in the entry above. Forty seeds narrows the intervals by about a
+sixth and moves the means by less than a point and a half, which is what two clean sets of twenty should do.
