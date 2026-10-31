@@ -161,6 +161,9 @@ re-tests them (see *How sure*, below).
   20 Turin runs leave their 24-car floor within two days at 50 starting cars, 16 of 20 at 100 and 17
   of 20 at 150 (C22, killed: at least 18 of 20 were predicted at 100); the rest never take off.
   The evolved founders have no such trap: 20 of 20 start from 10 cars and 20 of 20 from 20 (C24, confirmed).
+  With more room left to the car ahead (following gain 0.8), 18 of 20 hand cities start (Wilson 95%
+  interval 70-97%; C31, confirmed against a bar of 18), but 16 of 20 started at the default, so that is
+  a hint, not an effect.
 - No phantom jams, no self-organised criticality in jam sizes, no signalling
   language when given an indicator, no kin selection, no open-ended growth
   in diversity (about six species at any time, constantly replaced).
@@ -204,7 +207,7 @@ on day 0. Venice seed 7 is also open at hour 12 (0 of 32 from hour 0, 14
 from hour 12) and closes by hour 18 (26 of 32). Early decision is the
 exception (one run of four). The leader does not beat its own share of the
 cars reliably: on two fresh runs, 5 of 9 snapshots with the winner under half the
-cars had its win-rate interval above the share, 0 below (C9, killed). Claims C1, C3, C6, C7, C8, C9, C10, C11, C12, C13, C14, C15, C16, C17, C18, C19, C20, C21, C22, C23, C24, C25, C26, C27, C28, C29 and C30 in [docs/claims.jsonl](docs/claims.jsonl) (`tools/replay.mjs`;
+cars had its win-rate interval above the share, 0 below (C9, killed). Claims C1, C3, C6, C7, C8, C9, C10, C11, C12, C13, C14, C15, C16, C17, C18, C19, C20, C21, C22, C23, C24, C25, C26, C27, C28, C29, C30 and C31 in [docs/claims.jsonl](docs/claims.jsonl) (`tools/replay.mjs`;
 [ROADMAP.md](ROADMAP.md)).
 
 ## Running it
