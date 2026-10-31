@@ -487,7 +487,7 @@ import { editNeuron } from "./src/netview.js";
   const pl = sh(["tools/platforms.mjs", "grid"], { SEEDS: "2", B: "0.7", CA: "0.1", CB: "0.4" });
   assert(/grid, B books 0.7.*2 seeds: drivers on B at the end \d+\.\d% against the ideal free distribution 60\.9%/.test(pl) && /difference [+-]\d/.test(pl), "platforms.mjs with SEEDS= prints the gap to the ideal free distribution:\n" + pl);
   const st = sh(["tools/starts.mjs", "grid"], { SEEDS: "2", DAYS: "1", START: "30,60" });
-  assert(/startCars 30, 1 days: \d of 2 runs end with more than 30 cars/.test(st) && /startCars 60, 1 days: \d of 2/.test(st), "starts.mjs counts the runs that start, per startCars:\n" + st);
+  assert(/startCars 30, 1 days: \d of 2 runs end with more than 30 cars.*at the floor: seeds/.test(st) && /startCars 60, 1 days: \d of 2/.test(st), "starts.mjs counts the runs that start, per startCars:\n" + st);
   const yr = sh(["tools/yieldrule.mjs"], { SEEDS: "1" });
   assert(/1 seeds, yielding rule against none/.test(yr) && /rule  fitness/.test(yr) && /wide  crashes per car/.test(yr) && !/NaN/.test(yr), "yieldrule.mjs with SEEDS= prints paired intervals:\n" + yr);
   const se = sh(["tools/starts.mjs", "grid"], { SEEDS: "2", DAYS: "1", START: "30", FOUNDERS: "docs/trained.json" });
