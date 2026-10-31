@@ -121,7 +121,9 @@ re-tests them (see *How sure*, below).
   safer and faster in every seed tried, and all of them cost fares. For the
   charge this now holds at twenty seeds: 45% fewer cars, crashes per car
   down 24% (95% interval 21-27%), trips 29% faster, fares down 18%
-  (15-21%), in every seed. With mutation frozen after day 2 in both
+  (15-21%), in every seed. On twenty fresh seeds it holds again: crashes per car -20.9%
+  [-24.1%, -17.4%], fares -15.4% [-19.0%, -11.4%], trips 32.4% faster (C35: killed only
+  because trips were faster than the -20 to -30% band written for them). With mutation frozen after day 2 in both
   arms the trade stays: crashes per car -31.4% [-35.0%, -27.7%], fares -15.0%
   [-18.5%, -11.6%] (C11, confirmed), so it is the economy, not evolution. With a
   hand-written driver that cannot evolve at all it holds too: crashes per car
@@ -182,7 +184,7 @@ re-tests them (see *How sure*, below).
 Most of the above was first measured on two to four seeds, and several
 results flipped when seeds were added. Each has since been re-tested, one
 claim at a time, on twenty seeds: `docs/claims.jsonl` holds 37 claims, 20
-confirmed and 14 killed, 3 open, and 14 of the 15 headline bullets above carry
+confirmed and 15 killed, 2 open, and 14 of the 15 headline bullets above carry
 an interval (the fifteenth, no Braess road, is an exhaustive scan with no seeds
 to vary). The project is an instrument that re-tests itself:
 
