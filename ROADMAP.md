@@ -340,9 +340,10 @@ prediction written first, then the run, then the README line.
 
 ### Next batch, from C31 and the status pass
 
-- [ ] gridlock: Study 3 is "always": the reaper now finds every bullet with an interval. Next reaper pass: for each confirmed claim
+- [x] gridlock: Study 3 is "always": the reaper now finds every bullet with an interval. Next reaper pass: for each confirmed claim
   with a stated bar, record in `docs/claims.jsonl` the margin by which it cleared the bar (a `margin` field, from the result
   text's numbers by hand), then list the claims that cleared by the least; re-run the three closest on fresh seeds.
+  (Done without a `margin` field: read from the results, the narrowest were C5, C2, C28 and C31; replications C34, C35, C36, C37.)
 - [x] gridlock: the hand driver's unlucky fifth (C22, C31: 16 and 18 of 20 start): seed 104 and the others never earn on the first
   day. Check the first fares: where is the first pickup, how far is the first drop-off, how many cars die before delivering one.
   (Done in part: first fares do not differ; seed 112 delivered the most trips and never bred. C32 and C33 killed the breeding-bar
