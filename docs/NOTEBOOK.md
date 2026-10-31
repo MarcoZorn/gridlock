@@ -4772,3 +4772,19 @@ interval above zero. The crash prediction rests on the survivors figures on seed
 
 Prediction written before the run, in `docs/claims.jsonl`: with hand-written drivers (no learned side) in the default generated city, four days, seeds 221-240,
 the number of runs keeping right is between 6 and 14 of 20. `SEED0=221 node tools/sides.mjs "runs/side-hand-s{s}"`, unit c30 (starts when c29 ends), log `tmp/sides-c30.log`.
+
+### Claim C29 confirmed: among runs that started, one-way arrows buy safety and cost fares (hand drivers)
+
+`SEED0=201 SEEDS=20 node tools/survivors.mjs "runs/surv-one-s{s}" "runs/surv-two-s{s}"` (`tmp/survivors-c29.log`), hand-written drivers, Barcelona, six days, days 2-6, the
+11 of 20 seeds where both arms ended above 30 cars: two-way against one-way, fares a day +38.1% [+25.6%, +51.7%] (11 up / 0 down), crashes per car a day +30.4%
+[+16.7%, +45.2%] (10 up / 1 down), trip time +5.3% [+2.9%, +8.1%], cars +19.6% [-0.7%, +45.7%] (not distinguishable from zero). Predicted fares and crashes per car both up
+with the intervals above zero: holds. Nine of the 20 seeds had an arm that never started. With evolved drivers (C10) crashes did not differ; with the hand driver the
+two-way city crashes about 30% more per car, so the arrows are a safety measure for this driver, not for the evolved ones.
+
+### Claim C30 killed: the hand driver has a small side of its own, and the generated city's right-hand habit is learned
+
+`SEED0=221 node tools/sides.mjs "runs/side-hand-s{s}"` (`tmp/sides-c30.log`), generated city, hand drivers, four days, seeds 221-240: shares on the majority side 0.53 0.53 0.50
+0.53 0.56 0.53 0.52 0.52 0.53 0.53 0.52 0.51 0.53 0.51 0.53 0.51 0.52 0.52 0.53 0.51; 0 of 20 at 0.75 or more; 0 of 20 keep the right (exact binomial p 0.000). The prediction
+(6 to 14 of 20 right) fails, because all twenty lean slightly left. Reading: the hand drivers hug the centreline (0.50 to 0.56) with a steady small left lean, so the generated
+city's geometry does not make drivers keep right; C28's 0.50 to 0.89 shares and 16 of 20 right come from the learned drivers. The prediction did not allow for a side
+bias of the hand driver itself; the cause of that small lean (its lookahead point, or how lateral position is measured) is not looked into.
