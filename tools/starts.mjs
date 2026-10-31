@@ -6,6 +6,7 @@
 //   SEEDS=20 START=50,100,150 node tools/starts.mjs turin
 // SEED0=201: seeds from 201 instead of 101
 // ECON=childCost=12: economy constants for every run (comma list)
+// each line ends with the seeds that stayed at the floor
 // one run (used by the pool): node tools/starts.mjs one <map> <seed> <startCars>
 import fs from "node:fs";
 import os from "node:os";
@@ -39,12 +40,13 @@ if (import.meta.url === `file://${process.argv[1]}`) {
       while (next < jobs.length) {
         const [st, s] = jobs[next++];
         const txt = await new Promise((ok) => { let o = ""; const p = spawn("node", ["tools/starts.mjs", "one", map, String(s), String(st)], { env: process.env }); p.stdout.on("data", (b) => (o += b)); p.on("exit", () => ok(o)); });
-        if (txt.trim()) res.get(st).push(+txt); else console.error(`seed ${s} at ${st} failed`);
+        if (txt.trim()) res.get(st).push({ seed: s, cars: +txt }); else console.error(`seed ${s} at ${st} failed`);
       }
     }));
-    for (const [st, cars] of res) {
+    for (const [st, runs] of res) {
+      const cars = runs.map((r) => r.cars), stuck = runs.filter((r) => r.cars <= floor).map((r) => r.seed).sort((a, b) => a - b);
       const k = cars.filter((c) => c > floor).length, [lo, hi] = wilson(k, cars.length);
-      console.log(`${map}, ${process.env.FOUNDERS && process.env.FOUNDERS !== "hand" ? "evolved drivers" : "hand-written drivers"}, startCars ${st}, ${days} days: ${k} of ${cars.length} runs end with more than ${floor} cars (Wilson 95% [${(100 * lo).toFixed(0)}%, ${(100 * hi).toFixed(0)}%])`);
+      console.log(`${map}, ${process.env.FOUNDERS && process.env.FOUNDERS !== "hand" ? "evolved drivers" : "hand-written drivers"}, startCars ${st}, ${days} days: ${k} of ${cars.length} runs end with more than ${floor} cars (Wilson 95% [${(100 * lo).toFixed(0)}%, ${(100 * hi).toFixed(0)}%]); at the floor: seeds ${stuck.join(" ") || "none"}`);
     }
   }
 }
