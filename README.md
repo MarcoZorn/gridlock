@@ -126,7 +126,8 @@ re-tests them (see *How sure*, below).
   down 24% (95% interval 21-27%), trips 29% faster, fares down 18%
   (15-21%), in every seed (C2, confirmed). On twenty fresh seeds it holds again: crashes per car -20.9%
   [-24.1%, -17.4%], fares -15.4% [-19.0%, -11.4%], trips 32.4% faster (C35: killed only
-  because trips were faster than the -20 to -30% band written for them). With mutation frozen after day 2 in both
+  because trips were faster than the -20 to -30% band written for them); over all forty seeds crashes per
+  car -22.4% [-24.6%, -20.2%], fares -16.6% [-18.9%, -14.2%], trips 30.7% faster. With mutation frozen after day 2 in both
   arms the trade stays: crashes per car -31.4% [-35.0%, -27.7%], fares -15.0%
   [-18.5%, -11.6%] (C11, confirmed), so it is the economy, not evolution. With a
   hand-written driver that cannot evolve at all it holds too: crashes per car
@@ -140,7 +141,7 @@ re-tests them (see *How sure*, below).
 - **Credit and insurance buy activity with recklessness.** A 30-unit overdraft
   raises fares by 28% (interval 26-30%) and crashes per car by 25% (22-28%),
   twenty seeds (C5, confirmed), and +27.4% (24.3-30.9%) and +24.4% (21.7-27.3%) on twenty fresh seeds
-  (C36, confirmed); insured drivers
+  (C36, confirmed), and over all forty seeds +27.7% (25.8-29.6%) and +24.8% (22.8-26.8%); insured drivers
   crash 87% more per car (interval 82-91%, twenty seeds; C4, confirmed) and earn a third
   more (+34%), because the reckless stop going broke.
 
