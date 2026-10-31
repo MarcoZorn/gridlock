@@ -4844,3 +4844,10 @@ Seeds 201-220, hand drivers, Turin, two days, startCars 50: gain 1.5 (the defaul
 `tmp/starts-c34-0.8.log`). Predicted the 0.8 arm at least two runs ahead: it is five behind. So C31's 18 of 20 at gain 0.8 against 16 of 20 at the default on seeds 101-120 was sampling noise: across
 the four counts so far (16 and 18 at the default, 18 and 13 at 0.8) a hand city starts in 13 to 18 of 20 runs whichever gain. The bar of C31 was set at the number it hit and the notebook called
 it a hint; C34 is what that hint was worth. The unlucky fifth, or quarter, remains unexplained.
+
+### The margin pass: claims C35 to C37
+
+Of the twenty confirmed claims, the ones that cleared their bar by the least are C5 (fares +28.0% [+26.0, +29.7] against +15 to +30%), C2 (crashes per car -24.0% [-27.0, -21.0]
+against -15 to -25%), C28 (14 of 20 against 12) and C31 (exactly 18 of 20, since replicated and killed as C34). The other three are replicated on seeds none of them used, with the
+same bars, predictions written before the runs, in `docs/claims.jsonl`: C35 (C2, `SEED0=301 SEEDS=20 node tools/trial.mjs turin congestion=0.1`), C36 (C5, `... turin credit=30`) and C37 (C28,
+seeds 241-260). `tools/trial.mjs` takes `SEED0=` now. Unit c35 runs them in turn; logs `tmp/trial-c35.log`, `tmp/trial-c36.log`, `tmp/sides-c37.log`.
