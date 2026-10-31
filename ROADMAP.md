@@ -333,14 +333,17 @@ prediction written first, then the run, then the README line.
   sign flips on a mirrored map.
   (Answered without a mirror: it does not lean. 6-8% of its samples are exactly on the centreline and the metric's `lateral > 0` counts those as left;
   above 0.457, below 0.459 in seed 221. See the notebook correction to C30.)
-- [ ] gridlock: a status pass over README "How sure", "Now" and the roadmap's studies: the text still says most results rest on two to
+- [x] gridlock: a status pass over README "How sure", "Now" and the roadmap's studies: the text still says most results rest on two to
   four seeds and lists studies as open that the claims closed (C1-C30); update from `docs/claims.jsonl`, with the counts taken from the
   file by a command, and a test that the counts in the README match it.
+  (Done: the README sentence and `test.mjs` STATUS; the studies' headings updated.)
 
 ### Next batch, from C31 and the status pass
 
 - [ ] gridlock: Study 3 is "always": the reaper now finds every bullet with an interval. Next reaper pass: for each confirmed claim
   with a stated bar, record in `docs/claims.jsonl` the margin by which it cleared the bar (a `margin` field, from the result
   text's numbers by hand), then list the claims that cleared by the least; re-run the three closest on fresh seeds.
-- [ ] gridlock: the hand driver's unlucky fifth (C22, C31: 16 and 18 of 20 start): seed 104 and the others never earn on the first
+- [x] gridlock: the hand driver's unlucky fifth (C22, C31: 16 and 18 of 20 start): seed 104 and the others never earn on the first
   day. Check the first fares: where is the first pickup, how far is the first drop-off, how many cars die before delivering one.
+  (Done in part: first fares do not differ; seed 112 delivered the most trips and never bred. C32 and C33 killed the breeding-bar
+  hypothesis. What decides the start is unknown.)
