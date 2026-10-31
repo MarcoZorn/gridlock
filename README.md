@@ -181,8 +181,8 @@ re-tests them (see *How sure*, below).
 
 Most of the above was first measured on two to four seeds, and several
 results flipped when seeds were added. Each has since been re-tested, one
-claim at a time, on twenty seeds: `docs/claims.jsonl` holds 33 claims, 20
-confirmed and 13 killed, none open, and 14 of the 15 headline bullets above carry
+claim at a time, on twenty seeds: `docs/claims.jsonl` holds 34 claims, 20
+confirmed and 13 killed, 1 open, and 14 of the 15 headline bullets above carry
 an interval (the fifteenth, no Braess road, is an exhaustive scan with no seeds
 to vary). The project is an instrument that re-tests itself:
 
