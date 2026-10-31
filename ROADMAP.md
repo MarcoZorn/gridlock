@@ -21,7 +21,7 @@ earlier list of 150 ideas, and which were tried, is in
 - Results go into [docs/NOTEBOOK.md](docs/NOTEBOOK.md) as they happen; the
   README only changes when a claim is confirmed or killed.
 
-## Study 1: when is a monopoly decided? (now)
+## Study 1: when is a monopoly decided? (closed: C1, C3, C6-C9)
 
 In the economy one founder's family always ends up owning the city. Rewind
 to an earlier hour and replay 32 times with fresh noise; plot the share of
@@ -49,7 +49,7 @@ stream and the queues; `test.mjs` checks 3000 steps). Replays run before
 them the same-noise control did not follow the original run; their results
 stand, as replays of a lightly shaken city.
 
-## Study 2: economics or evolution? (next)
+## Study 2: economics or evolution? (run: C11, C12, C13, C17, C29-C31 and the hand-driver arms)
 
 For each headline economic result, run it three ways: evolving drivers,
 evolution frozen (`tools/frozen.mjs`, FREEZE), and fixed hand-written
@@ -336,3 +336,11 @@ prediction written first, then the run, then the README line.
 - [ ] gridlock: a status pass over README "How sure", "Now" and the roadmap's studies: the text still says most results rest on two to
   four seeds and lists studies as open that the claims closed (C1-C30); update from `docs/claims.jsonl`, with the counts taken from the
   file by a command, and a test that the counts in the README match it.
+
+### Next batch, from C31 and the status pass
+
+- [ ] gridlock: Study 3 is "always": the reaper now finds every bullet with an interval. Next reaper pass: for each confirmed claim
+  with a stated bar, record in `docs/claims.jsonl` the margin by which it cleared the bar (a `margin` field, from the result
+  text's numbers by hand), then list the claims that cleared by the least; re-run the three closest on fresh seeds.
+- [ ] gridlock: the hand driver's unlucky fifth (C22, C31: 16 and 18 of 20 start): seed 104 and the others never earn on the first
+  day. Check the first fares: where is the first pickup, how far is the first drop-off, how many cars die before delivering one.
