@@ -22,7 +22,7 @@ import { summary as crashSummary } from "./tools/crashmap.mjs";
 import { info as roadInfo } from "./tools/roadinfo.mjs";
 import { binomial, share as sideShare, wilson as sideWilson } from "./tools/sides.mjs";
 import { look as collapseLook } from "./tools/collapse.mjs";
-import { unbacked, count as numCount } from "./tools/sweep.mjs";
+import { unbacked, uncited, count as numCount } from "./tools/sweep.mjs";
 import { change as traitChange } from "./tools/traits.mjs";
 import { paired as pairedSurvivors } from "./tools/survivors.mjs";
 import { describe as describeLine } from "./src/lineage.js";
@@ -405,6 +405,12 @@ import { editNeuron } from "./src/netview.js";
   assert.strictEqual(numCount("12.5%", "12.5 and 112.5 and 12.55 and 12.5."), 2, "counts whole numbers only (a full stop after is fine)");
   const real = unbacked(fs.readFileSync("README.md", "utf8"), fs.readFileSync("docs/NOTEBOOK.md", "utf8") + fs.readFileSync("docs/claims.jsonl", "utf8"));
   assert(real.length >= 10 && real.every((r) => r.miss.length === 0), `every README number is in the notebook or the claims (${real.filter((r) => r.miss.length).map((r) => r.title + ": " + r.miss.join(" ")).join("; ")})`);
+  // every headline bullet cites the claim its numbers come from, and the cited results hold most of them
+  const claimsAll = fs.readFileSync("docs/claims.jsonl", "utf8").trim().split("\n").map(JSON.parse), cited = uncited(fs.readFileSync("README.md", "utf8"), claimsAll);
+  for (const r of cited) if (!/Braess/.test(r.title)) assert(r.ids.length > 0, `bullet "${r.title}" cites a claim`);
+  for (const id of cited.flatMap((r) => r.ids)) assert(claimsAll.some((c) => c.id === id && c.result), `${id} is a closed claim`);
+  const lost = cited.reduce((a, r) => a + r.miss.length, 0), tot = cited.reduce((a, r) => a + r.total, 0);
+  assert(lost <= 24, `at most 24 of ${tot} bullet numbers are missing from the cited claims' results (now ${lost})`);
   console.log("ok  sweep: README numbers trace to the notebook");
 }
 

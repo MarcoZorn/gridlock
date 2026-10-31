@@ -25,6 +25,21 @@ export const count = (n, evidence) => {
   return [...evidence.matchAll(new RegExp(`(?<![\\d.])${bare}(?![\\d]|\\.\\d)`, "g"))].length;
 };
 
+// Stricter: the numbers of a bullet against the result texts of the claims it cites ("C23"),
+// not against the whole notebook. A number a cited claim's result does not contain is listed
+// as uncited: cite the claim it comes from, or the bullet is quoting something nobody closed.
+export function uncited(readme, claims) {
+  const sec = readme.slice(readme.indexOf("## What it has found"), readme.indexOf("## How sure"));
+  const rows = [];
+  for (const m of sec.matchAll(/^- \*\*(.+?)\*\*([\s\S]*?)(?=^- \*\*|^\*\*|^## |(?![\s\S]))/gm)) {
+    const text = m[1] + m[2], ids = [...new Set(text.match(/\bC\d+\b/g) || [])];
+    const ev = ids.map((id) => claims.find((c) => c.id === id)?.result || "").join(" ");
+    const ns = numbers(text);
+    rows.push({ title: m[1], ids, total: ns.length, miss: ns.filter((n) => count(n, ev) === 0) });
+  }
+  return rows;
+}
+
 export function unbacked(readme, evidence, common = 25) {
   const sec = readme.slice(readme.indexOf("## What it has found"), readme.indexOf("## How sure"));
   const rows = [];
@@ -40,4 +55,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   const rows = unbacked(fs.readFileSync("README.md", "utf8"), evidence);
   for (const r of rows) console.log(`${r.miss.length ? "-- " : "ok "} ${r.title.slice(0, 58).padEnd(58)} ${r.total - r.miss.length}/${r.total} numbers found${r.miss.length ? "; not found: " + r.miss.join(" ") : ""}${r.weak.length ? "; too common to prove anything: " + r.weak.join(" ") : ""}`);
   console.log(`${rows.filter((r) => r.miss.length).length} of ${rows.length} bullets have numbers found nowhere else`);
+  const claims = fs.readFileSync("docs/claims.jsonl", "utf8").trim().split("\n").map(JSON.parse);
+  console.log("against the results of the claims each bullet cites:");
+  for (const r of uncited(fs.readFileSync("README.md", "utf8"), claims)) console.log(`${r.miss.length ? "-- " : "ok "} ${r.title.slice(0, 58).padEnd(58)} cites ${r.ids.join(" ") || "nothing"}; ${r.total - r.miss.length}/${r.total} numbers in their results${r.miss.length ? "; not there: " + r.miss.join(" ") : ""}`);
 }
