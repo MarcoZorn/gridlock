@@ -75,8 +75,10 @@ re-tests them (see *How sure*, below).
 - **They are reflex machines.** A fifth of a second of reaction delay, a
   quarter of a human's, nearly quadruples crashes: +291.6% [+285.0%, +298.4%]
   over twenty seeds (C16, confirmed). No textbook car-following model
-  describes them, but one brain at a time is predictable: what it sees
-  explains up to 77% of its acceleration.
+  describes them (the best of twenty brains: 39% explained, the median 6%), but one brain
+  at a time is more predictable: what it sees explains a median of 50.5% of its
+  acceleration, 91% at best and 14% at worst over twenty brains (C38, killed: the
+  earlier "up to 77%" was the best of four).
 - **In fog they speed up**, reading the edge of their shortened sight as
   open road: with sight halved, distance per tick +20.7% [+20.0%, +21.5%] over
   twenty seeds (C15, confirmed). Raised in fog, they learn to slow down (not re-tested).
@@ -189,7 +191,7 @@ re-tests them (see *How sure*, below).
 Most of the above was first measured on two to four seeds, and several
 results flipped when seeds were added. Each has since been re-tested, one
 claim at a time, on twenty seeds: `docs/claims.jsonl` holds 38 claims, 21
-confirmed and 16 killed, 1 open, and 14 of the 15 headline bullets above carry
+confirmed and 17 killed, none open, and 14 of the 15 headline bullets above carry
 an interval (the fifteenth, no Braess road, is an exhaustive scan with no seeds
 to vary). The project is an instrument that re-tests itself:
 
