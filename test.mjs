@@ -427,12 +427,11 @@ import { editNeuron } from "./src/netview.js";
 {
   const readme = fs.readFileSync("README.md", "utf8"), L = fs.readFileSync("docs/claims.jsonl", "utf8").trim().split("\n").map(JSON.parse);
   const n = (st) => L.filter((c) => c.status === st).length;
-  const m = readme.match(/holds (\d+) claims, (\d+)\s+confirmed and (\d+) killed, none open, and (\d+) of the (\d+) headline bullets/);
+  const m = readme.match(/holds (\d+) claims, (\d+)\s+confirmed and (\d+) killed, (\d+|none) open, and (\d+) of the (\d+) headline bullets/);
   assert(m, "README states the claim counts in the expected sentence");
-  assert.deepStrictEqual(m.slice(1, 4).map(Number), [L.length, n("confirmed"), n("killed")], "README's claim counts match docs/claims.jsonl");
-  assert.strictEqual(n("open"), 0, "and none is open (change the sentence when one opens)");
+  assert.deepStrictEqual([+m[1], +m[2], +m[3], m[4] === "none" ? 0 : +m[4]], [L.length, n("confirmed"), n("killed"), n("open")], "README's claim counts (total, confirmed, killed, open) match docs/claims.jsonl");
   const bs = bullets(readme);
-  assert.deepStrictEqual([+m[4], +m[5]], [bs.filter((b) => b.tested).length, bs.length], "README's bullet count matches the reaper's");
+  assert.deepStrictEqual([+m[5], +m[6]], [bs.filter((b) => b.tested).length, bs.length], "README's bullet count matches the reaper's");
   console.log("ok  status: README counts match the claims file");
 }
 
