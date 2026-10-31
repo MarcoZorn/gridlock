@@ -4858,3 +4858,13 @@ seeds 241-260). `tools/trial.mjs` takes `SEED0=` now. Unit c35 runs them in turn
 trip time -32.4% [-33.9%, -30.8%] (0 up / 20 down); cars -45.4% [-49.2%, -41.5%]; Gini +0.007 [+0.006, +0.008]. The bars were C2's: fares in -10 to -25% (yes), crashes per car in -15 to -25% (yes), trip time in -20 to -30%
 (no: -32.4%), every interval excluding zero (yes). One of three bands fails, so the claim is killed by its own rule. C2's trip-time figure had been -29.0%, at the edge of that band, which is what the margin
 pass was looking for. The charge itself replicates; the fares and crashes figures are close to the first ones (-17.8% and -24.0%).
+
+### Claims C36 and C37: the credit result replicates, the side-of-the-road count falls one short
+
+C36, `SEED0=301 SEEDS=20 node tools/trial.mjs turin credit=30` (`tmp/trial-c36.log`), days 2-6: fares a day +27.4% [+24.3%, +30.9%] (20 up / 0 down); crashes per car a day +24.4% [+21.7%, +27.3%] (20 up / 0 down);
+trip time +19.6% [+16.5%, +22.8%]; cars +58.1%; Gini +0.290. Both means inside C5's bars (+15 to +30%), both intervals excluding zero: confirmed. C5 had +28.0% and +25.2%.
+
+C37, `SEED0=241 node tools/sides.mjs "runs/side-gen2-s{s}"` (`tmp/sides-c37.log`), the generated city, four days, seeds 241-260: shares on the majority side 0.74 0.82 0.56 0.91 0.55 0.79 0.68 0.85 0.82 0.57 0.78 0.58 0.82
+0.70 0.61 0.50 0.91 0.84 0.91 0.81; 11 of 20 at 0.75 or more (Wilson [34%, 74%]) against the bar of 12: killed by one run. 14 of 20 keep the right (p 0.115), where C28 had 16 of 20 (p 0.012). Pooling C28 and C37
+(forty runs, two sets of twenty seeds), 25 of 40 reach 0.75 (Wilson [47%, 76%]) and 30 of 40 keep the right (exact binomial p 0.0022). The margin pass found what it was looking for: C28's 14 of 20 was lucky
+by about two runs; the order in the generated city holds but at about five in eight, and the right-hand lean is real but stronger in one set of seeds than the other.
