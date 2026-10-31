@@ -4788,3 +4788,8 @@ two-way city crashes about 30% more per car, so the arrows are a safety measure 
 (6 to 14 of 20 right) fails, because all twenty lean slightly left. Reading: the hand drivers hug the centreline (0.50 to 0.56) with a steady small left lean, so the generated
 city's geometry does not make drivers keep right; C28's 0.50 to 0.89 shares and 16 of 20 right come from the learned drivers. The prediction did not allow for a side
 bias of the hand driver itself; the cause of that small lean (its lookahead point, or how lateral position is measured) is not looked into.
+
+### Claim C31 opened: does more room ahead start hand cities?
+
+Prediction written before the run, in `docs/claims.jsonl`: hand drivers with the following gain 0.8 (default 1.5), Turin, two days, seeds 101-120, startCars 50, at least 18 of 20 end above
+30 cars (C22 at the default: 16 of 20). `GRIDLOCK_HAND_FOLLOW=0.8 SEEDS=20 START=50 node tools/starts.mjs turin`, unit c31, log `tmp/starts-c31.log`.
