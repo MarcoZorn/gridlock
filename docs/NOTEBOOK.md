@@ -4793,3 +4793,14 @@ bias of the hand driver itself; the cause of that small lean (its lookahead poin
 
 Prediction written before the run, in `docs/claims.jsonl`: hand drivers with the following gain 0.8 (default 1.5), Turin, two days, seeds 101-120, startCars 50, at least 18 of 20 end above
 30 cars (C22 at the default: 16 of 20). `GRIDLOCK_HAND_FOLLOW=0.8 SEEDS=20 START=50 node tools/starts.mjs turin`, unit c31, log `tmp/starts-c31.log`.
+
+### Correction to C30: the hand driver's "left lean" is the metric's tie rule
+
+`tmp/lat.mjs` (hand drivers, generated city, samples of every car on a two-way road every 600 ticks in days 2-3): seed 221, 15607 samples, lateral above zero
+0.457, below zero 0.459, exactly zero 0.084, within one unit of the centreline 0.318, mean lateral -0.067; seed 222, 16581 samples, above 0.457, below 0.484, exactly zero 0.059,
+within one unit 0.360, mean lateral -0.190. The telemetry's `sideRight` counts a car as right of the middle only if `lateral > 0`, so a car exactly on the centreline
+counts as not-right. The hand cars are placed on the centreline and `Driver.target` keeps a car's own sideways offset (`BODY.keepLine`), so a good share of them never leave it.
+That tie rule, not a steady lean to the left, is why every hand run read below 0.5 in C30; sides above and below the line are about equally likely (0.457 against 0.459 in
+seed 221). The C30 result stands as a result (the hand driver has no right-hand habit, the learned drivers do), but the sentence above that said the hand drivers have a small
+steady left lean is wrong, and so is the claim's "result" text, which keeps the original wording with this correction beside it. The metric's tie rule is harmless for learned
+drivers, who are rarely exactly on the line, and unchanged here.
