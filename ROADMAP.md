@@ -361,10 +361,14 @@ prediction written first, then the run, then the README line.
 
 ### Next batch, from C38 and the start puzzle
 
-- [ ] gridlock: are the hand cities that never start the same seeds every time? `tools/starts.mjs` prints only counts; make it list the seeds that
+- [x] gridlock: are the hand cities that never start the same seeds every time? `tools/starts.mjs` prints only counts; make it list the seeds that
   stayed at the floor, then compare the lists across startCars 50, 100, 150 (C22), gain 0.8 (C31, C34) and birthCash 24 (C33): if the same
   seeds fail in every setting, the start is a property of the seed's city and founders' bodies, not of the knob. Test the printing; no claim needed
   unless a prediction is wanted first.
-- [ ] gridlock: the README "Now" section still tells the Study 1 story of 2026-10-30 (hour-by-hour replays of seed 7); trim it to what the closed
+- [x] gridlock: the README "Now" section still tells the Study 1 story of 2026-10-30 (hour-by-hour replays of seed 7); trim it to what the closed
   claims C1, C3, C6-C9 say and point to the notebook for the tables.
+  (Both done: `tools/starts.mjs` lists the stuck seeds, the "Now" section trimmed to the closed claims. Seeds 116, 114, 217 and 218 fail across settings; 11 of 20 never do.)
+
+- [ ] gridlock (open, needs an idea): what makes seed 116, 114 or 217 stay at the floor in several settings while eleven seeds of twenty never do? Candidates not tried:
+  the city layout's seed, the founders' bodies, the position of the first fares. Compare a persistently stuck seed with a never-stuck one on a measure the telemetry does not yet have.
 
