@@ -25,6 +25,7 @@ import { look as collapseLook } from "./tools/collapse.mjs";
 import { unbacked, uncited, count as numCount } from "./tools/sweep.mjs";
 import { change as traitChange } from "./tools/traits.mjs";
 import { paired as pairedSurvivors } from "./tools/survivors.mjs";
+import { pooled } from "./tools/pool.mjs";
 import { describe as describeLine } from "./src/lineage.js";
 import { Rewind } from "./src/rewind.js";
 import { Crowd, PED } from "./src/pedestrians.js";
@@ -439,6 +440,15 @@ import { editNeuron } from "./src/netview.js";
   const bs = bullets(readme);
   assert.deepStrictEqual([+m[5], +m[6]], [bs.filter((b) => b.tested).length, bs.length], "README's bullet count matches the reaper's");
   console.log("ok  status: README counts match the claims file");
+}
+
+// POOL: two sets of seeds in one interval, per-seed ratios
+{
+  const m = (f, c) => ({ "fares a day": f, "crashes per car a day": c, "trip time": 1, cars: 100 });
+  const r = pooled([m(10, 2), m(10, 2), m(10, 2), m(10, 2)], [m(12, 1), m(11, 1), m(13, 1), m(10, 1)]);
+  assert.deepStrictEqual([r["fares a day"].n, r["fares a day"].up, r["fares a day"].down, +r["fares a day"].mean.toFixed(3), +r["crashes per car a day"].mean.toFixed(3)], [4, 3, 0, 0.15, -0.5], "four seeds pooled: ratios, direction counts");
+  assert(r["fares a day"].lo > 0 && r["fares a day"].hi < 0.31, "with an interval around the mean");
+  console.log("ok  pool: per-seed changes over several sets");
 }
 
 // the research tools run end to end: a two-seed trial and a two-replay
