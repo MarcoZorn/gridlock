@@ -4868,3 +4868,11 @@ C37, `SEED0=241 node tools/sides.mjs "runs/side-gen2-s{s}"` (`tmp/sides-c37.log`
 0.70 0.61 0.50 0.91 0.84 0.91 0.81; 11 of 20 at 0.75 or more (Wilson [34%, 74%]) against the bar of 12: killed by one run. 14 of 20 keep the right (p 0.115), where C28 had 16 of 20 (p 0.012). Pooling C28 and C37
 (forty runs, two sets of twenty seeds), 25 of 40 reach 0.75 (Wilson [47%, 76%]) and 30 of 40 keep the right (exact binomial p 0.0022). The margin pass found what it was looking for: C28's 14 of 20 was lucky
 by about two runs; the order in the generated city holds but at about five in eight, and the right-hand lean is real but stronger in one set of seeds than the other.
+
+### The sweep, stricter: numbers against the claims each bullet cites
+
+`tools/sweep.mjs` now also checks each bullet's numbers against the result texts of the claims the bullet cites. Before: the Safety, Credit and Insurance bullets cited only the newer replications (C35, C11, C12, C36),
+so their older figures (24%, 18%, 28%, 25%, 87%) had no cited source; they now cite C2, C5 and C4. After: 125 of 145 bullet numbers are in the results of the claims their bullet cites; the 20 that are not are
+mostly the same number written differently ("24%" in the README against "-24.0%" in the result), plus 77% (the explained-acceleration figure, a notebook measurement with no claim), 182 and 231 (cars per run, notebook),
+1% and 0.07% (the grid and Braess figures, notebook), and 0.002 and 76% (a pooled figure of mine from two claims). `test.mjs` requires every bullet but Braess to cite a closed claim and caps the missing numbers at 24
+so that it can only get better.
