@@ -4,6 +4,7 @@
 // the others never left their floor (tools/collapse.mjs). Wilson 95% interval each.
 //
 //   SEEDS=20 START=50,100,150 node tools/starts.mjs turin
+// SEED0=201: seeds from 201 instead of 101
 // ECON=childCost=12: economy constants for every run (comma list)
 // one run (used by the pool): node tools/starts.mjs one <map> <seed> <startCars>
 import fs from "node:fs";
@@ -30,8 +31,8 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   if (process.argv[2] === "one") console.log(once(process.argv[3], +process.argv[4], +process.argv[5], days));
   else {
     const map = process.argv[2] || "turin", n = +(process.env.SEEDS || 20), floor = +(process.env.FLOOR || 30);
-    const starts = (process.env.START || "50,100,150").split(",").map(Number), jobs = [];
-    for (const st of starts) for (let i = 0; i < n; i++) jobs.push([st, 101 + i]);
+    const s0 = +(process.env.SEED0 || 101), starts = (process.env.START || "50,100,150").split(",").map(Number), jobs = [];
+    for (const st of starts) for (let i = 0; i < n; i++) jobs.push([st, s0 + i]);
     const res = new Map(starts.map((s) => [s, []]));
     let next = 0;
     await Promise.all(Array.from({ length: Math.max(1, Math.min(jobs.length, os.cpus().length - 2)) }, async () => {
