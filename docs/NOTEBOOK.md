@@ -4810,3 +4810,16 @@ drivers, who are rarely exactly on the line, and unchanged here.
 `GRIDLOCK_HAND_FOLLOW=0.8 SEEDS=20 START=50 node tools/starts.mjs turin` (`tmp/starts-c31.log`), hand drivers, Turin, two days, seeds 101-120: 18 of 20 runs end with more than 30 cars
 (Wilson 95% [70%, 97%]). Predicted at least 18 of 20: met exactly. The default gain on the same seeds gave 16 of 20 (C22, [58%, 92%]), so the intervals overlap almost entirely; a
 two-run difference out of twenty is a hint and not an established effect, and the claim's bar was set at the number it hit. The unlucky fifth that never starts is still there.
+
+### First day of the unlucky fifth, and a mix-up in C32
+
+`tmp/firstday.mjs` (hand drivers, Turin, first day, seeds 101, 104, 112): of the first 50 cars, 26 (seed 101), 20 (104) and 32 (112) delivered a trip in day 1, the first at
+tick 599, 1184 and 1201; 48, 49 and 47 of the 50 were gone by the end of day 1 (24, 19 and 29 of those had delivered a trip first); 125, 26 and 24 cars alive. So the collapsing seeds
+do not fail at the first fare: 112 delivered the most trips of the three. What differs is breeding (telemetry, two-hour blocks over the first twelve hours): seed 101 has
+births 1, 5, 39, 68, 101, 116 and its cars grow from 31 to 144; seed 112 has 0, 0, 0, 0, 0, 1 births and stays at 24 cars, with mean cash 4.9 to 11.4 against about 13 in seed 101.
+A car breeds when its cash reaches `ECON.birthCash` (34) and then pays `ECON.childCost` (16); a hypothesis from two seeds is that the unlucky fifth never has an early car that gets rich
+enough, after which the city sits at its immigrant floor.
+
+The mix-up: C32 (opened at the same time) lowers `childCost` to 12, but the bar is `birthCash`, not `childCost`, so C32 tests a cheaper child (which also leaves the child 13 cash, more than
+the 12 it cost), not a lower bar. It is left to run as registered and its result read as that; C33 (`birthCash=24`, same prediction) is the test of the breeding bar. Predictions were
+written before either run.
