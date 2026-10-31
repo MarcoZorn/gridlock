@@ -7,7 +7,7 @@ import os from "node:os";
 // confidence interval and how many seeds moved each way. Runs are cached
 // in runs/trial-*, so adding seeds later only runs the new ones.
 //
-//   SEEDS=20 DAYS=6 node tools/trial.mjs turin basic=0.25
+//   SEEDS=20 DAYS=6 node tools/trial.mjs turin basic=0.25     (SEED0=301: seeds from 301, default 101)
 //   node tools/trial.mjs turin congestion=0.1,peakToll=1
 //   BODY=wallDamage=0 node tools/trial.mjs turin   (a BODY constant the economy reads, treatment arm only;
 //   evolved bodies carry their own sight, so BODY=rayRange=.. changes nothing)
@@ -17,7 +17,7 @@ import os from "node:os";
 const [map = "turin", econ = ""] = process.argv.slice(2), alt = process.env.ALT || null;
 const tag = (m) => m.replace(/^.*\//, "").replace(/\.json$/, "");   // a path's run-name part
 const n = +(process.env.SEEDS || 20), days = +(process.env.DAYS || 6), from = +(process.env.FROM || 2);
-const seeds = Array.from({ length: n }, (_, i) => 101 + i);   // fresh seeds, apart from the hand-picked ones used so far
+const s0 = +(process.env.SEED0 || 101), seeds = Array.from({ length: n }, (_, i) => s0 + i);   // fresh seeds, apart from the hand-picked ones used so far
 // a run per arm and seed: (map, no rule) and (ALT or map, the rule)
 // FOUNDERS=hand: the hand-written driver of src/hand.js in both arms (nothing evolves)
 const fnd = process.env.FOUNDERS || "docs/trained.json", pre = fnd === "docs/trained.json" ? "trial" : `trial-${tag(fnd)}`;
