@@ -423,6 +423,19 @@ import { editNeuron } from "./src/netview.js";
   console.log("ok  survivors: collapsed seeds left out of the pairing");
 }
 
+// STATUS: the claim counts and the bullet count quoted in the README are the real ones
+{
+  const readme = fs.readFileSync("README.md", "utf8"), L = fs.readFileSync("docs/claims.jsonl", "utf8").trim().split("\n").map(JSON.parse);
+  const n = (st) => L.filter((c) => c.status === st).length;
+  const m = readme.match(/holds (\d+) claims, (\d+)\s+confirmed and (\d+) killed, none open, and (\d+) of the (\d+) headline bullets/);
+  assert(m, "README states the claim counts in the expected sentence");
+  assert.deepStrictEqual(m.slice(1, 4).map(Number), [L.length, n("confirmed"), n("killed")], "README's claim counts match docs/claims.jsonl");
+  assert.strictEqual(n("open"), 0, "and none is open (change the sentence when one opens)");
+  const bs = bullets(readme);
+  assert.deepStrictEqual([+m[4], +m[5]], [bs.filter((b) => b.tested).length, bs.length], "README's bullet count matches the reaper's");
+  console.log("ok  status: README counts match the claims file");
+}
+
 // the research tools run end to end: a two-seed trial and a two-replay
 // rewind of one city hour, from clean caches, with real numbers out
 {
