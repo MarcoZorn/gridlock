@@ -328,9 +328,11 @@ prediction written first, then the run, then the README line.
   safety, `GRIDLOCK_HAND_FOLLOW=0.8` (more room to the car ahead), with `tools/starts.mjs` at startCars 50 on the same seeds
   101-120, prediction first: at least 18 of 20 start (C22 had 16 of 20 at the default).
   (Taken as claim C31, unit c31.)
-- [ ] gridlock: why the hand driver leans left (C30: majority side 0.50 to 0.56, none keeping right): read how `Driver.frame().lateral`
+- [x] gridlock: why the hand driver leans left (C30: majority side 0.50 to 0.56, none keeping right): read how `Driver.frame().lateral`
   is measured and where `src/hand.js` aims (the lookahead point), say which, and check with a hand run on the grid city whether the
   sign flips on a mirrored map.
+  (Answered without a mirror: it does not lean. 6-8% of its samples are exactly on the centreline and the metric's `lateral > 0` counts those as left;
+  above 0.457, below 0.459 in seed 221. See the notebook correction to C30.)
 - [ ] gridlock: a status pass over README "How sure", "Now" and the roadmap's studies: the text still says most results rest on two to
   four seeds and lists studies as open that the claims closed (C1-C30); update from `docs/claims.jsonl`, with the counts taken from the
   file by a command, and a test that the counts in the README match it.
