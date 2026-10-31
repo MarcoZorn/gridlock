@@ -4885,3 +4885,11 @@ the first set alone it reproduces C2 exactly (fares -17.8% [-20.5%, -15.1%], cra
 Credit (`tmp/pool-c5.log`), same seeds: fares a day +27.7% [+25.8%, +29.6%] (40 up / 0 down); crashes per car a day +24.8% [+22.8%, +26.8%] (40 up / 0 down); trip time +20.3% [+18.0%, +22.5%]; cars +59.2% [+55.5%, +62.8%];
 the first set alone gives C5's +28.0% [+26.0%, +29.7%] and +25.2% [+22.4%, +28.1%]. The side-of-the-road pooled figures (C28 and C37) are in the entry above. Forty seeds narrows the intervals by about a
 sixth and moves the means by less than a point and a half, which is what two clean sets of twenty should do.
+
+### Claim C38 killed: one brain at a time, over twenty brains
+
+`FIRST=2 COUNT=20 node tools/idmbrains.mjs` (`tmp/idmbrains-c38.log`; it runs `tools/idm.mjs` with `ONE=n SMOOTH=15` per brain), brains 2 to 21, each alone on the road. Nearest neighbours: best 91% (brain 20),
+median 50.5%, worst 14% (brain 21). Straight line through car and road features: best 80%, median 32.5%. IDM: best 39% (brain 19), median 6%, worst -123% (brain 5). Predicted the best nearest-neighbour figure between
+70% and 85% and the best IDM figure under 40%: IDM holds (39%), the nearest-neighbour best is above the band, so killed. The README's "up to 77%" was the best of the four brains the notebook tried; the notebook's
+brain 1 reproduces today (22%, 58%, 77%). Reading: a brain is predictable from what it sees, but how much varies enormously from brain to brain (14% to 91%); the IDM is a poor description of all of them
+(a negative figure means worse than predicting the mean).
