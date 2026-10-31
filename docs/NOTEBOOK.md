@@ -4823,3 +4823,11 @@ enough, after which the city sits at its immigrant floor.
 The mix-up: C32 (opened at the same time) lowers `childCost` to 12, but the bar is `birthCash`, not `childCost`, so C32 tests a cheaper child (which also leaves the child 13 cash, more than
 the 12 it cost), not a lower bar. It is left to run as registered and its result read as that; C33 (`birthCash=24`, same prediction) is the test of the breeding bar. Predictions were
 written before either run.
+
+### Claims C32 and C33 killed: neither a cheaper child nor a lower breeding bar starts the unlucky fifth
+
+`ECON=childCost=12 SEEDS=20 START=50 node tools/starts.mjs turin` (`tmp/starts-c32.log`): hand drivers, Turin, two days, seeds 101-120: 16 of 20 runs end with more than 30 cars (Wilson 95% [58%, 92%]).
+`ECON=birthCash=24 ...` (`tmp/starts-c33.log`): 13 of 20 ([43%, 82%]). Both predicted at least 19 of 20 (the default, C22, had 16 of 20): both fail. C32 changed the cost of a child, not the bar (the mix-up
+noted above); C33 changed the bar. With the bar lowered the count went down, not up, by three runs out of twenty, which is inside what twenty seeds can do. So the hypothesis that the
+unlucky fifth never clears the breeding bar is not supported: seeds 104 and 112 earn (first-day trips like the thriving seeds) and still never breed, so something other than
+the bar decides which cities take off. What it is remains unknown; the first-day look found no difference in first fares.
