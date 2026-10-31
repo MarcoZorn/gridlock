@@ -205,25 +205,22 @@ to vary). The project is an instrument that re-tests itself:
 ## Now
 
 **When is a monopoly decided?** One family always ends up owning the city.
-Rewind the economy to every third hour of day 0 and replay it thirty-two
-times with fresh noise: how often does the same family win again (over
-half the cars)? On Turin seed 7, 0 of 32 replays from hour 0, 1 from hour
-3, 15 from hour 6, 22 from hour 9, and all 32 from hour 12: decided within
-the first morning, while the family holds under two fifths of the cars.
-On seed 11 it is not decided on day 0 at all (a flat 3 to 19 of 32). On
-seeds 7 and 11, freezing evolution after the rewind made the outcome surer
-(seed 11, hours 18-21: 53 of 64 frozen against 31 of 64 evolving), but that
-did not hold on six fresh Turin seeds rewound to hour 12 (52 of 96 evolving,
-43 of 96 frozen, p = 0.248): no evidence that mutation keeps the contest
-open. Barcelona seed 7 is like Turin seed 11: 1
-of 32 replays from hour 0, 13 from hour 6, 17 from hour 21, never decided
-on day 0. Venice seed 7 is also open at hour 12 (0 of 32 from hour 0, 14
-from hour 12) and closes by hour 18 (26 of 32). Early decision is the
-exception (one run of four). The leader does not beat its own share of the
-cars reliably: on two fresh runs, 5 of 9 snapshots with the winner under half the
-cars had its win-rate interval above the share, 0 below (C9, killed). The
-claims are in [docs/claims.jsonl](docs/claims.jsonl) (`tools/replay.mjs` and the other tools named there;
-[ROADMAP.md](ROADMAP.md)).
+Rewind the economy to an early hour and replay it thirty-two times with fresh
+noise: how often does the same family win again (over half the cars)? On Turin
+seed 7 it is decided inside the first morning: 0 of 32 replays from hour 0, 1
+from hour 3, 15 from hour 6, 22 from hour 9, and 32 from hour 12, while the
+family holds 37 to 40% of the cars (C1, confirmed). That did not
+generalise. On Turin seed 11 it is not decided on day 0 at all (3 to 19 of 32 at
+every hour; C3, killed); on Barcelona seed 7, 1 of 32 from hour 0, 13 from hour 6
+and 17 from hour 21 (C6, killed); on Venice seed 7, 0 of 32 from hour 0, 14 from
+hour 12 and 26 from hour 18 (C8, confirmed as "not yet decided at hour 12").
+Freezing evolution after the rewind did not keep the contest settled on six fresh
+Turin seeds at hour 12 (52 of 96 evolving, 43 of 96 frozen, p = 0.248; C7,
+killed), and the leader does not beat its own share of the cars: 5 of 9 snapshots
+with the winner under half the cars had its win-rate interval above the share,
+0 below (C9, killed). The claims, with their commands and results, are in
+[docs/claims.jsonl](docs/claims.jsonl); the tables are in the
+[notebook](docs/NOTEBOOK.md); what is next is in [ROADMAP.md](ROADMAP.md).
 
 ## Running it
 
