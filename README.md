@@ -161,9 +161,9 @@ re-tests them (see *How sure*, below).
   20 Turin runs leave their 24-car floor within two days at 50 starting cars, 16 of 20 at 100 and 17
   of 20 at 150 (C22, killed: at least 18 of 20 were predicted at 100); the rest never take off.
   The evolved founders have no such trap: 20 of 20 start from 10 cars and 20 of 20 from 20 (C24, confirmed).
-  With more room left to the car ahead (following gain 0.8), 18 of 20 hand cities start (Wilson 95%
-  interval 70-97%; C31, confirmed against a bar of 18), but 16 of 20 started at the default, so that is
-  a hint, not an effect.
+  With more room left to the car ahead (following gain 0.8), 18 of 20 hand cities started on one set of
+  seeds (C31, confirmed against a bar of 18) but 13 of 20 on a fresh set, where the default started 18 of 20
+  (C34, killed): the start rate is 13 to 18 of 20 whatever the gain.
   Making children cheaper (childCost 12) left it at 16 of 20, and lowering the cash that triggers a birth
   (birthCash 24 instead of 34) gave 13 of 20 (C32 and C33, both killed): the unlucky fifth is not a breeding-bar problem.
 - No phantom jams, no self-organised criticality in jam sizes, no signalling
@@ -182,7 +182,7 @@ re-tests them (see *How sure*, below).
 Most of the above was first measured on two to four seeds, and several
 results flipped when seeds were added. Each has since been re-tested, one
 claim at a time, on twenty seeds: `docs/claims.jsonl` holds 34 claims, 20
-confirmed and 13 killed, 1 open, and 14 of the 15 headline bullets above carry
+confirmed and 14 killed, none open, and 14 of the 15 headline bullets above carry
 an interval (the fifteenth, no Braess road, is an exhaustive scan with no seeds
 to vary). The project is an instrument that re-tests itself:
 
