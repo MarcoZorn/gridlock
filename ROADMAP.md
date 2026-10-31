@@ -321,3 +321,15 @@ prediction written first, then the run, then the README line.
   city with `FOUNDERS=hand` (no learned habit; hand drivers have no side) and with founders raised on Turin, twenty seeds,
   `tools/sides.mjs`, prediction first: the hand arm shows no right bias (6 to 14 of 20 keep right).
   (Taken as claim C30, unit c30; the Turin-raised founders arm is not run, there are none saved.)
+
+### Next batch, from C27 to C30
+
+- [ ] gridlock: a hand-driver change that starts cities: C22 left a fifth of hand cities at the floor. Try the one knob that bought
+  safety, `GRIDLOCK_HAND_FOLLOW=0.8` (more room to the car ahead), with `tools/starts.mjs` at startCars 50 on the same seeds
+  101-120, prediction first: at least 18 of 20 start (C22 had 16 of 20 at the default).
+- [ ] gridlock: why the hand driver leans left (C30: majority side 0.50 to 0.56, none keeping right): read how `Driver.frame().lateral`
+  is measured and where `src/hand.js` aims (the lookahead point), say which, and check with a hand run on the grid city whether the
+  sign flips on a mirrored map.
+- [ ] gridlock: a status pass over README "How sure", "Now" and the roadmap's studies: the text still says most results rest on two to
+  four seeds and lists studies as open that the claims closed (C1-C30); update from `docs/claims.jsonl`, with the counts taken from the
+  file by a command, and a test that the counts in the README match it.
