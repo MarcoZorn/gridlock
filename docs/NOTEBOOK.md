@@ -4831,3 +4831,9 @@ written before either run.
 noted above); C33 changed the bar. With the bar lowered the count went down, not up, by three runs out of twenty, which is inside what twenty seeds can do. So the hypothesis that the
 unlucky fifth never clears the breeding bar is not supported: seeds 104 and 112 earn (first-day trips like the thriving seeds) and still never breed, so something other than
 the bar decides which cities take off. What it is remains unknown; the first-day look found no difference in first fares.
+
+### Claim C34 opened: replicating the following-gain start effect
+
+Prediction written before the run, in `docs/claims.jsonl`. C31 cleared its bar of 18 of 20 exactly (gain 0.8) against 16 of 20 at the default (C22) on seeds 101-120, a hint at best. On new seeds 201-220, both
+gains, `GRIDLOCK_HAND_FOLLOW=1.5` and `0.8`, `SEED0=201 SEEDS=20 START=50 node tools/starts.mjs turin` (`tools/starts.mjs` takes `SEED0=` now), predicted: the 0.8 arm starts at least two more runs
+than the default arm. Unit c34, logs `tmp/starts-c34-1.5.log` and `tmp/starts-c34-0.8.log`.
