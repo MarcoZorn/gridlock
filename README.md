@@ -90,8 +90,9 @@ re-tests them (see *How sure*, below).
   20 keep the right (exact binomial p 0.50). In the default generated city it is more of an
   order: 14 of 20 runs reach three in four on one side (Wilson 95% interval 48-85%; C28,
   confirmed), and 16 of 20 keep the right (p 0.012), so there the side is not chance. Hand-written
-  drivers in the same city sit near the centreline (majority side 0.50 to 0.56 in all 20 runs,
-  none keeping right; C30, killed), so the right-hand habit is learned. The
+  drivers in the same city sit near the centreline (majority side 0.50 to 0.56 in all 20 runs;
+  the side metric counts a car exactly on the centreline as not-right, so none "keeps right";
+  C30, killed), so the right-hand habit is learned. The
   order grows smoothly with traffic, with no sharp transition.
 - **One family takes the city, mostly.** Over twenty fresh Turin seeds at six days, one
   founder's family owns over half the cars in 19 (Wilson 95% interval 76-99%), and every
