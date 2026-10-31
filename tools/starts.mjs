@@ -4,6 +4,7 @@
 // the others never left their floor (tools/collapse.mjs). Wilson 95% interval each.
 //
 //   SEEDS=20 START=50,100,150 node tools/starts.mjs turin
+// ECON=childCost=12: economy constants for every run (comma list)
 // one run (used by the pool): node tools/starts.mjs one <map> <seed> <startCars>
 import fs from "node:fs";
 import os from "node:os";
@@ -16,6 +17,7 @@ export const wilson = (k, n) => { const z = 1.96, p = k / n, c = (p + z * z / (2
 
 export function once(map, seed, startCars, days) {
   const evolved = process.env.FOUNDERS && process.env.FOUNDERS !== "hand";
+  for (const kv of (process.env.ECON || "").split(",").filter(Boolean)) { const [k, v] = kv.split("="); if (!(k in ECON)) throw new Error(`unknown economy constant ${k}`); ECON[k] = +v; }
   if (!evolved) ECON.freezeAt = 1;
   const graph = map === "grid" ? null : JSON.parse(fs.readFileSync(map.endsWith(".json") ? map : `maps/${map}.json`, "utf8"));
   const w = new EcoWorld({ seed, founders: evolved ? Population.fromJSON(JSON.parse(fs.readFileSync(process.env.FOUNDERS, "utf8")).pop) : HandBrain.founders(), graph, startCars });
