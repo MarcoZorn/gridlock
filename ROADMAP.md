@@ -324,9 +324,10 @@ prediction written first, then the run, then the README line.
 
 ### Next batch, from C27 to C30
 
-- [ ] gridlock: a hand-driver change that starts cities: C22 left a fifth of hand cities at the floor. Try the one knob that bought
+- [x] gridlock: a hand-driver change that starts cities: C22 left a fifth of hand cities at the floor. Try the one knob that bought
   safety, `GRIDLOCK_HAND_FOLLOW=0.8` (more room to the car ahead), with `tools/starts.mjs` at startCars 50 on the same seeds
   101-120, prediction first: at least 18 of 20 start (C22 had 16 of 20 at the default).
+  (Taken as claim C31, unit c31.)
 - [ ] gridlock: why the hand driver leans left (C30: majority side 0.50 to 0.56, none keeping right): read how `Driver.frame().lateral`
   is measured and where `src/hand.js` aims (the lookahead point), say which, and check with a hand run on the grid city whether the
   sign flips on a mirrored map.
