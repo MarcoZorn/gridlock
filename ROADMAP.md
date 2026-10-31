@@ -348,3 +348,11 @@ prediction written first, then the run, then the README line.
   day. Check the first fares: where is the first pickup, how far is the first drop-off, how many cars die before delivering one.
   (Done in part: first fares do not differ; seed 112 delivered the most trips and never bred. C32 and C33 killed the breeding-bar
   hypothesis. What decides the start is unknown.)
+
+### Next batch, from the margin pass (C35 to C37)
+
+- [x] gridlock: stricter README sweep: each bullet cites the claims its numbers come from (`tools/sweep.mjs`, tested). 125 of 145 numbers are in the cited results.
+- [ ] gridlock: the 77% of the reflex bullet (what a brain's inputs explain of its acceleration, `tools/idm.mjs`) has no claim: give it a SEEDS-style
+  run over twenty brains with an interval, prediction first (the README says up to 77%: predict the best of twenty brains between 70% and 85%).
+- [ ] gridlock: pool the replicated claims: C2/C35, C5/C36 and C28/C37 each have two sets of twenty seeds; add a `tools/pool.mjs` that
+  merges two trial logs' per-seed changes into one forty-seed interval, so the README can quote forty seeds for those three.
