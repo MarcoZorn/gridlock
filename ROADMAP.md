@@ -352,8 +352,9 @@ prediction written first, then the run, then the README line.
 ### Next batch, from the margin pass (C35 to C37)
 
 - [x] gridlock: stricter README sweep: each bullet cites the claims its numbers come from (`tools/sweep.mjs`, tested). 125 of 145 numbers are in the cited results.
-- [ ] gridlock: the 77% of the reflex bullet (what a brain's inputs explain of its acceleration, `tools/idm.mjs`) has no claim: give it a SEEDS-style
+- [x] gridlock: the 77% of the reflex bullet (what a brain's inputs explain of its acceleration, `tools/idm.mjs`) has no claim: give it a SEEDS-style
   run over twenty brains with an interval, prediction first (the README says up to 77%: predict the best of twenty brains between 70% and 85%).
+  (Done as `tools/idmbrains.mjs` and claim C38, killed: best 91%, median 50.5% over twenty brains; the README now says so.)
 - [x] gridlock: pool the replicated claims: C2/C35, C5/C36 and C28/C37 each have two sets of twenty seeds; add a `tools/pool.mjs` that
   merges two trial logs' per-seed changes into one forty-seed interval, so the README can quote forty seeds for those three.
   (Done: `tools/pool.mjs`, tested on synthetic seeds and checked against C2 and C5 on real runs; the README quotes forty seeds for charge and credit; the side figures were pooled by hand in C37's entry.)
