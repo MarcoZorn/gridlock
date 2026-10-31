@@ -89,7 +89,10 @@ re-tests them (see *How sure*, below).
   killed). Which side is a coin flip in Turin: 8 of
   20 keep the right (exact binomial p 0.50). In the default generated city it is more of an
   order: 14 of 20 runs reach three in four on one side (Wilson 95% interval 48-85%; C28,
-  confirmed), and 16 of 20 keep the right (p 0.012), so there the side is not chance. Hand-written
+  confirmed), and 16 of 20 keep the right (p 0.012), so there the side is not chance. On a second
+  set of twenty seeds 11 of 20 reach three in four (Wilson 34-74%) and 14 keep right (p 0.115;
+  C37, killed: 12 were predicted); over both sets 25 of 40 reach it (47-76%) and 30 of 40 keep
+  right (p 0.002), so the order is real and its strength varies between sets of seeds. Hand-written
   drivers in the same city sit near the centreline (majority side 0.50 to 0.56 in all 20 runs;
   the side metric counts a car exactly on the centreline as not-right, so none "keeps right";
   C30, killed), so the right-hand habit is learned. The
@@ -136,7 +139,8 @@ re-tests them (see *How sure*, below).
   any change to the drivers is not re-tested.
 - **Credit and insurance buy activity with recklessness.** A 30-unit overdraft
   raises fares by 28% (interval 26-30%) and crashes per car by 25% (22-28%),
-  twenty seeds; insured drivers
+  twenty seeds, and +27.4% (24.3-30.9%) and +24.4% (21.7-27.3%) on twenty fresh seeds
+  (C36, confirmed); insured drivers
   crash 87% more per car (interval 82-91%, twenty seeds) and earn a third
   more (+34%), because the reckless stop going broke.
 
@@ -183,8 +187,8 @@ re-tests them (see *How sure*, below).
 
 Most of the above was first measured on two to four seeds, and several
 results flipped when seeds were added. Each has since been re-tested, one
-claim at a time, on twenty seeds: `docs/claims.jsonl` holds 37 claims, 20
-confirmed and 15 killed, 2 open, and 14 of the 15 headline bullets above carry
+claim at a time, on twenty seeds: `docs/claims.jsonl` holds 37 claims, 21
+confirmed and 16 killed, none open, and 14 of the 15 headline bullets above carry
 an interval (the fifteenth, no Braess road, is an exhaustive scan with no seeds
 to vary). The project is an instrument that re-tests itself:
 
