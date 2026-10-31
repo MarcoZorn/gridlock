@@ -89,7 +89,9 @@ re-tests them (see *How sure*, below).
   killed). Which side is a coin flip in Turin: 8 of
   20 keep the right (exact binomial p 0.50). In the default generated city it is more of an
   order: 14 of 20 runs reach three in four on one side (Wilson 95% interval 48-85%; C28,
-  confirmed), and 16 of 20 keep the right (p 0.012), so there the side is not chance. The
+  confirmed), and 16 of 20 keep the right (p 0.012), so there the side is not chance. Hand-written
+  drivers in the same city sit near the centreline (majority side 0.50 to 0.56 in all 20 runs,
+  none keeping right; C30, killed), so the right-hand habit is learned. The
   order grows smoothly with traffic, with no sharp transition.
 - **One family takes the city, mostly.** Over twenty fresh Turin seeds at six days, one
   founder's family owns over half the cars in 19 (Wilson 95% interval 76-99%), and every
@@ -146,6 +148,9 @@ re-tests them (see *How sure*, below).
   instead: fares a day +18.2% [+15.7%, +20.6%] over twenty seeds, trip time -17.5%,
   crashes per car -0.9% [-3.6%, +1.7%] (C10, confirmed). With hand-written drivers that cannot evolve the
   crash half does not hold: crashes per car +276.1% [+85.4%, +498.8%] (C13, killed).
+  That killed result mixed in cities that never started; on the 11 of 20 new seeds where both arms
+  started, the two-way streets carry +38.1% [+25.6%, +51.7%] fares and +30.4% [+16.7%, +45.2%]
+  crashes per car (C29, confirmed), so with these drivers the arrows buy safety and cost fares.
 - **No Braess paradox.** Of every road in the three cities that can be
   closed without stranding a trip, none saves more than 0.07% of travel
   time.
@@ -198,7 +203,7 @@ on day 0. Venice seed 7 is also open at hour 12 (0 of 32 from hour 0, 14
 from hour 12) and closes by hour 18 (26 of 32). Early decision is the
 exception (one run of four). The leader does not beat its own share of the
 cars reliably: on two fresh runs, 5 of 9 snapshots with the winner under half the
-cars had its win-rate interval above the share, 0 below (C9, killed). Claims C1, C3, C6, C7, C8, C9, C10, C11, C12, C13, C14, C15, C16, C17, C18, C19, C20, C21, C22, C23, C24, C25, C26, C27 and C28 in [docs/claims.jsonl](docs/claims.jsonl) (`tools/replay.mjs`;
+cars had its win-rate interval above the share, 0 below (C9, killed). Claims C1, C3, C6, C7, C8, C9, C10, C11, C12, C13, C14, C15, C16, C17, C18, C19, C20, C21, C22, C23, C24, C25, C26, C27, C28, C29 and C30 in [docs/claims.jsonl](docs/claims.jsonl) (`tools/replay.mjs`;
 [ROADMAP.md](ROADMAP.md)).
 
 ## Running it
