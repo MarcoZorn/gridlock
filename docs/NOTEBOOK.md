@@ -4837,3 +4837,10 @@ the bar decides which cities take off. What it is remains unknown; the first-day
 Prediction written before the run, in `docs/claims.jsonl`. C31 cleared its bar of 18 of 20 exactly (gain 0.8) against 16 of 20 at the default (C22) on seeds 101-120, a hint at best. On new seeds 201-220, both
 gains, `GRIDLOCK_HAND_FOLLOW=1.5` and `0.8`, `SEED0=201 SEEDS=20 START=50 node tools/starts.mjs turin` (`tools/starts.mjs` takes `SEED0=` now), predicted: the 0.8 arm starts at least two more runs
 than the default arm. Unit c34, logs `tmp/starts-c34-1.5.log` and `tmp/starts-c34-0.8.log`.
+
+### Claim C34 killed: the following-gain start effect was noise
+
+Seeds 201-220, hand drivers, Turin, two days, startCars 50: gain 1.5 (the default) 18 of 20 runs end with more than 30 cars (Wilson 95% [70%, 97%]); gain 0.8 13 of 20 ([43%, 82%]) (`tmp/starts-c34-1.5.log`,
+`tmp/starts-c34-0.8.log`). Predicted the 0.8 arm at least two runs ahead: it is five behind. So C31's 18 of 20 at gain 0.8 against 16 of 20 at the default on seeds 101-120 was sampling noise: across
+the four counts so far (16 and 18 at the default, 18 and 13 at 0.8) a hand city starts in 13 to 18 of 20 runs whichever gain. The bar of C31 was set at the number it hit and the notebook called
+it a hint; C34 is what that hint was worth. The unlucky fifth, or quarter, remains unexplained.
