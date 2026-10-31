@@ -4893,3 +4893,15 @@ median 50.5%, worst 14% (brain 21). Straight line through car and road features:
 70% and 85% and the best IDM figure under 40%: IDM holds (39%), the nearest-neighbour best is above the band, so killed. The README's "up to 77%" was the best of the four brains the notebook tried; the notebook's
 brain 1 reproduces today (22%, 58%, 77%). Reading: a brain is predictable from what it sees, but how much varies enormously from brain to brain (14% to 91%); the IDM is a poor description of all of them
 (a negative figure means worse than predicting the mean).
+
+### Which hand cities stay at the floor: the same seeds, partly
+
+`tools/starts.mjs` now ends each line with the seeds that stayed at the floor (30 cars or fewer after two days). The settings were re-run (`tmp/floor-*.log`; the counts reproduce the earlier claims exactly:
+16, 16 and 17 of 20 at startCars 50, 100, 150; 18 of 20 at following gain 0.8, 13 of 20 at birthCash 24, 16 of 20 at childCost 12 on seeds 101-120; 18 and 13 of 20 for gains 1.5 and 0.8 on seeds 201-220).
+
+Seeds 101-120, six settings, the seeds stuck at least once: 116 in five of six (default at 50 and at 100, childCost 12, birthCash 24, gain 0.8); 114 in four (default at 50 and 100, childCost 12, birthCash 24);
+102, 104 and 112 in three each; 109 and 120 in two; 105 and 117 in one; nine seeds in all, and eleven that started in every setting. Identical lists: the default at 50 and childCost 12 (seeds 104, 112, 114, 116 both times),
+so a cheaper child changes nothing for them. Seeds 201-220: the default is stuck on 217 and 218; gain 0.8 on 201, 206, 207, 217, 218, 219 and 220: 217 and 218 are stuck in both, and gain 0.8 adds five more.
+
+So the start is partly a property of the seed (116, 114, 217, 218 fail across several settings, eleven of twenty seeds never fail) and partly of the knob and chance (102 fails at 100 and 150 and with gain 0.8 but not at 50;
+gain 0.8 loses five seeds on the second set and two on the first). Why a given seed is unlucky is not known: the first-day look at seeds 104 and 112 found no difference in first fares, and the breeding-bar hypothesis failed.
