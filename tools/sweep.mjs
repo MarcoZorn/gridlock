@@ -33,7 +33,7 @@ export function uncited(readme, claims) {
   const rows = [];
   for (const m of sec.matchAll(/^- \*\*(.+?)\*\*([\s\S]*?)(?=^- \*\*|^\*\*|^## |(?![\s\S]))/gm)) {
     const text = m[1] + m[2], ids = [...new Set(text.match(/\bC\d+\b/g) || [])];
-    const ev = ids.map((id) => claims.find((c) => c.id === id)?.result || "").join(" ");
+    const ev = ids.map((id) => { const c = claims.find((x) => x.id === id); return `${c?.result || ""} ${c?.pooled || ""}`; }).join(" ");
     const ns = numbers(text);
     rows.push({ title: m[1], ids, total: ns.length, miss: ns.filter((n) => count(n, ev) === 0) });
   }
