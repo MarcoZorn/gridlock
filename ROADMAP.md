@@ -358,3 +358,13 @@ prediction written first, then the run, then the README line.
 - [x] gridlock: pool the replicated claims: C2/C35, C5/C36 and C28/C37 each have two sets of twenty seeds; add a `tools/pool.mjs` that
   merges two trial logs' per-seed changes into one forty-seed interval, so the README can quote forty seeds for those three.
   (Done: `tools/pool.mjs`, tested on synthetic seeds and checked against C2 and C5 on real runs; the README quotes forty seeds for charge and credit; the side figures were pooled by hand in C37's entry.)
+
+### Next batch, from C38 and the start puzzle
+
+- [ ] gridlock: are the hand cities that never start the same seeds every time? `tools/starts.mjs` prints only counts; make it list the seeds that
+  stayed at the floor, then compare the lists across startCars 50, 100, 150 (C22), gain 0.8 (C31, C34) and birthCash 24 (C33): if the same
+  seeds fail in every setting, the start is a property of the seed's city and founders' bodies, not of the knob. Test the printing; no claim needed
+  unless a prediction is wanted first.
+- [ ] gridlock: the README "Now" section still tells the Study 1 story of 2026-10-30 (hour-by-hour replays of seed 7); trim it to what the closed
+  claims C1, C3, C6-C9 say and point to the notebook for the tables.
+
