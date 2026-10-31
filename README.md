@@ -124,7 +124,7 @@ re-tests them (see *How sure*, below).
   safer and faster in every seed tried, and all of them cost fares. For the
   charge this now holds at twenty seeds: 45% fewer cars, crashes per car
   down 24% (95% interval 21-27%), trips 29% faster, fares down 18%
-  (15-21%), in every seed. On twenty fresh seeds it holds again: crashes per car -20.9%
+  (15-21%), in every seed (C2, confirmed). On twenty fresh seeds it holds again: crashes per car -20.9%
   [-24.1%, -17.4%], fares -15.4% [-19.0%, -11.4%], trips 32.4% faster (C35: killed only
   because trips were faster than the -20 to -30% band written for them). With mutation frozen after day 2 in both
   arms the trade stays: crashes per car -31.4% [-35.0%, -27.7%], fares -15.0%
@@ -139,9 +139,9 @@ re-tests them (see *How sure*, below).
   any change to the drivers is not re-tested.
 - **Credit and insurance buy activity with recklessness.** A 30-unit overdraft
   raises fares by 28% (interval 26-30%) and crashes per car by 25% (22-28%),
-  twenty seeds, and +27.4% (24.3-30.9%) and +24.4% (21.7-27.3%) on twenty fresh seeds
+  twenty seeds (C5, confirmed), and +27.4% (24.3-30.9%) and +24.4% (21.7-27.3%) on twenty fresh seeds
   (C36, confirmed); insured drivers
-  crash 87% more per car (interval 82-91%, twenty seeds) and earn a third
+  crash 87% more per car (interval 82-91%, twenty seeds; C4, confirmed) and earn a third
   more (+34%), because the reckless stop going broke.
 
 **The street network**
