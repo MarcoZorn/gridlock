@@ -4804,3 +4804,9 @@ That tie rule, not a steady lean to the left, is why every hand run read below 0
 seed 221). The C30 result stands as a result (the hand driver has no right-hand habit, the learned drivers do), but the sentence above that said the hand drivers have a small
 steady left lean is wrong, and so is the claim's "result" text, which keeps the original wording with this correction beside it. The metric's tie rule is harmless for learned
 drivers, who are rarely exactly on the line, and unchanged here.
+
+### Claim C31 confirmed, narrowly: more room ahead and the hand-city start
+
+`GRIDLOCK_HAND_FOLLOW=0.8 SEEDS=20 START=50 node tools/starts.mjs turin` (`tmp/starts-c31.log`), hand drivers, Turin, two days, seeds 101-120: 18 of 20 runs end with more than 30 cars
+(Wilson 95% [70%, 97%]). Predicted at least 18 of 20: met exactly. The default gain on the same seeds gave 16 of 20 (C22, [58%, 92%]), so the intervals overlap almost entirely; a
+two-run difference out of twenty is a hint and not an established effect, and the claim's bar was set at the number it hit. The unlucky fifth that never starts is still there.
