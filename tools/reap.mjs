@@ -54,7 +54,7 @@ export const claimFor = (rt, claims) => {
 };
 
 if (import.meta.url === `file://${process.argv[1]}`) {
-  const all = bullets(fs.readFileSync("README.md", "utf8"));
+  const all = bullets(fs.readFileSync("docs/SUMMARY.md", "utf8"));
   const claims = fs.readFileSync("docs/claims.jsonl", "utf8").trim().split("\n").map(JSON.parse);
   const asked = new Set(claims.map((c) => c.cmd));
   for (const b of all) {

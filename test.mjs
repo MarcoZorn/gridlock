@@ -261,7 +261,7 @@ import { editNeuron } from "./src/netview.js";
 
 // REAP: the README's bullets parse, every re-test names real ECON rules, and a claim opens only under five
 {
-  const bs = bullets(fs.readFileSync("README.md", "utf8")), claims = fs.readFileSync("docs/claims.jsonl", "utf8").trim().split("\n").map(JSON.parse);
+  const bs = bullets(fs.readFileSync("docs/SUMMARY.md", "utf8")), claims = fs.readFileSync("docs/claims.jsonl", "utf8").trim().split("\n").map(JSON.parse);
   assert(bs.length >= 10 && bs.some((b) => b.tested) && bs.some((b) => !b.tested), `README bullets parsed (${bs.length})`);
   for (const r of RETEST) {
     assert(bs.some((b) => b.title.startsWith(r.title)), `README still has the bullet "${r.title}"`);
@@ -405,10 +405,10 @@ import { editNeuron } from "./src/netview.js";
   const rows = unbacked(readme, "the run gave 12.5% and also 112.55 and 14321");
   assert.deepStrictEqual([rows.length, rows[0].miss], [1, ["4321"]], "4321 is not found inside 14321, 12.5% is found");
   assert.strictEqual(numCount("12.5%", "12.5 and 112.5 and 12.55 and 12.5."), 2, "counts whole numbers only (a full stop after is fine)");
-  const real = unbacked(fs.readFileSync("README.md", "utf8"), fs.readFileSync("docs/NOTEBOOK.md", "utf8") + fs.readFileSync("docs/claims.jsonl", "utf8"));
+  const real = unbacked(fs.readFileSync("docs/SUMMARY.md", "utf8"), fs.readFileSync("docs/NOTEBOOK.md", "utf8") + fs.readFileSync("docs/claims.jsonl", "utf8"));
   assert(real.length >= 10 && real.every((r) => r.miss.length === 0), `every README number is in the notebook or the claims (${real.filter((r) => r.miss.length).map((r) => r.title + ": " + r.miss.join(" ")).join("; ")})`);
   // every headline bullet cites the claim its numbers come from, and the cited results hold most of them
-  const claimsAll = fs.readFileSync("docs/claims.jsonl", "utf8").trim().split("\n").map(JSON.parse), cited = uncited(fs.readFileSync("README.md", "utf8"), claimsAll);
+  const claimsAll = fs.readFileSync("docs/claims.jsonl", "utf8").trim().split("\n").map(JSON.parse), cited = uncited(fs.readFileSync("docs/SUMMARY.md", "utf8"), claimsAll);
   for (const r of cited) if (!/Braess/.test(r.title)) assert(r.ids.length > 0, `bullet "${r.title}" cites a claim`);
   for (const id of cited.flatMap((r) => r.ids)) assert(claimsAll.some((c) => c.id === id && c.result), `${id} is a closed claim`);
   const lost = cited.reduce((a, r) => a + r.miss.length, 0), tot = cited.reduce((a, r) => a + r.total, 0);
@@ -433,7 +433,7 @@ import { editNeuron } from "./src/netview.js";
 
 // STATUS: the claim counts and the bullet count quoted in the README are the real ones
 {
-  const readme = fs.readFileSync("README.md", "utf8"), L = fs.readFileSync("docs/claims.jsonl", "utf8").trim().split("\n").map(JSON.parse);
+  const readme = fs.readFileSync("docs/SUMMARY.md", "utf8"), L = fs.readFileSync("docs/claims.jsonl", "utf8").trim().split("\n").map(JSON.parse);
   const n = (st) => L.filter((c) => c.status === st).length;
   const m = readme.match(/holds (\d+) claims, (\d+)\s+confirmed and (\d+) killed, (\d+|none) open, and (\d+) of the (\d+) headline bullets/);
   assert(m, "README states the claim counts in the expected sentence");

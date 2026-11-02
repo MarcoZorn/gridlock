@@ -52,10 +52,10 @@ export function unbacked(readme, evidence, common = 25) {
 
 if (import.meta.url === `file://${process.argv[1]}`) {
   const evidence = fs.readFileSync("docs/NOTEBOOK.md", "utf8") + fs.readFileSync("docs/claims.jsonl", "utf8");
-  const rows = unbacked(fs.readFileSync("README.md", "utf8"), evidence);
+  const rows = unbacked(fs.readFileSync("docs/SUMMARY.md", "utf8"), evidence);
   for (const r of rows) console.log(`${r.miss.length ? "-- " : "ok "} ${r.title.slice(0, 58).padEnd(58)} ${r.total - r.miss.length}/${r.total} numbers found${r.miss.length ? "; not found: " + r.miss.join(" ") : ""}${r.weak.length ? "; too common to prove anything: " + r.weak.join(" ") : ""}`);
   console.log(`${rows.filter((r) => r.miss.length).length} of ${rows.length} bullets have numbers found nowhere else`);
   const claims = fs.readFileSync("docs/claims.jsonl", "utf8").trim().split("\n").map(JSON.parse);
   console.log("against the results of the claims each bullet cites:");
-  for (const r of uncited(fs.readFileSync("README.md", "utf8"), claims)) console.log(`${r.miss.length ? "-- " : "ok "} ${r.title.slice(0, 58).padEnd(58)} cites ${r.ids.join(" ") || "nothing"}; ${r.total - r.miss.length}/${r.total} numbers in their results${r.miss.length ? "; not there: " + r.miss.join(" ") : ""}`);
+  for (const r of uncited(fs.readFileSync("docs/SUMMARY.md", "utf8"), claims)) console.log(`${r.miss.length ? "-- " : "ok "} ${r.title.slice(0, 58).padEnd(58)} cites ${r.ids.join(" ") || "nothing"}; ${r.total - r.miss.length}/${r.total} numbers in their results${r.miss.length ? "; not there: " + r.miss.join(" ") : ""}`);
 }
